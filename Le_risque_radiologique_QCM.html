@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☢ Le Risque Radiologique — QCM Sapeurs-Pompiers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg-deep: #060a0f;
+    --bg-card: #0d1520;
+    --bg-hover: #121d2e;
+    --border: #1a2d42;
+    --accent: #00e5ff;
+    --accent2: #f59e0b;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --text: #e2eaf4;
+    --text-dim: #8fa3bc;
+    --glow: rgba(0, 229, 255, 0.15);
+    --font-title: 'Rajdhani', sans-serif;
+    --font-body: 'Exo 2', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(180deg, #050810 0%, transparent 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hazard-icon {
+    width: 48px; height: 48px;
+    flex-shrink: 0;
+    animation: spin-slow 20s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  header h1 {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0,229,255,0.5);
+  }
+
+  header h1 span {
+    color: var(--accent2);
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: var(--text-dim);
+    text-shadow: none;
+  }
+
+  /* Main layout */
+  .app {
+    position: relative;
+    z-index: 5;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s;
+  }
+
+  .stat-chip .val {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .stat-chip.success .val { color: var(--success); }
+  .stat-chip.danger .val { color: var(--danger); }
+  .stat-chip.warn .val { color: var(--warning); }
+
+  /* Mode switcher */
+  .mode-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--text-dim);
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .mode-btn.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(0,229,255,0.3);
+  }
+
+  /* Section tabs */
+  .section-nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .sec-tab {
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-dim);
+    font-family: var(--font-title);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .sec-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .sec-tab.active {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(0,229,255,0.2);
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: border-color 0.3s;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-card.revealed { border-color: rgba(0,229,255,0.3); }
+  .question-card.correct { border-color: var(--success); box-shadow: 0 0 20px rgba(34,197,94,0.15); }
+  .question-card.wrong { border-color: var(--danger); box-shadow: 0 0 20px rgba(239,68,68,0.1); }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .q-num {
+    background: var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .q-section-badge {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .q-text {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  /* Answer area */
+  .answer-area {
+    margin-top: 16px;
+  }
+
+  /* Study mode: direct show */
+  .answer-block {
+    background: rgba(0, 229, 255, 0.06);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    color: #a8d8e8;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .answer-block .ans-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  .answer-block .ans-item::before {
+    content: '✓';
+    color: var(--success);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Explanation */
+  .explanation {
+    margin-top: 12px;
+    background: rgba(245, 158, 11, 0.06);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: #c8a96e;
+    line-height: 1.6;
+  }
+
+  .explanation-label {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Quiz mode: reveal button */
+  .reveal-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,229,255,0.05);
+    border: 1px dashed rgba(0,229,255,0.3);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .reveal-btn:hover {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Self-eval buttons */
+  .eval-btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .eval-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .eval-btn.ok {
+    background: rgba(34,197,94,0.15);
+    color: var(--success);
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+
+  .eval-btn.ok:hover { background: rgba(34,197,94,0.25); }
+
+  .eval-btn.ko {
+    background: rgba(239,68,68,0.1);
+    color: var(--danger);
+    border: 1px solid rgba(239,68,68,0.25);
+  }
+
+  .eval-btn.ko:hover { background: rgba(239,68,68,0.2); }
+
+  /* Hidden answer in quiz mode */
+  .hidden-answer { display: none; }
+
+  /* Navigation */
+  .nav-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    padding: 10px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .nav-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .nav-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .nav-btn.primary:hover {
+    box-shadow: 0 0 20px rgba(0,229,255,0.4);
+    color: #000;
+  }
+
+  /* All questions view */
+  #all-view .question-card { display: block !important; }
+
+  /* Filters info */
+  .filter-info {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    font-family: var(--font-title);
+    letter-spacing: 1px;
+  }
+
+  /* Score result panel */
+  .result-panel {
+    text-align: center;
+    padding: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: none;
+  }
+
+  .result-panel .score-big {
+    font-family: var(--font-title);
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(0,229,255,0.5);
+  }
+
+  .result-panel .score-label {
+    color: var(--text-dim);
+    margin: 8px 0 24px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .result-panel .restart-btn {
+    padding: 12px 32px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.2rem; }
+    .app { padding: 16px 12px 60px; }
+    .question-card { padding: 20px 16px; }
+    .stats-bar { gap: 8px; }
+    .stat-chip { padding: 6px 10px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="hazard-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="#00e5ff" stroke-width="2" opacity="0.3"/>
+    <circle cx="50" cy="50" r="8" fill="#00e5ff"/>
+    <!-- Trefoil blades -->
+    <path d="M50 42 A22 22 0 0 1 68.9 71 L58.5 65 A10 10 0 0 0 41.5 65 L31.1 71 A22 22 0 0 1 50 42Z" fill="#f59e0b" opacity="0.9"/>
+    <path d="M50 42 A22 22 0 0 0 31.1 71 L41.5 65 A10 10 0 0 1 58.5 65 L68.9 71 A22 22 0 0 0 50 42Z" fill="none"/>
+    <!-- Three petals -->
+    <path d="M50 42 C44 32 30 32 28 42 C26 52 38 60 41.5 65 C45 70 50 58 50 50 Z" fill="#f59e0b" opacity="0.85"/>
+    <path d="M50 42 C56 32 70 32 72 42 C74 52 62 60 58.5 65 C55 70 50 58 50 50 Z" fill="#f59e0b" opacity="0.85"/>
+    <path d="M41.5 65 C38 70 38 82 50 82 C62 82 62 70 58.5 65 C55 60 50 58 50 50 C50 58 45 60 41.5 65Z" fill="#f59e0b" opacity="0.85"/>
+    <circle cx="50" cy="50" r="6" fill="#060a0f"/>
+    <circle cx="50" cy="50" r="3" fill="#00e5ff"/>
+  </svg>
+  <div>
+    <h1>Le Risque Radiologique<span>QCM — Formation Sapeurs-Pompiers</span></h1>
+  </div>
+  <div style="margin-left:auto; text-align:right;">
+    <div style="font-family:'Rajdhani';font-size:0.75rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;">SDIS 38 / ENSOSP</div>
+    <div style="font-family:'Rajdhani';font-size:0.7rem;color:var(--border);margin-top:2px;">MAJ 21/03/2026</div>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- Mode switcher -->
+  <div class="mode-bar">
+    <button class="mode-btn active" onclick="setMode('quiz')" id="btn-quiz">⚡ Mode Quiz</button>
+    <button class="mode-btn" onclick="setMode('study')" id="btn-study">📖 Mode Révision</button>
+    <button class="mode-btn" onclick="setMode('all')" id="btn-all">📋 Tout Voir</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-chip"><span class="val" id="stat-total">0</span> questions</div>
+    <div class="stat-chip success"><span class="val" id="stat-ok">0</span> correctes</div>
+    <div class="stat-chip danger"><span class="val" id="stat-ko">0</span> erreurs</div>
+    <div class="stat-chip warn"><span class="val" id="stat-remain">0</span> restantes</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Section filter tabs -->
+  <div class="section-nav" id="section-nav"></div>
+
+  <!-- Filter info -->
+  <div class="filter-info" id="filter-info"></div>
+
+  <!-- Single question view (quiz + study mode) -->
+  <div id="single-view">
+    <div id="question-container"></div>
+
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevQ()" id="btn-prev">◀ Précédent</button>
+      <span style="font-family:'Rajdhani';color:var(--text-dim);letter-spacing:1px;font-size:0.85rem;" id="q-counter">1 / ?</span>
+      <button class="nav-btn primary" onclick="nextQ()" id="btn-next">Suivant ▶</button>
+    </div>
+
+    <!-- Result panel -->
+    <div class="result-panel" id="result-panel">
+      <div class="score-big" id="final-score">--%</div>
+      <div class="score-label">Score final</div>
+      <div id="final-detail" style="margin-bottom:24px; color:var(--text-dim); font-size:0.9rem;"></div>
+      <button class="restart-btn" onclick="resetQuiz()">↺ Recommencer</button>
+    </div>
+  </div>
+
+  <!-- All questions view -->
+  <div id="all-view" style="display:none;"></div>
+
+</div>
+
+<script>
+// =====================================================================
+// ALL QUESTIONS DATA
+// =====================================================================
+const SECTIONS = [
+  "Unités & Grandeurs",
+  "L'Atome",
+  "Les Rayonnements",
+  "Effets Biologiques",
+  "Risque Nucléaire",
+  "Transport TMD",
+  "Réglementation",
+  "Acteurs & Moyens",
+  "Utilisation & Applications",
+  "QCM Challenge"
+];
+
+const QUESTIONS = [
+// =====================================================================
+// SECTION 0 — UNITÉS & GRANDEURS
+// =====================================================================
+{s:0, q:"Quelle est l'unité de mesure de l'Activité d'une source radioactive ?",
+ a:["Le Becquerel (Bq) — ou le Curie (1 Ci = 37 GBq)"],
+ e:"L'activité d'une source radioactive est le nombre de désintégrations par seconde. L'ancienne unité est le Curie : 1 Ci = 37 000 000 000 Bq = 37 GBq."},
+
+{s:0, q:"La dose absorbée (D) est exprimée en quelle unité ?",
+ a:["Gray (Gy)", "Ancienne unité : le rad → 1 Gy = 100 rad"],
+ e:"1 Gray = 1 joule par kilogramme de matière. 1 Gy = 100 rad."},
+
+{s:0, q:"Le débit de dose (D°) s'exprime en quelle unité ?",
+ a:["Gray par heure (Gy/h)", "Ancienne unité : rad/h"],
+ e:"Le débit de dose est la quantité d'énergie cédée à la matière par unité de temps."},
+
+{s:0, q:"La dose équivalente (H) s'exprime en quelle unité ?",
+ a:["Sievert (Sv)", "Ancienne unité : rem → 1 Sv = 100 rem"],
+ e:"H = D × Q. Q est le facteur de qualité qui dépend de la nature des rayonnements."},
+
+{s:0, q:"Quelle réponse concernant l'unité Gray (Gy) est correcte ?",
+ a:["Le Gray mesure la dose absorbée (énergie cédée par unité de masse)"],
+ e:"1 Gy = 1 J/kg. C'est une grandeur qui mesure l'action des rayonnements ionisants sur un milieu. Le Gray ≠ Becquerel (activité) ≠ Sievert (dose équivalente)."},
+
+{s:0, q:"1 Gray (Gy) dans son ancienne unité est égal à …",
+ a:["100 rad"],
+ e:"1 Gy = 100 rad. Mémotechnique : Gy → 100 rad / Sv → 100 rem."},
+
+{s:0, q:"Quel est le facteur de qualité (Q) pour les rayonnements X, gamma et bêta ?",
+ a:["1"],
+ e:"Facteurs de qualité : gamma/X/bêta = 1 | alpha = 20 | neutrons = 3 à 10."},
+
+{s:0, q:"Quel est le facteur de qualité (Q) pour le rayonnement alpha ?",
+ a:["20"],
+ e:"Q alpha = 20, ce qui en fait le plus dangereux en contamination interne malgré son faible parcours."},
+
+{s:0, q:"À quoi correspond 1 Curie (Ci) ?",
+ a:["37 Gigabecquerel (GBq)", "37 000 000 000 Becquerel (Bq)"],
+ e:"Le Curie est l'ancienne unité d'activité : 1 Ci = 37 × 10⁹ Bq = 37 GBq."},
+
+{s:0, q:"1 Gigabecquerel est égal à :",
+ a:["1 000 000 000 Bq (10⁹ Bq)"],
+ e:"Préfixes : kilo (10³), méga (10⁶), giga (10⁹), téra (10¹²)."},
+
+{s:0, q:"Qu'appelle-t-on la période biologique (Tb) ?",
+ a:["Le temps que met l'organisme pour éliminer la moitié des radioéléments"],
+ e:"Période effective : 1/Te = 1/T radioactive + 1/T biologique."},
+
+{s:0, q:"Quelles réponses concernant la période effective (Te) sont correctes ?",
+ a:["C'est le temps au bout duquel l'activité d'un corps humain aura diminué de moitié", "1/Te = 1/Tradioactive + 1/Tbiologique"],
+ e:"La période effective tient compte à la fois de la décroissance radioactive et de l'élimination biologique."},
+
+{s:0, q:"Quelle est la dose annuelle moyenne de radioactivité reçue en France ?",
+ a:["4,5 mSv/an"],
+ e:"Cette dose comprend la radioactivité naturelle (radon, cosmique, tellurique), l'exposition médicale et les radionucléides artificiels."},
+
+// =====================================================================
+// SECTION 1 — L'ATOME
+// =====================================================================
+{s:1, q:"La charge électrique d'un proton est :",
+ a:["Positive"],
+ e:"Proton : charge +1 | Neutron : charge 0 (neutre) | Électron : charge -1."},
+
+{s:1, q:"La charge électrique d'un neutron est :",
+ a:["Neutre (charge nulle)"],
+ e:"Le neutron est une particule de charge nulle et de masse voisine de celle du proton."},
+
+{s:1, q:"La charge électrique d'un électron est :",
+ a:["Négative"],
+ e:"L'électron a une charge -1, identique en valeur absolue à celle du proton."},
+
+{s:1, q:"Le proton est environ combien de fois plus lourd que l'électron ?",
+ a:["Environ 2 000 fois plus lourd que l'électron"],
+ e:"Le proton pèse environ 1 836 fois la masse de l'électron."},
+
+{s:1, q:"Pour un élément radioactif, que désigne la lettre Z ?",
+ a:["Le numéro atomique", "Le nombre de charge (nombre de protons)", "= nombre d'électrons si neutralité électrique"],
+ e:"Z = numéro atomique = nombre de protons = nombre d'électrons (atome neutre)."},
+
+{s:1, q:"Pour un élément radioactif, que désigne la lettre A ?",
+ a:["Le nombre de masse (nombre de nucléons)", "La masse atomique"],
+ e:"A = Z (protons) + N (neutrons). Le nombre de masse est le total des nucléons."},
+
+{s:1, q:"Quelles réponses concernant l'atome sont correctes ?",
+ a:["Il est électriquement neutre", "Il possède autant de protons que d'électrons", "Il possède autant de charges positives que de charges négatives"],
+ e:"Un atome est neutre car son nombre de protons (charge +) est égal à son nombre d'électrons (charge -)."},
+
+{s:1, q:"Combien l'Uranium 238 possède-t-il de neutrons ?",
+ a:["146 neutrons (A=238, Z=92 → N=238-92=146)"],
+ e:"N = A - Z = 238 - 92 = 146 neutrons."},
+
+{s:1, q:"Combien de nucléons possède l'uranium 235 ?",
+ a:["235 nucléons"],
+ e:"Le nombre de masse A = 235 pour l'uranium 235. Nucléons = protons + neutrons."},
+
+{s:1, q:"Que sont des isotopes ?",
+ a:["Des atomes ayant le même nombre de charge Z mais des nombres de masse A différents"],
+ e:"Isotopes : même Z (même élément), A différent (nombre de neutrons différent)."},
+
+{s:1, q:"Quels sont les noms des isotopes de l'hydrogène ?",
+ a:["Deutérium (H-2)", "Tritium (H-3)"],
+ e:"L'hydrogène a 3 isotopes : ¹H (protium), ²H (deutérium), ³H (tritium)."},
+
+{s:1, q:"Que sont des isobares ?",
+ a:["Des atomes ayant des nombres de charge différents (Z≠) mais un nombre de masse identique (A=)"],
+ e:"Isobares : même A, Z différent ≠ Isotopes : même Z, A différent ≠ Isotones : même N."},
+
+{s:1, q:"Quelle réponse concernant les isotones est correcte ?",
+ a:["Ils ont le même nombre de neutrons (N)"],
+ e:"Isotones : même nombre de neutrons N. Exemple : ¹⁴C et ¹⁶O ont tous deux N=8."},
+
+{s:1, q:"Combien de nucléons faut-il pour qu'un noyau soit considéré comme instable donc radioactif ?",
+ a:["Plus de 209 nucléons"],
+ e:"Au-delà de 209 nucléons, les noyaux sont en général instables et radioactifs."},
+
+{s:1, q:"Qu'est-ce qu'un radio-isotope ?",
+ a:["Un isotope radioactif — lorsqu'un isotope est radioactif, on dit que c'est un radio-isotope"],
+ e:""},
+
+{s:1, q:"Concernant la définition de la radioactivité, quelles réponses sont correctes ?",
+ a:["L'objectif de la radioactivité est de retrouver un état plus stable", "Les noyaux instables se transforment spontanément : c'est la désintégration"],
+ e:"La radioactivité est la capacité des atomes aux noyaux instables à libérer spontanément de l'énergie sous forme de rayonnements/particules pour retrouver un état stable."},
+
+{s:1, q:"Quelles réponses concernant Marie Curie sont correctes ?",
+ a:["Elle est la première femme à avoir obtenu le prix Nobel", "Elle a obtenu le prix Nobel de Chimie en 1911 (et de Physique en 1903)"],
+ e:"Marie Curie a obtenu deux prix Nobel : Physique en 1903 (avec Pierre Curie et Becquerel) et Chimie en 1911."},
+
+// =====================================================================
+// SECTION 2 — LES RAYONNEMENTS
+// =====================================================================
+{s:2, q:"Quels rayonnements sont directement ionisants ?",
+ a:["Rayonnement alpha", "Rayonnement bêta + (positon)", "Rayonnement bêta − (électron)"],
+ e:"Les rayonnements corpusculaires (alpha, bêta, neutrons) sont directement ionisants. Les rayonnements électromagnétiques (gamma, X) sont indirectement ionisants."},
+
+{s:2, q:"Quels rayonnements sont des rayonnements électromagnétiques ?",
+ a:["Gamma", "Rayons X"],
+ e:"Gamma et X sont des rayonnements électromagnétiques de même nature que la lumière, mais de plus haute énergie."},
+
+{s:2, q:"Quels rayonnements sont corpusculaires ?",
+ a:["Alpha", "Bêta", "Neutrons"],
+ e:"Alpha, bêta et neutronique sont corpusculaires. Gamma et X sont électromagnétiques."},
+
+{s:2, q:"Quelles réponses concernant le rayonnement ALPHA sont correctes ?",
+ a:["C'est un rayonnement corpusculaire", "Il a un noyau lourd (excès de protons et neutrons)", "Il est facilement absorbé par quelques centimètres d'air (ou une feuille de papier)"],
+ e:"Le rayonnement alpha = noyau d'hélium (2p + 2n). Facteur de qualité Q=20. Très dangereux en contamination interne."},
+
+{s:2, q:"Qu'est-ce qu'une désintégration alpha ?",
+ a:["L'émission d'un noyau d'hélium (2 protons et 2 neutrons)"],
+ e:"Mémotechnique : Alpha = A (hélium 4, hélium 2). Arrêté par une feuille de papier."},
+
+{s:2, q:"Concernant le rayonnement bêta moins, quelles réponses sont correctes ?",
+ a:["Il est propre aux noyaux en excès de neutrons", "Lors de la transformation dans le noyau, un neutron se transforme en proton et un électron est émis"],
+ e:"Bêta − : n → p + e⁻ + ν̄. Arrêté par quelques mm d'aluminium ou plexiglas."},
+
+{s:2, q:"Concernant le rayonnement bêta plus, quelles réponses sont correctes ?",
+ a:["Le noyau instable transforme un proton en neutron", "Le noyau instable émet un positon (particule B+)"],
+ e:"Bêta + : p → n + e⁺ + ν. Le positon est l'antiparticule de l'électron."},
+
+{s:2, q:"Quelle est la particule émise lors d'une désintégration Bêta moins ?",
+ a:["Un électron"],
+ e:"Bêta − = émission d'un électron (e⁻)."},
+
+{s:2, q:"Quelle est la particule émise lors d'une désintégration Bêta plus ?",
+ a:["Un positon (e⁺)"],
+ e:"Bêta + = émission d'un positon (antiélectron)."},
+
+{s:2, q:"Quels éléments radioactifs peuvent émettre une éjection de matières (corpusculaires) ?",
+ a:["Alpha", "Bêta", "Neutrons"],
+ e:"Les rayonnements corpusculaires : alpha, bêta et neutrons éjectent des particules."},
+
+{s:2, q:"Les rayonnements ionisants ont des énergies comprises entre :",
+ a:["2 et 6 MeV pour les rayonnements Alpha", "50 KeV et 3 MeV pour les rayonnements Gamma"],
+ e:""},
+
+{s:2, q:"Quelles réponses concernant le rayonnement bêta sont correctes ?",
+ a:["Il est arrêté par une feuille d'aluminium", "Il est arrêté par un écran de plexiglas"],
+ e:"Récapitulatif des écrans : alpha = papier | bêta = aluminium/plexiglas | gamma/X = béton ou plomb (atténuation seulement, pas arrêt complet)."},
+
+{s:2, q:"Concernant le rayonnement gamma, quelles réponses sont correctes ?",
+ a:["C'est un rayonnement électromagnétique", "C'est un rayonnement indirectement ionisant", "Il peut être issu d'une désintégration alpha ou bêta"],
+ e:"Le gamma est quasi-systématique après une désintégration alpha ou bêta. Vitesse ≈ vitesse de la lumière."},
+
+{s:2, q:"Concernant les rayons gamma, quelles réponses sont correctes ?",
+ a:["Ils pénètrent à travers les vêtements", "Ils sont atténués par le béton (épaisseur moitié = 4,5 cm ; épaisseur dixième = 15 cm)"],
+ e:"Les rayonnements électromagnétiques ne peuvent être qu'atténués, pas arrêtés. Épaisseur moitié = atténuation par 2. Épaisseur dixième = atténuation par 10."},
+
+{s:2, q:"Quelles réponses concernant les neutrons sont correctes ?",
+ a:["Ils ont une période de quelques minutes", "Ils sont classés en fonction de leur niveau énergétique (thermiques, lents, intermédiaires, rapides, ultra-rapides)"],
+ e:"Neutrons thermiques : 0,025 eV | lents : 0,025 eV–1 keV | intermédiaires : 1–100 keV | rapides : 100 keV–10 MeV | ultra-rapides : >10 MeV."},
+
+{s:2, q:"Quels sont les 3 effets d'interaction des rayonnements électromagnétiques avec la matière ?",
+ a:["L'effet photoélectrique (photon faible énergie → électron)", "L'effet Compton (photon moyenne énergie → électron éjecté + photon dévié)", "L'effet de création de paires (photon haute énergie → paire positon + électron)"],
+ e:"L'effet de création de paires nécessite un photon d'énergie > 1,022 MeV passant à proximité d'un noyau."},
+
+{s:2, q:"De quelle manière le flux des rayonnements électromagnétiques peut-il être atténué ?",
+ a:["Par un écran d'épaisseur moitié (X1/2) qui atténue d'un facteur 2", "Par un écran d'épaisseur dixième (X1/10) qui atténue d'un facteur 10"],
+ e:"Ces épaisseurs dépendent de la nature de l'écran et de l'énergie du rayonnement. Pour le béton : X1/2 = 4,5 cm ; X1/10 = 15 cm."},
+
+// =====================================================================
+// SECTION 3 — EFFETS BIOLOGIQUES
+// =====================================================================
+{s:3, q:"Les effets biologiques qui concernent la totalité des individus exposés sont dits :",
+ a:["Déterministes (ou non aléatoires)"],
+ e:"Effets déterministes : touchent TOUS les individus au-dessus d'un seuil de dose. Effets stochastiques : touchent certains individus au hasard, sans seuil."},
+
+{s:3, q:"Concernant les effets stochastiques, quelles réponses sont correctes ?",
+ a:["Ils ont un temps de latence et s'expriment à plus long terme", "Ils concernent uniquement certains individus au hasard, indépendamment de la dose reçue"],
+ e:"Effets stochastiques = cancérogènes, tératogènes, génétiques. Apparaissent à long terme avec un temps de latence."},
+
+{s:3, q:"Quels sont les différents types d'effets stochastiques ?",
+ a:["Cancérogènes", "Tératogènes (malformations fœtales)", "Génétiques"],
+ e:"Les effets stochastiques sont liés au hasard et n'ont pas de seuil. Ils peuvent se manifester bien après l'exposition."},
+
+{s:3, q:"Concernant les effets tératogènes, quelle réponse est correcte ?",
+ a:["Il y a une augmentation des anomalies ou malformations suite à l'irradiation du fœtus ou de l'embryon"],
+ e:""},
+
+{s:3, q:"À quel moment parle-t-on d'irradiation externe ?",
+ a:["Lorsque la source radioactive est située à l'extérieur du corps", "Lors d'une exposition externe due aux rayonnements des dépôts"],
+ e:"Irradiation externe : source hors du corps. Contamination : dépôt de substances radioactives sur/dans l'organisme."},
+
+{s:3, q:"Quel type d'irradiation est la plus dangereuse ?",
+ a:["L'irradiation interne"],
+ e:"En irradiation interne, la source irradie les organes de l'intérieur en continu, ce qui est beaucoup plus dangereux."},
+
+{s:3, q:"Concernant la contamination, quelles réponses sont correctes ?",
+ a:["C'est une exposition au contact", "Elle se produit lorsque des poussières radioactives se déposent sur la peau (contamination externe)", "La contamination interne survient lorsqu'une victime inhale ou ingère des poussières/liquides radioactifs"],
+ e:"Contamination = présence de substances radioactives sur/dans l'organisme. ≠ irradiation (exposition aux rayonnements sans contact direct)."},
+
+{s:3, q:"Concernant le syndrome aigu d'irradiation, quelle réponse est correcte ?",
+ a:["Il s'agit d'une exposition de l'organisme entier en une seule fois pendant une courte durée (< 24 heures)"],
+ e:"4 formes du SAI : asymptomatique (<1 Sv) | hématologique (2-4 Sv) | intestinale (6-7 Sv → mort en jours) | nerveuse (>10 Sv → mort en minutes/heures)."},
+
+{s:3, q:"La Dose Létale 50 (DL50) est établie à :",
+ a:["4 Sievert"],
+ e:"Repères : 50 mSv = dose efficace thyroïde (iode stable) | 1 Sv = effets obligatoires (perte de cheveux) | 4 Sv = DL50 | 6 Sv = DL100."},
+
+{s:3, q:"La Dose Létale 100 (DL100) est établie à :",
+ a:["6 Sievert"],
+ e:"Au-delà de 6 Sv, la mort est quasi-certaine sans traitement intensif."},
+
+{s:3, q:"Parmi les effets déterministes, à partir de quelle dose équivalente apparaissent les modifications de la formule sanguine ?",
+ a:["250 mSv (0,25 Sv)"],
+ e:"Premier signe biologique mesurable : modifications hématologiques dès 250 mSv."},
+
+// =====================================================================
+// SECTION 4 — RISQUE NUCLÉAIRE & ACCIDENTS
+// =====================================================================
+{s:4, q:"Quelles réponses concernant la ville de Tchernobyl sont correctes ?",
+ a:["A été le siège d'un accident majeur nucléaire survenu en 1986", "Se situe en Ukraine"],
+ e:"Tchernobyl : accident de niveau 7 (INES), 26 avril 1986. Libération massive d'iode 131 et de césium 137."},
+
+{s:4, q:"Concernant la nouvelle arche de confinement de Tchernobyl, quelles réponses sont correctes ?",
+ a:["Elle a été inaugurée en 2019", "Elle est haute de 108 mètres", "Elle pourrait recouvrir la statue de la liberté"],
+ e:"La nouvelle arche de Tchernobyl a été construite pour 100 ans et couvre un volume de 740 000 m³."},
+
+{s:4, q:"Quelles réponses concernant la catastrophe nucléaire de Fukushima sont correctes ?",
+ a:["Est consécutive d'un séisme et d'un tsunami", "A eu lieu en 2011"],
+ e:"Fukushima Daiichi : 11 mars 2011, séisme + tsunami au Japon → accident niveau 7 (INES)."},
+
+{s:4, q:"Quelles réponses concernant l'échelle INES sont correctes ?",
+ a:["Elle est graduée de 0 à 7 (8 niveaux)", "Elle permet de classer les évènements nucléaires et radiologiques"],
+ e:"Niveaux 1-3 = incidents. Niveaux 4-7 = accidents. Deux événements en niveau 7 : Tchernobyl (1986) et Fukushima (2011)."},
+
+{s:4, q:"Sur l'échelle INES, quelles réponses sont correctes ?",
+ a:["Tout incident de niveau 2 ou au-dessus implique une information du public en France", "Tout évènement doit être déclaré par l'exploitant à l'ASN"],
+ e:""},
+
+{s:4, q:"En 2020, combien existe-t-il de réacteurs nucléaires en France ?",
+ a:["56 réacteurs"],
+ e:"56 réacteurs répartis sur 18 sites en 2020. La France est le premier pays nucléarisé ramené à son nombre d'habitants."},
+
+{s:4, q:"En 2020, les réacteurs nucléaires sont répartis sur combien de sites ?",
+ a:["18 sites"],
+ e:""},
+
+{s:4, q:"En 2019, quel pourcentage représente le nucléaire par rapport à la production d'électricité française ?",
+ a:["Environ 70%"],
+ e:"La France est l'un des pays les plus nucléarisés au monde en proportion de son électricité."},
+
+{s:4, q:"Pour combien de temps de fonctionnement les réacteurs nucléaires français ont-ils été conçus initialement ?",
+ a:["30 ans"],
+ e:"De nombreux réacteurs dépassent désormais leur durée de vie initiale après autorisation de prolongation."},
+
+{s:4, q:"À quelle température est portée l'eau dans le circuit primaire d'une centrale nucléaire ?",
+ a:["300 °C"],
+ e:"L'eau du circuit primaire est maintenue liquide sous haute pression malgré sa température."},
+
+{s:4, q:"Quelle est la durée de la demi-vie du plutonium 239 ?",
+ a:["24 000 ans"],
+ e:"Le Pu-239 a une demi-vie de 24 110 ans, ce qui pose des problèmes de stockage à très long terme."},
+
+{s:4, q:"Depuis 1945, combien de bombes atomiques ont explosé sur Terre ?",
+ a:["2 154 (dont la majorité lors d'essais nucléaires)"],
+ e:"Deux bombes ont été utilisées en guerre (Hiroshima et Nagasaki en 1945). Le reste lors d'essais."},
+
+{s:4, q:"En 1999, quelle ville française a failli être évacuée à cause d'un grave incident nucléaire ?",
+ a:["Bordeaux"],
+ e:"Incident à la centrale du Blayais (près de Bordeaux) lors des tempêtes de décembre 1999."},
+
+{s:4, q:"Quel organisme inspecte les Installations Nucléaires de Base (INB) ?",
+ a:["L'ASNR (Autorité de Sûreté Nucléaire et de Radioprotection)"],
+ e:"Depuis le 1er janvier 2025, l'ASNR rassemble les missions de l'ASN et de l'IRSN, conformément à la loi du 21 mai 2024."},
+
+{s:4, q:"Quel organisme assure en France le respect de la sûreté nucléaire ?",
+ a:["L'ASN (Autorité de Sûreté Nucléaire) — désormais intégrée à l'ASNR"],
+ e:"L'ASN est une autorité administrative indépendante créée par la loi n°2006-686 du 13 juin 2006."},
+
+{s:4, q:"Le PPI nucléaire comprend 3 phases de gestion d'urgence. Lesquelles ?",
+ a:["Phase réflexe à 2 km", "Phase immédiate d'évacuation dans un rayon de 5 km", "Phase concertée (+ pré-distribution d'iode sur 10-20 km)"],
+ e:"3 situations accidentelles : rejet immédiat de courte durée, rejet immédiat de longue durée, rejet différé de longue durée."},
+
+{s:4, q:"Quel est le périmètre du PPI autour des centrales nucléaires ?",
+ a:["20 km"],
+ e:"Le PPI est déclenché par le préfet si l'incident dépasse la capacité de gestion de l'exploitant."},
+
+{s:4, q:"Pour chaque site nucléaire, quel plan est mis en œuvre par l'exploitant ?",
+ a:["Le Plan d'Urgence Interne (PUI)"],
+ e:"Le PUI est le premier niveau de réponse, géré par l'exploitant lui-même."},
+
+{s:4, q:"Que signifie INB ?",
+ a:["Installation Nucléaire de Base"],
+ e:""},
+
+{s:4, q:"Quel acteur fait partie de la sûreté nucléaire (maintenant intégré dans l'ASNR) ?",
+ a:["L'IRSN (Institut de Radioprotection et de Sûreté Nucléaire)"],
+ e:""},
+
+{s:4, q:"Qu'est-ce que CRITER, développé par l'IRSN ?",
+ a:["Un outil de cartographie permettant d'accéder aux mesures de rayonnement gamma sur le territoire français"],
+ e:"Mis en place lors de l'accident de Fukushima pour suivre la contamination du territoire français."},
+
+{s:4, q:"Quelles structures disposent d'un VDIP (Véhicule de Détection, Identification et Prélèvement) ?",
+ a:["La BSPP avec le LCPP (Laboratoire Central de la Préfecture de Police)", "Le BMPM", "Le SDIS 57 (Moselle)"],
+ e:"Un VDIP est également présent dans l'agglomération messine. Le SDIS du Rhône en dispose aussi."},
+
+// =====================================================================
+// SECTION 5 — TRANSPORT TMD
+// =====================================================================
+{s:5, q:"Pour le code danger ADR, quel chiffre désigne les matières radioactives ?",
+ a:["7"],
+ e:"ADR classification : 1=explosifs, 2=gaz, 3=liquides inflammables, ... 7=matières radioactives, 8=corrosifs, 9=divers."},
+
+{s:5, q:"Quels documents réglementent le transport des matières dangereuses radioactives ?",
+ a:["L'ADR (transport routier)", "Le RID (transport ferroviaire)", "L'ADN (transport fluvial)"],
+ e:"Transport maritime : codes maritimes OACI. Transport aérien : instructions OACI."},
+
+{s:5, q:"Quel est le périmètre de mise à l'abri en cas de source radioactive (colis type B ou C) soumise à un incendie ?",
+ a:["500 m"],
+ e:""},
+
+{s:5, q:"L'étiquette 7A est destinée à un colis dont le débit de dose est :",
+ a:["Inférieur ou égal à 5 µSv/h au contact"],
+ e:"Étiquette 7A : pas de précaution particulière si emballage intact."},
+
+{s:5, q:"L'étiquette 7B est destinée à un colis dont le débit de dose est :",
+ a:["Supérieur à 5 µSv/h et inférieur ou égal à 500 µSv/h au contact", "Peut être manipulé à la main"],
+ e:"7B : peut être manipulé à la main. Indice de transport ≤ 1."},
+
+{s:5, q:"L'étiquette 7C est destinée à un colis dont le débit de dose est :",
+ a:["Supérieur à 500 µSv/h et inférieur à 2 mSv/h au contact (ou < 10 mSv/h si chargement complet)", "À manipuler rapidement et à isoler"],
+ e:"7C : à manipuler rapidement et à isoler. Nécessite des précautions spécifiques."},
+
+{s:5, q:"Dans le cas d'un chargement complet, le débit de dose doit être inférieur à :",
+ a:["10 mSv/h au contact du colis", "2 mSv/h au contact du véhicule", "500 µSv/h à 1 mètre du colis"],
+ e:""},
+
+{s:5, q:"Quelles réponses concernant les colis exceptés sont correctes ?",
+ a:["Ce sont des colis dont les seuils d'activité spécifique et totale sont inférieurs au seuil d'exemption", "Ce sont des colis 'usuels' qui doivent résister à une chute de 1,20 m sur une surface cimentée"],
+ e:"Colis exceptés : radioactivité très faible, <1/1000 de A1 ou A2. Environ 70 000 colis/an en France."},
+
+{s:5, q:"Quelles réponses concernant les colis de type A sont correctes ?",
+ a:["Ils sont conçus pour résister aux accidents de manipulation", "Ils doivent résister à une aspersion d'au moins une heure avec 5 cm de précipitation"],
+ e:"Colis type A : chute < 1,20 m | compression 5× poids | aspersion 1h/5cm | pénétration barre 6 kg de 1 m."},
+
+{s:5, q:"Quelle réponse concernant les colis de type B est correcte ?",
+ a:["Ils sont conçus pour résister aux effets d'un accident de transport de matière de forte activité"],
+ e:"Tests type B : chute 9 m | chute 1 m sur poinçon | incendie 30 min à 800°C | immersion 15 m pendant 8h."},
+
+{s:5, q:"Quelle réponse concernant les colis de matière radioactive destinés au transport aérien est correcte ?",
+ a:["Ils doivent résister à une immersion à 200 mètres pendant une heure"],
+ e:""},
+
+{s:5, q:"En France, la production de déchets radioactifs par an et par habitant est estimée à :",
+ a:["2 kg"],
+ e:""},
+
+{s:5, q:"Quelles réponses concernant les déchets radioactifs 'à vie courte' sont correctes ?",
+ a:["Ils perdent la moitié de leur activité tous les 30 ans", "Ils représentent 90% du stock total de déchets radioactifs"],
+ e:"Déchets vie courte : 90% du volume mais seulement 0,01% de la radioactivité totale."},
+
+{s:5, q:"Quelles réponses concernant les déchets radioactifs 'à vie longue' sont correctes ?",
+ a:["Représentent 10% du stock total de déchets radioactifs", "Concentrent 99,99% de la radioactivité totale des déchets radioactifs"],
+ e:"Déchets vie longue : surtout produits par le retraitement du combustible."},
+
+{s:5, q:"Depuis 1992, où sont stockés les déchets de faible et moyenne activité à vie courte ?",
+ a:["Dans l'Aube (centre de stockage de l'Aube — CSA)"],
+ e:"Le CSA est géré par l'ANDRA (Agence Nationale pour la gestion des Déchets RAdioactifs)."},
+
+{s:5, q:"Quelles réponses concernant le CIGEO sont correctes ?",
+ a:["C'est l'acronyme du Centre Industriel de Stockage GEOlogique", "C'est un projet français de centre de stockage des déchets radioactifs en couche géologique profonde"],
+ e:"CIGEO est prévu en Meuse/Haute-Marne, à environ 500 m de profondeur dans une couche d'argile."},
+
+// =====================================================================
+// SECTION 6 — RÉGLEMENTATION
+// =====================================================================
+{s:6, q:"Que signifie l'acronyme JOL ?",
+ a:["Justifier / Optimiser / Limiter"],
+ e:"Justifier = bénéfice > risque. Optimiser = ALARA (As Low As Reasonably Achievable). Limiter = respecter les limites réglementaires."},
+
+{s:6, q:"Quelle est la dose maximum recevable par le public du fait des activités nucléaires ?",
+ a:["1 millisievert par an (mSv/an)"],
+ e:"Limites public : 1 mSv/an (corps entier) | 15 mSv/an (cristallin) | 50 mSv/an (peau, 1 cm²)."},
+
+{s:6, q:"Annuellement, quelle est la valeur limite d'exposition des travailleurs ?",
+ a:["20 mSv sur 12 mois consécutifs"],
+ e:"Autres limites travailleurs : 500 mSv (mains/pieds/peau) | 20 mSv (cristallin) | <1 mSv/an (femmes enceintes) | 6 mSv (16-18 ans)."},
+
+{s:6, q:"Que détermine l'arrêté de 2009 relatif aux niveaux d'intervention en situation d'urgence radiologique ?",
+ a:["Mise à l'abri des populations pour une dose efficace de 10 mSv", "Administration d'iode stable pour une dose équivalente à la thyroïde de 50 mSv", "Évacuation pour une dose efficace de 50 mSv"],
+ e:"Trois niveaux d'intervention : mise à l'abri (10 mSv) | évacuation (50 mSv) | iode stable (thyroïde 50 mSv)."},
+
+{s:6, q:"Les intervenants sur un risque radiologique sont classés en 2 groupes. Quelles réponses sont correctes ?",
+ a:["Groupe 1 = équipes spécialisées préalablement constituées (CMIR...) avec formation spécifique", "Groupe 2 = personnels ne relevant pas des équipes spécialisées, bénéficiant d'une information adaptée"],
+ e:"Groupe 1 : limite 100 mSv (mission) ou 300 mSv (protection des personnes). Groupe 2 : limite 10 mSv."},
+
+{s:6, q:"Quelle est la limite maximale de la somme des doses efficaces pour les intervenants du 2nd groupe ?",
+ a:["10 mSv"],
+ e:"Groupe 1 : 100 mSv (mission) | 300 mSv (protection des personnes). Un dépassement peut être envisagé jusqu'à 500 mSv pour sauvetage de vie."},
+
+{s:6, q:"En situation d'urgence radiologique, quelles sont les doses efficaces susceptibles d'être reçues par un travailleur ?",
+ a:["100 mSv pendant la durée de la mission (Art. R4451-11)", "500 mSv pour une intervention destinée à sauver des vies (situations exceptionnelles)"],
+ e:"La dose efficace totalisée sur toute la vie d'un intervenant ne peut excéder 1 Sv (Art. R4451-9)."},
+
+{s:6, q:"Pour les intervenants en urgence radiologique, quelle est la limite des doses efficaces sur toute la vie ?",
+ a:["1 Sv (1 Sievert)"],
+ e:"Art. R4451-9 : la dose efficace totalisée sur la vie entière d'un travailleur intervenant ne dépasse en aucun cas 1 sievert."},
+
+{s:6, q:"Concernant les zones où les travailleurs sont susceptibles d'être exposés, quelles réponses sont correctes ?",
+ a:["Il existe 5 zones réglementaires", "La zone contrôlée jaune : dose efficace < 2 mSv intégrée sur une heure"],
+ e:"Les 5 zones : surveillée | contrôlée verte | contrôlée jaune | contrôlée orange | contrôlée rouge."},
+
+{s:6, q:"Que prévoit la circulaire 800 ?",
+ a:["Zone d'exclusion (contaminée/contaminable) / Zone contrôlée (tampon, PRV, décontamination) / Zone de soutien (PMA, services de secours)"],
+ e:"ZDI = 100 m autour du point d'attentat. ZDV = 500 m sous le vent (angle 40°). PRV en zone contrôlée. PMA en zone de soutien."},
+
+{s:6, q:"Quel est le numéro de la circulaire concernant la découverte de plis, colis, contenant et substances suspectées de renfermer des agents NRBC ?",
+ a:["Circulaire 750"],
+ e:"750 = découverte de substances suspectes. 800 = doctrine nationale d'emploi en cas d'attentat radiologique. 007 = dispositif interministériel NRBC."},
+
+{s:6, q:"Quel est le numéro de la circulaire relative à la doctrine nationale d'emploi des moyens face à un attentat avec matières radioactives ?",
+ a:["Circulaire 800"],
+ e:"La circulaire 800 définit les zones (exclusion, contrôlée, soutien) et le positionnement du PRV et du PMA."},
+
+{s:6, q:"Quel est le numéro de la circulaire relative au dispositif interministériel face à la menace ou l'exécution d'actes de terrorisme NRBC ?",
+ a:["Circulaire 007"],
+ e:""},
+
+{s:6, q:"D'après la circulaire 800, quelles réponses sont correctes ?",
+ a:["Le PRV est positionné en zone d'accès contrôlé", "Le PMA est positionné en zone de soutien"],
+ e:"Page 7 de la circulaire 800."},
+
+{s:6, q:"Combien de situations de référence identifie le plan gouvernemental NRBCe ?",
+ a:["6 situations de référence"],
+ e:"1=Menace imminente d'attentat | 2=Découverte d'engins NRBC intacts | 3=Dispersion (bombe sale) | 4=Contamination produits de consommation | 5=Contamination animaux/végétaux | 6=Apparition de symptômes dans la population."},
+
+{s:6, q:"Quelle réponse concernant 'Piratome' est correcte ?",
+ a:["Il a été remplacé par le plan NRBC"],
+ e:"PIRATOME était le plan de réponse aux actes de terrorisme radiologique. Il a été intégré dans le plan gouvernemental NRBCe."},
+
+{s:6, q:"Qu'est-ce que SISERI développé par l'IRSN ?",
+ a:["Le Système d'Information de la Surveillance de l'Exposition aux Rayonnements Ionisants", "Un système de centralisation et conservation de l'ensemble des résultats des mesures individuelles d'exposition des travailleurs"],
+ e:"SISERI est accessible en ligne aux médecins du travail, PCR et inspecteurs du travail pour optimiser la surveillance médicale."},
+
+// =====================================================================
+// SECTION 7 — ACTEURS & MOYENS
+// =====================================================================
+{s:7, q:"Quelle est la composition d'une CMIR 'constituée' ?",
+ a:["1 chef CMIR (UV RAD3) + 1 équipe reconnaissance + 1 équipe intervention"],
+ e:"Équipe reconnaissance : 1 chef (GOC2+RAD1) + 2 équipiers (RAD1). Équipe intervention : 1 chef (RAD2+GOC2) + 2 équipiers (RAD2)."},
+
+{s:7, q:"Quelle mission concerne l'équipe de reconnaissance CMIR ?",
+ a:["Effectuer des mesures d'irradiation", "Délimiter et baliser une zone de sécurité", "Qualifier le risque et suspecter la présence de contamination surfacique"],
+ e:"L'équipe de reconnaissance prépare l'arrivée des équipes d'intervention et se met à disposition du chef CMIR ou du COS."},
+
+{s:7, q:"Dans une CMIR, à quelle fonction correspond le niveau RAD3 ?",
+ a:["Chef de CMIR"],
+ e:"RAD1 = équipier reconnaissance | RAD2 = équipier intervention | RAD3 = chef CMIR."},
+
+{s:7, q:"Quelle est la source radioactive à laquelle l'Homme est le plus exposé en France ?",
+ a:["Le radon (gaz radioactif naturel)"],
+ e:"Le radon est un gaz naturel issu de la désintégration du radium dans les sous-sols granitiques. Il représente la principale source d'exposition naturelle."},
+
+{s:7, q:"Qui a découvert le radium ?",
+ a:["Pierre et Marie Curie"],
+ e:""},
+
+{s:7, q:"Quelles unités sont spécialisées dans les interventions liées à la radioactivité ?",
+ a:["L'UIISC n°1 (Nogent-le-Rotrou)", "Le 2ème Régiment de Dragons (seule unité NBC de l'Armée de Terre)"],
+ e:"Chaque UIISC arme 1 CMIR + 1 CMIC. L'UIISC n°1 arme le MAGeC (Module d'Appui à la Gestion de Crise)."},
+
+{s:7, q:"Concernant la MARN, quelles réponses sont correctes ?",
+ a:["C'est une structure de la DGSCGC", "Elle est déclenchée par le COGIC"],
+ e:"Créée en 1995, la MARN (Mission nationale d'Appui aux Risques Nucléaires) est composée d'un officier SP, d'un ingénieur EDF et d'un secrétariat."},
+
+{s:7, q:"Concernant le CEA, quelles réponses sont correctes ?",
+ a:["C'est un organisme de recherche", "Il dispose d'équipes (ZIPE/ZIDE) pouvant être sollicitées pour intervenir sur le domaine public"],
+ e:"ZIPE (Zone d'Intervention Premier Échelon) : 1 ingénieur + 2 techniciens. 7 en France. ZIDE (Deuxième Échelon) : 2 ingénieurs + 6-10 techniciens. 5 en France."},
+
+{s:7, q:"Concernant le DCI-IT, quelles réponses sont correctes ?",
+ a:["Il est chargé d'intervenir en cas de terrorisme NRBC-E", "Constitué de militaires FORMISC, CGI NEDEX, C2NRBC, Gendarmerie, BSPP, DGA, LCPP, CEA"],
+ e:"Le DCI-IT est un service interministériel à compétence nationale spécialisé dans la lutte contre les menaces terroristes NRBC."},
+
+{s:7, q:"Selon le Code de l'environnement, quel organisme réalise la collecte des déchets radioactifs ?",
+ a:["L'ANDRA (Agence Nationale pour la gestion des Déchets RAdioactifs)"],
+ e:"Missions de l'ANDRA définies dans l'article L542-12 du Code de l'environnement."},
+
+{s:7, q:"Avec son nombre total de réacteurs rapporté au nombre d'habitants, à quel rang se place la France ?",
+ a:["1er rang mondial"],
+ e:""},
+
+{s:7, q:"Quel moyen de protection est efficace pour l'exposition interne ?",
+ a:["L'isolement (tenues étanches EPI, gants, protections respiratoires, confinement de la source)"],
+ e:""},
+
+{s:7, q:"Concernant les principes de protection contre les rayonnements ionisants, quelles réponses sont correctes ?",
+ a:["Diminuer le temps d'exposition", "Intercaler des écrans entre la source et la personne", "S'éloigner de la source (loi de l'inverse du carré de la distance)"],
+ e:"Mnémotechnique : T.E.D. = Temps / Écran / Distance."},
+
+{s:7, q:"En situation d'urgence radioactive, qu'appelle-t-on un CRP ?",
+ a:["Un Conseiller en Radioprotection"],
+ e:""},
+
+{s:7, q:"En risque radiologique, quel appareil permet de mesurer l'équivalent de dose reçu par un individu ?",
+ a:["Le dosimètre"],
+ e:"Il existe des dosimètres actifs (lecture directe) et passifs (lecture différée)."},
+
+{s:7, q:"Quelle réponse concernant le CAMARI est correcte ?",
+ a:["C'est le Certificat d'Aptitude à Manipuler des Appareils de Radiologie Industrielle"],
+ e:"Le CAMARI est obligatoire pour manipuler des appareils de gammagraphie ou de radiologie industrielle."},
+
+// =====================================================================
+// SECTION 8 — UTILISATION & APPLICATIONS
+// =====================================================================
+{s:8, q:"Concernant l'utilisation de la radioactivité, quelles réponses sont correctes ?",
+ a:["Radiographie : rayon X → image 2D sur film photographique", "Scannographie : plusieurs faisceaux X → vues en 3D", "Tomographie : générateur X tourne autour du patient → vues de coupe", "Curiethérapie : source placée dans/à proximité de la tumeur pour la détruire (petites tumeurs localisées)"],
+ e:"La radioactivité a de nombreuses applications médicales, industrielles et scientifiques."},
+
+{s:8, q:"Les paratonnerres interdits à la pose depuis 1987 étaient constitués de :",
+ a:["Américium 241", "Radium 226"],
+ e:"Ces éléments radioactifs étaient censés augmenter la conductivité électrique autour de la pointe du paratonnerre."},
+
+{s:8, q:"Quelles réponses concernant les détecteurs ioniques de fumées sont correctes ?",
+ a:["Ils contiennent de l'américium 241", "Depuis 2018, toutes les installations utilisant ce type de détecteurs ont été démantelées"],
+ e:"Depuis 2007 : plus de commercialisation pour les installations neuves. Depuis 2018 : démantèlement obligatoire."},
+
+{s:8, q:"La prise d'iode stable …",
+ a:["Protège la thyroïde de l'iode radioactif en cas d'accident nucléaire", "L'iodure de potassium est l'autre nom de l'iode stable", "À administrer uniquement sur instruction des autorités, au plus tôt 1h avant l'exposition", "Distribution sous responsabilité des préfets, à l'échelle des départements et régions"],
+ e:"L'iode stable sature la thyroïde et l'empêche de fixer l'iode radioactif (iode 131)."},
+
+{s:8, q:"Quelles sources ne permettent pas de prévenir toute dispersion de substance radioactive ?",
+ a:["Les sources non scellées"],
+ e:"Sources scellées : radioélément enfermé hermétiquement, prévient la dispersion. Sources non scellées : peuvent se disperser (liquides, poudres, gaz)."},
+
+{s:8, q:"Quelle réponse concernant l'EPR de Flamanville est correcte ?",
+ a:["Il se situe dans la Manche"],
+ e:"L'EPR (European Pressurized Reactor) de Flamanville est le premier réacteur de nouvelle génération en France."},
+
+{s:8, q:"Pourquoi les rayons Gamma sont-ils utilisés dans la restauration de certains objets d'art ?",
+ a:["Ils renforcent la structure des pièces les plus dégradées", "Ils détruisent les bactéries logées dans ces objets"],
+ e:""},
+
+{s:8, q:"En cas d'attentat par dispersion d'un produit radioactif, quelle réponse est correcte ?",
+ a:["Le traitement de la détresse vitale prime sur la décontamination radiologique"],
+ e:"Priorité : vie > décontamination. Les victimes en détresse vitale sont évacuées vers l'hôpital référent en priorité."},
+
+{s:8, q:"Au cours du temps, l'activité d'une source radioactive …",
+ a:["Diminue (selon la loi de décroissance radioactive)"],
+ e:"A(t) = A₀ × e^(-λt) = A₀ × (1/2)^(t/T). Après n périodes, l'activité est divisée par 2ⁿ."},
+
+// =====================================================================
+// SECTION 9 — QCM CHALLENGE (calculs)
+// =====================================================================
+{s:9, q:"On mesure un débit de dose de 100 µSv/h à 2 mètres d'une source radioactive. Quel est le débit de dose à 4 mètres ?",
+ a:["25 µSv/h"],
+ e:"Loi de l'inverse du carré : D₁ × d₁² = D₂ × d₂². 100 × 4 = D₂ × 16. D₂ = 400/16 = 25 µSv/h. (distance × 2 → débit ÷ 4)"},
+
+{s:9, q:"Si je mesure un débit de dose de 4 mSv/h à 5 mètres d'une source, quel sera le débit de dose théorique à 10 mètres ?",
+ a:["1 mSv/h"],
+ e:"D₁ × d₁² = D₂ × d₂². 4 × 25 = D₂ × 100. D₂ = 100/100 = 1 mSv/h. (distance × 2 → débit ÷ 4)"},
+
+{s:9, q:"Quelles réponses concernant l'Activité sont correctes ?",
+ a:["Elle mesure le taux de désintégrations d'une source radioactive", "Elle caractérise l'intensité de la source", "Elle mesure le nombre de rayons émis par seconde"],
+ e:"L'activité A (Becquerel) = nombre de désintégrations par seconde. L'ancienne unité est le Curie."},
+
+{s:9, q:"Quelles réponses concernant la dose efficace sont correctes ?",
+ a:["Elle sert à évaluer l'exposition d'une personne individuelle aux rayonnements", "Elle a la même unité que la dose équivalente (Sievert)"],
+ e:"Dose efficace = somme des doses équivalentes pondérées par le facteur de tissu de chaque organe."},
+
+{s:9, q:"Quel colis a un débit de dose inférieur à 5 µSv/h ?",
+ a:["Colis avec étiquette d'emballage 'Radioactive I' (7A)"],
+ e:"7A ≤ 5 µSv/h | 7B : 5 à 500 µSv/h | 7C : > 500 µSv/h et < 2 mSv/h."},
+
+{s:9, q:"Quelles réponses concernant le rayonnement alpha sont correctes ?",
+ a:["Il est la conséquence de la désintégration d'un noyau lourd (A > 200)", "C'est la particule lourde dont le parcours est très court (arrêté par une feuille de papier)"],
+ e:"Malgré son faible parcours, l'alpha est très dangereux en contamination interne (Q=20)."},
+
+{s:9, q:"Concernant le rayonnement Bêta, quelles réponses sont correctes ?",
+ a:["Une particule Bêta peut être un électron (Bêta−)", "Une particule Bêta peut être un positon (Bêta+)"],
+ e:"Bêta = émission d'une particule chargée (électron ou positon) lors de la transformation d'un nucléon."},
+
+{s:9, q:"En radioprotection, le débit de dose peut s'exprimer en :",
+ a:["Gy/h"],
+ e:"Le débit de dose s'exprime en Gy/h (Gray par heure) ou en Sv/h (Sievert par heure) selon le contexte."},
+
+{s:9, q:"En cas d'attentat avec dispersion d'un produit radiologique, quelle est l'action prioritaire qui prime sur la décontamination ?",
+ a:["L'évacuation des détresses vitales vers l'hôpital référent"],
+ e:"Règle d'or : la vie prime sur tout. La décontamination est secondaire par rapport aux détresses vitales."},
+
+{s:9, q:"Parmi les moyens de protection, quelle feuille suffit pour arrêter le rayonnement alpha ?",
+ a:["Une feuille de papier"],
+ e:"Alpha = papier | Bêta = aluminium ou plexiglas (quelques mm) | Gamma/X = béton épais ou plomb (atténuation)."},
+
+{s:9, q:"1 Curie est égal à combien de Becquerel ?",
+ a:["37 000 000 000 Bq (37 GBq = 37 × 10⁹ Bq)"],
+ e:"1 Ci = 3,7 × 10¹⁰ Bq = 37 GBq. Le Curie correspond à l'activité d'1 gramme de radium-226."},
+
+{s:9, q:"Quelle est la formule de la loi de l'inverse du carré de la distance pour les rayonnements ?",
+ a:["D₁ × d₁² = D₂ × d₂² (le débit de dose est inversement proportionnel au carré de la distance)"],
+ e:"Exemple pratique : doubler la distance → diviser le débit par 4. Tripler la distance → diviser par 9."},
+
+{s:9, q:"Parmi les effets déterministes, à partir de quelle dose efficace apparaissent les modifications sanguines ?",
+ a:["250 mSv (0,25 Sv)"],
+ e:"Tableau de doses : 250 mSv → modifications sanguine | 1 Sv → effets obligatoires | 4 Sv → DL50 | 6 Sv → DL100."},
+
+{s:9, q:"Lorsqu'un colis radioactif porte une étiquette 7B, comment peut-il être manipulé ?",
+ a:["À la main"],
+ e:"7B = débit 5 à 500 µSv/h. Manipulation à la main possible. Indice de transport ≤ 1."},
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
+let currentMode = 'quiz';
+let currentSection = -1; // -1 = all sections
+let filteredQ = [];
+let currentIdx = 0;
+let revealed = [];
+let results = []; // true/false/null
+let statsOk = 0, statsKo = 0;
+
+// =====================================================================
+// INIT
+// =====================================================================
+function init() {
+  buildSectionNav();
+  filterQuestions();
+  renderStats();
+  renderCurrentView();
+}
+
+function buildSectionNav() {
+  const nav = document.getElementById('section-nav');
+  nav.innerHTML = '';
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'sec-tab active';
+  allBtn.textContent = '☢ Toutes (' + QUESTIONS.length + ')';
+  allBtn.onclick = () => setSection(-1);
+  allBtn.id = 'sec-all';
+  nav.appendChild(allBtn);
+
+  SECTIONS.forEach((name, i) => {
+    const count = QUESTIONS.filter(q => q.s === i).length;
+    if (count === 0) return;
+    const btn = document.createElement('button');
+    btn.className = 'sec-tab';
+    btn.textContent = name + ' (' + count + ')';
+    btn.onclick = () => setSection(i);
+    btn.id = 'sec-' + i;
+    nav.appendChild(btn);
+  });
+}
+
+function setSection(idx) {
+  currentSection = idx;
+  document.querySelectorAll('.sec-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(idx === -1 ? 'sec-all' : 'sec-' + idx).classList.add('active');
+  resetQuiz();
+}
+
+function filterQuestions() {
+  if (currentSection === -1) {
+    filteredQ = [...QUESTIONS];
+  } else {
+    filteredQ = QUESTIONS.filter(q => q.s === currentSection);
+  }
+  // Shuffle for quiz mode
+  if (currentMode === 'quiz') {
+    filteredQ = shuffle(filteredQ);
+  }
+  revealed = new Array(filteredQ.length).fill(false);
+  results = new Array(filteredQ.length).fill(null);
+  currentIdx = 0;
+  statsOk = 0;
+  statsKo = 0;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// =====================================================================
+// MODE MANAGEMENT
+// =====================================================================
+function setMode(mode) {
+  currentMode = mode;
+  ['quiz','study','all'].forEach(m => {
+    document.getElementById('btn-' + m).classList.toggle('active', m === mode);
+  });
+  document.getElementById('single-view').style.display = mode !== 'all' ? 'block' : 'none';
+  document.getElementById('all-view').style.display = mode === 'all' ? 'block' : 'none';
+
+  if (mode === 'all') {
+    renderAllView();
+    document.getElementById('result-panel').style.display = 'none';
+  } else {
+    filterQuestions();
+    renderStats();
+    renderCurrentView();
+  }
+}
+
+// =====================================================================
+// RENDER CURRENT QUESTION
+// =====================================================================
+function renderCurrentView() {
+  const container = document.getElementById('question-container');
+  const resultPanel = document.getElementById('result-panel');
+
+  // Check if quiz is complete
+  const answered = results.filter(r => r !== null).length;
+  if (currentMode === 'quiz' && answered === filteredQ.length && filteredQ.length > 0) {
+    container.innerHTML = '';
+    resultPanel.style.display = 'block';
+    const pct = Math.round((statsOk / filteredQ.length) * 100);
+    document.getElementById('final-score').textContent = pct + '%';
+    document.getElementById('final-detail').textContent =
+      statsOk + ' correctes / ' + filteredQ.length + ' questions';
+    document.getElementById('final-score').style.color =
+      pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+    updateProgress();
+    return;
+  }
+
+  resultPanel.style.display = 'none';
+
+  if (filteredQ.length === 0) {
+    container.innerHTML = '<div class="question-card"><p style="color:var(--text-dim);text-align:center;">Aucune question dans cette section.</p></div>';
+    return;
+  }
+
+  const q = filteredQ[currentIdx];
+  const isRevealed = revealed[currentIdx];
+  const res = results[currentIdx];
+
+  let cardClass = 'question-card';
+  if (res === true) cardClass += ' correct';
+  else if (res === false) cardClass += ' wrong';
+  else if (isRevealed) cardClass += ' revealed';
+
+  const sectionName = SECTIONS[q.s];
+
+  let answerHTML = '';
+  if (currentMode === 'study') {
+    answerHTML = renderAnswerBlock(q);
+  } else {
+    if (isRevealed) {
+      answerHTML = renderAnswerBlock(q);
+      if (res === null) {
+        answerHTML += `<div class="eval-btns">
+          <button class="eval-btn ok" onclick="evalAnswer(true)">✓ Correct</button>
+          <button class="eval-btn ko" onclick="evalAnswer(false)">✗ Erreur</button>
+        </div>`;
+      } else {
+        answerHTML += `<div style="margin-top:10px;text-align:center;font-family:'Rajdhani';font-size:0.85rem;letter-spacing:1px;color:${res ? 'var(--success)' : 'var(--danger)'}">
+          ${res ? '✓ CORRECT' : '✗ ERREUR'}
+        </div>`;
+      }
+    } else {
+      answerHTML = `<button class="reveal-btn" onclick="revealAnswer()">▸ Afficher la réponse</button>`;
+    }
+  }
+
+  container.innerHTML = `
+    <div class="${cardClass}">
+      <div class="q-header">
+        <div class="q-num">Q${currentIdx + 1}</div>
+        <div style="flex:1">
+          <div class="q-section-badge">☢ ${sectionName}</div>
+          <div class="q-text">${q.q}</div>
+        </div>
+      </div>
+      <div class="answer-area">${answerHTML}</div>
+    </div>
+  `;
+
+  // Update counter
+  document.getElementById('q-counter').textContent = (currentIdx + 1) + ' / ' + filteredQ.length;
+  document.getElementById('btn-prev').disabled = currentIdx === 0;
+  document.getElementById('btn-next').textContent = currentIdx === filteredQ.length - 1 ? 'Fin ✓' : 'Suivant ▶';
+
+  updateProgress();
+}
+
+function renderAnswerBlock(q) {
+  const answers = q.a.map(a =>
+    `<div class="ans-item">${a}</div>`
+  ).join('');
+
+  let expHTML = '';
+  if (q.e) {
+    expHTML = `<div class="explanation"><div class="explanation-label">📌 Explication</div>${q.e}</div>`;
+  }
+
+  return `<div class="answer-block">${answers}</div>${expHTML}`;
+}
+
+function revealAnswer() {
+  revealed[currentIdx] = true;
+  renderCurrentView();
+}
+
+function evalAnswer(correct) {
+  if (results[currentIdx] !== null) return;
+  results[currentIdx] = correct;
+  if (correct) statsOk++;
+  else statsKo++;
+  renderStats();
+  renderCurrentView();
+}
+
+// =====================================================================
+// NAVIGATION
+// =====================================================================
+function nextQ() {
+  if (currentIdx < filteredQ.length - 1) {
+    currentIdx++;
+    renderCurrentView();
+  } else {
+    // End of quiz
+    const answered = results.filter(r => r !== null).length;
+    if (currentMode === 'quiz' && answered < filteredQ.length) {
+      // Force reveal result if on last
+      renderCurrentView();
+    } else {
+      // Show final results
+      results = results.map(r => r === null ? false : r);
+      renderCurrentView();
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevQ() {
+  if (currentIdx > 0) {
+    currentIdx--;
+    renderCurrentView();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  filterQuestions();
+  renderStats();
+  document.getElementById('result-panel').style.display = 'none';
+  if (currentMode === 'all') {
+    renderAllView();
+  } else {
+    renderCurrentView();
+  }
+}
+
+// =====================================================================
+// ALL VIEW
+// =====================================================================
+function renderAllView() {
+  const view = document.getElementById('all-view');
+  const questions = currentSection === -1 ? QUESTIONS : QUESTIONS.filter(q => q.s === currentSection);
+
+  let html = '';
+  questions.forEach((q, i) => {
+    const sectionName = SECTIONS[q.s];
+    const answers = q.a.map(a => `<div class="ans-item">${a}</div>`).join('');
+    let expHTML = q.e ? `<div class="explanation"><div class="explanation-label">📌 Explication</div>${q.e}</div>` : '';
+
+    html += `
+      <div class="question-card revealed" style="margin-bottom:12px;">
+        <div class="q-header">
+          <div class="q-num">Q${i + 1}</div>
+          <div style="flex:1">
+            <div class="q-section-badge">☢ ${sectionName}</div>
+            <div class="q-text">${q.q}</div>
+          </div>
+        </div>
+        <div class="answer-area">
+          <div class="answer-block">${answers}</div>
+          ${expHTML}
+        </div>
+      </div>
+    `;
+  });
+
+  view.innerHTML = html;
+
+  const info = document.getElementById('filter-info');
+  info.textContent = questions.length + ' question(s) affichée(s) avec réponses';
+}
+
+// =====================================================================
+// STATS & PROGRESS
+// =====================================================================
+function renderStats() {
+  document.getElementById('stat-total').textContent = filteredQ.length;
+  document.getElementById('stat-ok').textContent = statsOk;
+  document.getElementById('stat-ko').textContent = statsKo;
+  const remain = filteredQ.filter((_, i) => results[i] === null).length;
+  document.getElementById('stat-remain').textContent = remain;
+}
+
+function updateProgress() {
+  const answered = results.filter(r => r !== null).length;
+  const pct = filteredQ.length > 0 ? (answered / filteredQ.length) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// =====================================================================
+// KEYBOARD NAVIGATION
+// =====================================================================
+document.addEventListener('keydown', (e) => {
+  if (currentMode === 'all') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextQ(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevQ(); }
+  if (e.key === 'Enter' || e.key === 'r') {
+    if (!revealed[currentIdx]) revealAnswer();
+  }
+  if (e.key === 'o' || e.key === 'v') evalAnswer(true);
+  if (e.key === 'x' || e.key === 'n') evalAnswer(false);
+});
+
+// =====================================================================
+// START
+// =====================================================================
+init();
+</script>
+</body>
+</html>

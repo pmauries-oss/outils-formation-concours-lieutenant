@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ressources Humaines des SDIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #C0232A;
+    --rouge-vif: #E8303A;
+    --rouge-sombre: #8B1219;
+    --or: #D4A843;
+    --noir: #0D0D0D;
+    --gris-fonce: #1A1A1F;
+    --gris-moyen: #2C2C35;
+    --gris-clair: #3D3D4A;
+    --texte: #E8E6E0;
+    --texte-soft: #A8A6A0;
+    --blanc: #F5F3EE;
+    --bleu: #1E4A8C;
+    --bleu-clair: #2D6ACC;
+    --vert: #2A7A4A;
+    --orange: #D4712A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background-color: var(--noir);
+    color: var(--texte);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--rouge-sombre) 0%, var(--rouge) 40%, var(--rouge-vif) 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--or), transparent, var(--or));
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px 36px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .header-icon {
+    font-size: 56px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .header-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 48px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  .header-text h1 span {
+    color: var(--or);
+  }
+
+  .header-text p {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--gris-fonce);
+    border-bottom: 2px solid var(--rouge);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-inner::-webkit-scrollbar { height: 3px; }
+  .nav-inner::-webkit-scrollbar-track { background: var(--gris-fonce); }
+  .nav-inner::-webkit-scrollbar-thumb { background: var(--rouge); }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    color: var(--texte-soft);
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--rouge-vif);
+    border-bottom-color: var(--rouge-vif);
+    background: rgba(192,35,42,0.08);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 60px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blanc);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: linear-gradient(180deg, var(--rouge-vif), var(--rouge-sombre));
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .section-title .icon { font-size: 28px; }
+
+  /* CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--gris-fonce);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 24px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--rouge);
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(192,35,42,0.4);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+
+  .card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--rouge-vif);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .card ul { list-style: none; }
+  .card ul li {
+    padding: 5px 0;
+    font-size: 14px;
+    color: var(--texte-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .card ul li::before {
+    content: '›';
+    color: var(--or);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .card .highlight {
+    color: var(--blanc);
+    font-weight: 500;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 24px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th {
+    background: var(--rouge-sombre);
+    color: var(--blanc);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.025); }
+  tbody tr:nth-child(odd) { background: var(--gris-fonce); }
+  tbody tr:hover { background: rgba(192,35,42,0.1); }
+
+  tbody td {
+    padding: 11px 16px;
+    color: var(--texte-soft);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+    line-height: 1.5;
+  }
+
+  tbody td:first-child {
+    color: var(--blanc);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* GRADE BADGES */
+  .grade-a-plus { background: rgba(212,168,67,0.2); color: var(--or); border: 1px solid rgba(212,168,67,0.4); }
+  .grade-a { background: rgba(30,74,140,0.3); color: #6FA3E0; border: 1px solid rgba(30,74,140,0.5); }
+  .grade-b { background: rgba(42,122,74,0.3); color: #6EC98A; border: 1px solid rgba(42,122,74,0.5); }
+  .grade-c { background: rgba(192,35,42,0.2); color: #E88085; border: 1px solid rgba(192,35,42,0.4); }
+
+  .cat-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* ACCORDION */
+  .accordion { margin-bottom: 10px; }
+
+  .accordion-header {
+    width: 100%;
+    background: var(--gris-moyen);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .accordion-header:hover {
+    background: var(--gris-clair);
+    border-color: rgba(192,35,42,0.3);
+  }
+
+  .accordion-header.open {
+    background: var(--gris-clair);
+    border-color: var(--rouge);
+    border-radius: 8px 8px 0 0;
+    border-bottom-color: transparent;
+  }
+
+  .accordion-header span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--blanc);
+  }
+
+  .accordion-header .acc-icon {
+    font-size: 20px;
+    color: var(--rouge-vif);
+    transition: transform 0.3s;
+  }
+
+  .accordion-header.open .acc-icon { transform: rotate(45deg); }
+
+  .accordion-body {
+    display: none;
+    background: var(--gris-moyen);
+    border: 1px solid var(--rouge);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
+  }
+
+  .accordion-body.open { display: block; }
+
+  /* SANCTION TABLE */
+  .sanction-row td:first-child { font-weight: 600; color: var(--rouge-vif); }
+
+  .groupe-1 td { border-left: 3px solid #6EC98A; }
+  .groupe-2 td { border-left: 3px solid #6FA3E0; }
+  .groupe-3 td { border-left: 3px solid var(--or); }
+  .groupe-4 td { border-left: 3px solid #E88085; }
+
+  /* INFO BOXES */
+  .info-box {
+    background: rgba(30,74,140,0.15);
+    border: 1px solid rgba(30,74,140,0.4);
+    border-left: 4px solid var(--bleu-clair);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--texte-soft);
+    line-height: 1.6;
+  }
+
+  .info-box strong { color: var(--blanc); }
+
+  .warn-box {
+    background: rgba(212,113,42,0.12);
+    border: 1px solid rgba(212,113,42,0.3);
+    border-left: 4px solid var(--orange);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--texte-soft);
+    line-height: 1.6;
+  }
+
+  .warn-box strong { color: var(--blanc); }
+
+  /* EMPLOIS */
+  .emplois-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .emploi-tag {
+    background: var(--gris-moyen);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--texte-soft);
+    transition: all 0.2s;
+  }
+
+  .emploi-tag:hover {
+    border-color: rgba(192,35,42,0.4);
+    color: var(--blanc);
+  }
+
+  .emploi-tag.special {
+    border-color: rgba(212,168,67,0.3);
+    background: rgba(212,168,67,0.06);
+    color: var(--or);
+    font-weight: 500;
+  }
+
+  /* GRADE SECTION */
+  .grade-section {
+    margin-bottom: 32px;
+  }
+
+  .grade-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid;
+  }
+
+  .grade-header.b2 { background: rgba(192,35,42,0.1); border-color: rgba(192,35,42,0.3); }
+  .grade-header.b1 { background: rgba(42,122,74,0.1); border-color: rgba(42,122,74,0.3); }
+  .grade-header.bhc { background: rgba(212,168,67,0.1); border-color: rgba(212,168,67,0.3); }
+  .grade-header.cap { background: rgba(30,74,140,0.15); border-color: rgba(30,74,140,0.4); }
+  .grade-header.cmd { background: rgba(120,60,180,0.12); border-color: rgba(120,60,180,0.3); }
+  .grade-header.ltc { background: rgba(180,120,20,0.12); border-color: rgba(180,120,20,0.3); }
+  .grade-header.col { background: rgba(212,168,67,0.15); border-color: rgba(212,168,67,0.4); }
+
+  .grade-header h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .grade-header.b2 h4 { color: #E88085; }
+  .grade-header.b1 h4 { color: #6EC98A; }
+  .grade-header.bhc h4 { color: var(--or); }
+  .grade-header.cap h4 { color: #6FA3E0; }
+  .grade-header.cmd h4 { color: #B08AE0; }
+  .grade-header.ltc h4 { color: #D4A843; }
+  .grade-header.col h4 { color: var(--or); }
+
+  /* FOOTER */
+  footer {
+    background: var(--gris-fonce);
+    border-top: 2px solid rgba(192,35,42,0.5);
+    padding: 20px 32px;
+    text-align: center;
+    color: var(--texte-soft);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  footer strong { color: var(--rouge-vif); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header-text h1 { font-size: 30px; }
+    .header-inner { flex-direction: column; gap: 12px; }
+    main { padding: 24px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-icon">🔥</div>
+    <div class="header-text">
+      <h1>Ressources <span>Humaines</span> des SDIS</h1>
+      <p>Révisions concours · Version 2 · Octobre 2023</p>
+      <div class="badge">🎖 OSPP – Lieutenant 1ère Classe</div>
+	  <p>Sergent-chef Pierre MAURIES<p/>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#ldg">📋 Lignes directrices</a>
+    <a href="#carriere">📈 Carrière</a>
+    <a href="#equivalences">⚖️ Équivalences FPT</a>
+    <a href="#protection">🛡️ Protection</a>
+    <a href="#discipline">⚖️ Discipline</a>
+    <a href="#cadres">🎖 Cadres d'emplois</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- SECTION 1 : LDG -->
+  <section class="section" id="ldg">
+    <div class="section-title"><span class="icon">📋</span> Gestion des emplois et des compétences</div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <h3>Lignes directrices de gestion</h3>
+        <ul>
+          <li><span class="highlight">Origine :</span> Loi du 6 août 2019 « Transformation de la fonction publique »</li>
+          <li><span class="highlight">Obligatoire</span> depuis janvier 2021</li>
+          <li>Formalisent la politique GRH sur un <span class="highlight">mandat</span></li>
+          <li><span class="highlight">Durée max :</span> 6 ans (révisables à tout moment)</li>
+          <li><span class="highlight">Arrêtées par :</span> l'autorité territoriale (Président du SDIS) après avis du CST</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Deux champs d'application</h3>
+        <ul>
+          <li>Stratégie <span class="highlight">pluriannuelle</span> de pilotage des RH</li>
+          <li>Orientations générales en matière de <span class="highlight">promotion</span> et de valorisation des parcours professionnels</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 : CARRIÈRE -->
+  <section class="section" id="carriere">
+    <div class="section-title"><span class="icon">📈</span> Carrière – Voies d'accès par grade</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Catégorie</th>
+            <th>Grade</th>
+            <th>Voie d'accès</th>
+            <th>Condition d'accès</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4"><span class="cat-badge grade-a-plus">A+</span></td>
+            <td>Inspecteur général</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Contrôleur général</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Colonel HC</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Colonel</td>
+            <td>Concours interne / Examen professionnel</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td rowspan="3"><span class="cat-badge grade-a">A</span></td>
+            <td>Lieutenant-colonel</td>
+            <td>Au choix</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Commandant</td>
+            <td>Au choix</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Capitaine</td>
+            <td>Concours interne / Concours externe / Nomination au choix</td>
+            <td>Décret 2016-2002 – Diplôme niveau 6 (Bac+3)</td>
+          </tr>
+          <tr>
+            <td rowspan="3"><span class="cat-badge grade-b">B</span></td>
+            <td>Lieutenant HC</td>
+            <td>Examen professionnel</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Lieutenant 1ère Classe</td>
+            <td>Concours interne / Concours externe / Nomination au choix</td>
+            <td>Décret 2016-2002 – Diplôme niveau 5 (Bac+2)</td>
+          </tr>
+          <tr>
+            <td>Lieutenant 2ème Classe</td>
+            <td>Concours interne / Nomination au choix</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td rowspan="5"><span class="cat-badge grade-c">C</span></td>
+            <td>Adjudant-chef / Adjudant / Sergent-chef / Sergent</td>
+            <td>Concours interne / Nomination au choix</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Caporal-chef</td>
+            <td>Au choix</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Caporal</td>
+            <td>Concours titre I / Titre II (SPV) / Examen professionnel (sapeurs)</td>
+            <td>Décret 2012-520 – Diplôme niveau 3</td>
+          </tr>
+          <tr>
+            <td>Sapeur</td>
+            <td>Selon le SDIS</td>
+            <td>Décret 2020-1474</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3 : ÉQUIVALENCES FPT -->
+  <section class="section" id="equivalences">
+    <div class="section-title"><span class="icon">⚖️</span> Équivalences dans la Fonction Publique Territoriale</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Catégorie</th>
+            <th>🔥 Sapeurs-pompiers</th>
+            <th>🏛️ Administratif</th>
+            <th>🔧 Technique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4"><span class="cat-badge grade-a-plus">A+</span></td>
+            <td>Inspecteur général</td>
+            <td rowspan="2">Administrateur général</td>
+            <td rowspan="2">Ingénieur en chef général</td>
+          </tr>
+          <tr>
+            <td>Contrôleur général</td>
+          </tr>
+          <tr>
+            <td>Colonel HC</td>
+            <td>Administrateur HC</td>
+            <td>Ingénieur en chef Hors-classe</td>
+          </tr>
+          <tr>
+            <td>Colonel</td>
+            <td>Administrateur</td>
+            <td>Ingénieur en chef</td>
+          </tr>
+          <tr>
+            <td rowspan="3"><span class="cat-badge grade-a">A</span></td>
+            <td>Lieutenant-colonel</td>
+            <td>Attaché HC</td>
+            <td>Ingénieur HC</td>
+          </tr>
+          <tr>
+            <td>Commandant</td>
+            <td>Attaché principal</td>
+            <td>Ingénieur principal</td>
+          </tr>
+          <tr>
+            <td>Capitaine</td>
+            <td>Attaché</td>
+            <td>Ingénieur</td>
+          </tr>
+          <tr>
+            <td rowspan="3"><span class="cat-badge grade-b">B</span></td>
+            <td>Lieutenant HC</td>
+            <td>Rédacteur 1ère classe</td>
+            <td>Technicien 1ère classe</td>
+          </tr>
+          <tr>
+            <td>Lieutenant 1ère Classe</td>
+            <td>Rédacteur 2ème classe</td>
+            <td>Technicien 2ème classe</td>
+          </tr>
+          <tr>
+            <td>Lieutenant 2ème Classe</td>
+            <td>Rédacteur</td>
+            <td>Technicien</td>
+          </tr>
+          <tr>
+            <td rowspan="6"><span class="cat-badge grade-c">C</span></td>
+            <td>Adjudant-chef / Adjudant</td>
+            <td rowspan="2">—</td>
+            <td>Agent de maîtrise principal</td>
+          </tr>
+          <tr>
+            <td>Sergent-chef / Sergent</td>
+            <td>Agent de maîtrise</td>
+          </tr>
+          <tr>
+            <td>Caporal-chef</td>
+            <td>Adj. Adm. 1ère classe</td>
+            <td>Adjoint technique principal 1ère classe</td>
+          </tr>
+          <tr>
+            <td>Caporal</td>
+            <td>Adj. Adm. 2ème classe</td>
+            <td>Adjoint technique principal 2ème classe</td>
+          </tr>
+          <tr>
+            <td>Sapeur</td>
+            <td>Adjoint administratif</td>
+            <td>Adjoint technique</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 4 : PROTECTION -->
+  <section class="section" id="protection">
+    <div class="section-title"><span class="icon">🛡️</span> Protection des agents</div>
+
+    <div class="cards-grid">
+      <!-- Protection fonctionnelle -->
+      <div class="card">
+        <h3>Protection fonctionnelle</h3>
+        <ul>
+          <li>Protection si <span class="highlight">agression ou poursuites</span> liées à l'activité pro</li>
+          <li>S'applique aux fonctionnaires, contractuels, <span class="highlight">conjoints et enfants</span></li>
+          <li>Prise en charge des <span class="highlight">frais de justice</span> + assistance juridique</li>
+          <li>Demande <span class="highlight">par écrit</span> à l'employeur, avec preuves</li>
+          <li>Aucun délai imposé pour la demander</li>
+          <li>Refus : l'administration doit <span class="highlight">motiver</span> + préciser voies de recours</li>
+          <li><span class="highlight">Absence de réponse = refus</span> (délai 2 mois)</li>
+        </ul>
+      </div>
+
+      <!-- Protection sociale : CMO -->
+      <div class="card">
+        <h3>Congé Maladie Ordinaire (CMO)</h3>
+        <ul>
+          <li>Durée max : <span class="highlight">12 mois (365 jours)</span></li>
+          <li>Information hiérarchie : <span class="highlight">48h</span> après survenance</li>
+          <li><span class="highlight">3 mois</span> plein traitement</li>
+          <li><span class="highlight">9 mois</span> demi-traitement</li>
+          <li><span class="highlight">Jour de carence</span> à chaque nouvel arrêt</li>
+        </ul>
+      </div>
+
+      <!-- CLM -->
+      <div class="card">
+        <h3>Congé Longue Maladie (CLM)</h3>
+        <ul>
+          <li>Maladie rendant impossible le travail avec <span class="highlight">caractère invalidant et grave</span></li>
+          <li>Durée max : <span class="highlight">3 ans</span></li>
+          <li>Maladies ouvrant droit fixées par arrêté ou avis du conseil médical</li>
+          <li>CMO peut être <span class="highlight">requalifié en CLM</span></li>
+          <li>Après 3 ans de CLM : reprendre <span class="highlight">au moins 1 an</span> avant nouveau CLM</li>
+        </ul>
+      </div>
+
+      <!-- CLD -->
+      <div class="card">
+        <h3>Congé Longue Durée (CLD)</h3>
+        <ul>
+          <li>Accordé après la <span class="highlight">1ère année de CLM</span></li>
+          <li>Maladies concernées :</li>
+          <li>🎗 Cancer</li>
+          <li>🦠 Déficit immunitaire (grave et acquis)</li>
+          <li>🧠 Maladie mentale</li>
+          <li>🫁 Tuberculose</li>
+          <li>🦽 Poliomyélite</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 : DISCIPLINE -->
+  <section class="section" id="discipline">
+    <div class="section-title"><span class="icon">⚖️</span> Instances disciplinaires</div>
+
+    <!-- SPV -->
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🚒 Conseil de discipline SPV (Arrêté 15 juillet 2022)</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="cards-grid" style="margin-bottom:16px;">
+          <div class="info-box">
+            <strong>Composition :</strong> 4 représentants de l'administration + 4 représentants élus SPV.<br>
+            Présidé par un représentant de l'administration (avis à majorité simple).<br>
+            Si SPV officier : chef de corps + préfet ont un <em>avis consultatif</em>.<br>
+            Pas de SPV de grade inférieur à celui du SPV poursuivi.
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nature</th>
+                <th>Autorité compétente</th>
+                <th>Saisine conseil</th>
+                <th>Conditions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Avertissement</td>
+                <td>Chef de corps</td>
+                <td>Non</td>
+                <td>Cas échéant, proposition du CDC</td>
+              </tr>
+              <tr>
+                <td>Blâme</td>
+                <td>Chef de corps</td>
+                <td>Non</td>
+                <td>Cas échéant, proposition du CDC</td>
+              </tr>
+              <tr>
+                <td>Exclusion &lt; 1 mois</td>
+                <td>Autorité de gestion</td>
+                <td>Non</td>
+                <td>Entretien préalable</td>
+              </tr>
+              <tr>
+                <td>Exclusion ≤ 6 mois</td>
+                <td>Autorité de gestion</td>
+                <td>Oui</td>
+                <td>PCASDIS pour NO / Préfet pour OSPV</td>
+              </tr>
+              <tr>
+                <td>Rétrogradation</td>
+                <td>Autorité de gestion</td>
+                <td>Oui</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Résiliation d'engagement</td>
+                <td>Autorité de gestion</td>
+                <td>Oui</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="warn-box">
+          <strong>⚠️ Mesure conservatoire :</strong> L'autorité de gestion peut suspendre un SPV pour faute grave. Elle doit saisir le conseil de discipline <em>sans délais</em>. Cette mesure ne peut excéder <strong>4 mois</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- SPP/PATS CAP -->
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">
+        <span>👔 CAP en conseil de discipline (SPP & PATS)</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="info-box">
+          <strong>Composition :</strong> Organe paritaire — représentants du personnel + représentants de la collectivité. Présidé par un magistrat de l'ordre administratif.<br>
+          L'avis du conseil de discipline n'est requis <strong>qu'au-delà du 1er groupe</strong>.
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Groupe</th>
+                <th>Sanctions</th>
+                <th>Durée au dossier</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="groupe-1">
+                <td>1er groupe</td>
+                <td>Avertissement · Blâme · Exclusion ≤ 3 jours</td>
+                <td>Avert. : non inscrit / Blâme & excl. : 3 ans</td>
+              </tr>
+              <tr class="groupe-2">
+                <td>2ème groupe</td>
+                <td>Radiation tableau d'avancement · Abaissement d'échelon · Exclusion 4 à 15 jours</td>
+                <td>10 ans</td>
+              </tr>
+              <tr class="groupe-3">
+                <td>3ème groupe</td>
+                <td>Rétrogradation · Exclusion 16 jours à 2 ans</td>
+                <td>10 ans</td>
+              </tr>
+              <tr class="groupe-4">
+                <td>4ème groupe</td>
+                <td>Mise à la retraite d'office · Révocation</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="warn-box">
+          <strong>Recours :</strong> Avertissement & blâme : pas de recours sauf sanction supérieure à la prescription. Autres : recours gracieux (employeur) ou recours contentieux (tribunal administratif).<br>
+          <strong>Les sanctions disciplinaires sont imprescriptibles.</strong>
+        </div>
+
+        <div class="info-box">
+          <strong>Agents stagiaires :</strong> Avertissement · Blâme · Exclusion 1 à 3 jours · Exclusion 4 à 15 jours · Exclusion définitive
+        </div>
+      </div>
+    </div>
+
+    <!-- CCP -->
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">
+        <span>📄 CCP en conseil de discipline (contractuels – art. 136 loi 26/01/1986)</span>
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="info-box">
+          <strong>Présidence :</strong> Magistrat de l'ordre administratif (en activité ou honoraire), désigné par le président du TA dans le ressort du siège du conseil de discipline (L 532-11 CGFP).
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Échelle unique de sanctions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Avertissement (non inscrit au dossier)</td></tr>
+              <tr><td>Blâme</td></tr>
+              <tr><td>Exclusion temporaire 1 à 3 jours</td></tr>
+              <tr><td>Exclusion temporaire 6 mois (CDD)</td></tr>
+              <tr><td>Exclusion temporaire 1 an (CDI)</td></tr>
+              <tr><td>Exclusion définitive du service</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info-box">Sanctions encore définies dans le <strong>Décret n°88-145</strong>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 : CADRES D'EMPLOIS -->
+  <section class="section" id="cadres">
+    <div class="section-title"><span class="icon">🎖</span> Cadres d'emplois des officiers SPP</div>
+
+    <!-- CATÉGORIE B -->
+    <div style="margin-bottom:32px;">
+      <div style="background:rgba(192,35,42,0.15);border:1px solid rgba(192,35,42,0.4);border-radius:8px;padding:12px 20px;margin-bottom:18px;">
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#E88085;">⬛ Catégorie B</span>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header b2">
+          <span style="font-size:22px;">🔴</span>
+          <h4>Lieutenant 2ème classe</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag">Officier de garde (effectif posté ≥ 10 SPP)</div>
+          <div class="emploi-tag">Chef de groupe</div>
+          <div class="emploi-tag">Chef de salle opérationnelle</div>
+          <div class="emploi-tag">Adjoint au chef de CIS</div>
+          <div class="emploi-tag special">Officier expert</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP ≤ 9)</div>
+        </div>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header b1">
+          <span style="font-size:22px;">🟢</span>
+          <h4>Lieutenant 1ère classe</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag">Officier de garde (effectif posté ≥ 10 SPP)</div>
+          <div class="emploi-tag">Chef de bureau en CIS</div>
+          <div class="emploi-tag">Chef de groupe</div>
+          <div class="emploi-tag">Chef de salle opérationnelle</div>
+          <div class="emploi-tag special">Officier d'encadrement en CIS</div>
+          <div class="emploi-tag">Adjoint au chef de CIS</div>
+          <div class="emploi-tag special">Officier expert</div>
+          <div class="emploi-tag">Adjoint au chef de service</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP > 9)</div>
+          <div class="emploi-tag">Chef de service (effectif agents ≤ 5)</div>
+          <div class="emploi-tag">Adjoint au chef de groupement</div>
+        </div>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header bhc">
+          <span style="font-size:22px;">🟡</span>
+          <h4>Lieutenant Hors-Classe</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag">Officier de garde (effectif posté ≥ 10 SPP)</div>
+          <div class="emploi-tag">Chef de bureau en CIS</div>
+          <div class="emploi-tag">Chef de groupe</div>
+          <div class="emploi-tag">Chef de salle opérationnelle</div>
+          <div class="emploi-tag special">Officier d'encadrement en CIS</div>
+          <div class="emploi-tag">Adjoint au chef de CIS</div>
+          <div class="emploi-tag special">Officier expert</div>
+          <div class="emploi-tag">Adjoint au chef de service</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP > 20)</div>
+          <div class="emploi-tag">Chef de service (effectif agents > 5)</div>
+          <div class="emploi-tag">Adjoint au chef de groupement</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATÉGORIE A -->
+    <div style="margin-bottom:32px;">
+      <div style="background:rgba(30,74,140,0.2);border:1px solid rgba(30,74,140,0.5);border-radius:8px;padding:12px 20px;margin-bottom:18px;">
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6FA3E0;">⬛ Catégorie A</span>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header cap">
+          <span style="font-size:22px;">🔵</span>
+          <h4>Capitaine</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag">Chef de colonne</div>
+          <div class="emploi-tag">Officier de garde</div>
+          <div class="emploi-tag">Chef de bureau en CIS</div>
+          <div class="emploi-tag special">Officier d'encadrement en CIS</div>
+          <div class="emploi-tag">Adjoint au chef de CIS</div>
+          <div class="emploi-tag special">Officier expert</div>
+          <div class="emploi-tag">Adjoint au chef de service</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP > 30)</div>
+          <div class="emploi-tag">Chef de service (effectif agents > 15)</div>
+          <div class="emploi-tag">Adjoint au chef de groupement</div>
+          <div class="emploi-tag">Chef de groupement (dept. catégorie C, effectif réf. &lt; 400 SP)</div>
+        </div>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header cmd">
+          <span style="font-size:22px;">🟣</span>
+          <h4>Commandant</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag">Chef de colonne</div>
+          <div class="emploi-tag special">Chef de site</div>
+          <div class="emploi-tag">Adjoint au chef de CIS</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP > 50)</div>
+          <div class="emploi-tag">Adjoint au chef de groupement</div>
+          <div class="emploi-tag">Chef de groupement</div>
+          <div class="emploi-tag">Adjoint au chef de service</div>
+          <div class="emploi-tag">Chef de service (effectif agents > 30)</div>
+        </div>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header ltc">
+          <span style="font-size:22px;">🟠</span>
+          <h4>Lieutenant-Colonel</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag special">Chef de site</div>
+          <div class="emploi-tag">Chef de CIS (effectif SPP > 100)</div>
+          <div class="emploi-tag">Chef de service (effectif agents > 50)</div>
+          <div class="emploi-tag">Chef de groupement</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATÉGORIE A+ -->
+    <div>
+      <div style="background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.5);border-radius:8px;padding:12px 20px;margin-bottom:18px;">
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--or);">⬛ Catégorie A+</span>
+      </div>
+
+      <div class="grade-section">
+        <div class="grade-header col">
+          <span style="font-size:22px;">⭐</span>
+          <h4>Colonel · Colonel HC · Contrôleur Général · Inspecteur Général</h4>
+        </div>
+        <div class="emplois-grid">
+          <div class="emploi-tag special">Directeurs départementaux et adjoints</div>
+          <div class="emploi-tag special">Administration centrale (DGSCGC, EMIZ…)</div>
+          <div class="emploi-tag" style="border-color:rgba(212,168,67,0.6);color:var(--or);">Inspecteur : poste à portée nationale<br><small style="color:var(--texte-soft);">Décret 2016-2022 · nécessite formation Chef de site</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>🔥 Ressources Humaines des SDIS</strong> · Révisions concours · Version 2 · Octobre 2023
+</footer>
+
+<script>
+  function toggleAccordion(btn) {
+    btn.classList.toggle('open');
+    const body = btn.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // Nav active highlight on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // Smooth scroll
+  navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Stagger section animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.style.animationPlayState = 'running';
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section').forEach(s => {
+    s.style.animationPlayState = 'paused';
+    observer.observe(s);
+  });
+</script>
+</body>
+</html>

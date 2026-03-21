@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Mentale Détaillée - Collectivités Territoriales</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 1800px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px; }
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .subtitle { color: rgba(255,255,255,0.8); font-size: 1rem; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .control-btn { background: linear-gradient(145deg, #e94560, #c73e54); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3); }
+        .control-btn:hover { transform: translateY(-2px); }
+        .control-btn.secondary { background: linear-gradient(145deg, #4361ee, #3651d4); }
+        .main-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-top: 20px; }
+        @media (max-width: 1200px) { .main-grid { grid-template-columns: 1fr; } }
+        .branch-card { background: rgba(255,255,255,0.97); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .branch-header { padding: 20px 25px; color: white; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .branch-header h2 { font-size: 1.2rem; display: flex; align-items: center; gap: 12px; }
+        .branch-header .toggle-icon { font-size: 1.5rem; transition: transform 0.3s ease; }
+        .branch-card.collapsed .toggle-icon { transform: rotate(-90deg); }
+        .branch-content { padding: 20px; max-height: 5000px; overflow: hidden; transition: max-height 0.5s ease; }
+        .branch-card.collapsed .branch-content { max-height: 0; padding: 0 20px; }
+        .branch-1 .branch-header { background: linear-gradient(145deg, #4361ee, #3651d4); }
+        .branch-2 .branch-header { background: linear-gradient(145deg, #f72585, #d91e71); }
+        .branch-3 .branch-header { background: linear-gradient(145deg, #00b4d8, #0096c7); }
+        .branch-4 .branch-header { background: linear-gradient(145deg, #7209b7, #5e0896); }
+        .section { margin-bottom: 20px; border-left: 4px solid; padding-left: 15px; }
+        .branch-1 .section { border-color: #4361ee; }
+        .branch-2 .section { border-color: #f72585; }
+        .branch-3 .section { border-color: #00b4d8; }
+        .branch-4 .section { border-color: #7209b7; }
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; padding: 8px 12px; border-radius: 8px; }
+        .branch-1 .section-title { color: #4361ee; }
+        .branch-2 .section-title { color: #f72585; }
+        .branch-3 .section-title { color: #00b4d8; }
+        .branch-4 .section-title { color: #7209b7; }
+        .section-content { display: grid; gap: 10px; margin-left: 10px; }
+        .item { background: #f8f9fa; border-radius: 10px; padding: 12px 15px; border-left: 3px solid transparent; }
+        .item:hover { background: #e9ecef; transform: translateX(5px); }
+        .item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .item-content { font-size: 0.88rem; color: #555; line-height: 1.5; }
+        .item-content ul { margin-top: 5px; margin-left: 20px; }
+        .item-content li { margin-bottom: 3px; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-blue { background: #e3f2fd; color: #1565c0; }
+        .badge-pink { background: #fce4ec; color: #c2185b; }
+        .badge-cyan { background: #e0f7fa; color: #00838f; }
+        .badge-purple { background: #f3e5f5; color: #7b1fa2; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-orange { background: #fff3e0; color: #e65100; }
+        .badge-red { background: #ffebee; color: #c62828; }
+        .badge-teal { background: #e0f2f1; color: #00695c; }
+        .highlight-box { background: linear-gradient(135deg, #fff9c4, #fff59d); border-radius: 10px; padding: 12px 15px; margin: 10px 0; border-left: 4px solid #fbc02d; }
+        .highlight-box strong { color: #f57f17; }
+        .info-box { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 10px; padding: 12px 15px; margin: 10px 0; border-left: 4px solid #1976d2; }
+        .info-box strong { color: #0d47a1; }
+        .warning-box { background: linear-gradient(135deg, #ffebee, #ffcdd2); border-radius: 10px; padding: 12px 15px; margin: 10px 0; border-left: 4px solid #d32f2f; }
+        .warning-box strong { color: #b71c1c; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 10px 0; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f1f3f4; font-weight: 600; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, #00b4d8, #0077b6); }
+        .timeline-item { position: relative; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; }
+        .timeline-item::before { content: ''; position: absolute; left: -24px; top: 20px; width: 12px; height: 12px; background: #00b4d8; border-radius: 50%; border: 3px solid white; }
+        .timeline-date { font-weight: 700; color: #00b4d8; font-size: 1rem; margin-bottom: 5px; }
+        .timeline-title { font-weight: 600; margin-bottom: 8px; }
+        .competence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+        .competence-item { background: white; padding: 10px; border-radius: 8px; border: 1px solid #dee2e6; font-size: 0.85rem; }
+        .competence-item strong { display: block; margin-bottom: 5px; color: #495057; }
+        .subsection { margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 8px; }
+        .subsection-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: #495057; }
+        .footer { text-align: center; padding: 30px; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 30px; }
+        .search-box { background: white; border-radius: 10px; padding: 10px 20px; display: flex; align-items: center; gap: 10px; max-width: 400px; margin: 0 auto 20px; }
+        .search-box input { border: none; outline: none; flex: 1; font-size: 1rem; }
+        @media print { body { background: white; } .controls, .search-box { display: none; } .branch-card.collapsed .branch-content { max-height: none; padding: 20px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏛️ Les Collectivités Territoriales en France</h1>
+        <p class="subtitle">Carte mentale détaillée • Article 72 Constitution • Préparation concours Lieutenant 1ère classe SPP</p>
+    </header>
+    <div class="controls">
+        <button class="control-btn" onclick="toggleAll(true)">📖 Tout déplier</button>
+        <button class="control-btn" onclick="toggleAll(false)">📕 Tout replier</button>
+        <button class="control-btn secondary" onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+    <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="searchContent()">
+    </div>
+
+    <div class="main-grid">
+        <!-- BRANCHE 1 : FORMES DE CT -->
+        <div class="branch-card branch-1">
+            <div class="branch-header" onclick="toggleCard(this)">
+                <h2>📋 FORMES DE CT & COOPÉRATION INTERCOMMUNALE</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="branch-content">
+                <div class="section">
+                    <div class="section-title">⚖️ Fondements constitutionnels</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-blue">Art. 72 al. 1</span> Énumération des CT</div>
+                            <div class="item-content">« Les collectivités territoriales de la République sont les <strong>communes</strong>, les <strong>départements</strong>, les <strong>régions</strong>, les <strong>collectivités à statut particulier</strong> et les <strong>collectivités d'outre-mer</strong> régies par l'article 74. »</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-blue">Art. 72 al. 1</span> Création de nouvelles CT</div>
+                            <div class="item-content">Toute autre collectivité territoriale est créée par la <strong>loi</strong>, le cas échéant <strong>en lieu et place</strong> d'une ou plusieurs collectivités existantes.</div>
+                        </div>
+                        <div class="info-box"><strong>💡 À retenir :</strong> La liste des CT de l'article 72 n'est pas limitative. Le législateur peut créer de nouvelles catégories (ex : Métropole de Lyon 2015).</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🏘️ Les Communes (34 945 en 2024)</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Organes</span> Organisation institutionnelle</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Conseil municipal</strong> : organe délibérant, élu au SUD pour 6 ans</li>
+                                    <li><strong>Maire</strong> : organe exécutif, élu par le conseil municipal</li>
+                                    <li><strong>Adjoints</strong> : nombre ≤ 30% de l'effectif du conseil</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Effectifs</span> Composition du conseil municipal</div>
+                            <div class="item-content">
+                                <table>
+                                    <tr><th>Population</th><th>Conseillers</th><th>Population</th><th>Conseillers</th></tr>
+                                    <tr><td>< 100 hab.</td><td>7</td><td>3 500 à 4 999</td><td>27</td></tr>
+                                    <tr><td>100 à 499</td><td>11</td><td>5 000 à 9 999</td><td>29</td></tr>
+                                    <tr><td>500 à 1 499</td><td>15</td><td>10 000 à 19 999</td><td>33</td></tr>
+                                    <tr><td>1 500 à 2 499</td><td>19</td><td>20 000 à 29 999</td><td>35</td></tr>
+                                    <tr><td>2 500 à 3 499</td><td>23</td><td>≥ 300 000</td><td>69</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Compétences</span> Attributions principales</div>
+                            <div class="item-content">
+                                <div class="competence-grid">
+                                    <div class="competence-item"><strong>Urbanisme</strong>PLU, permis de construire, droit de préemption</div>
+                                    <div class="competence-item"><strong>État civil</strong>Naissances, mariages, décès, PACS</div>
+                                    <div class="competence-item"><strong>Écoles primaires</strong>Construction, entretien, fonctionnement</div>
+                                    <div class="competence-item"><strong>Voirie communale</strong>Création, entretien, police</div>
+                                    <div class="competence-item"><strong>Action sociale</strong>CCAS, aide sociale facultative</div>
+                                    <div class="competence-item"><strong>Équipements</strong>Bibliothèques, stades, piscines</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Police</span> Pouvoirs de police du maire</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Police administrative générale</strong> (L.2212-2 CGCT) : bon ordre, sûreté, sécurité, salubrité</li>
+                                    <li><strong>Polices spéciales</strong> : funéraire, baignade, circulation, stationnement, publicité</li>
+                                    <li><strong>Agent de l'État</strong> : officier d'état civil, officier de police judiciaire</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="highlight-box"><strong>⚠️ Loi NOTRe 2015 :</strong> La clause générale de compétence a été maintenue pour les communes uniquement.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🗺️ Les Départements (101 dont 5 outre-mer)</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Organes</span> Organisation institutionnelle</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Conseil départemental</strong> : scrutin binominal majoritaire à 2 tours par canton (6 ans)</li>
+                                    <li><strong>Président du CD</strong> : organe exécutif, élu par l'assemblée</li>
+                                    <li><strong>Commission permanente</strong> : peut recevoir délégation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Compétences</span> Compétences obligatoires (chef de file solidarités)</div>
+                            <div class="item-content">
+                                <div class="competence-grid">
+                                    <div class="competence-item"><strong>Action sociale</strong>RSA, APA, PCH, ASE, PMI</div>
+                                    <div class="competence-item"><strong>Collèges</strong>Construction, entretien, agents ATTEE</div>
+                                    <div class="competence-item"><strong>Routes départementales</strong>Gestion du réseau routier</div>
+                                    <div class="competence-item"><strong>SDIS</strong>Contribution obligatoire au financement</div>
+                                    <div class="competence-item"><strong>Solidarité territoriale</strong>Aide aux communes rurales</div>
+                                    <div class="competence-item"><strong>Autonomie</strong>Personnes âgées et handicapées</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="warning-box"><strong>⚠️ Suppression clause générale :</strong> Depuis la loi NOTRe (2015), les départements n'ont que des <strong>compétences d'attribution</strong>.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🌍 Les Régions (18 dont 5 outre-mer)</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Organes</span> Organisation institutionnelle</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Conseil régional</strong> : scrutin de liste proportionnel à 2 tours avec prime majoritaire (6 ans)</li>
+                                    <li><strong>Président du CR</strong> : organe exécutif</li>
+                                    <li><strong>CESER</strong> : Conseil économique, social et environnemental régional</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Compétences</span> Chef de file économie et aménagement</div>
+                            <div class="item-content">
+                                <div class="competence-grid">
+                                    <div class="competence-item"><strong>Développement économique</strong>SRDEII prescriptif, aides entreprises</div>
+                                    <div class="competence-item"><strong>Aménagement</strong>SRADDET prescriptif</div>
+                                    <div class="competence-item"><strong>Transports</strong>TER, interurbains, cars scolaires</div>
+                                    <div class="competence-item"><strong>Lycées</strong>Construction, entretien, agents</div>
+                                    <div class="competence-item"><strong>Formation pro</strong>Apprentissage, formation continue</div>
+                                    <div class="competence-item"><strong>Environnement</strong>Biodiversité, PNR, déchets</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Schémas</span> Documents de planification</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>SRADDET</strong> : Schéma régional d'aménagement, développement durable et égalité des territoires (prescriptif)</li>
+                                    <li><strong>SRDEII</strong> : Schéma régional de développement économique, d'innovation et d'internationalisation</li>
+                                    <li><strong>SRESRI</strong> : Schéma régional de l'enseignement supérieur, recherche et innovation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">⭐ Collectivités à statut particulier</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Métropole de Lyon</span> CT sui generis (2015)</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Fusion communauté urbaine + département (sur son périmètre)</li>
+                                    <li>59 communes, ~1,4 million d'habitants</li>
+                                    <li>Conseil métropolitain élu au SUD depuis 2020 (150 conseillers)</li>
+                                    <li>Compétences régionales en développement économique</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Paris</span> Commune à statut particulier</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Depuis 2019 : fusion commune + département = <strong>Ville de Paris</strong></li>
+                                    <li>Conseil de Paris = conseil municipal + conseil départemental</li>
+                                    <li>17 arrondissements, maires d'arrondissement</li>
+                                    <li>Préfet de police : pouvoirs de police spéciaux</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Corse</span> Collectivité de Corse (2018)</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Fusion CTC + départements 2A et 2B</li>
+                                    <li>Assemblée de Corse (63 conseillers) + Conseil exécutif (11 membres)</li>
+                                    <li>Compétences élargies : fiscalité, transports, énergie, langue corse</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Alsace</span> Collectivité européenne d'Alsace (2021)</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Fusion Bas-Rhin (67) + Haut-Rhin (68)</li>
+                                    <li>Reste dans la région Grand Est</li>
+                                    <li>Compétences : routes nationales, coopération transfrontalière, bilinguisme</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🌴 Collectivités d'outre-mer</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 73</span> DROM - Identité législative</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Lois nationales applicables de plein droit avec possibilité d'adaptations</li>
+                                    <li><strong>Guadeloupe, Réunion</strong> : région + département distincts</li>
+                                    <li><strong>Martinique, Guyane</strong> : collectivité unique (2015)</li>
+                                    <li><strong>Mayotte</strong> : département depuis 2011</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 74</span> COM - Spécialité législative</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Seules les lois expressément étendues s'appliquent</li>
+                                    <li><strong>Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin</strong></li>
+                                    <li><strong>Wallis-et-Futuna</strong> : 3 royaumes coutumiers</li>
+                                    <li><strong>Polynésie française</strong> : très large autonomie</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 76-77</span> Nouvelle-Calédonie</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Statut sui generis (Titre XIII Constitution)</li>
+                                    <li>Accord de Nouméa 1998 → processus d'autodétermination</li>
+                                    <li>3 référendums (2018, 2020, 2021) : « Non » à l'indépendance</li>
+                                    <li>Citoyenneté calédonienne, lois du pays</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🤝 Coopération intercommunale - EPCI</div>
+                    <div class="section-content">
+                        <div class="info-box"><strong>📌 Définition :</strong> Les EPCI sont des <strong>établissements publics</strong> regroupant des communes. Ce ne sont <strong>pas des CT</strong> (pas d'élection directe, sauf Métropole de Lyon).</div>
+                        <div class="subsection">
+                            <div class="subsection-title">📍 EPCI sans fiscalité propre</div>
+                            <div class="item">
+                                <div class="item-title"><span class="badge badge-blue">SIVU</span> Syndicat à vocation unique</div>
+                                <div class="item-content">Une seule compétence (eau, assainissement, électricité...)</div>
+                            </div>
+                            <div class="item">
+                                <div class="item-title"><span class="badge badge-blue">SIVOM</span> Syndicat à vocation multiple</div>
+                                <div class="item-content">Plusieurs compétences. Possibilité de représentation-substitution.</div>
+                            </div>
+                            <div class="item">
+                                <div class="item-title"><span class="badge badge-blue">Syndicat mixte</span> Ouvert ou fermé</div>
+                                <div class="item-content">Associe communes, EPCI, départements, régions.</div>
+                            </div>
+                        </div>
+                        <div class="subsection">
+                            <div class="subsection-title">📍 EPCI à fiscalité propre</div>
+                            <table>
+                                <tr><th>Type</th><th>Seuil</th><th>Compétences obligatoires</th></tr>
+                                <tr><td><strong>CC</strong></td><td>15 000 hab. (5 000 montagne)</td><td>Développement éco, aménagement, GEMAPI</td></tr>
+                                <tr><td><strong>CA</strong></td><td>50 000 hab.</td><td>+ Habitat, politique ville, transports urbains</td></tr>
+                                <tr><td><strong>CU</strong></td><td>250 000 hab.</td><td>+ Voirie, eau, assainissement, cimetières</td></tr>
+                                <tr><td><strong>Métropole</strong></td><td>400 000 hab.</td><td>Compétences CU + départementales/régionales</td></tr>
+                            </table>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Principes</span> Règles communes</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Continuité territoriale</strong> : périmètre d'un seul tenant</li>
+                                    <li><strong>Exclusivité</strong> : une commune = un seul EPCI à FP</li>
+                                    <li><strong>Couverture intégrale</strong> : toutes communes dans un EPCI à FP</li>
+                                    <li><strong>Transfert exclusif</strong> : compétences transférées non exercées par communes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BRANCHE 2 : CONTRÔLES -->
+        <div class="branch-card branch-2">
+            <div class="branch-header" onclick="toggleCard(this)">
+                <h2>🔍 CONTRÔLES SUR LES COLLECTIVITÉS TERRITORIALES</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="branch-content">
+                <div class="section">
+                    <div class="section-title">📜 Évolution historique du contrôle</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-pink">Avant 1982</span> Tutelle administrative</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Tutelle a priori</strong> : approbation préalable du préfet</li>
+                                    <li>Pouvoir d'annulation et de substitution</li>
+                                    <li>Contrôle d'opportunité (pas seulement légalité)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Depuis 1982</span> Contrôle de légalité a posteriori</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Loi du 2 mars 1982 : <strong>suppression de la tutelle</strong></li>
+                                    <li>Actes exécutoires dès publication + transmission au préfet</li>
+                                    <li>Contrôle uniquement de <strong>légalité</strong></li>
+                                    <li>Seul le <strong>juge administratif</strong> peut annuler</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="highlight-box"><strong>⚖️ Art. 72 al. 6 :</strong> « Le représentant de l'État a la charge du contrôle administratif. »</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📋 Contrôle de légalité du préfet</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Transmission</span> Actes soumis à transmission obligatoire</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Délibérations</strong> des assemblées délibérantes</li>
+                                    <li><strong>Arrêtés</strong> réglementaires ou individuels</li>
+                                    <li><strong>Conventions</strong> : marchés publics, emprunts, DSP</li>
+                                    <li><strong>Décisions individuelles</strong> relatives au personnel</li>
+                                    <li><strong>Permis de construire</strong> et autorisations urbanisme</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Exécutoire</span> Conditions du caractère exécutoire</div>
+                            <div class="item-content">
+                                L'acte devient exécutoire après :<br>
+                                • <strong>Publication</strong> (réglementaires) ou <strong>notification</strong> (individuels)<br>
+                                • <strong>ET</strong> transmission au représentant de l'État
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Déféré</span> Le déféré préfectoral</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Délai</strong> : 2 mois à compter de la réception</li>
+                                    <li><strong>Recours gracieux</strong> : demande de retrait (interrompt délai)</li>
+                                    <li><strong>Déféré</strong> : saisine du TA</li>
+                                    <li><strong>Référé-suspension</strong> : urgence + doute sérieux</li>
+                                    <li><strong>Suspension automatique</strong> : urbanisme, marchés publics</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Stratégie</span> Contrôle hiérarchisé (2020)</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Priorité 1</strong> : commande publique, urbanisme, fonction publique</li>
+                                    <li><strong>Priorité 2</strong> : environnement, intercommunalité</li>
+                                    <li><strong>Priorité 3</strong> : autres domaines</li>
+                                    <li>Développement du <strong>rescrit préfectoral</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="info-box"><strong>📊 Chiffres :</strong> ~5 millions d'actes transmis/an. Taux de déféré < 0,1%. Contrôle surtout préventif.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">💰 Contrôle budgétaire</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-blue">CRC</span> Chambres régionales des comptes</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Juridictions financières créées en 1982</li>
+                                    <li>13 CRC métropolitaines + 5 territoriales outre-mer</li>
+                                    <li>Magistrats financiers inamovibles</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Cas 1</span> Budget non voté dans les délais</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Date limite : <strong>15 avril</strong> (30 avril année renouvellement)</li>
+                                    <li>Préfet saisit CRC → propositions dans le mois</li>
+                                    <li>À défaut d'adoption : préfet <strong>règle le budget</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Cas 2</span> Budget voté en déséquilibre</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Équilibre réel = recettes = dépenses par section</li>
+                                    <li>Préfet saisit CRC → mesures de rétablissement</li>
+                                    <li>Nouvelle délibération ou règlement par préfet</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Cas 3</span> Déficit du compte administratif</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Seuils : <strong>> 10%</strong> (< 20 000 hab.) ou <strong>> 5%</strong> (autres)</li>
+                                    <li>CRC propose mesures de redressement</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Cas 4</span> Dépense obligatoire non inscrite</div>
+                            <div class="item-content">
+                                Saisine par préfet, comptable ou créancier → CRC constate → mise en demeure → inscription d'office
+                            </div>
+                        </div>
+                        <div class="warning-box"><strong>⚠️ Attention :</strong> La CRC émet des <strong>avis</strong>, c'est le <strong>préfet</strong> qui décide.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">⚖️ Contrôle juridictionnel</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">TA/CAA/CE</span> Juge administratif</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>REP</strong> : recours pour excès de pouvoir</li>
+                                    <li><strong>Plein contentieux</strong> : contrats, responsabilité</li>
+                                    <li><strong>Référés</strong> : suspension, liberté, mesures utiles</li>
+                                    <li>Délai : 2 mois</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Requérants</span> Qui peut saisir ?</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Préfet</strong> : déféré préfectoral</li>
+                                    <li><strong>Administrés</strong> : contribuable local, usager, voisin</li>
+                                    <li><strong>Élus</strong> : conseillers minoritaires</li>
+                                    <li><strong>Associations</strong> : dans objet statutaire</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Juge judiciaire</span> Compétences du JJ</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>État civil, voie de fait, SPIC, domaine privé</li>
+                                    <li><strong>Responsabilité pénale</strong> des élus et agents</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📊 Contrôle financier et de gestion</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-blue">CRC</span> Examen de gestion</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Régularité</strong> des opérations</li>
+                                    <li><strong>Économie</strong> des moyens</li>
+                                    <li><strong>Efficacité</strong> : résultats/objectifs</li>
+                                    <li><strong>Efficience</strong> : résultats/moyens</li>
+                                    <li>Rapport d'observations définitives publié</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-blue">CRC</span> Jugement des comptes</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Contrôle des <strong>comptables publics</strong></li>
+                                    <li>Sanction : <strong>débet</strong> (remboursement personnel)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">CDBF</span> Cour de discipline budgétaire</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Sanctionne les <strong>ordonnateurs</strong></li>
+                                    <li>Exception : ministres et élus locaux (actes gestion courante)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🔎 Autres contrôles</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Démocratique</span> Contrôle politique</div>
+                            <div class="item-content">Élections, opposition, publicité des séances, référendum local</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Transparence</span> Obligations</div>
+                            <div class="item-content">CADA, open data (> 3 500 hab.), déclarations patrimoine (HATVP)</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Sanctions</span> Pouvoirs exceptionnels sur élus</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Suspension</strong> : arrêté ministériel (1 mois max)</li>
+                                    <li><strong>Révocation</strong> : décret en Conseil des ministres</li>
+                                    <li><strong>Dissolution</strong> du conseil : décret</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BRANCHE 3 : LIBRE ADMINISTRATION -->
+        <div class="branch-card branch-3">
+            <div class="branch-header" onclick="toggleCard(this)">
+                <h2>⚖️ LIBRE ADMINISTRATION & DÉCENTRALISATION</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="branch-content">
+                <div class="section">
+                    <div class="section-title">📜 Principes constitutionnels</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 1er</span> République décentralisée</div>
+                            <div class="item-content">« La France est une République indivisible [...]. <strong>Son organisation est décentralisée.</strong> » (2003)</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 72 al. 2</span> Libre administration</div>
+                            <div class="item-content">« Les CT <strong>s'administrent librement par des conseils élus</strong> et disposent d'un <strong>pouvoir réglementaire</strong>. »</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 72 al. 3</span> Subsidiarité</div>
+                            <div class="item-content">Compétences exercées au niveau le plus pertinent.</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 72 al. 5</span> Non-tutelle</div>
+                            <div class="item-content">« <strong>Aucune CT ne peut exercer une tutelle sur une autre.</strong> » Mais notion de « chef de file ».</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-cyan">Art. 72-2</span> Autonomie financière</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Libre disposition des ressources</li>
+                                    <li>Possibilité de fixer taux d'imposition</li>
+                                    <li><strong>Ressources propres = part déterminante</strong></li>
+                                    <li>Compensation des transferts</li>
+                                    <li>Péréquation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="highlight-box"><strong>⚖️ Jurisprudence CC :</strong> Libre administration = <strong>PFRLR</strong>. Atteinte possible seulement pour intérêt général suffisant.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📋 Contenu de la libre administration</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Institutionnel</span> Liberté des organes</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Élection au SUD des assemblées</li>
+                                    <li>Élection de l'exécutif par l'assemblée</li>
+                                    <li>Autonomie organisation des services</li>
+                                    <li>Liberté de recrutement</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Action</span> Liberté d'action</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Pouvoir réglementaire</li>
+                                    <li>Liberté contractuelle</li>
+                                    <li>Liberté de gestion des SP</li>
+                                    <li>Liberté de coopération</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Finances</span> Autonomie financière</div>
+                            <div class="item-content">Vote du budget, liberté de dépense, taux d'imposition, emprunt, gestion patrimoine</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Art. 72 al. 4</span> Droit à l'expérimentation</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Dérogation aux lois/règlements à titre expérimental</li>
+                                    <li>Objet et durée limités</li>
+                                    <li>Autorisé par loi ou règlement</li>
+                                    <li>Loi organique du 19 avril 2021 : simplification</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🚫 Limites de la libre administration</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">État unitaire</span> Indivisibilité</div>
+                            <div class="item-content">Pas de pouvoir législatif (sauf outre-mer Art. 74), pas de compétence souveraineté</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Contrôle</span> Contrôle de l'État</div>
+                            <div class="item-content">Légalité, budgétaire, substitution en cas de carence</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Art. 34</span> Encadrement législatif</div>
+                            <div class="item-content">La loi détermine les principes fondamentaux de la libre administration</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📅 Grandes étapes de la décentralisation</div>
+                    <div class="section-content">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">1789-1800</div>
+                                <div class="timeline-title">Création communes et départements</div>
+                                <div class="item-content">Lois 1789, centralisation napoléonienne (préfets 1800)</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">1871-1884</div>
+                                <div class="timeline-title">Premières libertés locales</div>
+                                <div class="item-content"><strong>Loi 5 avril 1884</strong> : charte communale, clause générale</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">1982-1986</div>
+                                <div class="timeline-title">🏛️ ACTE I - Lois Defferre</div>
+                                <div class="item-content">
+                                    <ul>
+                                        <li><strong>Loi 2 mars 1982</strong> : suppression tutelle</li>
+                                        <li>Transfert exécutif départemental au président</li>
+                                        <li>Région = CT de plein exercice</li>
+                                        <li>Création CRC</li>
+                                        <li>Lois 1983 : transferts par blocs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">1992</div>
+                                <div class="timeline-title">Loi ATR</div>
+                                <div class="item-content">Développement intercommunalité, CC, démocratie locale</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">1999</div>
+                                <div class="timeline-title">Loi Chevènement</div>
+                                <div class="item-content">Simplification intercommunalité : CC, CA, CU</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2003-2004</div>
+                                <div class="timeline-title">🏛️ ACTE II - Révision constitutionnelle</div>
+                                <div class="item-content">
+                                    <ul>
+                                        <li><strong>LC 28 mars 2003</strong> : « organisation décentralisée »</li>
+                                        <li>Subsidiarité, expérimentation, référendum local</li>
+                                        <li>Autonomie financière constitutionnalisée</li>
+                                        <li>Loi 13 août 2004 : transferts RMI, routes...</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2010</div>
+                                <div class="timeline-title">Réforme CT</div>
+                                <div class="item-content">Conseiller territorial (jamais appliqué), métropoles, achèvement carte</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2014-2015</div>
+                                <div class="timeline-title">🏛️ ACTE III</div>
+                                <div class="item-content">MAPTAM, nouvelle carte régionale, NOTRe</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🗳️ Démocratie locale</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Art. 72-1</span> Référendum local</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Initiative de l'assemblée délibérante</li>
+                                    <li>Projet dans sa compétence</li>
+                                    <li><strong>Décisionnel si participation > 50%</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Art. 72-1</span> Droit de pétition</div>
+                            <div class="item-content">Inscription d'une question à l'ordre du jour (seuils légaux)</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Participation</span> Autres outils</div>
+                            <div class="item-content">Consultation locale, conseils de quartier (> 80 000), conseils citoyens, budgets participatifs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BRANCHE 4 : RÉFORMES DEPUIS 2014 -->
+        <div class="branch-card branch-4">
+            <div class="branch-header" onclick="toggleCard(this)">
+                <h2>🔄 RÉFORMES DES CT DEPUIS 2014</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="branch-content">
+                <div class="section">
+                    <div class="section-title">📜 Loi MAPTAM (27 janvier 2014)</div>
+                    <div class="section-content">
+                        <div class="info-box"><strong>📌</strong> <strong>M</strong>odernisation <strong>A</strong>ction <strong>P</strong>ublique <strong>T</strong>erritoriale et <strong>A</strong>ffirmation des <strong>M</strong>étropoles</div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Métropoles</span> Création des grandes métropoles</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Métropole de Lyon</strong> : CT à statut particulier (2015)</li>
+                                    <li><strong>MGP</strong> : Métropole du Grand Paris (2016)</li>
+                                    <li><strong>Aix-Marseille-Provence</strong> (2016)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Chef de file</span> Clarification</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Région</strong> : économie, aménagement, transports, environnement</li>
+                                    <li><strong>Département</strong> : action sociale, solidarité territoriale</li>
+                                    <li><strong>Commune/EPCI</strong> : mobilité, qualité de l'air</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">CTAP</span> Conférence territoriale de l'action publique</div>
+                            <div class="item-content">Instance de coordination dans chaque région, présidée par le président CR</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🗺️ Nouvelle carte régionale (16 janvier 2015)</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Fusions</span> 22 → 13 régions métropolitaines</div>
+                            <div class="item-content">
+                                <table>
+                                    <tr><th>Nouvelle région</th><th>Fusion de</th></tr>
+                                    <tr><td><strong>Grand Est</strong></td><td>Alsace + Lorraine + Champagne-Ardenne</td></tr>
+                                    <tr><td><strong>Nouvelle-Aquitaine</strong></td><td>Aquitaine + Limousin + Poitou-Charentes</td></tr>
+                                    <tr><td><strong>Auvergne-Rhône-Alpes</strong></td><td>Auvergne + Rhône-Alpes</td></tr>
+                                    <tr><td><strong>Bourgogne-Franche-Comté</strong></td><td>Bourgogne + Franche-Comté</td></tr>
+                                    <tr><td><strong>Occitanie</strong></td><td>Languedoc-Roussillon + Midi-Pyrénées</td></tr>
+                                    <tr><td><strong>Hauts-de-France</strong></td><td>Nord-Pas-de-Calais + Picardie</td></tr>
+                                    <tr><td><strong>Normandie</strong></td><td>Haute + Basse-Normandie</td></tr>
+                                </table>
+                                <em>Inchangées : Île-de-France, Bretagne, Pays de la Loire, Centre-Val de Loire, PACA, Corse</em>
+                            </div>
+                        </div>
+                        <div class="highlight-box"><strong>📅 Entrée en vigueur :</strong> 1er janvier 2016</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📜 Loi NOTRe (7 août 2015)</div>
+                    <div class="section-content">
+                        <div class="info-box"><strong>📌</strong> <strong>N</strong>ouvelle <strong>O</strong>rganisation <strong>T</strong>erritoriale de la <strong>Ré</strong>publique</div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-red">Suppression</span> Fin clause générale</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Départements et régions</strong> : compétences d'attribution uniquement</li>
+                                    <li><strong>Communes</strong> : clause générale <strong>maintenue</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Région</span> Renforcement</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Développement économique</strong> : compétence exclusive</li>
+                                    <li><strong>SRDEII</strong> prescriptif</li>
+                                    <li><strong>Transports</strong> : interurbains et scolaires transférés</li>
+                                    <li><strong>SRADDET</strong> prescriptif</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Intercommunalité</span> Renforcement</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Seuil</strong> : 15 000 hab. (5 000 montagne)</li>
+                                    <li><strong>Transferts obligatoires</strong> : eau, assainissement (2020), GEMAPI</li>
+                                    <li>PLUi encouragé</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Département</span> Recentrage solidarités</div>
+                            <div class="item-content">Action sociale, solidarité territoriale. Perte économie et transports.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📜 Loi Engagement et Proximité (27 décembre 2019)</div>
+                    <div class="section-content">
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Maires</span> Renforcement du rôle</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Extension pouvoirs de police</li>
+                                    <li>Amendes administratives</li>
+                                    <li>Protection fonctionnelle renforcée</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Élus</span> Statut de l'élu</div>
+                            <div class="item-content">Revalorisation indemnités, formation, congés électoraux, VAE, frais de garde</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Rééquilibrage</span> Commune/EPCI</div>
+                            <div class="item-content">Pacte de gouvernance, conférence des maires obligatoire, restitution compétences facilitée</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📜 Loi 3DS (21 février 2022)</div>
+                    <div class="section-content">
+                        <div class="info-box"><strong>📌</strong> <strong>D</strong>ifférenciation, <strong>D</strong>écentralisation, <strong>D</strong>éconcentration, <strong>S</strong>implification</div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-purple">Différenciation</span> Adapter les règles</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li>Règles adaptées selon territoires</li>
+                                    <li>Délégations État → CT facilitées</li>
+                                    <li>Pouvoir réglementaire local renforcé</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-orange">Décentralisation</span> Nouveaux transferts</div>
+                            <div class="item-content">
+                                <ul>
+                                    <li><strong>Routes nationales</strong> aux départements/métropoles/régions</li>
+                                    <li><strong>Petites lignes ferroviaires</strong> aux régions</li>
+                                    <li><strong>RSA</strong> : expérimentation recentralisation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-teal">Déconcentration</span> Rôle du préfet</div>
+                            <div class="item-content">Préfet délégué territorial ADEME, OFB, agences eau. Coordination renforcée.</div>
+                        </div>
+                        <div class="item">
+                            <div class="item-title"><span class="badge badge-green">Simplification</span> Mesures</div>
+                            <div class="item-content">Seuils intercommunalité, communes nouvelles, marchés publics, urbanisme dématérialisé</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📊 Tableau synthétique</div>
+                    <div class="section-content">
+                        <table>
+                            <tr><th>Loi</th><th>Date</th><th>Apports principaux</th></tr>
+                            <tr><td><strong>MAPTAM</strong></td><td>27/01/2014</td><td>Métropoles, chef de file, CTAP</td></tr>
+                            <tr><td><strong>Délimitation</strong></td><td>16/01/2015</td><td>22 → 13 régions</td></tr>
+                            <tr><td><strong>NOTRe</strong></td><td>07/08/2015</td><td>Suppression clause générale, renforcement régions, seuil 15 000</td></tr>
+                            <tr><td><strong>Engagement</strong></td><td>27/12/2019</td><td>Pouvoirs maires, statut élu, rééquilibrage</td></tr>
+                            <tr><td><strong>3DS</strong></td><td>21/02/2022</td><td>Différenciation, routes, RSA expérimental</td></tr>
+                        </table>
+                        <div class="warning-box"><strong>⚠️ Concours :</strong> Maîtriser les acronymes (MAPTAM, NOTRe, 3DS) et les grandes orientations !</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>📚 Carte mentale pour la préparation au concours de Lieutenant 1ère classe SPP</p>
+        <p>Collectivités territoriales • Article 72 Constitution • Décentralisation</p>
+    </footer>
+</div>
+
+<script>
+function toggleCard(header) {
+    header.closest('.branch-card').classList.toggle('collapsed');
+}
+function toggleAll(expand) {
+    document.querySelectorAll('.branch-card').forEach(card => {
+        expand ? card.classList.remove('collapsed') : card.classList.add('collapsed');
+    });
+}
+function searchContent() {
+    const term = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.item, .timeline-item, .highlight-box, .info-box, .warning-box').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!term || text.includes(term)) {
+            item.style.display = '';
+            item.style.backgroundColor = term && text.includes(term) ? '#fff3cd' : '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    if (term) {
+        document.querySelectorAll('.branch-card').forEach(card => {
+            if (card.querySelector('.item:not([style*="display: none"])')) card.classList.remove('collapsed');
+        });
+    }
+}
+</script>
+</body>
+</html>

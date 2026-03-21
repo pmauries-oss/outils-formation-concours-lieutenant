@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Mentale - Administration de l'État</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #132038;
+            --accent-gold: #d4af37;
+            --accent-blue: #4a90d9;
+            --accent-red: #c9544d;
+            --accent-green: #4d9c7d;
+            --accent-purple: #8b6bb9;
+            --text-light: #e8e6e3;
+            --text-muted: #9ca3af;
+            --border-subtle: rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, rgba(74, 144, 217, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
+            min-height: 100vh;
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--text-light);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .mind-map {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            position: relative;
+        }
+
+        /* Central Node */
+        .central-node {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .node-central {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(212, 175, 55, 0.15) 100%);
+            border: 2px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 30px 50px;
+            text-align: center;
+            box-shadow: 
+                0 0 60px rgba(212, 175, 55, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(212, 175, 55, 0.4); }
+        }
+
+        .node-central h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+        }
+
+        .node-central p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Branch Sections */
+        .branches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .branch {
+            position: relative;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .branch:nth-child(1) { animation-delay: 0.1s; }
+        .branch:nth-child(2) { animation-delay: 0.2s; }
+        .branch:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .branch-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branch-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .branch-header:hover::before {
+            opacity: 1;
+        }
+
+        .branch-header:hover {
+            transform: translateX(8px);
+        }
+
+        /* Administration Centrale - Bleu */
+        .branch-centrale .branch-header {
+            background: linear-gradient(135deg, rgba(74, 144, 217, 0.15) 0%, rgba(74, 144, 217, 0.05) 100%);
+            border-left: 4px solid var(--accent-blue);
+        }
+        .branch-centrale .branch-header::before {
+            background: linear-gradient(135deg, rgba(74, 144, 217, 0.25) 0%, rgba(74, 144, 217, 0.1) 100%);
+        }
+        .branch-centrale .icon { color: var(--accent-blue); }
+
+        /* Administration Territoriale - Vert */
+        .branch-territoriale .branch-header {
+            background: linear-gradient(135deg, rgba(77, 156, 125, 0.15) 0%, rgba(77, 156, 125, 0.05) 100%);
+            border-left: 4px solid var(--accent-green);
+        }
+        .branch-territoriale .branch-header::before {
+            background: linear-gradient(135deg, rgba(77, 156, 125, 0.25) 0%, rgba(77, 156, 125, 0.1) 100%);
+        }
+        .branch-territoriale .icon { color: var(--accent-green); }
+
+        /* Déconcentration - Rouge */
+        .branch-deconcentration .branch-header {
+            background: linear-gradient(135deg, rgba(201, 84, 77, 0.15) 0%, rgba(201, 84, 77, 0.05) 100%);
+            border-left: 4px solid var(--accent-red);
+        }
+        .branch-deconcentration .branch-header::before {
+            background: linear-gradient(135deg, rgba(201, 84, 77, 0.25) 0%, rgba(201, 84, 77, 0.1) 100%);
+        }
+        .branch-deconcentration .icon { color: var(--accent-red); }
+
+        .icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .branch-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text-light);
+        }
+
+        .branch-content {
+            padding-left: 30px;
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            margin-left: 25px;
+        }
+
+        .sub-node {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sub-node:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .sub-node h4 {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub-node h4::before {
+            content: '◆';
+            font-size: 0.6rem;
+            opacity: 0.6;
+        }
+
+        .branch-centrale .sub-node h4::before { color: var(--accent-blue); }
+        .branch-territoriale .sub-node h4::before { color: var(--accent-green); }
+        .branch-deconcentration .sub-node h4::before { color: var(--accent-red); }
+
+        .sub-node p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .sub-node ul {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .sub-node li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .sub-node li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            opacity: 0.5;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 8px;
+            margin-top: 10px;
+        }
+
+        .tag-blue { background: rgba(74, 144, 217, 0.2); color: var(--accent-blue); }
+        .tag-green { background: rgba(77, 156, 125, 0.2); color: var(--accent-green); }
+        .tag-red { background: rgba(201, 84, 77, 0.2); color: var(--accent-red); }
+        .tag-gold { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); }
+
+        /* Connecting Lines */
+        .connector {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Key Principles Section */
+        .principles {
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(139, 107, 185, 0.1) 0%, rgba(139, 107, 185, 0.02) 100%);
+            border: 1px solid rgba(139, 107, 185, 0.3);
+            border-radius: 20px;
+        }
+
+        .principles h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--accent-purple);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .principle-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(139, 107, 185, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            border-color: rgba(139, 107, 185, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .principle-card h5 {
+            color: var(--accent-purple);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .principle-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .branches {
+                grid-template-columns: 1fr;
+            }
+            
+            .branch-header {
+                padding: 15px 20px;
+            }
+            
+            .branch-content {
+                padding-left: 20px;
+                margin-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Administration de l'État</h1>
+            <p class="subtitle">Organisation administrative française</p>
+        </header>
+
+        <div class="mind-map">
+            <!-- Central Node -->
+            <div class="central-node">
+                <div class="node-central">
+                    <h2>🏛️ L'ÉTAT</h2>
+                    <p>Personne morale de droit public • Pouvoir souverain</p>
+                </div>
+            </div>
+
+            <!-- Main Branches -->
+            <div class="branches">
+                <!-- Administration Centrale -->
+                <div class="branch branch-centrale">
+                    <div class="branch-header">
+                        <div class="icon">🏢</div>
+                        <h3 class="branch-title">Administration Centrale</h3>
+                    </div>
+                    <div class="branch-content">
+                        <div class="sub-node">
+                            <h4>Président de la République</h4>
+                            <p>Chef de l'État, garant des institutions</p>
+                            <ul>
+                                <li>Palais de l'Élysée</li>
+                                <li>Secrétariat général de l'Élysée</li>
+                                <li>Cabinet présidentiel</li>
+                                <li>État-major particulier</li>
+                            </ul>
+                            <span class="tag tag-gold">Art. 5 Constitution</span>
+                        </div>
+                        
+                        <div class="sub-node">
+                            <h4>Premier Ministre</h4>
+                            <p>Chef du Gouvernement, dirige l'action gouvernementale</p>
+                            <ul>
+                                <li>Hôtel de Matignon</li>
+                                <li>Secrétariat général du Gouvernement (SGG)</li>
+                                <li>Secrétariat général des affaires européennes (SGAE)</li>
+                                <li>Secrétariat général de la défense et de la sécurité nationale (SGDSN)</li>
+                            </ul>
+                            <span class="tag tag-blue">Art. 21 Constitution</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Ministères</h4>
+                            <p>Structures centrales dirigées par les ministres</p>
+                            <ul>
+                                <li><strong>Cabinet ministériel</strong> : collaborateurs directs du ministre</li>
+                                <li><strong>Directions générales</strong> : pilotage des politiques publiques</li>
+                                <li><strong>Directions</strong> : services opérationnels</li>
+                                <li><strong>Sous-directions et bureaux</strong> : unités de base</li>
+                                <li><strong>Secrétariat général</strong> : coordination interne</li>
+                            </ul>
+                            <span class="tag tag-blue">Décret d'attribution</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Services à compétence nationale (SCN)</h4>
+                            <p>Services déconcentrés rattachés à l'administration centrale</p>
+                            <ul>
+                                <li>Compétence nationale spécialisée</li>
+                                <li>Fonctions de gestion, d'études ou de formation</li>
+                                <li>Ex: DGSE, Archives nationales</li>
+                            </ul>
+                            <span class="tag tag-blue">Décret du 9 mai 1997</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Administration Territoriale -->
+                <div class="branch branch-territoriale">
+                    <div class="branch-header">
+                        <div class="icon">🗺️</div>
+                        <h3 class="branch-title">Administration Territoriale de l'État</h3>
+                    </div>
+                    <div class="branch-content">
+                        <div class="sub-node" style="border: 2px solid var(--accent-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, var(--bg-secondary) 100%);">
+                            <h4 style="color: var(--accent-gold);">🛡️ Niveau Zonal (Défense et Sécurité)</h4>
+                            <p>Échelon stratégique pour la défense civile et la gestion des crises majeures</p>
+                            <p style="margin-top: 10px; font-size: 0.85rem; color: var(--accent-gold);">7 zones de défense et de sécurité en métropole + 5 outre-mer</p>
+                            <span class="tag tag-gold">Décret n°2010-224 du 4 mars 2010</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Niveau Régional</h4>
+                            <p>Échelon de pilotage stratégique des politiques publiques</p>
+                            <ul>
+                                <li><strong>Préfet de région</strong> : représentant de l'État, délégué interministériel</li>
+                                <li><strong>SGAR</strong> : Secrétariat général pour les affaires régionales</li>
+                                <li><strong>Directions régionales</strong> :
+                                    <br>• DREAL (environnement, aménagement, logement)
+                                    <br>• DREETS (économie, emploi, travail, solidarités)
+                                    <br>• DRAAF (agriculture, alimentation, forêt)
+                                    <br>• DRAC (affaires culturelles)
+                                    <br>• ARS (santé)</li>
+                            </ul>
+                            <span class="tag tag-green">Décret du 29 avril 2004</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Niveau Départemental</h4>
+                            <p>Échelon de mise en œuvre des politiques publiques</p>
+                            <ul>
+                                <li><strong>Préfet de département</strong> : autorité de l'État, ordre public, police administrative</li>
+                                <li><strong>Sous-préfets</strong> : arrondissements</li>
+                                <li><strong>DDI</strong> (Directions départementales interministérielles) :
+                                    <br>• DDT(M) : territoires (et mer)
+                                    <br>• DDPP : protection des populations
+                                    <br>• DDETS : emploi, travail, solidarités</li>
+                                <li><strong>DDSP/DDFIP</strong> : sécurité publique / finances publiques</li>
+                            </ul>
+                            <span class="tag tag-green">Loi du 28 pluviôse an VIII</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Niveau Infra-départemental</h4>
+                            <p>Proximité avec les usagers et les collectivités</p>
+                            <ul>
+                                <li><strong>Sous-préfectures</strong> : 233 arrondissements</li>
+                                <li><strong>Maisons France Services</strong> : guichets uniques</li>
+                                <li><strong>Unités territoriales</strong> des directions départementales</li>
+                            </ul>
+                            <span class="tag tag-green">Proximité</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Services Spécialisés</h4>
+                            <p>Réseaux ministériels à compétence territoriale propre</p>
+                            <ul>
+                                <li>Rectorats (Éducation nationale)</li>
+                                <li>DRFIP/DDFIP (Finances publiques)</li>
+                                <li>Directions zonales de sécurité</li>
+                                <li>Juridictions (Justice)</li>
+                            </ul>
+                            <span class="tag tag-green">Réseaux verticaux</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Déconcentration -->
+                <div class="branch branch-deconcentration">
+                    <div class="branch-header">
+                        <div class="icon">⚖️</div>
+                        <h3 class="branch-title">La Déconcentration</h3>
+                    </div>
+                    <div class="branch-content">
+                        <div class="sub-node">
+                            <h4>Définition</h4>
+                            <p>Transfert de compétences au sein de l'État, du niveau central vers les services déconcentrés</p>
+                            <ul>
+                                <li>Même personne morale (l'État)</li>
+                                <li>Lien hiérarchique maintenu</li>
+                                <li>Rapproche la décision du terrain</li>
+                            </ul>
+                            <span class="tag tag-red">≠ Décentralisation</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Principes Fondamentaux</h4>
+                            <ul>
+                                <li><strong>Subsidiarité</strong> : décision au niveau le plus adapté</li>
+                                <li><strong>Complémentarité</strong> : articulation central/territorial</li>
+                                <li><strong>Interministérialité</strong> : coordination sous l'autorité du préfet</li>
+                                <li><strong>Modularité</strong> : adaptation aux territoires</li>
+                            </ul>
+                            <span class="tag tag-red">Charte de la déconcentration</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Textes Fondateurs</h4>
+                            <ul>
+                                <li><strong>Décret du 1er juillet 1992</strong> : Charte de la déconcentration</li>
+                                <li><strong>Loi ATR du 6 février 1992</strong> : administration territoriale de la République</li>
+                                <li><strong>Décret du 7 mai 2015</strong> : nouvelle charte de la déconcentration</li>
+                                <li><strong>Réforme OTE</strong> : Organisation territoriale de l'État (2020)</li>
+                            </ul>
+                            <span class="tag tag-gold">Cadre juridique</span>
+                        </div>
+
+                        <div class="sub-node">
+                            <h4>Pouvoirs du Préfet</h4>
+                            <p>Représentant unique de l'État dans le département/région</p>
+                            <ul>
+                                <li><strong>Direction</strong> des services déconcentrés (sauf exceptions)</li>
+                                <li><strong>Délégation de signature</strong> aux chefs de services</li>
+                                <li><strong>Pouvoir d'évocation</strong> des décisions</li>
+                                <li><strong>Coordination</strong> interministérielle</li>
+                                <li><strong>Contrôle de légalité</strong> des collectivités</li>
+                            </ul>
+                            <span class="tag tag-red">Art. 72 Constitution</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Échelon Zonal -->
+                <div class="branch branch-zonale" style="grid-column: 1 / -1;">
+                    <div class="branch-header" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%); border-left: 4px solid var(--accent-gold);">
+                        <div class="icon" style="color: var(--accent-gold);">🛡️</div>
+                        <h3 class="branch-title">Échelon Zonal de Défense et de Sécurité</h3>
+                    </div>
+                    <div class="branch-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; border-left: none; padding-left: 0; margin-left: 0;">
+                        
+                        <!-- Organisation Générale -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-gold);">
+                            <h4 style="color: var(--accent-gold);">Organisation Territoriale</h4>
+                            <p>7 zones de défense et de sécurité en métropole, calquées sur les régions militaires</p>
+                            <ul>
+                                <li><strong>Paris</strong> : Île-de-France (siège : Paris)</li>
+                                <li><strong>Nord</strong> : Hauts-de-France (siège : Lille)</li>
+                                <li><strong>Ouest</strong> : Bretagne, Pays de la Loire, Centre-Val de Loire (siège : Rennes)</li>
+                                <li><strong>Sud-Ouest</strong> : Nouvelle-Aquitaine, Occitanie (siège : Bordeaux)</li>
+                                <li><strong>Sud</strong> : Auvergne-Rhône-Alpes, PACA, Corse (siège : Marseille)</li>
+                                <li><strong>Est</strong> : Grand Est, Bourgogne-Franche-Comté (siège : Metz)</li>
+                                <li><strong>Sud-Est</strong> : Auvergne-Rhône-Alpes (siège : Lyon)</li>
+                            </ul>
+                            <p style="margin-top: 10px;"><strong>Outre-mer</strong> : 5 zones (Antilles, Guyane, Sud Océan Indien, Nouvelle-Calédonie, Polynésie française)</p>
+                            <span class="tag tag-gold">Art. L1311-1 Code défense</span>
+                        </div>
+
+                        <!-- Préfet de Zone -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-gold);">
+                            <h4 style="color: var(--accent-gold);">Préfet de Zone de Défense et de Sécurité</h4>
+                            <p>Le préfet de la région où se situe le chef-lieu de zone est de droit préfet de zone</p>
+                            <ul>
+                                <li><strong>Représentant de l'État</strong> pour la défense à caractère non militaire</li>
+                                <li><strong>Responsable</strong> de la préparation et de l'exécution des mesures de sécurité nationale</li>
+                                <li><strong>Coordonne</strong> l'action des préfets de région et de département</li>
+                                <li><strong>Dirige</strong> les opérations de gestion de crise dépassant le cadre départemental</li>
+                                <li><strong>Répartit</strong> les moyens de l'État (renforts police, gendarmerie, sécurité civile)</li>
+                                <li><strong>Assure</strong> la coordination avec l'autorité militaire (OGZDS)</li>
+                            </ul>
+                            <span class="tag tag-gold">Décret n°2004-374 modifié</span>
+                        </div>
+
+                        <!-- Attributions du Préfet de Zone -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-gold);">
+                            <h4 style="color: var(--accent-gold);">Attributions du Préfet de Zone</h4>
+                            <p><strong>En matière de défense civile :</strong></p>
+                            <ul>
+                                <li>Préparation et mise en œuvre des mesures de défense non militaire</li>
+                                <li>Protection des populations civiles</li>
+                                <li>Continuité de l'action gouvernementale</li>
+                                <li>Coordination des plans ORSEC zonaux</li>
+                            </ul>
+                            <p style="margin-top: 10px;"><strong>En matière de sécurité civile :</strong></p>
+                            <ul>
+                                <li>Coordination des opérations de secours dépassant le département</li>
+                                <li>Réquisition des moyens publics et privés</li>
+                                <li>Gestion des crises majeures (catastrophes naturelles, industrielles, sanitaires)</li>
+                            </ul>
+                            <p style="margin-top: 10px;"><strong>En matière de sécurité intérieure :</strong></p>
+                            <ul>
+                                <li>Coordination de la lutte contre les menaces (terrorisme, criminalité organisée)</li>
+                                <li>Gestion des grands événements à dimension zonale</li>
+                            </ul>
+                            <span class="tag tag-gold">Sécurité nationale</span>
+                        </div>
+
+                        <!-- Préfet Délégué -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-blue);">
+                            <h4 style="color: var(--accent-blue);">Préfet Délégué pour la Défense et la Sécurité (PDDS)</h4>
+                            <p>Adjoint du préfet de zone, placé sous son autorité directe</p>
+                            <ul>
+                                <li><strong>Assiste</strong> le préfet de zone dans l'exercice de ses attributions</li>
+                                <li><strong>Anime et coordonne</strong> l'action des services de l'État concourant à la défense et à la sécurité</li>
+                                <li><strong>Supplée</strong> le préfet de zone en cas d'absence ou d'empêchement</li>
+                                <li><strong>Dirige</strong> l'état-major interministériel de zone (EMIZ)</li>
+                                <li><strong>Prépare</strong> les plans et exercices de défense civile</li>
+                                <li><strong>Assure</strong> la veille opérationnelle permanente (COZ)</li>
+                            </ul>
+                            <span class="tag tag-blue">Préfet hors classe ou classe exceptionnelle</span>
+                        </div>
+
+                        <!-- EMIZ -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-green);">
+                            <h4 style="color: var(--accent-green);">État-Major Interministériel de Zone (EMIZ)</h4>
+                            <p>Service déconcentré interministériel placé sous l'autorité du préfet de zone</p>
+                            <ul>
+                                <li><strong>Préparation</strong> des mesures de défense et de sécurité civile</li>
+                                <li><strong>Coordination</strong> des moyens de sécurité civile de la zone</li>
+                                <li><strong>Planification</strong> : élaboration des plans ORSEC de zone, plans zonaux de sécurité</li>
+                                <li><strong>Gestion de crise</strong> : activation du COZ, coordination opérationnelle</li>
+                                <li><strong>Suivi</strong> des établissements SEVESO et infrastructures critiques</li>
+                                <li><strong>Formation</strong> : exercices et entraînements interservices</li>
+                            </ul>
+                            <span class="tag tag-green">Service à vocation interministérielle</span>
+                        </div>
+
+                        <!-- COZ -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-green);">
+                            <h4 style="color: var(--accent-green);">Centre Opérationnel de Zone (COZ)</h4>
+                            <p>Structure de veille et de gestion de crise activable 24h/24</p>
+                            <ul>
+                                <li><strong>Veille permanente</strong> sur les événements à risque</li>
+                                <li><strong>Remontée d'information</strong> vers le COGIC (niveau national)</li>
+                                <li><strong>Coordination</strong> des COD départementaux</li>
+                                <li><strong>Régulation</strong> des moyens de secours zonaux</li>
+                                <li><strong>Interface</strong> avec l'OGZDS (autorité militaire)</li>
+                            </ul>
+                            <span class="tag tag-green">Veille H24</span>
+                        </div>
+
+                        <!-- Services Zonaux -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-purple);">
+                            <h4 style="color: var(--accent-purple);">Autres Services et Autorités Zonaux</h4>
+                            <ul>
+                                <li><strong>OGZDS</strong> (Officier Général de Zone de Défense et de Sécurité) : autorité militaire, coordination armées</li>
+                                <li><strong>SGAMI</strong> (Secrétariat Général pour l'Administration du MI) : mutualisations police/gendarmerie</li>
+                                <li><strong>DZPN</strong> (Direction Zonale de la Police Nationale)</li>
+                                <li><strong>Commandement de région de gendarmerie</strong></li>
+                                <li><strong>DZCRS</strong> (Direction Zonale des CRS)</li>
+                                <li><strong>État-major de zone de la gendarmerie</strong></li>
+                                <li><strong>ARS de zone</strong> : coordination sanitaire en cas de crise</li>
+                                <li><strong>CRICR</strong> (Centre Régional d'Information et de Coordination Routières)</li>
+                            </ul>
+                            <span class="tag tag-purple" style="background: rgba(139, 107, 185, 0.2); color: var(--accent-purple);">Coordination interservices</span>
+                        </div>
+
+                        <!-- Moyens Zonaux -->
+                        <div class="sub-node" style="border-left: 3px solid var(--accent-red);">
+                            <h4 style="color: var(--accent-red);">Moyens Zonaux de Sécurité Civile</h4>
+                            <p>Moyens mutualisés à disposition du préfet de zone</p>
+                            <ul>
+                                <li><strong>Colonnes de renfort SDIS</strong> : détachements interdépartementaux</li>
+                                <li><strong>Moyens aériens</strong> : hélicoptères de la sécurité civile</li>
+                                <li><strong>UIISC</strong> : Unités d'Instruction et d'Intervention de la Sécurité Civile (militaires)</li>
+                                <li><strong>BMPM</strong> à Marseille, <strong>BSPP</strong> à Paris : pompiers militaires</li>
+                                <li><strong>Moyens NRBC</strong> : cellules mobiles d'intervention</li>
+                                <li><strong>Stocks stratégiques</strong> : matériels, médicaments</li>
+                            </ul>
+                            <span class="tag tag-red">Réquisition possible</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Principes Clés -->
+            <div class="principles">
+                <h3>🔑 Principes Clés à Retenir</h3>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <h5>Déconcentration ≠ Décentralisation</h5>
+                        <p><strong>Déconcentration</strong> : transfert au sein de l'État (même personne morale, hiérarchie)<br>
+                        <strong>Décentralisation</strong> : transfert vers collectivités territoriales (personnes morales distinctes, autonomie)</p>
+                    </div>
+                    <div class="principle-card">
+                        <h5>Échelon Zonal = Gestion de Crise</h5>
+                        <p>La zone est l'échelon de coordination des moyens de sécurité civile et de gestion des crises dépassant le cadre départemental. Le préfet de zone peut <strong>réquisitionner</strong> et <strong>répartir</strong> les moyens.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h5>Principe de Subsidiarité</h5>
+                        <p>La décision doit être prise au niveau le plus proche possible du citoyen, sauf si l'efficacité commande une intervention à un niveau supérieur.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h5>Autorité du Préfet</h5>
+                        <p>Le préfet dirige les services déconcentrés dans le département/région, sauf : armées, éducation, juridictions, finances publiques, inspection du travail.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h5>Chaîne de Commandement Zonale</h5>
+                        <p><strong>Préfet de zone</strong> → assisté du <strong>PDDS</strong> → s'appuie sur l'<strong>EMIZ</strong> et le <strong>COZ</strong> → coordonne avec l'<strong>OGZDS</strong> (militaire).</p>
+                    </div>
+                    <div class="principle-card">
+                        <h5>Réforme OTE (2020)</h5>
+                        <p>Réorganisation de l'administration territoriale : renforcement du niveau départemental, création des SGC, mutualisation des fonctions support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Carte mentale réalisée pour la préparation aux concours et examens de la fonction publique</p>
+        </footer>
+    </div>
+</body>
+</html>

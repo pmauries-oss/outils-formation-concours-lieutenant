@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culture Administrative — Carte Mentale SPP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0f1a;
+  --card-bg: #141829;
+  --card-hover: #1a1f38;
+  --accent-red: #e63946;
+  --accent-blue: #457b9d;
+  --accent-gold: #e9c46a;
+  --accent-green: #2a9d8f;
+  --accent-purple: #7b2cbf;
+  --accent-orange: #f4845f;
+  --accent-teal: #48bfe3;
+  --accent-pink: #c77dff;
+  --accent-cyan: #00b4d8;
+  --accent-lime: #80b918;
+  --text: #e8e8ef;
+  --text-muted: #8e92a8;
+  --border: rgba(255,255,255,0.06);
+  --glow: rgba(230,57,70,0.15);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif;
+  min-height: 100vh; overflow-x: hidden;
+}
+body::before {
+  content:''; position:fixed; top:-50%; left:-50%; width:200%; height:200%;
+  background: radial-gradient(ellipse at 20% 50%, rgba(230,57,70,0.04) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(69,123,157,0.04) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(123,44,191,0.03) 0%, transparent 50%);
+  animation: bgDrift 30s ease-in-out infinite alternate; z-index:0; pointer-events:none;
+}
+@keyframes bgDrift { 0%{transform:translate(0,0)} 100%{transform:translate(-3%,-2%)} }
+
+.header { position:relative; z-index:1; text-align:center; padding:50px 20px 20px; }
+.header h1 {
+  font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900;
+  background:linear-gradient(135deg,var(--accent-red),var(--accent-gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  letter-spacing:-1px; line-height:1.1;
+}
+.header .subtitle { color:var(--text-muted); font-size:0.95rem; margin-top:10px; letter-spacing:2px; text-transform:uppercase; }
+.header .badge {
+  display:inline-block; margin-top:14px; padding:6px 18px;
+  background:rgba(230,57,70,0.12); border:1px solid rgba(230,57,70,0.25);
+  border-radius:20px; color:var(--accent-red); font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+}
+
+.search-wrap { position:relative; z-index:2; max-width:600px; margin:16px auto 10px; padding:0 20px; }
+.search-wrap input {
+  width:100%; padding:14px 20px 14px 48px; background:var(--card-bg); border:1px solid var(--border);
+  border-radius:14px; color:var(--text); font-size:0.95rem; font-family:'DM Sans',sans-serif; outline:none;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.search-wrap input:focus { border-color:var(--accent-red); box-shadow:0 0 20px var(--glow); }
+.search-wrap svg { position:absolute; left:36px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--text-muted); fill:none; stroke-width:2; }
+
+.stats-bar { position:relative; z-index:1; display:flex; justify-content:center; gap:30px; padding:12px 20px; flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat .num { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--accent-gold); }
+.stat .label { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1.5px; }
+
+.nav-tabs {
+  position:relative; z-index:2; display:flex; flex-wrap:wrap; justify-content:center;
+  gap:8px; padding:10px 20px; max-width:1400px; margin:0 auto;
+}
+.nav-tab {
+  padding:10px 18px; border-radius:10px; font-size:0.75rem; font-weight:700;
+  cursor:pointer; transition:all 0.3s; border:1px solid var(--border); background:var(--card-bg);
+  color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase; white-space:nowrap;
+}
+.nav-tab:hover { background:var(--card-hover); color:var(--text); }
+.nav-tab.active { color:#fff; border-color:transparent; }
+
+.content { position:relative; z-index:1; max-width:1400px; margin:16px auto; padding:0 20px 60px; }
+.section { display:none; animation:fadeUp 0.4s ease; }
+.section.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.section-title {
+  font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700;
+  margin-bottom:8px; padding-bottom:10px; border-bottom:2px solid var(--border);
+  display:flex; align-items:center; gap:12px;
+}
+.section-title .icon {
+  width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-size:1rem; flex-shrink:0;
+}
+
+/* INTRO BLOCK */
+.section-intro {
+  margin-bottom:22px; padding:18px 22px; border-radius:14px;
+  background: rgba(255,255,255,0.025); border:1px solid var(--border);
+  font-size:0.88rem; line-height:1.7; color:var(--text-muted);
+}
+.section-intro strong { color:var(--text); }
+.section-intro .intro-label {
+  display:inline-block; font-size:0.65rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:1.5px; padding:3px 10px; border-radius:6px; margin-bottom:10px;
+}
+
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(350px,1fr)); gap:14px; }
+
+.card {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; transition:all 0.3s; cursor:pointer;
+}
+.card:hover { background:var(--card-hover); border-color:rgba(255,255,255,0.1); transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,0.3); }
+.card-header {
+  padding:14px 16px 10px; font-size:0.83rem; font-weight:600; color:var(--text); line-height:1.4;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.card-header .q-badge {
+  flex-shrink:0; width:26px; height:26px; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; font-size:0.6rem; font-weight:700; color:#fff;
+}
+.card-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+.card.open .card-body { max-height:800px; }
+.card-body-inner { padding:0 16px 14px; }
+.answer {
+  padding:7px 11px; margin-bottom:5px; border-radius:8px; font-size:0.8rem; line-height:1.45;
+  color:var(--text); border-left:3px solid; background:rgba(255,255,255,0.02);
+}
+.answer .check { margin-right:6px; font-weight:700; }
+
+[data-color="red"] .section-title{color:var(--accent-red)} [data-color="red"] .q-badge,[data-color="red"] .icon{background:rgba(230,57,70,0.2);color:var(--accent-red)} [data-color="red"] .answer{border-color:var(--accent-red)} [data-color="red"].nav-tab.active{background:var(--accent-red)} [data-color="red"] .intro-label{background:rgba(230,57,70,0.15);color:var(--accent-red)}
+[data-color="blue"] .section-title{color:var(--accent-blue)} [data-color="blue"] .q-badge,[data-color="blue"] .icon{background:rgba(69,123,157,0.2);color:var(--accent-blue)} [data-color="blue"] .answer{border-color:var(--accent-blue)} [data-color="blue"].nav-tab.active{background:var(--accent-blue)} [data-color="blue"] .intro-label{background:rgba(69,123,157,0.15);color:var(--accent-blue)}
+[data-color="green"] .section-title{color:var(--accent-green)} [data-color="green"] .q-badge,[data-color="green"] .icon{background:rgba(42,157,143,0.2);color:var(--accent-green)} [data-color="green"] .answer{border-color:var(--accent-green)} [data-color="green"].nav-tab.active{background:var(--accent-green)} [data-color="green"] .intro-label{background:rgba(42,157,143,0.15);color:var(--accent-green)}
+[data-color="purple"] .section-title{color:var(--accent-purple)} [data-color="purple"] .q-badge,[data-color="purple"] .icon{background:rgba(123,44,191,0.2);color:var(--accent-purple)} [data-color="purple"] .answer{border-color:var(--accent-purple)} [data-color="purple"].nav-tab.active{background:var(--accent-purple)} [data-color="purple"] .intro-label{background:rgba(123,44,191,0.15);color:var(--accent-purple)}
+[data-color="orange"] .section-title{color:var(--accent-orange)} [data-color="orange"] .q-badge,[data-color="orange"] .icon{background:rgba(244,132,95,0.2);color:var(--accent-orange)} [data-color="orange"] .answer{border-color:var(--accent-orange)} [data-color="orange"].nav-tab.active{background:var(--accent-orange)} [data-color="orange"] .intro-label{background:rgba(244,132,95,0.15);color:var(--accent-orange)}
+[data-color="teal"] .section-title{color:var(--accent-teal)} [data-color="teal"] .q-badge,[data-color="teal"] .icon{background:rgba(72,191,227,0.2);color:var(--accent-teal)} [data-color="teal"] .answer{border-color:var(--accent-teal)} [data-color="teal"].nav-tab.active{background:var(--accent-teal)} [data-color="teal"] .intro-label{background:rgba(72,191,227,0.15);color:var(--accent-teal)}
+[data-color="gold"] .section-title{color:var(--accent-gold)} [data-color="gold"] .q-badge,[data-color="gold"] .icon{background:rgba(233,196,106,0.2);color:var(--accent-gold)} [data-color="gold"] .answer{border-color:var(--accent-gold)} [data-color="gold"].nav-tab.active{background:var(--accent-gold);color:#000} [data-color="gold"] .intro-label{background:rgba(233,196,106,0.15);color:var(--accent-gold)}
+[data-color="pink"] .section-title{color:var(--accent-pink)} [data-color="pink"] .q-badge,[data-color="pink"] .icon{background:rgba(199,125,255,0.2);color:var(--accent-pink)} [data-color="pink"] .answer{border-color:var(--accent-pink)} [data-color="pink"].nav-tab.active{background:var(--accent-pink);color:#000} [data-color="pink"] .intro-label{background:rgba(199,125,255,0.15);color:var(--accent-pink)}
+
+.toolbar { display:flex; justify-content:flex-end; gap:8px; margin-bottom:14px; }
+.toolbar button {
+  padding:7px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card-bg);
+  color:var(--text-muted); font-size:0.72rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px;
+}
+.toolbar button:hover { background:var(--card-hover); color:var(--text); }
+.counter-badge {
+  display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:20px;
+  padding:0 5px; border-radius:6px; font-size:0.65rem; font-weight:700; margin-left:5px;
+  background:rgba(255,255,255,0.1); color:var(--text-muted);
+}
+@media(max-width:768px) { .cards-grid{grid-template-columns:1fr} .stats-bar{gap:16px} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Culture Administrative</h1>
+  <div class="subtitle">Préparation Lieutenant 1ère Classe — SPP</div>
+  <div class="badge">Carte mentale complète avec synthèses</div>
+</div>
+
+<div class="search-wrap">
+  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <input type="text" id="searchInput" placeholder="Rechercher un thème, une loi, un juge, une institution...">
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="num" id="totalQ">0</div><div class="label">Questions</div></div>
+  <div class="stat"><div class="num" id="totalS">0</div><div class="label">Sections</div></div>
+  <div class="stat"><div class="num" id="totalA">0</div><div class="label">Réponses</div></div>
+</div>
+
+<div id="navTabs" class="nav-tabs"></div>
+<div class="content" id="content"></div>
+
+<script>
+const DATA = [
+  {
+    id:"general",
+    title:"Généralités & Cadre juridique",
+    icon:"⚖️",
+    color:"red",
+    intro:`<strong>La hiérarchie des normes</strong> constitue le socle du droit français. Héritée de la pensée de <strong>Hans Kelsen</strong>, elle organise l'ensemble des règles juridiques en une pyramide au sommet de laquelle se trouve le <strong>bloc de constitutionnalité</strong> (Constitution de 1958, DDHC de 1789, Préambule de 1946, Charte de l'environnement de 2004). En dessous viennent le <strong>bloc conventionnel</strong> (traités, directives UE), le <strong>bloc législatif</strong> (lois organiques, lois ordinaires, ordonnances), puis le <strong>bloc réglementaire</strong> (décrets, arrêtés, circulaires).<br><br>
+    Cette section couvre également les <strong>fondements de la responsabilité</strong> — civile (réparation du dommage) et pénale (répression de l'infraction) — dont la distinction est essentielle pour les sapeurs-pompiers professionnels, qui peuvent engager leur responsabilité personnelle même dans le cadre du service. La notion de <strong>faute personnelle non détachable du service</strong> est un classique du concours. On y retrouve aussi les <strong>grandes lois historiques</strong> (IVG 1975, abolition de la peine de mort 1981, associations 1901, congés payés 1936, accords de Grenelle 1968) et des thèmes d'actualité comme la <strong>COP 30</strong> prévue à Belém en 2025.`,
+    questions:[
+      {q:"Quelle est la particularité des DROM ?", a:["Un seul préfet est en place"]},
+      {q:"Quelle norme est placée au plus haut de la pyramide de la hiérarchie des normes ?", a:["Un décret (piège — le bloc de constitutionnalité est au sommet)"]},
+      {q:"Que prévoit la loi pour la confiance dans l'institution judiciaire de 2021 ?", a:["Des procès filmés à des fins pédagogiques","Renforcement du secret professionnel des avocats","Peines alourdies en cas de meurtre sur un policier"]},
+      {q:"Par quels acteurs peuvent être créées les communes nouvelles ?", a:["L'ensemble des conseillers municipaux des communes fusionnées","2/3 des conseils municipaux des communes d'un même EPCI à fiscalité propre (représentant > 2/3 de la population)","Le préfet"]},
+      {q:"Vote du budget d'un SIS ?", a:["Budgets adoptés à la majorité absolue des suffrages exprimés","Avant l'adoption, des recettes peuvent être encaissées et des dépenses engagées"]},
+      {q:"Chronologie budgétaire ?", a:["DOB réalisé dans les 2 mois précédant le vote","Budget primitif voté avant le 15 avril","Avant le 30 avril si renouvellement de l'assemblée délibérante"]},
+      {q:"COP 30 ?", a:["2025 à Belém au Brésil","Conférence internationale organisée par l'ONU","Traite des changements climatiques"]},
+      {q:"Les TAAF sont classées en...", a:["Aucune réponse ne convient (Collectivité d'outre-mer à statut particulier)"]},
+      {q:"Budget d'un SDIS ?", a:["Doit faire l'objet d'un DOB","Le budget primitif fixe l'essentiel des dépenses et recettes à l'exercice à venir"]},
+      {q:"Loi Bachelot ?", a:["Loi de réforme de l'hôpital, relative aux patients, à la santé et aux territoires","Crée les ARS"]},
+      {q:"Les trois pouvoirs ?", a:["Exécutif (Président de la République)","Législatif (AN + Sénat)","Judiciaire (Tribunaux)"]},
+      {q:"Responsabilité civile et pénale ?", a:["Pénale → répression des infractions troublant l'ordre social","Civile → réparation des dommages causés à autrui"]},
+      {q:"SPP détourne un véhicule de service → accident. Faute ?", a:["Personnelle mais non détachable du service"]},
+      {q:"Hiérarchie des normes — bloc de constitutionnalité ?", a:["Constitution du 4 octobre 1958 (+ préambule)","DDHC de 1789","Préambule de la Constitution de 1946","Charte de l'environnement de 2004","Principes et objectifs de valeur constitutionnelle"]},
+      {q:"Directive UE dans la hiérarchie des normes ?", a:["En dessous du bloc de constitutionnalité, dans le bloc conventionnel"]},
+      {q:"Acte administratif ?", a:["Toute décision prise par une autorité administrative dans l'exercice de ses pouvoirs"]},
+      {q:"Arrêtés ?", a:["Inférieur à un décret dans la hiérarchie des normes","Peut être réglementaire ou individuel","Peut émaner d'un président de Conseil départemental"]},
+      {q:"Circulaires ?", a:["Texte permettant aux autorités administratives d'informer leurs services"]},
+      {q:"Ordonnances ?", a:["Entrent en vigueur dès leur publication","Autorisées par le Parlement via loi d'habilitation","Mesure du Gouvernement dans le domaine de la loi"]},
+      {q:"DDHC adoptée en quelle année ?", a:["Le 26 août 1789"]},
+      {q:"Loi IVG ?", a:["Promulguée en 1975"]},
+      {q:"Premiers congés payés ?", a:["1936"]},
+      {q:"Abolition de la peine de mort ?", a:["1981 — Loi Badinter"]},
+      {q:"Accords de Grenelle ?", a:["Avancées sociales suite aux événements de 1968"]},
+      {q:"Loi du 1er juillet 1901 ?", a:["Consacrée aux associations à but non lucratif"]},
+      {q:"Louvre-Lens ?", a:["Inauguré en 2012 à Lens"]},
+      {q:"Sommet de la Terre à Rio ?", a:["1992"]},
+      {q:"Pandémie selon l'OMS ?", a:["Infection partant d'une zone localisée puis s'étendant au monde entier"]},
+      {q:"Transfert compétence eau aux EPCI ?", a:["1er janvier 2020"]},
+      {q:"Couleurs du drapeau français ?", a:["Le bleu et le rouge représentent la ville de Paris"]},
+      {q:"Symboles de la France ?", a:["Le drapeau bleu, blanc, rouge est inscrit dans la Constitution","La devise « Liberté, Égalité, Fraternité » figure dans la Constitution de 1958"]}
+    ]
+  },
+  {
+    id:"decentral",
+    title:"Décentralisation & Déconcentration",
+    icon:"🏛️",
+    color:"blue",
+    intro:`<strong>Décentralisation et déconcentration</strong> sont les deux grands modes d'organisation administrative de la France, et il est essentiel de ne pas les confondre au concours. La <strong>déconcentration</strong>, instaurée sous <strong>Napoléon</strong>, consiste à déléguer le pouvoir central à des représentants de l'État sur le terrain — le <strong>préfet</strong> en est la figure principale (représentant du Premier ministre et des membres du gouvernement dans le département). La <strong>décentralisation</strong>, quant à elle, transfère des compétences de l'État vers des <strong>collectivités territoriales</strong> autonomes (communes, départements, régions).<br><br>
+    Le mouvement de décentralisation s'est construit en trois grandes étapes historiques : l'<strong>Acte I</strong> avec la <strong>loi Defferre de 1982</strong> (transfert de compétences, libertés des collectivités), l'<strong>Acte II</strong> en <strong>2003</strong> (inscription de la décentralisation dans la Constitution, autonomie financière des collectivités), puis l'<strong>Acte III</strong> sous la présidence de <strong>François Hollande</strong> avec trois lois majeures : la <strong>loi MAPTAM du 27 janvier 2014</strong> (création des métropoles, clause générale de compétence rétablie), la <strong>loi NOTRe du 7 août 2015</strong> (nouvelle carte régionale, renforcement des régions en développement économique et transport), et la <strong>loi du 16 décembre 2010</strong> (obligation d'adhésion des communes à un EPCI, création des communes nouvelles et des métropoles).<br><br>
+    La répartition des compétences entre niveaux est un grand classique : les <strong>communes</strong> gèrent l'urbanisme, le logement et les écoles élémentaires (avec clause générale de compétence), les <strong>départements</strong> gèrent l'action sociale (RSA, personnes âgées, handicap), les collèges et la voirie départementale, les <strong>régions</strong> gèrent le développement économique, les lycées et l'aménagement du territoire. La <strong>culture et le tourisme</strong> sont des compétences partagées entre les trois échelons. La France compte aujourd'hui <strong>18 régions</strong>, <strong>101 départements</strong> (dont 5 DROM), et <strong>22 métropoles</strong>.`,
+    questions:[
+      {q:"La décentralisation ?", a:["Transfert de compétences de l'État vers des entités locales distinctes","Les collectivités territoriales sont des autorités décentralisées"]},
+      {q:"La déconcentration ?", a:["Le préfet représente le 1er ministre et les membres du gouvernement","Pouvoir central attribué à un représentant de l'État au plan local","Napoléon est à l'origine de la déconcentration"]},
+      {q:"Loi Defferre ?", a:["Droits et libertés des communes, départements et régions","Acte 1 de la décentralisation","Transfert de compétences (collèges, lycées)"]},
+      {q:"Acte 2 de la décentralisation ?", a:["Inscrit la décentralisation dans la Constitution","Consacre l'autonomie financière des collectivités"]},
+      {q:"Loi du 16 décembre 2010 ?", a:["Oblige chaque commune à adhérer à un EPCI","Loi de réforme des collectivités territoriales","Encourage les communes nouvelles","Crée les métropoles"]},
+      {q:"Loi MAPTAM ?", a:["Adoptée le 27 janvier 2014","Rétablit la clause générale de compétence pour régions et départements","LOI n° 2014-58 — modernisation de l'action publique territoriale"]},
+      {q:"Loi NOTRe — promulgation ?", a:["7 août 2015"]},
+      {q:"Loi NOTRe — signification ?", a:["Nouvelle Organisation Territoriale de la République"]},
+      {q:"Loi NOTRe — apports ?", a:["Renforce le rôle de la région (développement économique)","Transport transféré aux régions"]},
+      {q:"Compétences des départements ?", a:["Aide sociale (personnes handicapées et âgées)","Infrastructures (ports, aérodromes)","Construction et entretien des collèges","RSA","Voirie départementale","Aménagement du territoire"]},
+      {q:"Compétences des communes ?", a:["Gestion des écoles élémentaires","Logement","Urbanisme","Clause générale de compétence"]},
+      {q:"Compétences des régions ?", a:["Développement économique","Aménagement du territoire","Gestion des lycées"]},
+      {q:"Compétences partagées communes/départements/régions ?", a:["Gestion de la culture","Gestion du tourisme"]},
+      {q:"Particularité de la Corse ?", a:["Collectivité à statut particulier","Collectivité territoriale","Exerce les compétences dévolues aux conseils départementaux","Compétences particulières fixées par le CGCT"]},
+      {q:"EPCI ?", a:["Établissement Public de Coopération Intercommunale","Forme de coopération entre communes","Communauté de communes = EPCI"]},
+      {q:"Affirmations sur les EPCI ?", a:["Syndicats d'agglomération nouvelle dissous","Communauté urbaine ≥ 250 000 habitants"]},
+      {q:"Métropoles ?", a:["Créées par la loi du 16 décembre 2010","Modifiées par la loi MAPTAM","Compétences en développement économique","22 métropoles en France"]},
+      {q:"Intercommunalité ?", a:["Les différentes formes de coopérations entre les communes"]},
+      {q:"Loi 3DS ?", a:["Décentralisation","Différenciation","Déconcentration"]},
+      {q:"Acte 3 de la décentralisation — présidence ?", a:["François Hollande"]},
+      {q:"Communes nouvelles ?", a:["Statut de collectivité territoriale","Loi du 16 mars 2015 : plus de place aux conseillers des anciennes communes","Prévues par la loi du 16 décembre 2010"]},
+      {q:"Réforme OTE de 2021 ?", a:["Crée les DREETS, DRAJES, DDETS"]},
+      {q:"France : régions et départements ?", a:["18 régions, 101 départements","96 départements en métropole","5 DROM : Guadeloupe, Guyane, Martinique, Mayotte, Réunion"]}
+    ]
+  },
+  {
+    id:"fpt",
+    title:"Fonction Publique & Budget",
+    icon:"📋",
+    color:"green",
+    intro:`La <strong>fonction publique française</strong> se divise en trois versants : la <strong>FP d'État</strong> (la plus importante avec environ 2,52 millions d'agents), la <strong>FP territoriale</strong> (FPT) et la <strong>FP hospitalière</strong>. Les sapeurs-pompiers professionnels relèvent de la <strong>FPT</strong>, qui compte <strong>10 filières</strong> et <strong>53 cadres d'emploi</strong>, organisés en trois catégories hiérarchiques : <strong>catégorie A</strong> (direction, conception, encadrement), <strong>catégorie B</strong> (application, rédaction — ex. rédacteur territorial), <strong>catégorie C</strong> (exécution). Le <strong>CNFPT</strong>, établissement public administratif, assure la formation des agents, tandis que l'<strong>INET</strong> organise les concours des cadres d'emplois A+.<br><br>
+    Le protocole <strong>PPCR</strong> (Parcours Professionnels, Carrières et Rémunérations) a harmonisé les carrières entre les trois versants. Les agents sont soumis à des <strong>obligations</strong> fondamentales : <strong>discrétion professionnelle</strong> (ne pas divulguer d'informations), <strong>devoir de réserve</strong> (ne pas utiliser sa fonction à des fins de propagande), <strong>prévention des conflits d'intérêts</strong>, <strong>égalité homme-femme</strong> et <strong>protection fonctionnelle</strong>. La <strong>loi de transformation de la FP du 6 août 2019</strong> a modernisé le cadre en promouvant le dialogue social, la mobilité et les leviers managériaux. Depuis 2020, les agents sont régis par le <strong>Code Général de la Fonction Publique</strong>.<br><br>
+    Côté budget, trois principes fondamentaux encadrent les finances locales : l'<strong>annualité</strong> (vote annuel du 1er janvier au 31 décembre), l'<strong>universalité</strong> (toutes les recettes et dépenses brutes dans un même document), l'<strong>unité</strong> (un document unique pour la lisibilité). L'<strong>instruction M57</strong>, généralisée au 1er janvier 2024, est le référentiel comptable commun à toutes les collectivités, y compris les SDIS (elle remplace les anciennes M14, M52 et M61). Dans un SDIS, l'<strong>ordonnateur</strong> est le président du CA, et le <strong>comptable</strong> est le payeur départemental.`,
+    questions:[
+      {q:"Principe d'annualité ?", a:["Budget voté chaque année (1er janvier au 31 décembre)"]},
+      {q:"Principe d'universalité ?", a:["Rassemblement dans un document unique de l'ensemble des recettes et dépenses brutes"]},
+      {q:"Principe d'unité ?", a:["Budget dans un document unique (lisibilité et transparence)"]},
+      {q:"Instruction M57 ?", a:["Comptabilité des SIS, départements, communes, régions","Se substitue aux M14, M52, M61","Généralisée le 1er janvier 2024"]},
+      {q:"Versant FP avec le plus d'agents ?", a:["FP d'État ≈ 2,52 millions d'agents"]},
+      {q:"FPT ?", a:["10 filières, 53 cadres d'emploi","Filière SPP = filière de la FPT","Filière culturelle = filière de la FPT"]},
+      {q:"CNFPT ?", a:["Établissement public administratif"]},
+      {q:"INET ?", a:["Organisation des concours et examens professionnels des cadres d'emplois A+"]},
+      {q:"Catégories FPT ?", a:["Cat. B filière administrative = rédacteur territorial","Cat. C = agents d'exécution","Cat. A = direction, conception, encadrement"]},
+      {q:"PPCR ?", a:["Parcours Professionnels Carrières et Rémunérations","Renforcer l'unité de la FP et l'harmoniser"]},
+      {q:"Obligation de discrétion professionnelle ?", a:["Ne pas divulguer d'informations ou documents connus dans l'exercice des fonctions"]},
+      {q:"Devoir de réserve ?", a:["Ne pas faire de sa fonction l'instrument d'une propagande"]},
+      {q:"Droits et obligations — CGFP ?", a:["Prévention des conflits d'intérêts","Égalité homme-femme","Protection fonctionnelle des agents et familles"]},
+      {q:"Cumul d'activités ?", a:["Pas de cumul temps complet + auto-entrepreneur","Temps partiel de droit pour créer une entreprise supprimé depuis 2016","Temps partiel possible sous réserve du service + autorisation HATVP"]},
+      {q:"Loi de transformation FP du 6 août 2019 ?", a:["Dialogue social plus stratégique","Transparence et équité du cadre de gestion","Leviers managériaux pour une action publique réactive","Mobilité et transitions professionnelles"]},
+      {q:"Agents FPT régis par ?", a:["Le Code Général de la Fonction Publique"]},
+      {q:"CPF secteur privé ?", a:["Plafonné à 5 000 €","Comptabilisé en euros","Jeune de 15 ans en apprentissage → concerné","Retraité bénévole → peut alimenter son CPF"]},
+      {q:"CPF dans la FPT ?", a:["25 heures par an","Plafond de 150 heures"]},
+      {q:"CPA et CEC ?", a:["CEC = Compte d'Engagement Citoyen","CPA = CPF + CEC (depuis le 1er janvier 2017)"]},
+      {q:"Recette section fonctionnement SDIS ?", a:["Les contributions des communes"]},
+      {q:"Ordonnateur dans les SDIS ?", a:["Le président du conseil d'administration"]},
+      {q:"Structure budgétaire SDIS ?", a:["Charges de personnel → section fonctionnement","Intérêts des emprunts → section fonctionnement"]},
+      {q:"Agents d'exécution du budget SDIS ?", a:["Le comptable = le payeur départemental","Le payeur départemental contrôle recettes et dépenses"]}
+    ]
+  },
+  {
+    id:"formation",
+    title:"Formation SPP / SPV & SDIS",
+    icon:"🚒",
+    color:"orange",
+    intro:`La formation des sapeurs-pompiers est encadrée par l'<strong>arrêté du 22 août 2019</strong>, texte de référence qui structure l'ensemble du dispositif. Il distingue les <strong>formations d'intégration</strong> (à la nomination dans un cadre d'emploi), les <strong>formations de professionnalisation</strong> (maintien et perfectionnement des acquis, adaptation aux risques locaux), et les <strong>formations de spécialité</strong>. Pour chaque formation, un <strong>Référentiel National d'Activités et de Compétences (RNAC)</strong> définit la durée, le contenu et les blocs de compétences, sauf pour les formations d'adaptation aux risques locaux qui font l'objet d'un référentiel interne propre à chaque SDIS.<br><br>
+    Le <strong>conseil d'administration du SDIS</strong> joue un rôle central : il détermine la périodicité des formations de maintien et de perfectionnement ainsi que le référentiel interne d'évaluation. En cas de non-validation d'un bloc de compétences, le SPP stagiaire dispose d'un <strong>délai de 3 ans</strong> pour se représenter. Les organismes habilités à dispenser ces formations incluent le <strong>CNFPT</strong>, l'<strong>École d'application de la sécurité civile (ECASC)</strong>, l'<strong>Entente pour la forêt méditerranéenne</strong> et les <strong>unités militaires de sécurité civile (ForMiSC)</strong>.<br><br>
+    Côté SPV, la <strong>loi du 20 juillet 2011</strong> définit l'engagement citoyen volontaire (conditions : 16 ans minimum, résidence légale, droits civiques, aptitude médicale). Le <strong>plan d'action 2019-2021</strong> a introduit l'<strong>engagement différencié</strong> pour mieux s'adapter aux disponibilités. La <strong>Nouvelle Prestation de Fidélisation et de Reconnaissance (NPFR)</strong> récompense les SPV après leur engagement, avec une perception possible dès 10 ans en cas d'incapacité opérationnelle. Enfin, la <strong>loi MATRAS</strong> a instauré l'expérimentation du <strong>numéro unique 112</strong> pendant 2 ans, marquant une avancée majeure pour la coordination des secours.`,
+    questions:[
+      {q:"Formation de professionnalisation SPP ?", a:["Formations de maintien et de perfectionnement des acquis","Formations d'adaptation aux risques locaux"]},
+      {q:"Le CA du SDIS détermine ?", a:["La périodicité des formations de maintien et de perfectionnement","Le référentiel interne d'évaluation des formations d'adaptation aux risques locaux"]},
+      {q:"Non-validation bloc de compétences (SPP stagiaire) ?", a:["Peut se représenter dans un délai max de 3 ans"]},
+      {q:"Plan d'action 2019-2021 pour les SPV ?", a:["Mise en place d'engagement différencié"]},
+      {q:"Conditions pour devenir SPV ?", a:["16 ans minimum (consentement écrit du représentant légal)","Résider légalement en France","Situation régulière au regard du service national","Jouir de ses droits civiques","Absence de condamnation incompatible","Aptitude médicale et physique"]},
+      {q:"Organismes de formation SP ?", a:["Entente pour la forêt méditerranéenne","Unités militaires de sécurité civile","CNFPT","École d'application de la sécurité civile"]},
+      {q:"NPFR ?", a:["Incapacité opérationnelle médicale → perception dès 10 ans d'activité","2021 : participation de l'État = 4,3 M€"]},
+      {q:"Modalités formation de maintien dans les SDIS ?", a:["Déterminées par le CA du SDIS, après avis du comité consultatif"]},
+      {q:"Formation d'intégration FPT ?", a:["10 jours pour catégorie A","10 jours pour catégorie B","Obligatoire : fonctionnaire stagiaire (concours) et cat. C (sans concours)"]},
+      {q:"Arrêté du 22 août 2019 ?", a:["RNAC pour les formations d'adaptation aux risques locaux"]},
+      {q:"RNAC ?", a:["Définit la durée de la formation","Définit le contenu des formations"]},
+      {q:"Formation de professionnalisation FPT ?", a:["Dispense possible si bilan de compétences (demande au CNFPT)","Maintien des compétences tout au long de la carrière"]},
+      {q:"Loi MATRAS ?", a:["Expérimentation du 112 pendant 2 ans"]},
+      {q:"Formations de perfectionnement FP ?", a:["L'ensemble des agents sont concernés","L'employeur peut obliger l'agent à les réaliser"]},
+      {q:"Agents contractuels FPT — perfectionnement ?", a:["Possible sous réserve des nécessités de service","Développer ou acquérir de nouvelles compétences"]}
+    ]
+  },
+  {
+    id:"ue",
+    title:"Union Européenne",
+    icon:"🇪🇺",
+    color:"purple",
+    intro:`L'<strong>Union européenne</strong> est un projet politique et économique unique, né de la volonté de paix après 1945. Son acte fondateur est la <strong>déclaration du 9 mai 1950 de Robert Schuman</strong>, qui proposait la mise en commun des productions de charbon et d'acier entre la France et l'Allemagne. Six pays fondateurs (<strong>Allemagne, Belgique, France, Italie, Luxembourg, Pays-Bas</strong>) signèrent le traité de Paris en 1951, puis les traités de Rome en 1957. Le <strong>traité de Maastricht (1992)</strong> a créé l'union économique et monétaire dotée d'une monnaie unique (l'euro). Le <strong>traité de Lisbonne (2007)</strong> a donné au Conseil européen le statut d'institution et renforcé le rôle du Parlement.<br><br>
+    L'architecture institutionnelle repose sur un équilibre des pouvoirs : le <strong>Parlement européen</strong> (720 députés en 2024, présidé par Roberta Metsola) représente les citoyens et co-légifère ; le <strong>Conseil de l'UE</strong> (ou Conseil des ministres, siège à Bruxelles) réunit les ministres des États membres avec une présidence tournante de 6 mois (actuellement <strong>Chypre</strong> jusqu'en juin 2026, puis <strong>Irlande</strong>) ; la <strong>Commission européenne</strong> (dirigée par Ursula Von der Leyen, commissaires nommés pour 5 ans) détient le monopole de l'initiative législative ; la <strong>Cour de justice de l'UE</strong> (Luxembourg, 1 juge par État + 11 avocats généraux) assure le respect du droit européen et peut sanctionner les institutions ; la <strong>BCE</strong> (Francfort, présidée par Christine Lagarde) pilote la politique monétaire. Le <strong>Conseil de l'Europe</strong> (à ne pas confondre avec le Conseil européen ou le Conseil de l'UE) est une organisation distincte dédiée à la défense des droits de l'Homme.`,
+    questions:[
+      {q:"Parlement européen ?", a:["Représente les citoyens de l'UE","Établit le budget annuel avec le Conseil et la Commission","720 députés en 2024","Présidente : Roberta Metsola"]},
+      {q:"Traité de Lisbonne ?", a:["Donne au Conseil européen le statut d'institution"]},
+      {q:"Pouvoir exécutif UE ?", a:["La Commission européenne"]},
+      {q:"Pouvoir judiciaire UE ?", a:["La Cour de justice de l'Union européenne"]},
+      {q:"Conseil de l'UE ?", a:["Aussi appelé Conseil des ministres","Réunit les ministres des États membres","Adopte les lois avec le Parlement, coordonne les politiques","Siège à Bruxelles","Présidence tournante : 6 mois par État"]},
+      {q:"Présidence du Conseil UE ?", a:["Chypre de janvier à juin 2026","Irlande de juillet à décembre 2026","Trio actuel : Pologne (1er sem. 2025), Danemark (2e sem. 2025), Chypre (1er sem. 2026)","Prochain trio : Irlande, Lituanie, Grèce"]},
+      {q:"Commission européenne ?", a:["Propose des textes législatifs","Dirigée par Ursula Von der Leyen","Commissaires nommés pour 5 ans"]},
+      {q:"Cour de justice de l'UE ?", a:["Siège au Luxembourg","1 juge par État membre + 11 avocats généraux","Peut sanctionner les institutions de l'UE"]},
+      {q:"Textes fondateurs UE ?", a:["Déclaration du 9 mai 1950 de Robert Schuman","Traité de Maastricht 1992 : union économique et monétaire / monnaie unique"]},
+      {q:"BCE ?", a:["Siège à Francfort-sur-le-Main","Stabilité des prix / politique économique et monétaire","Présidente : Christine Lagarde"]},
+      {q:"CESE ?", a:["Président élu pour 2 ans et demi","Président : Olivier Röpke"]},
+      {q:"Membres fondateurs UE ?", a:["Allemagne, Belgique, France, Italie, Luxembourg, Pays-Bas"]},
+      {q:"Pays candidats UE ?", a:["Albanie, Macédoine du Nord, Serbie, Turquie","Croatie = État membre","Islande = État membre"]},
+      {q:"Drapeau européen ?", a:["12 étoiles d'or : solidarité et union entre les peuples","1985 : emblème officiel des Communautés européennes"]},
+      {q:"Conseil de l'Europe ?", a:["Défendre les droits de l'Homme et la prééminence du droit"]}
+    ]
+  },
+  {
+    id:"orga_intl",
+    title:"Organisations Internationales & Défense",
+    icon:"🌍",
+    color:"teal",
+    intro:`Cette section couvre les grandes <strong>organisations internationales</strong> et le cadre de la <strong>défense et sécurité nationale</strong>, deux thématiques fréquemment interrogées au concours de lieutenant. L'<strong>ONU</strong>, fondée en 1945 et comptant 193 membres (Secrétaire général : Antonio Guterres), a pour missions le maintien de la paix et la promotion du développement durable. Son <strong>Conseil de sécurité</strong> (5 membres permanents, siège à New York) est l'organe décisionnel clé. L'<strong>OTAN</strong> (Organisation du Traité de l'Atlantique Nord), alliance militaire née en 1949 avec 12 pays fondateurs, regroupe aujourd'hui 32 membres en 2025, dont la Suède récemment intégrée (Secrétaire général : Mark Rutte). <strong>INTERPOL</strong> (196 membres, siège à Lyon) coordonne la coopération policière internationale.<br><br>
+    Sur le plan national, la <strong>défense</strong> repose sur trois acteurs constitutionnels : le <strong>Président de la République</strong> (chef des armées), le <strong>Premier ministre</strong> (responsable de la défense nationale) et le <strong>ministre des Armées</strong>. L'armée française compte environ <strong>205 000 militaires actifs</strong> et <strong>35 000 réservistes</strong>. Parmi les opérations à connaître : <strong>Chammal</strong> (contre Daech) et <strong>Héphaistos</strong> (feux de forêts). Le <strong>plan Vigipirate</strong>, décidé par le Premier ministre et diffusé par le <strong>SGDSN</strong> (Nicolas Roche en 2025), comporte 3 niveaux dont le niveau « urgence attentat ». Les <strong>Hauts Fonctionnaires de Défense et de Sécurité (HFDS)</strong>, nommés par le PM, animent la politique de défense et de vigilance au sein de chaque ministère et ont autorité sur l'ensemble de ses directions. En régime exceptionnel, l'<strong>état de siège</strong> transfère les pouvoirs de police à l'autorité militaire, tandis que l'<strong>article 16</strong> de la Constitution (utilisé par de Gaulle en 1961) confère les pleins pouvoirs au Président.`,
+    questions:[
+      {q:"ONU ?", a:["Fondée en 1945","193 membres","Secrétaire général : Antonio Guterres","Drapeau : carte du monde et couronne d'olivier"]},
+      {q:"Missions de l'ONU ?", a:["Paix et sécurité internationale","Promouvoir le développement durable"]},
+      {q:"Conseil de sécurité ONU ?", a:["Siège à New York","5 membres permanents"]},
+      {q:"OTAN ?", a:["Organisation du Traité de l'Atlantique Nord","12 pays fondateurs","32 pays membres en 2025","La Suède en fait partie","Secrétaire général : Mark Rutte"]},
+      {q:"Effectif armée française ?", a:["205 000 militaires actifs","35 000 réservistes"]},
+      {q:"Opération Chammal ?", a:["Appui contre Daech"]},
+      {q:"Opération Héphaistos ?", a:["Lutte contre les feux de forêts dans le sud de la France (chaque été)"]},
+      {q:"Plan Vigipirate — niveaux ?", a:["3 niveaux adaptés à la menace","Urgence attentat : suite immédiate d'un attentat"]},
+      {q:"Directives Vigipirate ?", a:["Diffusées par le SGDSN"]},
+      {q:"Plan Vigipirate — caractéristiques ?", a:["Partie publique + partie « confidentiel défense »","Niveau décidé par le Premier ministre"]},
+      {q:"ARS ?", a:["Installées en 2010 (loi HPST 2009)","Établissements publics administratifs"]},
+      {q:"MSGU ?", a:["Médias Sociaux en Gestion d'Urgence"]},
+      {q:"G7 ?", a:["Organisé en France en 2019","Allemagne, Canada, États-Unis, France, Italie, Japon, Royaume-Uni + UE"]},
+      {q:"Management directif ?", a:["À préconiser dans un contexte d'urgence"]},
+      {q:"INTERPOL ?", a:["196 membres","Siège à Lyon","Organisation internationale de police criminelle"]},
+      {q:"HFDS — rôle ?", a:["Autorité sur les directions et services du ministère","Nommé par décret du PM, sur proposition du ministre","En liaison permanente avec le SGDSN (Nicolas Roche)"]},
+      {q:"HFDS — missions ?", a:["Anime et coordonne la préparation des mesures de défense","Organise la gestion de crise","Applique Vigipirate sur son périmètre ministériel"]},
+      {q:"HFDS — politique ?", a:["Anime et coordonne la politique en matière de défense","Anime et coordonne la politique en matière de vigilance"]},
+      {q:"HFDS — base juridique ?", a:["Le code de la défense détaille les missions du HFDS"]},
+      {q:"SGDSN en 2025 ?", a:["Nicolas Roche"]},
+      {q:"Acteurs de la Défense nationale (5e Rép.) ?", a:["Le Président de la République (chef des armées)","Le ministre des Armées","Le Premier ministre (responsable de la défense nationale)"]},
+      {q:"État de siège ?", a:["Perquisitions jour/nuit","Interdire publications/réunions","Éloigner condamnés","Ordonner remise des armes"]},
+      {q:"Dispositifs armée → maintien de l'ordre ?", a:["L'état de guerre","L'état de siège"]},
+      {q:"Chef d'état-major des armées 2025 ?", a:["Général Fabien Mandon"]},
+      {q:"Ministre assisté par un HFD ?", a:["Le ministre de l'Intérieur"]},
+      {q:"HFCDS assiste le ministre...", a:["Des armées","Des Affaires étrangères"]},
+      {q:"État d'urgence sanitaire ?", a:["Déclaré par décret en Conseil des ministres","Durée 1 mois max ; prorogation autorisée par la loi"]},
+      {q:"Article 16 de la Constitution ?", a:["Utilisé lors du putsch des généraux algériens (1961)","Utilisé par Charles de Gaulle"]},
+      {q:"HAS ?", a:["Autorité publique indépendante","Créée par la loi du 13 août 2004 (assurance maladie)"]},
+      {q:"Santé Publique France ?", a:["Fusion de l'INPES, l'INVS et l'EPRUS","Observation épidémiologique"]}
+    ]
+  },
+  {
+    id:"institutions",
+    title:"Institutions de la République",
+    icon:"🏰",
+    color:"gold",
+    intro:`La <strong>Ve République</strong>, instaurée par la Constitution du <strong>4 octobre 1958</strong>, repose sur un régime semi-présidentiel caractérisé par la prééminence du <strong>Président de la République</strong>, qui nomme le <strong>Premier ministre</strong> (lequel dispose du pouvoir réglementaire). Le <strong>Parlement</strong>, composé de l'<strong>Assemblée nationale</strong> (577 députés, présidée par Yaël Braun-Pivet, siège au Palais Bourbon) et du <strong>Sénat</strong> (348 sénateurs élus dès 24 ans, Palais du Luxembourg), vote la loi et contrôle l'action du gouvernement. La session ordinaire s'étend du premier jour ouvrable d'octobre au dernier jour ouvrable de juin. Le processus législatif passe par la <strong>navette</strong> entre les deux chambres, avec le dernier mot à l'AN. Le <strong>49-3</strong> permet au Gouvernement d'engager sa responsabilité pour faire adopter un texte sans vote.<br><br>
+    Le <strong>Conseil constitutionnel</strong> (Palais-Royal, présidé par Richard Ferrand) veille à la constitutionnalité des lois et traite les <strong>QPC</strong> (Questions Prioritaires de Constitutionnalité), qui permettent à tout justiciable de contester une disposition législative. Le <strong>Conseil d'État</strong> (également au Palais-Royal) est le juge suprême de l'ordre administratif et conseiller juridique du Gouvernement. Au niveau territorial, le <strong>préfet de département</strong> contrôle la légalité des actes des collectivités (sauf santé, finances, éducation) et peut saisir le juge administratif. Le <strong>conseil départemental</strong> (présidé par un exécutif élu, avec des binômes homme-femme par canton) et le <strong>conseil régional</strong> (président élu pour 6 ans à la majorité absolue) sont les organes délibérants des collectivités. Le <strong>CESER</strong> assure une mission consultative auprès de la région. La réforme <strong>OTE de 2021</strong> a restructuré les services déconcentrés en créant les <strong>DREETS</strong>, <strong>DRAJES</strong> et <strong>DDETS</strong>.`,
+    questions:[
+      {q:"Assemblée nationale — composition ?", a:["577 députés (228 femmes, 349 hommes)"]},
+      {q:"AN représente ?", a:["L'ensemble de la nation"]},
+      {q:"Présidente de l'AN ?", a:["Yaël Braun-Pivet"]},
+      {q:"Sénat ?", a:["348 sénateurs","Élus dès l'âge de 24 ans","Siège au Palais du Luxembourg"]},
+      {q:"Parlement — rôle ?", a:["Vote la loi","Contrôle l'action du gouvernement","Comprend l'AN et le Sénat"]},
+      {q:"Parlement — sessions ?", a:["Session ordinaire : 1er jour ouvrable d'octobre → dernier ouvrable de juin","Session extraordinaire : demande du PM ou majorité AN","Ouverte et close par décret du PR"]},
+      {q:"Commission mixte paritaire ?", a:["7 députés + 7 sénateurs","Compromis AN/Sénat en cas de désaccord"]},
+      {q:"Premier ministre ?", a:["Nommé par le PR","Dispose du pouvoir réglementaire"]},
+      {q:"Conseil constitutionnel ?", a:["Membres désignés par le PR, présidents de l'AN et du Sénat","Président : Richard Ferrand","Vérifie la constitutionnalité des lois","Siège au Palais-Royal"]},
+      {q:"QPC ?", a:["Question Prioritaire de Constitutionnalité","Permet à tout justiciable de contester la constitutionnalité d'une disposition législative"]},
+      {q:"Instances au Palais-Royal ?", a:["Le Conseil d'État","Le Conseil constitutionnel"]},
+      {q:"Projet de loi ?", a:["Initiative du Premier ministre","Délibéré en Conseil des ministres après avis du Conseil d'État"]},
+      {q:"La navette législative ?", a:["Envoi d'un texte d'une assemblée à l'autre pour adoption définitive","L'AN a le dernier mot"]},
+      {q:"Le 49-3 ?", a:["Procédure accélérée, vote bloqué avec engagement de la responsabilité du gouvernement"]},
+      {q:"Pouvoirs du maire ?", a:["Paris : pouvoir de police partagé avec le préfet de police","Sécurité publique, tranquillité, salubrité","Pouvoir de substitution du préfet"]},
+      {q:"Préfet de département — autorité ?", a:["Autorité sur les directions déconcentrées hormis : santé, finances, éducation"]},
+      {q:"Préfet — contrôle de légalité ?", a:["Peut saisir le juge administratif en cas de non-respect de la légalité"]},
+      {q:"Conseil départemental ?", a:["Le Président dispose du pouvoir exécutif","2 conseillers par canton (binôme femme-homme)"]},
+      {q:"Président du conseil régional ?", a:["Élu par les conseillers régionaux à la majorité absolue","Élu pour 6 ans"]},
+      {q:"CESER ?", a:["Conseil économique, social et environnemental régional","Saisi par le président du Conseil régional","Mission de consultation"]},
+      {q:"SGAR ?", a:["Secrétariat général pour les affaires régionales","Sous l'autorité du préfet de région"]},
+      {q:"DREETS ?", a:["Remplace la DIRECCTE","Direction Régionale de l'Économie, de l'Emploi, du Travail et des Solidarités"]},
+      {q:"DRAJES ?", a:["Délégation régionale académique à la jeunesse, à l'engagement et au sport","Sous l'autorité du recteur de région académique"]},
+      {q:"Recteur d'académie ?", a:["Nommé par le Président de la République","18 régions académiques"]},
+      {q:"Ministre de l'Europe et des Affaires étrangères 2025 ?", a:["Jean-Noël Barrot"]},
+      {q:"Hôtel de Bourvallais ?", a:["Ministère de la Justice, place Vendôme"]},
+      {q:"Président de la 4e République ?", a:["Vincent Auriol"]},
+      {q:"Président de la 5e République décédé en cours de mandat ?", a:["Georges Pompidou"]},
+      {q:"Régions académiques en France ?", a:["18"]}
+    ]
+  },
+  {
+    id:"justice",
+    title:"Justice, Juges & Juridictions",
+    icon:"⚔️",
+    color:"pink",
+    intro:`L'organisation judiciaire française est construite autour d'un <strong>dualisme juridictionnel</strong> : l'<strong>ordre judiciaire</strong> (litiges entre personnes privées et infractions pénales) et l'<strong>ordre administratif</strong> (litiges impliquant l'administration). L'ordre judiciaire se subdivise en <strong>juridictions civiles</strong> et <strong>juridictions pénales</strong>. En matière pénale, la hiérarchie suit un ordre croissant de gravité : le <strong>tribunal de police</strong> (contraventions), le <strong>tribunal correctionnel</strong> (délits) et la <strong>cour d'assises</strong> (crimes). La <strong>cour d'appel</strong> réexamine les décisions, et la <strong>Cour de cassation</strong>, plus haute juridiction de l'ordre judiciaire, vérifie la bonne application du droit sans rejuger les faits.<br><br>
+    Plusieurs magistrats spécialisés jouent des rôles clés à connaître pour le concours : le <strong>Procureur de la République</strong> est un magistrat du parquet (debout) qui ordonne et dirige les enquêtes, contrôle les gardes à vue et en autorise la prolongation — il est aussi officier de police judiciaire. Le <strong>juge d'instruction</strong>, magistrat du siège, est chargé des enquêtes dans les affaires pénales les plus graves et met en examen les suspects. Le <strong>juge des libertés et de la détention (JLD)</strong> ordonne ou prolonge la détention provisoire, autorise les mesures d'enquête attentatoires à la liberté et les visites domiciliaires dans le cadre de la prévention du terrorisme. Le <strong>juge de l'application des peines (JAP)</strong>, assisté du SPIP et de la Commission d'application des peines, aménage l'exécution des peines et peut révoquer les sursis avec mise à l'épreuve.<br><br>
+    Deux juridictions particulières complètent le tableau : la <strong>Cour de justice de la République</strong> (15 juges, saisissable par toute personne) juge les membres du gouvernement pour les actes commis dans l'exercice de leurs fonctions, et la <strong>Haute Cour</strong> (composée de membres de l'AN et du Sénat) peut destituer le Président de la République en cas de manquement grave.`,
+    questions:[
+      {q:"Ordre judiciaire ?", a:["Juridictions civiles et pénales","Cour d'appel : réexamine décisions des TJ et tribunaux correctionnels","Cour de cassation : plus haute juridiction"]},
+      {q:"Juridictions pénales — ordre croissant ?", a:["Tribunal de police → Tribunal correctionnel → Cour d'assises"]},
+      {q:"Cour d'assises ?", a:["Compétente pour la répression des crimes"]},
+      {q:"Cour de justice de la République ?", a:["Juge les membres du gouvernement (actes délictueux/criminels)","Composée de 15 juges","Saisie par toute personne française ou étrangère"]},
+      {q:"Haute Cour ?", a:["Composée de membres de l'AN et du Sénat"]},
+      {q:"Procureur de la République ?", a:["Ordonne et dirige les enquêtes","Contrôle les gardes à vue et autorise la prolongation","Officier de police judiciaire"]},
+      {q:"Rôle du juge d'instruction ?", a:["Met en examen les personnes suspectées d'avoir commis une infraction","Magistrat du siège chargé des enquêtes pénales les plus graves"]},
+      {q:"Rôle du juge des libertés et de la détention ?", a:["Ordonne ou prolonge la détention provisoire","Autorise certaines mesures d'enquête attentatoires à la liberté","Autorise les visites domiciliaires (prévention du terrorisme)"]},
+      {q:"Rôle du juge de l'application des peines ?", a:["Assisté par le SPIP et la Commission d'application des peines","Peut révoquer les mesures de sursis avec mise à l'épreuve"]}
+    ]
+  }
+];
+
+// Render
+const navEl = document.getElementById('navTabs');
+const contentEl = document.getElementById('content');
+let totalQ=0, totalA=0;
+
+DATA.forEach((sec,i)=>{
+  totalQ += sec.questions.length;
+  sec.questions.forEach(q => totalA += q.a.length);
+
+  const tab = document.createElement('div');
+  tab.className = 'nav-tab' + (i===0?' active':'');
+  tab.setAttribute('data-color', sec.color);
+  tab.innerHTML = sec.icon + ' ' + sec.title + `<span class="counter-badge">${sec.questions.length}</span>`;
+  tab.onclick = () => switchTab(i);
+  navEl.appendChild(tab);
+
+  const section = document.createElement('div');
+  section.className = 'section' + (i===0?' active':'');
+  section.setAttribute('data-color', sec.color);
+  section.id = 'section-'+sec.id;
+  section.innerHTML = `
+    <div class="section-title"><div class="icon">${sec.icon}</div>${sec.title}</div>
+    <div class="section-intro">
+      <div class="intro-label">Synthèse du thème</div>
+      ${sec.intro}
+    </div>
+    <div class="toolbar">
+      <button onclick="toggleAll('${sec.id}',true)">▼ Tout ouvrir</button>
+      <button onclick="toggleAll('${sec.id}',false)">▲ Tout fermer</button>
+    </div>
+    <div class="cards-grid" id="grid-${sec.id}"></div>
+  `;
+  contentEl.appendChild(section);
+
+  const grid = section.querySelector('.cards-grid');
+  sec.questions.forEach((q,j) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('data-q', q.q.toLowerCase());
+    card.setAttribute('data-a', q.a.join(' ').toLowerCase());
+    card.innerHTML = `
+      <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="q-badge">Q${j+1}</div>
+        <div>${q.q}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          ${q.a.map(a=>`<div class="answer"><span class="check">✓</span>${a}</div>`).join('')}
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+});
+
+document.getElementById('totalQ').textContent = totalQ;
+document.getElementById('totalS').textContent = DATA.length;
+document.getElementById('totalA').textContent = totalA;
+
+function switchTab(idx){
+  document.querySelectorAll('.nav-tab').forEach((t,i)=> t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.section').forEach((s,i)=> s.classList.toggle('active', i===idx));
+}
+function toggleAll(secId, open){
+  document.querySelectorAll(`#grid-${secId} .card`).forEach(c=>{
+    if(open) c.classList.add('open'); else c.classList.remove('open');
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', function(){
+  const term = this.value.toLowerCase().trim();
+  if(!term){
+    document.querySelectorAll('.section').forEach(s=>s.style.display='');
+    document.querySelectorAll('.card').forEach(c=>{c.style.display=''; c.classList.remove('open');});
+    document.querySelectorAll('.nav-tab').forEach(t=>t.style.display='');
+    document.querySelectorAll('.section-intro').forEach(el=>el.style.display='');
+    switchTab(0);
+    return;
+  }
+  document.querySelectorAll('.section').forEach(s=>{s.classList.add('active'); s.style.display='block';});
+  document.querySelectorAll('.nav-tab').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.section-intro').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.card').forEach(c=>{
+    const qText = c.getAttribute('data-q');
+    const aText = c.getAttribute('data-a');
+    if(qText.includes(term) || aText.includes(term)){
+      c.style.display=''; c.classList.add('open');
+    } else { c.style.display='none'; }
+  });
+  document.querySelectorAll('.section').forEach(s=>{
+    let hasVisible = false;
+    s.querySelectorAll('.card').forEach(c=>{ if(c.style.display !== 'none') hasVisible = true; });
+    s.style.display = hasVisible ? 'block' : 'none';
+  });
+});
+</script>
+</body>
+</html>

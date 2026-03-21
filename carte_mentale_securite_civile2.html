@@ -1,0 +1,2881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Mentale - La Sécurité Civile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #c41e3a 0%, #e74c3c 100%);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(196, 30, 58, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            margin-top: 8px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .navigation {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-btn {
+            padding: 10px 18px;
+            background: rgba(196, 30, 58, 0.3);
+            border: 1px solid #c41e3a;
+            color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #c41e3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mind-map {
+            display: grid;
+            gap: 20px;
+        }
+
+        .central-node {
+            background: linear-gradient(135deg, #c41e3a, #e74c3c);
+            padding: 25px 35px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 8px 30px rgba(196, 30, 58, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .branch-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .branch {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .branch:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: rgba(196, 30, 58, 0.5);
+        }
+
+        .branch-header {
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .branch-header .icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .branch-header .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .branch.open .branch-header .arrow {
+            transform: rotate(180deg);
+        }
+
+        .branch-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .branch.open .branch-content {
+            max-height: 2000px;
+        }
+
+        .sub-branch {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sub-branch:last-child {
+            border-bottom: none;
+        }
+
+        .sub-branch-title {
+            font-weight: 600;
+            color: #f39c12;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-branch-title::before {
+            content: "▸";
+            color: #c41e3a;
+        }
+
+        .info-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .info-list li {
+            padding: 6px 0;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .info-list li::before {
+            content: "•";
+            color: #3498db;
+            position: absolute;
+            left: -15px;
+        }
+
+        .highlight {
+            background: rgba(196, 30, 58, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .number {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .acronym {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        /* Couleurs par thème */
+        .theme-effectifs .branch-header { background: linear-gradient(90deg, #2980b9, #3498db); }
+        .theme-zones .branch-header { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+        .theme-dgscgc .branch-header { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+        .theme-moyens .branch-header { background: linear-gradient(90deg, #d35400, #e67e22); }
+        .theme-formation .branch-header { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+        .theme-doctrine .branch-header { background: linear-gradient(90deg, #2c3e50, #34495e); }
+        .theme-sssm .branch-header { background: linear-gradient(90deg, #16a085, #1abc9c); }
+        .theme-deci .branch-header { background: linear-gradient(90deg, #2980b9, #5dade2); }
+        .theme-sic .branch-header { background: linear-gradient(90deg, #8e44ad, #af7ac5); }
+        .theme-loi .branch-header { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+        .theme-commandement .branch-header { background: linear-gradient(90deg, #d35400, #f39c12); }
+        .theme-distinctions .branch-header { background: linear-gradient(90deg, #f1c40f, #f39c12); color: #1a1a2e; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid #c41e3a;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        th {
+            background: rgba(196, 30, 58, 0.3);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .search-box {
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .legend {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .legend h3 {
+            margin-bottom: 15px;
+            color: #f39c12;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #f39c12;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .branch-container { grid-template-columns: 1fr; }
+            .nav-btn { padding: 8px 12px; font-size: 0.75rem; }
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #c41e3a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 20px rgba(196, 30, 58, 0.5);
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.05);
+            background: #e74c3c;
+        }
+
+        @media print {
+            .navigation, .print-btn, .search-box { display: none; }
+            .section { display: block !important; page-break-after: always; }
+            .branch-content { max-height: none !important; }
+            body { background: white; color: black; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🔥 La Sécurité Civile</h1>
+        <p>Carte mentale complète - Préparation Concours Lieutenant 1ère Classe SPP</p>
+		<p>Sergent-chef Pierre MAURIES</p>
+    </header>
+
+    <nav class="navigation">
+        <button class="nav-btn active" data-section="overview">📊 Vue d'ensemble</button>
+        <button class="nav-btn" data-section="effectifs">👥 Effectifs & Stats</button>
+        <button class="nav-btn" data-section="zones">🗺️ Zones de Défense</button>
+        <button class="nav-btn" data-section="dgscgc">🏛️ DGSCGC</button>
+        <button class="nav-btn" data-section="moyens">🚁 Moyens Nationaux</button>
+        <button class="nav-btn" data-section="formation">📚 Formation</button>
+        <button class="nav-btn" data-section="doctrine">📋 Doctrine</button>
+        <button class="nav-btn" data-section="sssm">⚕️ SSSM</button>
+        <button class="nav-btn" data-section="deci">💧 DECI & SIC</button>
+        <button class="nav-btn" data-section="commandement">⚔️ Commandement</button>
+        <button class="nav-btn" data-section="loi">⚖️ Loi 2021-1520</button>
+        <button class="nav-btn" data-section="distinctions">🎖️ Distinctions</button>
+    </nav>
+
+    <input type="text" class="search-box" placeholder="🔍 Rechercher dans la carte mentale..." id="searchBox">
+
+    <main class="container">
+        <!-- SECTION VUE D'ENSEMBLE -->
+        <section class="section active" id="overview">
+            <div class="mind-map">
+                <div class="central-node">
+                    🔥 LA SÉCURITÉ CIVILE<br>
+                    <small>Prévention • Protection • Information • Secours</small>
+                </div>
+
+                <div class="legend">
+                    <h3>🎯 Les 4 missions fondamentales (Art. L112-1 CSI)</h3>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:#e74c3c"></div>
+                            <span>Prévention des risques de toute nature</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:#3498db"></div>
+                            <span>Protection des personnes, animaux, biens et environnement</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:#2ecc71"></div>
+                            <span>Information et alerte des populations</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:#f39c12"></div>
+                            <span>Protection générale des populations (lien sécurité publique)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="value">43 448</div>
+                        <div class="label">SPP (2023)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">200 046</div>
+                        <div class="label">SPV (2023)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">53 453</div>
+                        <div class="label">Femmes SP</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">28 396</div>
+                        <div class="label">JSP</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">4,8 M</div>
+                        <div class="label">Interventions/an</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">5 924 M€</div>
+                        <div class="label">Budget SDIS</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">14'48"</div>
+                        <div class="label">Délai moyen arrivée</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">86%</div>
+                        <div class="label">SUAP (dont 6% AVP)</div>
+                    </div>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-effectifs">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📅</span> Dates clés</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="number">1976</span> - Droit des femmes à devenir sapeur-pompier</li>
+                                    <li><span class="number">Mai 1974</span> - Création de la 1ère unité (n°7) à Brignoles</li>
+                                    <li><span class="number">Avril 1988</span> - Création de l'UIISC5</li>
+                                    <li><span class="number">2004</span> - Loi de Modernisation de la Sécurité Civile (MOSC)</li>
+                                    <li><span class="number">2011</span> - Loi sur le volontariat</li>
+                                    <li><span class="number">4 juillet 2017</span> - Création du label « Sécurité Civile Française »</li>
+                                    <li><span class="number">25 novembre 2021</span> - Loi MATRAS (n°2021-1520)</li>
+                                    <li><span class="number">2013</span> - Dernier Livre blanc défense et sécurité nationale</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🔺</span> Signe distinctif international</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Triangle bleu sur fond orange</div>
+                                <ul class="info-list">
+                                    <li>Symbole universel de la protection civile</li>
+                                    <li>Reconnu par les conventions internationales</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION EFFECTIFS & STATISTIQUES -->
+        <section class="section" id="effectifs">
+            <div class="mind-map">
+                <div class="central-node">
+                    👥 EFFECTIFS & STATISTIQUES<br>
+                    <small>Édition 2024 (données 2023)</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-effectifs">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍🚒</span> Effectifs nationaux</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Sapeurs-pompiers professionnels</div>
+                                <ul class="info-list">
+                                    <li>Environ <span class="number">42 000</span> SPP (question concours)</li>
+                                    <li>Exactement <span class="number">43 448</span> SPP en 2023</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Sapeurs-pompiers volontaires</div>
+                                <ul class="info-list">
+                                    <li>Environ <span class="number">197 000</span> SPV (question concours)</li>
+                                    <li>Exactement <span class="number">200 046</span> SPV en 2023</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Autres effectifs</div>
+                                <ul class="info-list">
+                                    <li><span class="number">53 453</span> femmes sapeurs-pompiers</li>
+                                    <li><span class="number">28 396</span> jeunes sapeurs-pompiers (JSP)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📈</span> Activité opérationnelle 2023</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Interventions</div>
+                                <ul class="info-list">
+                                    <li>Près de <span class="number">4,8 millions</span> d'opérations de secours</li>
+                                    <li><span class="number">-4%</span> d'interventions par rapport à l'année précédente</li>
+                                    <li><span class="number">-5%</span> d'interventions SUAP</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Répartition</div>
+                                <ul class="info-list">
+                                    <li><span class="number">86%</span> de secours et soins d'urgence aux personnes</li>
+                                    <li>Dont <span class="number">6%</span> d'accidents de la circulation</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Performance</div>
+                                <ul class="info-list">
+                                    <li>Délai moyen d'arrivée : <span class="number">14 min 48 sec</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">💰</span> Budget SDIS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Budget global 2023 : <span class="number">5 924 M€</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION ZONES DE DÉFENSE -->
+        <section class="section" id="zones">
+            <div class="mind-map">
+                <div class="central-node">
+                    🗺️ ZONES DE DÉFENSE ET DE SÉCURITÉ<br>
+                    <small>Organisation territoriale</small>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="value">12</div>
+                        <div class="label">Zones en France</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">7</div>
+                        <div class="label">Zones métropole</div>
+                    </div>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏢</span> Sièges des EMIZ</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="table-container">
+                                    <table>
+                                        <tr><th>Zone</th><th>Siège EMIZ</th></tr>
+                                        <tr><td>Nord</td><td><span class="highlight">LILLE</span></td></tr>
+                                        <tr><td>Ouest</td><td><span class="highlight">RENNES</span></td></tr>
+                                        <tr><td>Est</td><td><span class="highlight">METZ</span></td></tr>
+                                        <tr><td>Sud-Est</td><td><span class="highlight">LYON</span></td></tr>
+                                        <tr><td>Sud-Ouest</td><td><span class="highlight">BORDEAUX</span></td></tr>
+                                        <tr><td>Paris</td><td><span class="highlight">PARIS</span> (Préfet de police)</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👔</span> Préfet de Zone de Défense et de Sécurité</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Qui exerce cette fonction ?</div>
+                                <ul class="info-list">
+                                    <li>Le <span class="highlight">préfet départemental du chef-lieu de la ZDS</span></li>
+                                    <li>À Paris : le <span class="highlight">préfet de police</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Pouvoirs en matière de sécurité nationale</div>
+                                <ul class="info-list">
+                                    <li>Définit les orientations et priorités d'action (analyse des risques)</li>
+                                    <li>Arrête le <span class="acronym">plan ORSEC de zone</span></li>
+                                    <li>Coordonne la formation des SP dans le cadre des priorités départementales</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Missions</div>
+                                <ul class="info-list">
+                                    <li>Dirige l'action des préfets de <span class="highlight">département</span> en matière de défense économique</li>
+                                    <li>Dirige l'action des préfets de <span class="highlight">région</span> en matière de défense économique</li>
+                                    <li>Le PM peut étendre ses pouvoirs (autorité sur PN et GN)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">⚙️</span> EMIZDS - État-Major Interministériel</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Signification</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">EMIZDS</span> = État-Major Interministériel de Zone de Défense et de Sécurité</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Missions</div>
+                                <ul class="info-list">
+                                    <li>Prépare et met en œuvre les mesures concourant à la sécurité nationale</li>
+                                    <li>Notamment en matière de <span class="highlight">sécurité civile</span> et de <span class="highlight">gestion de crise</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Direction</div>
+                                <ul class="info-list">
+                                    <li>Assurée par le <span class="highlight">préfet délégué pour la sécurité et la défense</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎖️</span> Autres acteurs zonaux</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">COZ - Centre Opérationnel de Zone</div>
+                                <ul class="info-list">
+                                    <li>Organe opérationnel qui gère l'<span class="highlight">alerte sur le plan zonal</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Officier Général de Zone</div>
+                                <ul class="info-list">
+                                    <li>Conseiller militaire du préfet de ZDS (gestion de crise)</li>
+                                    <li>Placé sous l'autorité du <span class="highlight">chef d'état-major des armées</span></li>
+                                    <li>Responsable de la coordination des moyens des armées</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">DMD - Délégué Militaire Départemental</div>
+                                <ul class="info-list">
+                                    <li>Représente l'Officier Général de ZDS dans le département</li>
+                                    <li>Conseiller militaire du préfet</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Préfet délégué pour la défense et la sécurité</div>
+                                <ul class="info-list">
+                                    <li>Assiste le préfet de zone pour : <span class="highlight">sécurité publique</span>, <span class="highlight">sécurité civile</span>, <span class="highlight">défense non militaire</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Conférence de sécurité intérieure zonale</div>
+                                <ul class="info-list">
+                                    <li>Le préfet délégué pour la défense et la sécurité (SGAMI)</li>
+                                    <li>Les préfets de département concernés</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> Comité des préfets de ZDS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Présidence</div>
+                                <ul class="info-list">
+                                    <li>Présidé par le <span class="highlight">Ministre de l'Intérieur</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Composition</div>
+                                <ul class="info-list">
+                                    <li>Les préfets de zone de défense et de sécurité</li>
+                                    <li>Les hauts fonctionnaires de défense et de sécurité (HFDS)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍💼</span> HFDS - Hauts Fonctionnaires</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Placés sous l'autorité du <span class="highlight">ministre</span></li>
+                                    <li>Nommés par <span class="highlight">décret</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-zones">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📊</span> Compétences des ZDS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Administrent des moyens de la <span class="highlight">gendarmerie</span></li>
+                                    <li>Administrent des moyens de la <span class="highlight">police nationale</span></li>
+                                    <li>Coordonnent les moyens de <span class="highlight">sécurité civile</span> dans la zone</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION DGSCGC -->
+        <section class="section" id="dgscgc">
+            <div class="mind-map">
+                <div class="central-node">
+                    🏛️ DGSCGC<br>
+                    <small>Direction Générale de la Sécurité Civile et de la Gestion des Crises</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👔</span> Direction</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Directeur : <span class="highlight">Préfet Julien MARION</span></li>
+                                    <li>Adjoint au directeur : <span class="highlight">Jean-François DE MANHEULLE</span></li>
+                                    <li>Le directeur garantit la <span class="highlight">cohérence de la sécurité civile au plan national</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏗️</span> Structure</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Composition</div>
+                                <ul class="info-list">
+                                    <li><span class="number">1</span> direction et <span class="number">3</span> sous-directions</li>
+                                    <li>L'inspection générale de la sécurité civile</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Direction des Sapeurs-Pompiers</div>
+                                <ul class="info-list">
+                                    <li>Sous-direction de la <span class="highlight">doctrine et des ressources humaines</span></li>
+                                    <li>Sous-direction des <span class="highlight">services d'incendie et des acteurs du secours</span></li>
+                                    <li>Intègre le <span class="highlight">conseiller pour les emplois supérieurs de direction</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> Sous-direction Doctrine et RH</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Définit et met en œuvre la <span class="highlight">politique nationale du volontariat</span></li>
+                                    <li>Assure la tutelle de l'<span class="acronym">ENSOSP</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🔍</span> Inspection Générale SC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Mission de contrôle des <span class="highlight">moyens zonaux</span></li>
+                                    <li>Contribue à l'évaluation des SPP du cadre d'emplois de <span class="highlight">conception et de direction</span></li>
+                                    <li>Mission de contrôle des <span class="highlight">associations concourant à la SC</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎯</span> État-Major de la Sécurité Civile</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Gère le <span class="acronym">COGIC</span></li>
+                                    <li>Veille au bon fonctionnement de la <span class="acronym">C2IPAV</span> (Cellule interministérielle d'information du public et d'aide aux victimes)</li>
+                                    <li>Veille au bon fonctionnement de la <span class="acronym">CIC</span> (Cellule Interministérielle de Crise)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚨</span> COGIC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">COGIC</span> = Centre Opérationnel de Gestion Interministérielle de Crise</li>
+                                    <li>Instance de commandement de gestion de crise au niveau <span class="highlight">national</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Missions</div>
+                                <ul class="info-list">
+                                    <li>Assure les fonctions de coordination de la gestion interministérielle des crises au sein du CIC</li>
+                                    <li>Quand le CIC est activé par le PM et confié au MI</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">⚠️</span> CIC - Cellule Interministérielle de Crise</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Localisation</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Place Beauvau</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Caractéristiques</div>
+                                <ul class="info-list">
+                                    <li>Outil de gestion <span class="highlight">interministériel</span> des crises</li>
+                                    <li>Présidée par le ministre désigné par le PM pour la conduite opérationnelle</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Composition (3 cellules)</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Cellule Situation</span> : dresse l'état des lieux de la crise</li>
+                                    <li><span class="highlight">Cellule Décision</span> : prend des décisions ou formule des propositions au PM/PR</li>
+                                    <li><span class="highlight">Cellule Anticipation</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📂</span> SDPAGC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="acronym">SDPAGC</span> = Sous-Direction de la Préparation, de l'Anticipation et de Gestion des Crises</li>
+                                    <li>Chargée de la gestion du <span class="acronym">CNCMFE</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">☢️</span> CNCMFE</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Centre National Civil et Militaire de Formation et d'Entraînement NRBC-E</li>
+                                    <li>Rattaché au <span class="highlight">ministère de l'Intérieur</span></li>
+                                    <li>Placé auprès du directeur de la DGSCGC</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏷️</span> Label Sécurité Civile Française</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Créé le <span class="number">4 juillet 2017</span></li>
+                                    <li>Le référentiel technique définit les exigences essentielles de sécurité et de santé</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-dgscgc">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📍</span> Autres structures</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">SGAMI</div>
+                                <ul class="info-list">
+                                    <li>Secrétariat Général pour l'Administration du Ministère de l'Intérieur</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">SAILMI</div>
+                                <ul class="info-list">
+                                    <li>Service de l'Achat, de l'Innovation et de la Logistique du Ministère de l'Intérieur</li>
+                                    <li>Ancien <span class="acronym">SAELSI</span></li>
+                                    <li>Objectif : mutualiser les besoins de l'ensemble des directions du MI</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">BOMSIS</div>
+                                <ul class="info-list">
+                                    <li>Bureau de l'Organisation des Missions des Services d'Incendie et de Secours</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">SIDPC</div>
+                                <ul class="info-list">
+                                    <li>Service Interministériel de Défense et de Protection Civile</li>
+                                    <li>Rattaché au <span class="highlight">Cabinet du préfet de département</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">C2IPAV</div>
+                                <ul class="info-list">
+                                    <li>Cellule interministérielle d'information du public et d'aide aux victimes</li>
+                                    <li>Intègre l'organigramme de la DGSCGC</li>
+                                    <li>Se situe au sein de l'État-Major de la Sécurité Civile</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Conseiller à la sécurité intérieure</div>
+                                <ul class="info-list">
+                                    <li>Rattaché au <span class="highlight">chef de cabinet du directeur général</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION MOYENS NATIONAUX -->
+        <section class="section" id="moyens">
+            <div class="mind-map">
+                <div class="central-node">
+                    🚁 MOYENS NATIONAUX<br>
+                    <small>ForMiSC, GMA, ESOL</small>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="value">4</div>
+                        <div class="label">RIISC</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">3</div>
+                        <div class="label">ESOL</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">23</div>
+                        <div class="label">Bases hélicoptère</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">23</div>
+                        <div class="label">Avions</div>
+                    </div>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🪖</span> ForMiSC - Formations Militaires</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li>Formations Militaires de la Sécurité Civile</li>
+                                    <li>Mises en œuvre par le <span class="highlight">Général De Gaulle</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Composition : 4 RIISC</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">RIISC</span> = Régiment d'Instruction et d'Intervention de la Sécurité Civile</li>
+                                    <li>(Anciens UIISC)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">1️⃣</span> 1er RIISC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Basé à <span class="highlight">Nogent-le-Rotrou</span></li>
+                                    <li>Ancien UIISC1</li>
+                                    <li>Héberge le <span class="acronym">MAGEC</span> (Module d'Appui à la Gestion de Crise)</li>
+                                    <li>Intervention Haïti 2021 : 40 sapeurs-sauveteurs, module purification eau</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">5️⃣</span> UIISC 5</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Créée en <span class="number">avril 1988</span></li>
+                                    <li>Appuyée par l'ESOL de <span class="highlight">la Valentine</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">7️⃣</span> 7ème RIISC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Basé à <span class="highlight">Brignoles</span></li>
+                                    <li><span class="number">Mai 1974</span> : création de la 1ère unité (n°7)</li>
+                                    <li>Dispose d'un <span class="highlight">groupe d'analyse et d'identification</span> (risques chimiques)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📦</span> ESOL</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">ESOL</span> = Établissement de Soutien Opérationnel et Logistique</li>
+                                    <li><span class="number">3</span> ESOL en France</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">📍 Localisations des 3 ESOL</div>
+                                <div class="table-container">
+                                    <table>
+                                        <tr><th>ESOL</th><th>Localisation</th><th>Département</th></tr>
+                                        <tr><td><span class="highlight">ESOL Nord</span></td><td>Méry-sur-Oise</td><td>Val-d'Oise (95)</td></tr>
+                                        <tr><td><span class="highlight">ESOL Sud</span></td><td>Marseille - La Valentine</td><td>Bouches-du-Rhône (13)</td></tr>
+                                        <tr><td><span class="highlight">ESOL Ouest</span></td><td>Jarnac</td><td>Charente (16)</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Missions</div>
+                                <ul class="info-list">
+                                    <li>Gestion et mise en œuvre des flux de matériel commandés par la DGSCGC</li>
+                                    <li>Réception, stockage et distribution d'équipements essentiels</li>
+                                    <li>Habillement, matériel feux de forêt, réserves humanitaires</li>
+                                    <li>Entretien du parc automobile des services opérationnels (~1000 véhicules)</li>
+                                    <li>Gestion de la <span class="highlight">réserve nationale</span> (groupes électrogènes, stations traitement d'eau, motopompes...)</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">GIL - Groupe d'Intervention Logistique</div>
+                                <ul class="info-list">
+                                    <li>Personnels volontaires des ESOL entraînés aux opérations de secours</li>
+                                    <li>Soutien logistique complet sur les interventions de catastrophe</li>
+                                    <li>Interventions en France et à l'étranger</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">✈️</span> GMA - Groupement Moyens Aériens</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Base</div>
+                                <ul class="info-list">
+                                    <li><span class="number">1</span> base aérienne à <span class="highlight">Nîmes-Garons</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Flotte : 23 avions</div>
+                                <ul class="info-list">
+                                    <li><span class="number">12</span> Canadair</li>
+                                    <li><span class="number">8</span> Dash</li>
+                                    <li><span class="number">3</span> Beechcraft</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Hélicoptères</div>
+                                <ul class="info-list">
+                                    <li><span class="number">23</span> bases hélicoptère</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">GAAR</div>
+                                <ul class="info-list">
+                                    <li>Guet Aérien Armé</li>
+                                    <li>Technique utilisée lors des feux de forêt</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-moyens">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏥</span> Autres moyens</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">DICA</div>
+                                <ul class="info-list">
+                                    <li>Détachement d'Intervention Catastrophe Aéromobile</li>
+                                    <li>Unité spécialisée en <span class="highlight">sauvetage-déblaiement</span> et <span class="highlight">médecine d'urgence</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">ESCRIM</div>
+                                <ul class="info-list">
+                                    <li>Élément de Sécurité Civile Rapide d'Intervention Médicale</li>
+                                    <li>Hôpital de campagne projetable de la sécurité civile française</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Fr-Alert</div>
+                                <ul class="info-list">
+                                    <li>Remplace l'application <span class="acronym">SAIP</span></li>
+                                    <li>Envoie directement des notifications aux populations concernées</li>
+                                    <li>Envoie des SMS aux populations concernées par un danger</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">COPERNICUS</div>
+                                <ul class="info-list">
+                                    <li>Service de gestion des urgences utilisant l'<span class="highlight">imagerie satellite</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION FORMATION -->
+        <section class="section" id="formation">
+            <div class="mind-map">
+                <div class="central-node">
+                    📚 FORMATION<br>
+                    <small>SPP, SPV, Organismes</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-formation">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍🚒</span> Formation SPP - Recrutement/Nomination</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Formations d'intégration</div>
+                                <ul class="info-list">
+                                    <li>Formation d'intégration du <span class="highlight">sapeur</span></li>
+                                    <li>Formation d'intégration du <span class="highlight">sergent</span></li>
+                                    <li>Formation d'intégration du <span class="highlight">lieutenant de 2ème classe</span></li>
+                                    <li>Formation d'intégration du <span class="highlight">lieutenant de 1ère classe</span></li>
+                                    <li>Formation d'intégration du <span class="highlight">capitaine</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-formation">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📈</span> Formation SPP - Avancement</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Formations de professionnalisation</div>
+                                <ul class="info-list">
+                                    <li>Formation de professionnalisation du <span class="highlight">caporal</span></li>
+                                    <li>Formation de professionnalisation de l'<span class="highlight">adjudant</span></li>
+                                    <li>Formation de professionnalisation du <span class="highlight">lieutenant de 1ère classe</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-formation">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🤝</span> Formation SPV</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Déclinaison</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Formations initiales</span> suivies dès le 1er engagement</li>
+                                    <li><span class="highlight">Formations continues et de perfectionnement</span> au cours de l'engagement</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Formations initiales</div>
+                                <ul class="info-list">
+                                    <li>Formation initiale du <span class="highlight">sapeur</span></li>
+                                    <li>Formation initiale du <span class="highlight">capitaine</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Livret individuel de formation</div>
+                                <ul class="info-list">
+                                    <li>Détenu dès l'engagement</li>
+                                    <li>Contient les qualifications obtenues</li>
+                                    <li>Contient le(s) activité(s) exercées</li>
+                                    <li>Copie des qualifications en annexe</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-formation">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏫</span> Organismes de formation</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Documents obligatoires</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">RIOF</span> = Référentiel Interne relatif à l'Organisation de la Formation</li>
+                                    <li><span class="acronym">RIE</span> = Référentiel Interne d'Évaluation</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Délai d'élaboration</div>
+                                <ul class="info-list">
+                                    <li><span class="number">12 mois</span> après publication de nouveaux référentiels nationaux</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Évaluation périodique par l'IGSC</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">ENSOSP</span> (École Nationale Supérieure des Officiers de Sapeurs-Pompiers)</li>
+                                    <li>Établissement public pour la protection de la forêt méditerranéenne</li>
+                                    <li>SDIS et STIS</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-formation">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎓</span> Spécialités</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Formation et développement des compétences</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Accompagnateur de proximité</span></li>
+                                    <li><span class="highlight">Formateur accompagnateur</span></li>
+                                    <li><span class="highlight">Concepteur de formation</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">USAR - Nouvelle appellation</div>
+                                <ul class="info-list">
+                                    <li>Anciens « unités de sauvetage-déblaiement »</li>
+                                    <li>Nouveau nom : <span class="highlight">Unité de Sauvetage, d'Appui et de Recherche</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION DOCTRINE -->
+        <section class="section" id="doctrine">
+            <div class="mind-map">
+                <div class="central-node">
+                    📋 DOCTRINE OPÉRATIONNELLE<br>
+                    <small>GDO, NIO, PIO, Vademecum</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📖</span> Types de documents</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">GDO - Guide de Doctrine Opérationnelle</div>
+                                <ul class="info-list">
+                                    <li>Aide les SIS à construire leur réponse opérationnelle à partir de règles communes</li>
+                                    <li>Permet au COS de construire son <span class="highlight">raisonnement tactique</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">GTO - Guide de Techniques Opérationnelles</div>
+                                <ul class="info-list">
+                                    <li>Met à disposition les méthodes et techniques opérationnelles</li>
+                                    <li>Utile à l'atteinte des objectifs du COS selon les environnements</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">NIO - Note d'Information Opérationnelle</div>
+                                <ul class="info-list">
+                                    <li>Vocation à éclairer les SIS sur les <span class="highlight">risques émergents</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">PIO - Partage d'Information Opérationnelle</div>
+                                <ul class="info-list">
+                                    <li>Informe de manière synthétique et rapide</li>
+                                    <li>Problématique nouvelle ou ponctuelle</li>
+                                    <li>A vocation à être intégré ultérieurement dans les GDO</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">VADEMECUM</div>
+                                <ul class="info-list">
+                                    <li>Recueil de renseignements sur les règles d'un art ou d'une technique</li>
+                                    <li>Conduite à suivre</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎯</span> Doctrine opérationnelle</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Relève de la compétence de l'<span class="highlight">État</span></li>
+                                    <li>Propose des outils d'aide à l'intervention</li>
+                                    <li>Facilite la prise de décision des sapeurs-pompiers</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">GDO en projet (Vademecum juin 2021)</div>
+                                <ul class="info-list">
+                                    <li>GDO « Collaboration entre SP et forces de sécurité intérieure »</li>
+                                    <li>GDO « Spécifique dans le milieu ferré »</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📊</span> SDACR</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Élaboration</div>
+                                <ul class="info-list">
+                                    <li>Révision tous les <span class="number">5 ans</span></li>
+                                    <li>Risques en cohérence avec les COTRRIM départemental et zonal</li>
+                                    <li>Répond à la nouvelle approche du <span class="highlight">pacte capacitaire</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Consultation</div>
+                                <ul class="info-list">
+                                    <li>Élus du bloc communal</li>
+                                    <li>ARS</li>
+                                    <li>Département</li>
+                                    <li>Collège des chefs de service de l'État</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Contenu</div>
+                                <ul class="info-list">
+                                    <li><span class="number">4</span> niveaux de risque recensés</li>
+                                    <li><span class="acronym">CIAM</span> = Convention d'Inter Assistance Mutuelle</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> COTRRIM</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li>Démarche multi-sectorielle de préparation à la gestion des crises</li>
+                                    <li>Dresse l'inventaire des risques et effets potentiels des menaces</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Autorités</div>
+                                <ul class="info-list">
+                                    <li>Établi sous l'autorité des <span class="highlight">préfets de département</span></li>
+                                    <li>Établi sous l'autorité des <span class="highlight">préfets de ZDS</span></li>
+                                    <li>Associe tous les acteurs territoriaux (y compris privés)</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Objectifs</div>
+                                <ul class="info-list">
+                                    <li>Identifier une réponse capacitaire globale</li>
+                                    <li>Logique de juste suffisance et complémentarité des moyens</li>
+                                    <li>Analyse des risques et recensement des moyens</li>
+                                    <li>Donne des objectifs à atteindre</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🤝</span> Pacte capacitaire</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Stratégie de solidarité pour optimiser la couverture opérationnelle</li>
+                                    <li>Moyens spécialisés à l'échelle de la ZDS</li>
+                                    <li>Mise en commun des éléments des COTRRIM et SDACR</li>
+                                    <li>Implique l'<span class="highlight">État</span>, les <span class="highlight">collectivités locales</span> et les <span class="highlight">SIS</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">⚠️</span> Plans ORSEC / ORSAN</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">ORSEC</div>
+                                <ul class="info-list">
+                                    <li>Plan ORSEC de zone sous l'autorité du <span class="highlight">préfet</span></li>
+                                    <li>Ouverture évènement SYNERGI sur le <span class="highlight">portail ORSEC</span></li>
+                                    <li><span class="acronym">SYNERGI</span> = Système Numérique d'Échange, de Remontée et de Gestion des Informations</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">ORSAN</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">ORSAN BIO</span> = Prise en charge d'un risque biologique connu ou émergent</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-doctrine">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📜</span> Acronymes associés</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="acronym">SISACR</span> = Schéma InterDépartemental d'Analyse et de Couverture des Risques</li>
+                                    <li><span class="acronym">SDMIS</span> = Service Départemental Métropolitain d'Incendie et de Secours</li>
+                                    <li><span class="acronym">EPIDIS</span> = Établissement Public InterDépartemental d'Incendie et de Secours</li>
+                                    <li><span class="acronym">SRS</span> = Schéma Régional de Santé</li>
+                                    <li><span class="acronym">SRDEII</span> = Schéma Régional de Développement Économique, d'Innovation et d'Internationalisation</li>
+                                    <li><span class="acronym">SRADDT</span> = Schéma Régional d'Aménagement et de Développement Durable du Territoire</li>
+                                    <li><span class="acronym">NOTRe</span> = Nouvelle Organisation Territoriale de la République</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION SSSM -->
+        <section class="section" id="sssm">
+            <div class="mind-map">
+                <div class="central-node">
+                    ⚕️ SSSM - MÉDECINE D'APTITUDE<br>
+                    <small>Décret 2025-330 & Arrêté 10 avril 2025</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍⚕️</span> Médecins agréés</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Agrément</div>
+                                <ul class="info-list">
+                                    <li>Délivré par le <span class="highlight">préfet</span></li>
+                                    <li>Obligatoire pour réaliser les visites médicales</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Formation</div>
+                                <ul class="info-list">
+                                    <li>Obligatoire <span class="highlight">avant</span> la délivrance de l'agrément</li>
+                                    <li>Porte sur la réglementation et les risques propres aux missions SP</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Acteurs habilités aux visites</div>
+                                <ul class="info-list">
+                                    <li>Médecin agréé</li>
+                                    <li>Étudiant en santé habilité</li>
+                                    <li>Infirmier habilité</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> Référentiel national (Décret 2025-330)</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Fixe les modalités d'<span class="highlight">évaluation de l'état de santé</span></li>
+                                    <li>Définit les <span class="highlight">périodicités des visites</span></li>
+                                    <li>Décrit les <span class="highlight">profils médicaux</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📁</span> Référentiel interne SDIS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Établi sous l'autorité du <span class="highlight">médecin-chef</span></li>
+                                    <li>S'appuie sur le référentiel national</li>
+                                    <li>Précise l'organisation locale du suivi médical</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🔄</span> Types de visites</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Visites intermédiaires</div>
+                                <ul class="info-list">
+                                    <li>Par médecin, infirmier ou étudiant habilité</li>
+                                    <li>Entre deux visites périodiques</li>
+                                    <li>Permettent d'adapter l'aptitude selon l'évolution de santé</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Visites de reprise</div>
+                                <ul class="info-list">
+                                    <li>Obligatoires après arrêt <span class="number">> 30 jours</span></li>
+                                    <li>Vérifient la compatibilité de l'état de santé avec la mission</li>
+                                    <li>Possibles en <span class="highlight">téléconsultation</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Visite renforcée à 45 ans</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Obligatoire</span></li>
+                                    <li>Vise à détecter les pathologies pouvant limiter l'aptitude</li>
+                                    <li>Peut inclure des examens complémentaires</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">💻</span> Téléconsultation</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Possible pour certaines visites médicales</li>
+                                    <li><span class="highlight">Ne peut pas être imposée</span> au SP sans son accord</li>
+                                    <li><span class="highlight">Interdite</span> pour la visite d'aptitude initiale</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📂</span> Dossier médical individuel</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Créé dès la <span class="highlight">première visite</span></li>
+                                    <li>Contient la traçabilité des <span class="highlight">expositions aux risques</span> (nouveauté 2025)</li>
+                                    <li>Peut être papier ou numérique</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">✅</span> Certificats médicaux</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Valables dans <span class="highlight">tous les SDIS de France</span></li>
+                                    <li>S'appliquent également à Paris et Marseille</li>
+                                    <li>Doivent être délivrés par un médecin agréé</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">⚖️</span> Commission médicale d'aptitude</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Rend un avis <span class="highlight">consultatif</span></li>
+                                    <li>Peut être saisie en cas de restriction ou d'inaptitude</li>
+                                    <li>Composition fixée par le décret de 2025</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Recours (Arrêté 10 avril 2025)</div>
+                                <ul class="info-list">
+                                    <li>Le SP peut saisir la commission</li>
+                                    <li>Le SDIS peut saisir la commission</li>
+                                    <li>Le recours peut être accompagné d'un nouvel examen médical</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚗</span> Aptitude à la conduite</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Conditions intégrées à l'arrêté du 10 avril 2025</li>
+                                    <li>Peuvent être réévaluées lors des visites intermédiaires</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🔄</span> Réforme 2025 - Objectifs</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Suite à l'abrogation de l'arrêté du 6 mai 2000</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Harmoniser</span> les pratiques médicales entre SDIS</li>
+                                    <li><span class="highlight">Moderniser</span> le suivi médical des SP</li>
+                                    <li><span class="highlight">Faciliter la mobilité</span> des SP entre SDIS</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Dispositions transitoires</div>
+                                <ul class="info-list">
+                                    <li>Nouvelles règles applicables à partir du <span class="number">1er janvier 2026</span></li>
+                                    <li>Anciens certificats valides jusqu'à expiration</li>
+                                    <li>Les SDIS peuvent anticiper leur application</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏥</span> Sous-direction Santé</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Élabore le <span class="highlight">référentiel national d'aptitude</span></li>
+                                    <li>Définit la composition de la commission médicale</li>
+                                    <li>Participe à la définition des politiques de <span class="highlight">prévention des risques professionnels</span></li>
+                                    <li>Élabore des outils d'évaluation médicale</li>
+                                    <li>Coordonne les médecins agréés</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sssm">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> Ancien arrêté du 6 mai 2000</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Fixait les conditions d'aptitude médicale des <span class="highlight">SPP</span></li>
+                                    <li>Fixait les conditions d'aptitude médicale des <span class="highlight">SPV</span></li>
+                                    <li>Fixait les conditions d'exercice de la médecine professionnelle et préventive</li>
+                                    <li><span class="highlight">Abrogé</span> par la réforme 2025</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION DECI & SIC -->
+        <section class="section" id="deci">
+            <div class="mind-map">
+                <div class="central-node">
+                    💧 DECI & SIC<br>
+                    <small>Défense Extérieure Contre l'Incendie & Systèmes d'Information</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-deci">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📜</span> RNDECI - Référentiel National</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li>Définit une méthodologie et des principes généraux</li>
+                                    <li>Relatifs à l'aménagement, l'entretien et la vérification des PEI</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Textes abrogés</div>
+                                <ul class="info-list">
+                                    <li>Circulaire du <span class="number">10 décembre 1951</span></li>
+                                    <li>Circulaire du <span class="number">20 février 1957</span> (protection incendie communes rurales)</li>
+                                    <li>Circulaire du <span class="number">9 août 1967</span> (réseau eau potable, communes rurales)</li>
+                                    <li>Parties afférentes à la DECI du RIM des SP communaux</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-deci">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏠</span> Classification des risques</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Risques courants</div>
+                                <ul class="info-list">
+                                    <li>Zones composées majoritairement d'<span class="highlight">habitations</span></li>
+                                    <li><span class="number">3</span> types : courants faibles, courants ordinaires, courants importants</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Risques particuliers</div>
+                                <ul class="info-list">
+                                    <li>Zones d'activités</li>
+                                    <li>Bâtiments agricoles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-deci">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">💧</span> Besoins en eau</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="table-container">
+                                    <table>
+                                        <tr><th>Type de risque</th><th>Besoin en eau</th></tr>
+                                        <tr><td>Courant faible</td><td>Min. <span class="number">30 m³</span> utilisables en 1h ou instantanément</td></tr>
+                                        <tr><td>Courant ordinaire</td><td>Min. <span class="number">60 m³</span> en 1h à <span class="number">120 m³</span> en 2h</td></tr>
+                                        <tr><td>Courant important</td><td>Min. <span class="number">120 m³</span> utilisables en 2h ou instantanément</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sic">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📡</span> OBNSIC - Ordre de Base National SIC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">COMSIC - Commandant SIC</div>
+                                <ul class="info-list">
+                                    <li>Conseiller technique du préfet du niveau d'emploi correspondant</li>
+                                    <li>Conçoit et coordonne la mise en œuvre opérationnelle des SIC</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Niveaux</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">National</span> : nommé par le directeur de la sécurité civile</li>
+                                    <li><span class="highlight">Zonal</span> : désigné par le préfet délégué, sous l'autorité du chef d'EMZ</li>
+                                    <li><span class="highlight">Départemental</span> : désigné par le préfet sur proposition du DDSIS</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sic">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> OBDSIC - Ordre de Base Départemental</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Arrêté par le <span class="highlight">préfet du département</span></li>
+                                    <li>Fixe les règles d'emploi pour les risques particuliers</li>
+                                    <li>Établi par le COMSIC en conformité avec OBNSIC et OBZSIC</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sic">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📝</span> OPT - Ordre Particulier de Transmission</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Définit l'organisation des SIC pour un plan d'intervention spécifique</li>
+                                    <li>Précise à l'avance l'organisation des transmissions</li>
+                                    <li>Répond au besoin de commandement défini dans le plan</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sic">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎙️</span> OFFSIC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Chargé de l'organisation des moyens de transmissions en opération</li>
+                                    <li>Système d'information, OCT...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-sic">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📻</span> Réseaux de communication</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">INPT</div>
+                                <ul class="info-list">
+                                    <li>Infrastructure Nationale Partageable des Transmissions</li>
+                                    <li>Technologie <span class="highlight">TETRAPOL</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Organismes utilisant INPT</div>
+                                <ul class="info-list">
+                                    <li>Police Nationale</li>
+                                    <li>Gendarmerie Nationale</li>
+                                    <li>SAMU</li>
+                                    <li>Démineurs de la Sécurité Civile</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Interopérabilité</div>
+                                <ul class="info-list">
+                                    <li>CORG de la GN contactable via communication privée ANTARES/CORAIL</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION COMMANDEMENT -->
+        <section class="section" id="commandement">
+            <div class="mind-map">
+                <div class="central-node">
+                    ⚔️ EXERCICE DU COMMANDEMENT<br>
+                    <small>PC, OCT, Ordres, Tuerie de masse</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏢</span> PC de Colonne</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Organisation</div>
+                                <ul class="info-list">
+                                    <li>Le chef de colonne répartit l'activité en <span class="number">2</span> fonctions :</li>
+                                    <li><span class="highlight">Renseignements</span> et <span class="highlight">Moyens</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Officier Renseignements</div>
+                                <ul class="info-list">
+                                    <li>Établit la <span class="acronym">SITAC</span></li>
+                                    <li>Analyse la zone d'intervention, du sinistre, des actions en cours</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍✈️</span> Chef de groupe</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Peut être l'<span class="highlight">adjoint d'un chef de colonne</span></li>
+                                    <li>Assure la fonction de <span class="highlight">chef de secteur</span> sous l'autorité d'un COS</li>
+                                    <li>Peut tenir des fonctions d'officier « moyens » ou « renseignements » au sein d'un PC colonne/site</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📢</span> OCT - Organisation du Commandement des Transmissions</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Liaisons tactiques</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Niveau 1</span> : COS ↔ PC ↔ Chefs de secteurs</li>
+                                    <li><span class="highlight">Niveau 2</span> : Chefs de secteurs ↔ Chefs de sous-secteurs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📝</span> Ordres</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Avant le départ</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">PATRACDR</span> : ordre préparatoire</li>
+                                    <li><span class="acronym">DPIF</span> : ordre de mouvement</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Ordres initiaux</div>
+                                <ul class="info-list">
+                                    <li>Chef de groupe : <span class="acronym">SOIEC</span></li>
+                                    <li>Chef de colonne/site : <span class="acronym">SAOIELC</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎨</span> SITAC - Couleurs</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span style="color:#e74c3c">●</span> <span class="highlight">Rouge</span> : extinction, incendie</li>
+                                    <li><span style="color:#3498db">●</span> <span class="highlight">Bleu</span> : eau</li>
+                                    <li><span style="color:#2ecc71">●</span> <span class="highlight">Vert</span> : secours à personne</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚨</span> COD - Centre Opérationnel Départemental</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Outil du <span class="highlight">préfet de département</span></li>
+                                    <li>Activé lors d'un événement majeur impactant le département</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚁</span> OLAT & Drones</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">OLAT</div>
+                                <ul class="info-list">
+                                    <li>Officier de Liaison Aéroterrestre</li>
+                                    <li>Responsable de la pertinence de la prestation demandée</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Drones</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">MALE</span> = Moyenne Altitude, Longue Endurance</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🔫</span> Tuerie de masse</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Principes</div>
+                                <ul class="info-list">
+                                    <li>Les moyens du SIS <span class="highlight">ne peuvent être exposés au feu des terroristes</span></li>
+                                    <li>SP positionnés en <span class="highlight">forces concourantes</span> (opération contre-terrorisme non NRBC)</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Sécurisation PRV</div>
+                                <ul class="info-list">
+                                    <li>Points de Rassemblement des Victimes sécurisés par le <span class="acronym">COPG</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Officiers de liaison SIS</div>
+                                <ul class="info-list">
+                                    <li>Positionné dans le PC de la force d'intervention</li>
+                                    <li>Positionné dans le PC du COPG (si distinct du PCO)</li>
+                                    <li>L'officier de liaison détaché auprès du PC du COIS est sous les ordres du <span class="highlight">COS</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Zonage</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Zone rouge</span> : forces d'intervention spécialisées uniquement</li>
+                                    <li><span class="highlight">Zone contrôlée</span> : couloirs d'extraction</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Couloirs d'extraction</div>
+                                <ul class="info-list">
+                                    <li>Du point d'extraction vers le PRV</li>
+                                    <li>Relient zone d'exclusion à zone de soutien</li>
+                                    <li>Positionnés en zone contrôlée</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Communications radio</div>
+                                <ul class="info-list">
+                                    <li><span class="acronym">DIR 90</span> en mode direct</li>
+                                    <li><span class="acronym">TGK 212 / Conf 102</span> (interopérabilité) en mode relayé</li>
+                                    <li><span class="acronym">TGK 210 / Conf 100</span> (autorités) en mode relayé</li>
+                                    <li>Appel privé</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Signalétique victimes</div>
+                                <ul class="info-list">
+                                    <li>Bâton lumineux <span style="color:#e74c3c">ROUGE</span> = victime ne devant pas être touchée</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Policier blessé</div>
+                                <ul class="info-list">
+                                    <li>Désarmement effectué par des policiers <span class="highlight">avant</span> de monter dans le VSAV</li>
+                                    <li>Identité <span class="highlight">jamais divulguée</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🧠</span> Défusing - Réhabilitation psychologique</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Se fait idéalement <span class="highlight">au plus tôt</span> après l'événement</li>
+                                    <li><span class="number">3</span> phases : introduction, exploration, information</li>
+                                    <li>Objectifs : diminuer les réactions, normaliser l'expérience, favoriser le partage des ressentis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📜</span> Règlement opérationnel</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Fixe l'<span class="highlight">organisation opérationnelle des SIS</span></li>
+                                    <li>Arrêté par le <span class="highlight">préfet</span></li>
+                                    <li>Après avis du CST départemental, de la CATSIS et du CA</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-commandement">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📍</span> Acronymes</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="acronym">COSSIM</span> = Centre Opérationnel des Services de Secours et d'Incendie de Marseille</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION LOI 2021-1520 -->
+        <section class="section" id="loi">
+            <div class="mind-map">
+                <div class="central-node">
+                    ⚖️ LOI 2021-1520 (MATRAS)<br>
+                    <small>25 novembre 2021</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚒</span> Missions des SIS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Missions principales</div>
+                                <ul class="info-list">
+                                    <li>Protection des <span class="highlight">personnes</span></li>
+                                    <li>Protection des <span class="highlight">biens</span></li>
+                                    <li>Protection de l'<span class="highlight">environnement</span></li>
+                                    <li>Protection des <span class="highlight">animaux</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Soins d'urgence</div>
+                                <ul class="info-list">
+                                    <li>Personnes présentant des signes de <span class="highlight">détresse vitale</span></li>
+                                    <li>Personnes présentant des signes de <span class="highlight">détresse fonctionnelle justifiant l'urgence à agir</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Interventions hors missions</div>
+                                <ul class="info-list">
+                                    <li>Peuvent <span class="highlight">différer</span> leur engagement</li>
+                                    <li>Peuvent <span class="highlight">refuser</span> leur engagement</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏥</span> Composition des SIS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Services <span class="highlight">départementaux</span></li>
+                                    <li>Services <span class="highlight">locaux</span></li>
+                                    <li><span class="acronym">BSPP</span> (Brigade des Sapeurs-Pompiers de Paris)</li>
+                                    <li><span class="acronym">BMPM</span> (Bataillon de Marins-Pompiers de Marseille)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚑</span> Carences ambulancières</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Prise en charge par l'<span class="highlight">établissement de santé où se situe le siège du SAMU</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🛣️</span> Réseau routier et autoroutier</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Engagement des moyens SIS = prise en charge par les <span class="highlight">sociétés concessionnaires</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📋</span> PCS - Plan Communal de Sauvegarde</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Obligation</div>
+                                <ul class="info-list">
+                                    <li>Obligatoire pour les communes exposées au risque <span class="highlight">volcanique</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Plan intercommunal de sauvegarde</div>
+                                <ul class="info-list">
+                                    <li>Organise la <span class="highlight">mutualisation</span> des capacités communales</li>
+                                    <li>Arrêté par le président de l'EPCI et chaque maire concerné</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Correspondant Incendie et Secours</div>
+                                <ul class="info-list">
+                                    <li>Information et sensibilisation du conseil municipal</li>
+                                    <li>Questions relatives à l'évaluation des risques</li>
+                                    <li>Peut mettre en place le PCS</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏢</span> Accès aux immeubles</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Responsabilité du <span class="highlight">propriétaire</span></li>
+                                    <li>Responsabilité de l'<span class="highlight">exploitant</span></li>
+                                    <li>S'assurer que les SIS puissent accéder aux parties communes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">✍️</span> Délégations de signature</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Le préfet et le président du CA peuvent déléguer à :</div>
+                                <ul class="info-list">
+                                    <li>Directeur départemental</li>
+                                    <li>Directeur départemental adjoint</li>
+                                    <li>Sous-directeurs (dans la limite de leurs attributions)</li>
+                                    <li>Chefs de CIS (dans la limite de leurs attributions)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👥</span> CNSIS</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Composition</div>
+                                <ul class="info-list">
+                                    <li>Représentants des SPV et SPP</li>
+                                    <li>Représentants des CA des SIS</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎖️</span> Promotions</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">À titre posthume</div>
+                                <ul class="info-list">
+                                    <li>Cités à titre posthume → promotion dans le corps/cadre d'emplois supérieur</li>
+                                    <li>Mortellement blessés en service → échelon supérieur ou grade supérieur</li>
+                                    <li>Stagiaires mortellement blessés → titularisation posthume</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">À titre exceptionnel</div>
+                                <ul class="info-list">
+                                    <li>Acte de bravoure → échelon ou grade supérieur</li>
+                                    <li>Grièvement blessés en service → corps/cadre d'emplois supérieur</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👶</span> Pupilles de la République</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Qualité attribuée par le <span class="highlight">Premier ministre</span></li>
+                                    <li>Aux enfants jusqu'à l'âge de <span class="number">21 ans inclus</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">💰</span> Nouvelle PFR (Prestation de Fidélisation et de Reconnaissance)</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Conditions générales</div>
+                                <ul class="info-list">
+                                    <li>Au moins <span class="number">15 ans</span> de service si cessation après la loi 2021-1520</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">En cas d'incapacité opérationnelle reconnue médicalement</div>
+                                <ul class="info-list">
+                                    <li>Au moins <span class="number">15 ans</span> si cessation entre le 1er janvier 2016 et la loi</li>
+                                    <li>Au moins <span class="number">10 ans</span> si cessation après la loi</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏥</span> Protection sociale SPV</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Accident/maladie en service</div>
+                                <ul class="info-list">
+                                    <li>Prise en charge quelle que soit la cause de l'accident</li>
+                                    <li>Dans le temps et le lieu de service</li>
+                                    <li>Applicable pour un entraînement physique</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Soins non pris en charge</div>
+                                <ul class="info-list">
+                                    <li>Le SDIS/STIS rembourse les frais engagés</li>
+                                    <li>Après accord du médecin-chef</li>
+                                    <li>Pour soins thérapeutiques non pris en charge par l'AM obligatoire</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📅</span> Don de jours de repos</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Un salarié peut renoncer à ses jours de repos non pris</li>
+                                    <li>Au bénéfice d'un autre salarié ayant un engagement SPV</li>
+                                    <li>Le congé annuel ne peut être cédé que pour sa durée <span class="highlight">excédant 24 jours ouvrables</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📱</span> Dossier médical partagé (CSP)</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Le médecin SP chargé du suivi peut accéder au DMP</li>
+                                    <li>Sous réserve du <span class="highlight">consentement exprès</span> de la personne</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-loi">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏛️</span> Loi MOSC - Acteurs consacrés</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">NON concernés par la loi MOSC</div>
+                                <ul class="info-list">
+                                    <li>Comités communaux feux de forêt</li>
+                                    <li>Comités interdépartementaux d'incendie et de secours</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION DISTINCTIONS -->
+        <section class="section" id="distinctions">
+            <div class="mind-map">
+                <div class="central-node">
+                    🎖️ DISTINCTIONS & GRADES<br>
+                    <small>Médailles, uniformes, emplois</small>
+                </div>
+
+                <div class="branch-container">
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏅</span> Médaille de la Sécurité Intérieure</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Décernée lors de <span class="number">2</span> promotions : <span class="highlight">1er janvier</span> et <span class="highlight">14 juillet</span></li>
+                                    <li>Éligibles : volontaires et bénévoles d'associations pour missions de sécurité intérieure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🥇</span> Médaille d'honneur pour acte de courage et dévouement</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Médaille de <span class="highlight">bronze</span> : le sauveteur a réellement risqué sa vie</li>
+                                    <li>Dossier : extrait n°2 du casier judiciaire requis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🎖️</span> Médaille d'honneur des Sapeurs-Pompiers</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="number">2</span> médailles : <span class="highlight">ancienneté</span> et <span class="highlight">rosette pour services exceptionnels</span></li>
+                                    <li>Attribution : <span class="highlight">14 juillet</span> et <span class="highlight">4 décembre</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">💼</span> FGTI</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Fonds de Garantie des Victimes des Actes de Terrorisme et d'autres Infractions</div>
+                                <ul class="info-list">
+                                    <li>Indemnise les préjudices économiques</li>
+                                    <li>Prend en charge les frais d'obsèques</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👔</span> Tenues (Arrêté 8 avril 2015)</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Catégories</div>
+                                <ul class="info-list">
+                                    <li><span class="highlight">Catégorie 1</span> : tenue de la garde au drapeau</li>
+                                    <li><span class="highlight">Catégorie 2</span> : tenue de sortie (représentations, cérémonies, défilés)</li>
+                                    <li><span class="highlight">Catégorie 3</span> : tenue de travail (service opérationnel)</li>
+                                    <li><span class="highlight">Catégorie 4</span> : tenue pour l'activité physique et sportive</li>
+                                    <li><span class="highlight">Catégorie 5</span> : tenue des unités spécialisées</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Règle</div>
+                                <ul class="info-list">
+                                    <li>Le <span class="highlight">rasage est impératif</span> pour la prise de service</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">⭐</span> Grade de Contrôleur Général</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li><span class="number">2 bûchers</span> : DDSIS ou autre poste (ministère, EMZ...)</li>
+                                    <li><span class="number">3 bûchers</span> : responsabilités particulières à l'État</li>
+                                    <li><span class="number">4 bûchers</span> : directeur des sapeurs-pompiers</li>
+                                    <li><span class="number">5 bûchers</span> : directeur général (préfet) de la DGSCGC</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍✈️</span> Emplois Lieutenant 2ème classe</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Officier de garde (effectif postés ≥ 10)</li>
+                                    <li>Chef de groupe</li>
+                                    <li><span class="highlight">Chef de salle opérationnelle</span></li>
+                                    <li>Adjoint au chef de CIS</li>
+                                    <li><span class="highlight">Officier expert</span></li>
+                                    <li>Chef de CIS (effectif SPP ≤ 9)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">👨‍✈️</span> Emplois Lieutenant 1ère classe</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Officier de garde (effectif postés ≥ 10)</li>
+                                    <li>Chef de bureau en CIS</li>
+                                    <li>Chef de groupe</li>
+                                    <li>Chef de salle opérationnelle</li>
+                                    <li><span class="highlight">Officier expert</span></li>
+                                    <li>Adjoint au chef de CIS</li>
+                                    <li><span class="highlight">Adjoint au chef de service</span></li>
+                                    <li>Chef de CIS (effectif SPP > 9)</li>
+                                    <li>Adjoint au chef de groupement</li>
+                                    <li>Chef de service (effectif agents ≤ 5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🏛️</span> FNSPF</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Fédération Nationale des Sapeurs-Pompiers de France</div>
+                                <ul class="info-list">
+                                    <li>Association loi 1901</li>
+                                    <li>+ de <span class="number">277 000</span> adhérents</li>
+                                    <li>Dotée d'un Conseil d'Administration et d'un Comité exécutif</li>
+                                    <li>Adhérents : JSP, SPV, SPP, anciens, militaires, privés, <span class="highlight">PATS</span>...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">🚑</span> DPS - Dispositifs Prévisionnels de Secours</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">Définition</div>
+                                <ul class="info-list">
+                                    <li>Font partie des missions de la SC dévolues aux <span class="highlight">associations agréées</span></li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">DPS-PE (Petite Envergure)</div>
+                                <ul class="info-list">
+                                    <li>Armé au minimum par : <span class="number">1</span> chef de poste + <span class="number">3</span> intervenants secouristes</li>
+                                </ul>
+                            </div>
+                            <div class="sub-branch">
+                                <div class="sub-branch-title">PAPS (Point d'Alerte et de Premiers Secours)</div>
+                                <ul class="info-list">
+                                    <li>Rôle : alerter et prodiguer les gestes de premiers secours</li>
+                                    <li>Composition : <span class="number">1</span> équipier + <span class="number">1</span> équipier secouriste ou secouriste à jour de sa FC</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch theme-distinctions">
+                        <div class="branch-header" onclick="toggleBranch(this)">
+                            <span><span class="icon">📻</span> FNRASEC</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="branch-content">
+                            <div class="sub-branch">
+                                <ul class="info-list">
+                                    <li>Fédération Nationale des Radioamateurs au Service de la Sécurité Civile</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
+
+    <script>
+        // Navigation entre sections
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(btn.dataset.section).classList.add('active');
+            });
+        });
+
+        // Toggle des branches
+        function toggleBranch(header) {
+            header.parentElement.classList.toggle('open');
+        }
+
+        // Recherche
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            
+            if (query.length < 2) {
+                document.querySelectorAll('.branch').forEach(b => {
+                    b.style.display = 'block';
+                    b.classList.remove('open');
+                });
+                return;
+            }
+
+            // Afficher toutes les sections
+            document.querySelectorAll('.section').forEach(s => s.classList.add('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            document.querySelectorAll('.branch').forEach(branch => {
+                const text = branch.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    branch.style.display = 'block';
+                    branch.classList.add('open');
+                } else {
+                    branch.style.display = 'none';
+                }
+            });
+        });
+
+        // Ouvrir toutes les branches au chargement pour l'impression
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.branch').forEach(b => b.classList.add('open'));
+            document.querySelectorAll('.section').forEach(s => s.classList.add('active'));
+        });
+    </script>
+</body>
+</html>

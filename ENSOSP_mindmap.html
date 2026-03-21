@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENSOSP — École Nationale Supérieure des Officiers de Sapeurs-Pompiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #c0392b;
+    --rouge-vif: #e74c3c;
+    --orange: #e67e22;
+    --or: #f39c12;
+    --or-clair: #f1c40f;
+    --vert: #27ae60;
+    --vert-clair: #2ecc71;
+    --bleu: #2980b9;
+    --bleu-clair: #3498db;
+    --violet: #8e44ad;
+    --dark: #0d0d0d;
+    --dark2: #141414;
+    --dark3: #1c1c1c;
+    --dark4: #242424;
+    --dark5: #2e2e2e;
+    --gris: #444;
+    --gris2: #666;
+    --texte: #ddd;
+    --texte2: #aaa;
+    --blanc: #fff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--dark);
+    color: var(--texte);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a0000 0%, #2c0a0a 40%, #1a0000 100%);
+    border-bottom: 3px solid var(--rouge-vif);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -10%;
+    width: 120%; height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(192,57,43,0.04) 40px,
+      rgba(192,57,43,0.04) 80px
+    );
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-box {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(231,76,60,0.4);
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--rouge-vif), var(--or));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .logo-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    color: var(--texte2);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .header-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem;
+    letter-spacing: 2px;
+    color: var(--blanc);
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(231,76,60,0.5);
+  }
+  .header-text .subtitle {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    color: var(--texte2);
+    margin-top: 0.4rem;
+    font-weight: 300;
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .header-badge {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(231,76,60,0.15);
+    border: 1px solid var(--rouge-vif);
+    color: var(--rouge-vif);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    background: var(--dark2);
+    border-bottom: 2px solid var(--dark5);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    padding: 1rem 1.8rem;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texte2);
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+  }
+  .nav-tab:hover { color: var(--blanc); background: rgba(255,255,255,0.03); }
+  .nav-tab.active { color: var(--blanc); }
+  .nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 3px;
+    border-radius: 2px 2px 0 0;
+  }
+  .nav-tab[data-tab="presentation"].active { color: var(--vert-clair); }
+  .nav-tab[data-tab="presentation"].active::after { background: var(--vert-clair); }
+  .nav-tab[data-tab="formations"].active { color: var(--bleu-clair); }
+  .nav-tab[data-tab="formations"].active::after { background: var(--bleu-clair); }
+  .nav-tab[data-tab="ressources"].active { color: var(--or); }
+  .nav-tab[data-tab="ressources"].active::after { background: var(--or); }
+  .nav-tab[data-tab="international"].active { color: var(--violet); }
+  .nav-tab[data-tab="international"].active::after { background: var(--violet) }
+
+  .tab-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  [data-tab="presentation"] .tab-num { background: var(--vert); color: #fff; }
+  [data-tab="formations"] .tab-num { background: var(--bleu); color: #fff; }
+  [data-tab="ressources"] .tab-num { background: var(--or); color: #111; }
+  [data-tab="international"] .tab-num { background: var(--violet); color: #fff; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 2.5rem 3rem; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, currentColor, transparent);
+    opacity: 0.3;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .cards-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cards-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cards-grid.cols-1-2 { grid-template-columns: 1fr 2fr; }
+
+  .card {
+    background: var(--dark3);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border-left: 4px solid;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    opacity: 0.06;
+    transform: translate(20px, -20px);
+  }
+  .card.rouge { border-color: var(--rouge-vif); }
+  .card.rouge::before { background: var(--rouge-vif); }
+  .card.vert { border-color: var(--vert-clair); }
+  .card.vert::before { background: var(--vert-clair); }
+  .card.bleu { border-color: var(--bleu-clair); }
+  .card.bleu::before { background: var(--bleu-clair); }
+  .card.or { border-color: var(--or); }
+  .card.or::before { background: var(--or); }
+  .card.violet { border-color: var(--violet); }
+  .card.violet::before { background: var(--violet); }
+
+  .card-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .card.rouge .card-title { color: var(--rouge-vif); }
+  .card.vert .card-title { color: var(--vert-clair); }
+  .card.bleu .card-title { color: var(--bleu-clair); }
+  .card.or .card-title { color: var(--or); }
+  .card.violet .card-title { color: #b39ddb; }
+
+  .card ul { list-style: none; }
+  .card ul li {
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
+    color: var(--texte2);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    line-height: 1.4;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    margin-right: 0.5rem;
+    opacity: 0.5;
+    font-size: 0.7rem;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.4rem; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--rouge-vif), var(--or), transparent);
+  }
+  .tl-item {
+    position: relative;
+    padding: 0.8rem 0 0.8rem 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.6rem;
+    top: 1.2rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--rouge-vif);
+    border: 2px solid var(--dark);
+    box-shadow: 0 0 8px var(--rouge-vif);
+  }
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--rouge-vif);
+    letter-spacing: 2px;
+  }
+  .tl-text {
+    font-size: 0.85rem;
+    color: var(--texte2);
+    line-height: 1.5;
+    margin-top: 0.2rem;
+  }
+
+  /* ── ACCORDION ── */
+  .accordion { margin-bottom: 0.8rem; }
+  .acc-header {
+    background: var(--dark3);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+    border-left: 3px solid;
+  }
+  .acc-header:hover { background: var(--dark4); }
+  .acc-header.bleu { border-color: var(--bleu-clair); color: var(--bleu-clair); }
+  .acc-header.vert { border-color: var(--vert-clair); color: var(--vert-clair); }
+  .acc-header.or { border-color: var(--or); color: var(--or); }
+  .acc-header.violet { border-color: #b39ddb; color: #b39ddb; }
+  .acc-header.rouge { border-color: var(--rouge-vif); color: var(--rouge-vif); }
+  .acc-arrow {
+    transition: transform 0.3s;
+    font-size: 0.9rem;
+    color: var(--gris2);
+  }
+  .acc-header.open .acc-arrow { transform: rotate(90deg); }
+  .acc-body {
+    display: none;
+    background: var(--dark2);
+    border-radius: 0 0 8px 8px;
+    padding: 1.2rem 1.4rem;
+    font-size: 0.85rem;
+    color: var(--texte2);
+    line-height: 1.6;
+    margin-top: 2px;
+  }
+  .acc-body.open { display: block; animation: fadeIn 0.2s ease; }
+  .acc-body ul { list-style: none; }
+  .acc-body ul li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .acc-body ul li::before {
+    content: '◆';
+    font-size: 0.5rem;
+    margin-right: 0.6rem;
+    opacity: 0.5;
+    vertical-align: middle;
+  }
+  .acc-body ul li:last-child { border: none; }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .tag {
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .tag.rouge { background: rgba(231,76,60,0.15); color: var(--rouge-vif); border: 1px solid rgba(231,76,60,0.3); }
+  .tag.bleu { background: rgba(52,152,219,0.15); color: var(--bleu-clair); border: 1px solid rgba(52,152,219,0.3); }
+  .tag.or { background: rgba(243,156,18,0.15); color: var(--or); border: 1px solid rgba(243,156,18,0.3); }
+  .tag.vert { background: rgba(46,204,113,0.15); color: var(--vert-clair); border: 1px solid rgba(46,204,113,0.3); }
+  .tag.violet { background: rgba(155,89,182,0.15); color: #b39ddb; border: 1px solid rgba(155,89,182,0.3); }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: rgba(231,76,60,0.08);
+    border: 1px solid rgba(231,76,60,0.25);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--texte2);
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+  .info-box .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-box {
+    background: var(--dark3);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+    border-top: 3px solid;
+  }
+  .stat-box.rouge { border-color: var(--rouge-vif); }
+  .stat-box.bleu { border-color: var(--bleu-clair); }
+  .stat-box.or { border-color: var(--or); }
+  .stat-box.vert { border-color: var(--vert-clair); }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .stat-box.rouge .stat-num { color: var(--rouge-vif); }
+  .stat-box.bleu .stat-num { color: var(--bleu-clair); }
+  .stat-box.or .stat-num { color: var(--or); }
+  .stat-box.vert .stat-num { color: var(--vert-clair); }
+  .stat-label {
+    font-size: 0.72rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texte2);
+    margin-top: 0.3rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark2);
+    border-top: 1px solid var(--dark5);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--gris2);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+  }
+  footer span { color: var(--rouge-vif); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .header-inner { padding: 1.2rem 1.5rem; flex-wrap: wrap; }
+    .header-badge { display: none; }
+    .section { padding: 1.5rem; }
+    .cards-grid.cols-3 { grid-template-columns: 1fr; }
+    .cards-grid.cols-2 { grid-template-columns: 1fr; }
+    .cards-grid.cols-1-2 { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-box">
+      <div class="logo-text">ENSOSP</div>
+      <div class="logo-sub">Aix-en-Provence · Fondée 1977</div>
+    </div>
+    <div class="header-text">
+      <h1>École Nationale Supérieure<br>des Officiers de Sapeurs-Pompiers</h1>
+      <p class="subtitle">Institution française de formation et de perfectionnement des officiers sapeurs-pompiers. Prépare les futurs cadres à leurs responsabilités opérationnelles et administratives.</p>
+    </div>
+    <div class="header-badge">
+      <span class="badge">🔥 Ministère de l'Intérieur</span>
+      <span class="badge">🎓 4 sites nationaux</span>
+      <span class="badge">⭐ Depuis 1977</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <div class="nav-tab active" data-tab="presentation">
+    <span class="tab-num">1</span> Présentation
+  </div>
+  <div class="nav-tab" data-tab="formations">
+    <span class="tab-num">2</span> Parcours de formation
+  </div>
+  <div class="nav-tab" data-tab="ressources">
+    <span class="tab-num">3</span> Ressources &amp; Innovations
+  </div>
+  <div class="nav-tab" data-tab="international">
+    <span class="tab-num">4</span> Impact &amp; International
+  </div>
+</nav>
+
+<!-- ═══════════════ SECTION 1 : PRÉSENTATION ═══════════════ -->
+<section class="section active" id="section-presentation">
+
+  <div class="section-title" style="color: var(--vert-clair)">🎓 Présentation de l'ENSOSP</div>
+
+  <div class="stats-row">
+    <div class="stat-box rouge">
+      <div class="stat-num">1977</div>
+      <div class="stat-label">Année de création</div>
+    </div>
+    <div class="stat-box bleu">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Sites nationaux</div>
+    </div>
+    <div class="stat-box or">
+      <div class="stat-num">25K</div>
+      <div class="stat-label">Références doc. (CRD)</div>
+    </div>
+    <div class="stat-box vert">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Laboratoires CERISC</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="icon">⭐</span>
+    <div>Depuis le <strong>19 août 2024</strong>, l'ENSOSP est dirigée par le colonel hors classe <strong>Laurent KIHL</strong>. L'école est placée sous la tutelle du <strong>ministère de l'Intérieur</strong> et fait partie intégrante du dispositif national de sécurité civile.</div>
+  </div>
+
+  <div class="cards-grid cols-1-2" style="margin-bottom: 2rem;">
+    <div>
+      <div class="section-title" style="color: var(--rouge-vif); font-size: 1.5rem;">📅 Historique</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1977</div>
+          <div class="tl-text">Création de l'ENSOSP pour centraliser et standardiser la formation des officiers de sapeurs-pompiers en France. Jusqu'alors, chaque département assurait sa propre formation sans coordination nationale.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1996</div>
+          <div class="tl-text">L'ENSOSP devient un <strong>établissement public national</strong>, permettant un meilleur encadrement des formations et une reconnaissance accrue de ses certifications dans la sécurité civile.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2006</div>
+          <div class="tl-text">Transfert à <strong>Aix-en-Provence</strong> dans un campus moderne, adapté aux exigences de la formation des officiers : infrastructures de pointe pour exercices et simulations de crise.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2010</div>
+          <div class="tl-text">Placement sous la tutelle du <strong>ministère de l'Intérieur</strong>, consolidant son rôle de centre de référence pour la formation des cadres sapeurs-pompiers.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title" style="color: var(--rouge-vif); font-size: 1.5rem;">🎯 Missions</div>
+      <div class="cards-grid cols-1" style="gap: 0.8rem;">
+        <div class="card rouge">
+          <div class="card-title">🎓 Formation des officiers</div>
+          <ul>
+            <li>Formations initiales pour les nouveaux officiers et formations continues pour les officiers en poste</li>
+            <li>Formations d'incendie et de secours destinées aux élus, fonctionnaires, cadres d'entreprises, experts français ou étrangers</li>
+          </ul>
+        </div>
+        <div class="card vert">
+          <div class="card-title">🌐 Animation du réseau</div>
+          <ul>
+            <li>Coordination des écoles de sapeurs-pompiers en lien avec les préfets de zone</li>
+            <li>Actions de coopération assurées par ces écoles</li>
+          </ul>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">🔬 Recherche &amp; Prospective</div>
+          <ul>
+            <li>Recherche, études, évaluation et prospective</li>
+            <li>Veille technologique et diffusion de l'information en matière de sécurité civile</li>
+          </ul>
+        </div>
+        <div class="card violet">
+          <div class="card-title">🌍 Coopération internationale</div>
+          <ul>
+            <li>Développement d'actions de coopération internationale en matière de formation et de recherche</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Organisation -->
+  <div class="section-title" style="color: var(--rouge-vif); font-size: 1.5rem;">🏛️ Organisation</div>
+  <div class="cards-grid cols-3">
+    <div class="card or">
+      <div class="card-title">🗂️ Structure</div>
+      <ul>
+        <li>Structurée en différents départements : formation, pédagogie, recherche et innovation, partenariats internationaux</li>
+        <li>Placée sous la tutelle du ministère de l'Intérieur</li>
+        <li>Fait partie intégrante du dispositif national de sécurité civile</li>
+      </ul>
+    </div>
+    <div class="card bleu">
+      <div class="card-title">📍 Sites</div>
+      <ul>
+        <li>🌟 Aix-en-Provence (siège principal)</li>
+        <li>Vitrolles</li>
+        <li>Paris</li>
+        <li>Gardanne</li>
+      </ul>
+    </div>
+    <div class="card vert">
+      <div class="card-title">👥 Direction</div>
+      <ul>
+        <li>Colonel hors classe Laurent KIHL (depuis 19/08/2024)</li>
+        <li>Tutelle : Ministère de l'Intérieur</li>
+      </ul>
+      <div class="tags">
+        <span class="tag rouge">DGSCGC</span>
+        <span class="tag bleu">DSC</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 2 : FORMATIONS ═══════════════ -->
+<section class="section" id="section-formations">
+
+  <div class="section-title" style="color: var(--bleu-clair)">🎓 Les Parcours de Formation Proposés</div>
+
+  <div class="cards-grid cols-3" style="margin-bottom: 2rem;">
+    <div class="card bleu">
+      <div class="card-title">📋 Formation initiale</div>
+      <ul>
+        <li><strong>Filière Filt 1C + capitaine</strong></li>
+        <li>Emplois opérationnels : Chef de groupe, Chef de colonne, Chef de site</li>
+        <li>Emplois d'encadrement : Officier de garde, Chef de centre, Officier d'encadrement, Manager des risques de sécurité civile, Chef de groupement</li>
+        <li>Emplois de spécialité : Prévision, Prévention, NRBC, Commandant des systèmes d'information et de communication</li>
+      </ul>
+    </div>
+    <div class="card or">
+      <div class="card-title">🔄 Formation continue</div>
+      <ul>
+        <li>Formations spécifiques</li>
+        <li>Formations supérieures</li>
+        <li>Formations en gestion de crise</li>
+        <li>Formations de santé</li>
+        <li>Formations de maintien et perfectionnement des acquis : opérationnel, prévention, spécialités, emplois supérieurs de direction (élèves colonels)</li>
+      </ul>
+    </div>
+    <div class="card violet">
+      <div class="card-title">🏆 Certifications &amp; Reconnaissances académiques</div>
+      <ul>
+        <li>Master 2 Sécurité et management des territoires</li>
+        <li>Master 2 Risques et environnement – IMSGA</li>
+        <li>Master 2 Risques et environnement – GRSC</li>
+        <li>Master 2 Ingénierie sécurité incendie</li>
+        <li>Master 2 Médicaments et dispositifs médicaux en situation d'urgence et de catastrophe</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Détail des formations par accordion -->
+  <div class="section-title" style="color: var(--bleu-clair); font-size: 1.5rem;">📚 Détail des formations</div>
+
+  <div class="accordion">
+    <div class="acc-header bleu" onclick="toggleAcc(this)">
+      🔴 Emplois opérationnels
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Chef de groupe</strong> — Commandement d'un groupe d'intervention</li>
+        <li><strong>Chef de colonne</strong> — Commandement d'une colonne opérationnelle</li>
+        <li><strong>Chef de site</strong> — Commandement global d'un site d'intervention majeure</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header bleu" onclick="toggleAcc(this)">
+      🟠 Emplois d'encadrement
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Officier de garde</strong> — Responsabilité de garde opérationnelle</li>
+        <li><strong>Chef de centre</strong> — Direction d'un centre de secours</li>
+        <li><strong>Officier d'encadrement</strong> — Rôle de supervision et d'animation des équipes</li>
+        <li><strong>Manager des risques de sécurité civile</strong></li>
+        <li><strong>Chef de groupement</strong> — Direction d'un groupement territorial</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header bleu" onclick="toggleAcc(this)">
+      🟣 Emplois de spécialité
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Prévision</strong> — Analyse des risques, études de danger</li>
+        <li><strong>Prévention</strong> — ERP, IGH, sécurité des bâtiments</li>
+        <li><strong>NRBC</strong> — Risques nucléaires, radiologiques, biologiques et chimiques</li>
+        <li><strong>Commandant des systèmes d'information et de communication (SIC)</strong></li>
+      </ul>
+      <div class="tags" style="margin-top:0.5rem;">
+        <span class="tag rouge">NRBC</span>
+        <span class="tag bleu">SIC</span>
+        <span class="tag or">Prévention</span>
+        <span class="tag vert">Prévision</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header or" onclick="toggleAcc(this)">
+      📜 Certifications &amp; Masters universitaires
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Master 2 Sécurité et management des territoires</strong></li>
+        <li><strong>Master 2 Risques et environnement</strong> – Ingénierie et management en sécurité globale appliquée (IMSGA)</li>
+        <li><strong>Master 2 Risques et environnement</strong> – Gestion des risques et des crises de sécurité civile (GRSC)</li>
+        <li><strong>Master 2 Risques et environnement</strong> – Gestion des risques de sécurité civile (GRSC)</li>
+        <li><strong>Master 2 Ingénierie sécurité incendie</strong></li>
+        <li><strong>Master 2 Médicaments et dispositifs médicaux en situation d'urgence et de catastrophe</strong></li>
+      </ul>
+      <div class="tags" style="margin-top: 0.5rem;">
+        <span class="tag violet">Bac+5</span>
+        <span class="tag bleu">Reconnaissance académique</span>
+        <span class="tag or">Partenariat universitaire</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header vert" onclick="toggleAcc(this)">
+      🔄 Formations de maintien &amp; perfectionnement des acquis
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li>Formation opérationnelle de maintien des acquis</li>
+        <li>Prévention – mise à jour réglementaire</li>
+        <li>Spécialités – actualisation des compétences techniques</li>
+        <li>Emplois supérieurs de direction (formation des <strong>élèves colonels</strong>)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 3 : RESSOURCES ═══════════════ -->
+<section class="section" id="section-ressources">
+
+  <div class="section-title" style="color: var(--or)">🔬 Ressources &amp; Innovations</div>
+
+  <div class="cards-grid cols-3">
+    <!-- CRD -->
+    <div class="card or">
+      <div class="card-title">📚 CRD — Centre de Ressources Documentaires</div>
+      <ul>
+        <li><strong>25 000 références</strong> : ouvrages, mémoires, rapports, revues générales et spécialisées</li>
+        <li>Portail national des ressources et des savoirs (PNRS) pour s'informer de l'actualité de la sécurité civile</li>
+      </ul>
+      <div class="tags">
+        <span class="tag or">25 000 docs</span>
+        <span class="tag bleu">PNRS</span>
+      </div>
+    </div>
+
+    <!-- Événements -->
+    <div class="card rouge">
+      <div class="card-title">🗓️ Événements nationaux</div>
+      <ul>
+        <li>Rend'Vous de l'Ensosp</li>
+        <li>Défilé du 14 juillet</li>
+        <li>Congrès national des sapeurs-pompiers de France</li>
+        <li>Cérémonie de remise des sabres et des épées</li>
+        <li>Les Nocturnes</li>
+        <li>Colloques, journées professionnelles et rencontres nationales</li>
+      </ul>
+    </div>
+
+    <!-- CERISC -->
+    <div class="card bleu">
+      <div class="card-title">🧪 CERISC — Centre de Recherche</div>
+      <ul>
+        <li>Centre d'études et de recherche interdisciplinaires sur la sécurité civile — <strong>créé en 2013</strong></li>
+        <li>Composé de <strong>6 laboratoires</strong> :</li>
+        <li>🔹 Droit et économie de la sécurité civile</li>
+        <li>🔹 Santé</li>
+        <li>🔹 Ingénierie pour la sécurité civile</li>
+        <li>🔹 Management des organisations et Retex</li>
+        <li>🔹 Facteurs humains</li>
+        <li>🔹 Projets de recherche</li>
+      </ul>
+      <div class="tags">
+        <span class="tag bleu">Depuis 2013</span>
+        <span class="tag vert">6 labos</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <div class="section-title" style="color: var(--or); font-size: 1.5rem;">🔍 Domaines de recherche CERISC</div>
+    <div class="accordion">
+      <div class="acc-header or" onclick="toggleAcc(this)">
+        ⚖️ Droit et économie de la sécurité civile
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="acc-body">
+        Analyse juridique des cadres réglementaires (CGCT, CSI, Code de la Défense), études économiques et valorisation socioéconomique des interventions des sapeurs-pompiers.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header rouge" onclick="toggleAcc(this)">
+        🏥 Santé opérationnelle
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="acc-body">
+        Recherches sur la santé des sapeurs-pompiers, facteurs de risques professionnels, protocoles de soins d'urgence, médecine de catastrophe.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header bleu" onclick="toggleAcc(this)">
+        🔧 Ingénierie pour la sécurité civile
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="acc-body">
+        Développement de nouvelles technologies opérationnelles, simulation numérique des sinistres, réalité virtuelle pour la formation, systèmes d'information et de communication.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header vert" onclick="toggleAcc(this)">
+        📊 Management des organisations &amp; RETEX
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="acc-body">
+        Retours d'expérience opérationnels (RETEX), analyse des organisations de crise, management des SDIS, performance organisationnelle et gouvernance des services de secours.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header violet" onclick="toggleAcc(this)">
+        🧠 Facteurs humains
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="acc-body">
+        Psychologie opérationnelle, gestion du stress, performance sous contrainte, comportements en situation de crise, leadership et prise de décision en urgence.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 4 : INTERNATIONAL ═══════════════ -->
+<section class="section" id="section-international">
+
+  <div class="section-title" style="color: #b39ddb">🌍 Impact &amp; Influence en France et à l'International</div>
+
+  <div class="cards-grid cols-2" style="margin-bottom: 2rem;">
+    <div class="card violet">
+      <div class="card-title">🇪🇺 Actions européennes</div>
+      <ul>
+        <li>Le partenariat espagnol</li>
+        <li>Le mécanisme de protection civile de l'Union européenne</li>
+        <li>Projets de recherche cofinancés : <strong>FIRE IN</strong>, AFAN, FASTER, RESCUER, HYRESPONDER, INPLIC, safe-VH, ALBATROS</li>
+      </ul>
+      <div class="tags">
+        <span class="tag violet">FIRE IN</span>
+        <span class="tag bleu">EU</span>
+        <span class="tag vert">FASTER</span>
+        <span class="tag rouge">HYRESPONDER</span>
+      </div>
+    </div>
+
+    <div class="card bleu">
+      <div class="card-title">🌐 Impact international</div>
+      <ul>
+        <li>Mission des Relations Européennes et Internationales (MREI)</li>
+        <li>Accords bilatéraux avec des écoles ou des académies d'ENPC (École nationale de protection civile) de <strong>Tunisie</strong></li>
+        <li>Principauté d'<strong>Andorre</strong>, de <strong>Monaco</strong></li>
+        <li>Corps grand ducal du <strong>Luxembourg</strong></li>
+        <li>Service d'incendie de <strong>New Taipei City (Taïwan)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title" style="color: #b39ddb; font-size: 1.5rem;">🤝 Partenaires nationaux</div>
+
+  <div class="accordion">
+    <div class="acc-header violet" onclick="toggleAcc(this)">
+      🏫 Réseau des écoles de service public (RESP)
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      L'ENSOSP est membre actif du réseau des écoles de service public, favorisant les échanges de pratiques pédagogiques et les synergies entre établissements de formation de l'État.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header bleu" onclick="toggleAcc(this)">
+      🛡️ Centre national civil et militaire de formation et d'entraînement NRBCe
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      Partenariat stratégique pour la formation aux risques nucléaires, radiologiques, biologiques et chimiques et explosifs (NRBCe). Formations conjointes civiles et militaires.
+      <div class="tags" style="margin-top:0.5rem;">
+        <span class="tag rouge">NRBC</span>
+        <span class="tag bleu">Interministériel</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header or" onclick="toggleAcc(this)">
+      🏆 Pôle national de compétitivité "SAFE"
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      Participation au pôle de compétitivité SAFE (Sécurité et sûreté de l'Homme et des Infrastructures), centré sur les technologies de sécurité et de défense civile.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header vert" onclick="toggleAcc(this)">
+      🏕️ Camp des Milles &amp; Partenariats universitaires
+      <span class="acc-arrow">▶</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li>Partenariat avec le Camp des Milles pour les dimensions mémorielles et citoyennes de la formation</li>
+        <li>Multiples partenariats universitaires pour la co-construction des Masters et la recherche appliquée</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <div class="section-title" style="color: #b39ddb; font-size: 1.5rem;">🔬 Projets de recherche européens</div>
+    <div class="cards-grid cols-3">
+      <div class="card violet">
+        <div class="card-title">🔥 FIRE IN</div>
+        <p style="font-size:0.82rem; color: var(--texte2); line-height:1.5;">Réseau européen de recherche sur les incendies. Coordination et partage des connaissances entre instituts de recherche européens spécialisés.</p>
+      </div>
+      <div class="card bleu">
+        <div class="card-title">⚡ FASTER &amp; RESCUER</div>
+        <p style="font-size:0.82rem; color: var(--texte2); line-height:1.5;">Projets sur les technologies d'aide à la décision opérationnelle et le sauvetage en situations complexes (technologies de drone, robotique).</p>
+      </div>
+      <div class="card or">
+        <div class="card-title">🌿 HYRESPONDER</div>
+        <p style="font-size:0.82rem; color: var(--texte2); line-height:1.5;">Formation des premiers intervenants face aux risques liés à l'hydrogène. Préparation à l'émergence de nouvelles technologies énergétiques.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>🔥 <span>ENSOSP</span> — École Nationale Supérieure des Officiers de Sapeurs-Pompiers</div>
+  <div>Sous tutelle du <span>Ministère de l'Intérieur</span> · Aix-en-Provence</div>
+  <div>Cadre de connaissance — Usage interne pédagogique</div>
+</footer>
+
+<script>
+  // NAV TABS
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('section-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ACCORDION
+  function toggleAcc(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>

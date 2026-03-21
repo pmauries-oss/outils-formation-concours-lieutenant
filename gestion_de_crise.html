@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA GESTION DE CRISE — ENSOSP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: #2a2f42;
+    --green: #4caf50;
+    --green-dark: #2e7d32;
+    --green-light: #81c784;
+    --yellow: #f5c518;
+    --yellow-light: #ffe082;
+    --orange: #ff6d00;
+    --red: #e53935;
+    --blue: #1e88e5;
+    --blue-light: #64b5f6;
+    --purple: #8e44ad;
+    --text: #e8eaf0;
+    --text-muted: #7a8099;
+    --text-dim: #4a5068;
+    --accent: #4caf50;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d2818 0%, #0d1a10 40%, #0a1520 100%);
+    border-bottom: 3px solid var(--green);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 30px,
+      rgba(76,175,80,0.03) 30px,
+      rgba(76,175,80,0.03) 31px
+    );
+  }
+  .header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 40px;
+    gap: 24px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .logo-badge {
+    width: 64px;
+    height: 64px;
+    background: var(--green);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+  }
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 5vw, 52px);
+    letter-spacing: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  h1 span { color: var(--green); }
+  .header-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .header-desc {
+    max-width: 420px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    border-left: 2px solid var(--green);
+    padding-left: 16px;
+  }
+  .header-desc strong { color: var(--green-light); }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 14px 28px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); background: rgba(76,175,80,0.05); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 32px 40px; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title .dot { color: var(--green); }
+  .section-lead {
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* PHASE TIMELINE */
+  .phases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .phases-grid-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media(max-width: 900px) {
+    .phases-grid, .phases-grid-bottom { grid-template-columns: 1fr; }
+  }
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .phase-card:hover { border-color: var(--green); transform: translateY(-2px); }
+  .phase-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .phase-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .phase-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .phase-body { padding: 0 16px 16px; }
+  .phase-item {
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+  }
+  .phase-item strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 12px; }
+
+  /* Colors per phase */
+  .ph1 .phase-header { background: rgba(229,57,53,0.12); }
+  .ph1 .phase-num { background: rgba(229,57,53,0.3); color: #ef9a9a; }
+  .ph1 .phase-name { color: #ef9a9a; }
+
+  .ph2 .phase-header { background: rgba(255,109,0,0.12); }
+  .ph2 .phase-num { background: rgba(255,109,0,0.3); color: #ffcc80; }
+  .ph2 .phase-name { color: #ffcc80; }
+
+  .ph3 .phase-header { background: rgba(245,197,24,0.12); }
+  .ph3 .phase-num { background: rgba(245,197,24,0.3); color: #fff176; }
+  .ph3 .phase-name { color: #fff176; }
+
+  .ph4 .phase-header { background: rgba(30,136,229,0.12); }
+  .ph4 .phase-num { background: rgba(30,136,229,0.3); color: #90caf9; }
+  .ph4 .phase-name { color: #90caf9; }
+
+  .ph5 .phase-header { background: rgba(76,175,80,0.12); }
+  .ph5 .phase-num { background: rgba(76,175,80,0.3); color: #a5d6a7; }
+  .ph5 .phase-name { color: #a5d6a7; }
+
+  .ph6 .phase-header { background: rgba(142,68,173,0.12); }
+  .ph6 .phase-num { background: rgba(142,68,173,0.3); color: #ce93d8; }
+  .ph6 .phase-name { color: #ce93d8; }
+
+  /* ORSEC SECTION */
+  .orsec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media(max-width: 800px) { .orsec-grid { grid-template-columns: 1fr; } }
+
+  .orsec-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .orsec-card-header {
+    padding: 12px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .orsec-card-header:hover { filter: brightness(1.1); }
+  .orsec-card-body {
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+  .orsec-card-body.open { display: block; }
+  .chevron { transition: transform 0.2s; font-size: 14px; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .tag-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tag-red { background: rgba(229,57,53,0.2); color: #ef9a9a; }
+  .tag-orange { background: rgba(255,109,0,0.2); color: #ffcc80; }
+  .tag-yellow { background: rgba(245,197,24,0.2); color: #fff176; }
+  .tag-blue { background: rgba(30,136,229,0.2); color: #90caf9; }
+  .tag-green { background: rgba(76,175,80,0.2); color: #a5d6a7; }
+  .tag-purple { background: rgba(142,68,173,0.2); color: #ce93d8; }
+  .tag-gray { background: rgba(120,120,140,0.2); color: #b0b8cc; }
+
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li {
+    padding: 4px 0 4px 14px;
+    position: relative;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .bullet-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 11px;
+    top: 6px;
+  }
+  .bullet-list li strong { color: var(--text); }
+
+  /* ACTEURS SECTION */
+  .acteurs-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media(max-width: 700px) { .acteurs-header { grid-template-columns: 1fr; } }
+
+  .niveau-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .niveau-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .niveau-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .niveau-badge {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-strat { background: rgba(30,136,229,0.25); color: #90caf9; }
+  .badge-tact { background: rgba(76,175,80,0.25); color: #a5d6a7; }
+
+  /* ORG CHART */
+  .org-chart { position: relative; }
+  .org-level {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .org-level-label {
+    width: 130px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .org-level-nodes {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    align-items: center;
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+  }
+  .org-node {
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-align: center;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .org-node.intermin { background: rgba(142,68,173,0.15); border-color: rgba(142,68,173,0.4); color: #ce93d8; }
+  .org-node.national { background: rgba(229,57,53,0.12); border-color: rgba(229,57,53,0.35); color: #ef9a9a; }
+  .org-node.zonal { background: rgba(255,109,0,0.12); border-color: rgba(255,109,0,0.35); color: #ffcc80; }
+  .org-node.departemental { background: rgba(30,136,229,0.12); border-color: rgba(30,136,229,0.35); color: #90caf9; }
+  .org-node.communal { background: rgba(76,175,80,0.12); border-color: rgba(76,175,80,0.35); color: #a5d6a7; }
+  .montee-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(76,175,80,0.1);
+    border: 1px solid rgba(76,175,80,0.3);
+    padding: 12px 8px;
+    border-radius: 4px;
+    margin-left: 16px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .org-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .org-main { flex: 1; }
+
+  /* MOYENS SECTION */
+  .moyens-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media(max-width: 900px) { .moyens-grid { grid-template-columns: 1fr; } }
+
+  .moyen-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .moyen-header {
+    padding: 14px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .moyen-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .moyen-body { padding: 14px 18px; }
+  .mh-military { background: rgba(229,57,53,0.12); }
+  .mh-military .moyen-icon { background: rgba(229,57,53,0.2); }
+  .mh-military h3 { color: #ef9a9a; }
+  .mh-civil { background: rgba(30,136,229,0.12); }
+  .mh-civil .moyen-icon { background: rgba(30,136,229,0.2); }
+  .mh-civil h3 { color: #90caf9; }
+  .mh-benevole { background: rgba(76,175,80,0.12); }
+  .mh-benevole .moyen-icon { background: rgba(76,175,80,0.2); }
+  .mh-benevole h3 { color: #a5d6a7; }
+
+  /* INFO BOX */
+  .info-box {
+    background: rgba(76,175,80,0.07);
+    border: 1px solid rgba(76,175,80,0.25);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .info-box .ib-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+
+  .warn-box {
+    background: rgba(245,197,24,0.07);
+    border: 1px solid rgba(245,197,24,0.25);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #ffe082;
+  }
+
+  /* SINUS TABLE */
+  .sinus-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  @media(max-width: 700px) { .sinus-grid { grid-template-columns: 1fr 1fr; } }
+
+  .sinus-cell {
+    border-radius: 4px;
+    padding: 10px 12px;
+    text-align: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .sinus-cell .abbr { font-size: 22px; font-weight: 900; display: block; }
+  .sinus-cell .full { font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; font-family: 'Barlow', sans-serif; }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  footer strong { color: var(--text-muted); }
+
+  /* SCROLL TO TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 100;
+  }
+  .scroll-top.visible { opacity: 1; pointer-events: auto; }
+
+  /* HIGHLIGHT PILL */
+  .hl { color: var(--green-light); font-weight: 600; }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* ACCORDION FULL WIDTH */
+  .accordion-full {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .acc-header {
+    padding: 14px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .acc-header:hover { background: rgba(255,255,255,0.03); }
+  .acc-body {
+    display: none;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  .acc-body.open { display: block; }
+
+  .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width: 700px) { .two-cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="logo-badge">🔥<br>SP<br>38</div>
+      <div>
+        <h1>LA GESTION<br><span>DE CRISE</span></h1>
+        <div class="header-subtitle">ENSOSP — Référentiel national</div>
+      </div>
+    </div>
+    <div class="header-desc">
+      La gestion de crise se concentre sur la <strong>réponse immédiate</strong> à une situation d'urgence. Elle comprend la <strong>mobilisation rapide des ressources</strong>, la coordination entre les différents acteurs et la <strong>mise en œuvre des plans ORSEC</strong>.
+    </div>
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <button class="tab-btn active" onclick="switchTab('phases')">① Étapes</button>
+  <button class="tab-btn" onclick="switchTab('orsec')">② Dispositif ORSEC</button>
+  <button class="tab-btn" onclick="switchTab('acteurs')">③ Acteurs</button>
+  <button class="tab-btn" onclick="switchTab('moyens')">④ Moyens</button>
+</nav>
+
+<!-- =================== ÉTAPES =================== -->
+<section id="phases" class="section active">
+  <div class="section-title">Étapes de la gestion<span class="dot"> de crise</span></div>
+  <div class="section-lead">6 phases séquentielles — de l'alerte au retour d'expérience</div>
+
+  <div class="phases-grid">
+    <!-- Phase 1 -->
+    <div class="phase-card ph1">
+      <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div class="phase-name">Alerte et détection</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Détection de l'événement</strong>
+          Surveillance continue de l'environnement, systèmes d'alertes précoces.
+        </div>
+        <div class="phase-item">
+          <strong>Validation de l'événement</strong>
+          Confirmation de la nature et de l'ampleur de la crise.
+        </div>
+        <div class="phase-item">
+          <strong>Diffusion de l'alerte</strong>
+          Alerte des acteurs concernés (services de secours, élus, population).
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-card ph2">
+      <div class="phase-header">
+        <div class="phase-num">2</div>
+        <div class="phase-name">Évaluation de la situation</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Collecte d'informations</strong>
+          Recueil de données sur les impacts (personnes, animaux, biens, environnement).
+        </div>
+        <div class="phase-item">
+          <strong>Analyse de la situation</strong>
+          Évaluation des moyens à mettre en œuvre et des solutions envisageables.
+        </div>
+        <div class="phase-item">
+          <strong>Analyse des conséquences</strong>
+          Anticipation des impacts à court, moyen et long terme.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-card ph3">
+      <div class="phase-header">
+        <div class="phase-num">3</div>
+        <div class="phase-name">Déclenchement ORSEC</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Activation du plan ORSEC adapté</strong>
+          Mise en œuvre du plan correspondant au niveau d'alerte.
+        </div>
+        <div class="phase-item">
+          <strong>Mobilisation des moyens</strong>
+          Déploiement des ressources humaines et matérielles nécessaires.
+        </div>
+        <div class="phase-item">
+          <strong>Mise en place du PC</strong>
+          Organisation de la coordination des opérations.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-card ph4">
+      <div class="phase-header">
+        <div class="phase-num">4</div>
+        <div class="phase-name">Communication de crise</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Information du public</strong>
+          Diffusion d'informations claires et régulières à la population (<span class="hl">FR-Alert</span>).
+        </div>
+        <div class="phase-item">
+          <strong>Cellule d'information du public (CIP)</strong>
+          Gestion des relations avec les médias pour éviter la désinformation.
+        </div>
+        <div class="phase-item">
+          <strong>Coordination interservices</strong>
+          Communication avec les autres acteurs impliqués (État, collectivités, associations).
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-card ph5">
+      <div class="phase-header">
+        <div class="phase-num">5</div>
+        <div class="phase-name">Intervention et maîtrise</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Secours aux victimes</strong>
+          Mise en œuvre des opérations de sauvetage et de premiers secours.
+        </div>
+        <div class="phase-item">
+          <strong>Lutte contre les effets</strong>
+          Mesures pour limiter les dégâts (incendies, inondations, etc.).
+        </div>
+        <div class="phase-item">
+          <strong>Continuité des services essentiels</strong>
+          Maintien des activités d'importance vitale.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase-card ph6">
+      <div class="phase-header">
+        <div class="phase-num">6</div>
+        <div class="phase-name">Retour à la normale</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-item">
+          <strong>Retour d'expérience (REX)</strong>
+          Analyse des forces et faiblesses du dispositif pour améliorer les futures interventions.
+        </div>
+        <div class="phase-item">
+          <strong>Mise à jour des plans ORSEC</strong>
+          Adaptation des plans en fonction des leçons tirées.
+        </div>
+        <div class="phase-item">
+          <strong>Formation des acteurs</strong>
+          Amélioration des compétences des acteurs de la gestion de crise.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ORSEC =================== -->
+<section id="orsec" class="section">
+  <div class="section-title">Dispositif<span class="dot"> ORSEC</span></div>
+  <div class="section-lead">Plans spécifiques, outils et situations particulières</div>
+
+  <div class="orsec-grid">
+    <!-- Risques spécifiques -->
+    <div class="orsec-card">
+      <div class="orsec-card-header" onclick="toggleAcc(this)" style="background: rgba(229,57,53,0.1); color: #ef9a9a;">
+        <span>⚠ Risques spécifiques</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="orsec-card-body open">
+        <div class="tag-group">
+          <span class="tag tag-blue">Naturels</span>
+          <span class="tag tag-orange">Technologiques</span>
+          <span class="tag tag-red">Sanitaires</span>
+        </div>
+        <ul class="bullet-list" style="margin-top: 14px;">
+          <li><strong>Naturels :</strong> Inondations, FDF, tempêtes…</li>
+          <li><strong>Technologiques :</strong> NRBCe, TMD, barrage</li>
+          <li><strong>Sanitaires :</strong> Pandémie, grand froid, canicule, neige</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NOVI -->
+    <div class="orsec-card">
+      <div class="orsec-card-header" onclick="toggleAcc(this)" style="background: rgba(255,109,0,0.1); color: #ffcc80;">
+        <span>🚑 NOVI — Nombreuses Victimes</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="orsec-card-body open">
+        <p style="margin-bottom: 10px;">Organisation de la chaîne de secours :</p>
+        <ul class="bullet-list">
+          <li>Chaîne <strong>incendie sauvetage</strong></li>
+          <li>Chaîne <strong>médicale</strong></li>
+          <li>Ramassage vers le <strong>PRV</strong> (Point de Rassemblement des Victimes)</li>
+          <li><strong>PMA</strong> — Poste Médical Avancé</li>
+          <li><strong>Tri</strong></li>
+          <li><strong>Évacuation</strong></li>
+        </ul>
+        <div class="warn-box">
+          ⚠ Les SP sont alors <strong>concourants aux FO</strong>, n'endossant pas le rôle de COS — sauf en zone verte.
+        </div>
+      </div>
+    </div>
+
+    <!-- PPI -->
+    <div class="orsec-card">
+      <div class="orsec-card-header" onclick="toggleAcc(this)" style="background: rgba(142,68,173,0.1); color: #ce93d8;">
+        <span>☢ PPI — Plan Particulier d'Intervention</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="orsec-card-body">
+        <p style="margin-bottom: 10px;">Installations visées :</p>
+        <ul class="bullet-list">
+          <li>Installations <strong>nucléaires</strong></li>
+          <li><strong>ICPE</strong> (Installations Classées)</li>
+          <li>Stockages de <strong>gaz, hydrocarbures</strong>, produits chimiques</li>
+          <li>Barrage ou <strong>digue</strong></li>
+          <li>Infrastructures de <strong>TMD</strong> (ports, ferroviaires, routiers)</li>
+          <li>Installations de gestion des <strong>déchets industriels</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SINUS -->
+    <div class="orsec-card">
+      <div class="orsec-card-header" onclick="toggleAcc(this)" style="background: rgba(30,136,229,0.1); color: #90caf9;">
+        <span>📋 SINUS — Système d'Information</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="orsec-card-body">
+        <p style="margin-bottom: 10px;">Permet de faire remonter et catégoriser les informations sur les victimes :</p>
+        <div class="sinus-grid">
+          <div class="sinus-cell" style="background: rgba(120,120,140,0.15); border: 1px solid rgba(120,120,140,0.3); color: #b0b8cc;">
+            <span class="abbr">IMP</span>
+            <span class="full">Impliqués</span>
+          </div>
+          <div class="sinus-cell" style="background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.3); color: #fff176;">
+            <span class="abbr">UR</span>
+            <span class="full">Urgences Relatives</span>
+          </div>
+          <div class="sinus-cell" style="background: rgba(255,109,0,0.15); border: 1px solid rgba(255,109,0,0.3); color: #ffcc80;">
+            <span class="abbr">UA</span>
+            <span class="full">Urgences Absolues</span>
+          </div>
+          <div class="sinus-cell" style="background: rgba(229,57,53,0.15); border: 1px solid rgba(229,57,53,0.3); color: #ef9a9a;">
+            <span class="abbr">DCD</span>
+            <span class="full">Décédés</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tuerie de masse -->
+    <div class="orsec-card" style="grid-column: span 2;">
+      <div class="orsec-card-header" onclick="toggleAcc(this)" style="background: rgba(229,57,53,0.1); color: #ef9a9a;">
+        <span>🔴 Tuerie de masse</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="orsec-card-body">
+        <div class="two-cols">
+          <div>
+            <p>Activation du <strong>plan ORSEC NOVI</strong> avec adaptation aux situations d'attaque terroriste ou de violence de masse. Coordination renforcée avec les <strong>Forces de l'Ordre (FO)</strong>.</p>
+            <div class="warn-box">
+              ⚠ Les sapeurs-pompiers interviennent en <strong>zone froide</strong> uniquement. La prise en charge médicale des victimes en zone chaude relève des FO et équipes spécialisées.
+            </div>
+          </div>
+          <div>
+            <ul class="bullet-list">
+              <li>Coordination immédiate avec le <strong>COD / CODIS</strong></li>
+              <li>Mise en place de la <strong>chaîne médicale</strong> avancée</li>
+              <li>Déclenchement du <strong>PMA</strong> en zone de sécurité</li>
+              <li>Gestion des flux victimes via <strong>SINUS</strong></li>
+              <li>Communication grand public via <strong>CIP</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ACTEURS =================== -->
+<section id="acteurs" class="section">
+  <div class="section-title">Les<span class="dot"> Acteurs</span></div>
+  <div class="section-lead">Niveaux de commandement et organisation de la chaîne de crise</div>
+
+  <div class="acteurs-header">
+    <div class="niveau-card">
+      <h3 style="color: #90caf9;">Niveaux de commandement</h3>
+      <div class="niveau-row">
+        <span class="niveau-badge badge-strat">Stratégique</span>
+        <span style="font-size: 13px; color: var(--text-muted);">Haut niveau de commandement</span>
+      </div>
+      <div class="niveau-row">
+        <span class="niveau-badge badge-tact">Tactique</span>
+        <span style="font-size: 13px; color: var(--text-muted);">Sur le terrain</span>
+      </div>
+    </div>
+    <div class="niveau-card">
+      <h3 style="color: #a5d6a7;">Rôles clés</h3>
+      <div class="niveau-row">
+        <span class="niveau-badge badge-strat">DO</span>
+        <span style="font-size: 13px; color: var(--text-muted);">Directeur des Opérations = <strong>Préfet</strong> → niveau stratégique</span>
+      </div>
+      <div class="niveau-row">
+        <span class="niveau-badge badge-tact">COS</span>
+        <span style="font-size: 13px; color: var(--text-muted);">Commandant des Opérations = <strong>Sapeur-Pompier</strong> → niveau tactique</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title" style="font-size: 20px; margin-bottom: 16px;">Organisation — <span class="dot">Montée en puissance</span></div>
+
+  <div class="org-wrapper">
+    <div class="org-main">
+      <div class="org-level">
+        <div class="org-level-label">Interministériel</div>
+        <div class="org-level-nodes">
+          <div class="org-node intermin">Ministère de l'Intérieur</div>
+          <div class="org-node intermin">SGDSN + Premier Ministre</div>
+          <div class="org-node intermin">CIC</div>
+        </div>
+      </div>
+      <div class="org-level">
+        <div class="org-level-label">National</div>
+        <div class="org-level-nodes">
+          <div class="org-node national">COGIC</div>
+          <div class="org-node national">DGSCGC</div>
+        </div>
+      </div>
+      <div class="org-level">
+        <div class="org-level-label">Zonal</div>
+        <div class="org-level-nodes">
+          <div class="org-node zonal">COZ</div>
+          <div class="org-node zonal">EMIZ</div>
+        </div>
+      </div>
+      <div class="org-level">
+        <div class="org-level-label">Départemental</div>
+        <div class="org-level-nodes">
+          <div class="org-node departemental">COD</div>
+          <div class="org-node departemental">CODIS</div>
+        </div>
+      </div>
+      <div class="org-level">
+        <div class="org-level-label">Communal</div>
+        <div class="org-level-nodes">
+          <div class="org-node communal">PCC</div>
+        </div>
+      </div>
+    </div>
+    <div class="montee-label">▲ Montée en puissance</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-box">
+    <div class="ib-label">Abréviations clés</div>
+    <div class="tag-group">
+      <span class="tag tag-purple">CIC — Centre Interministériel de Crise</span>
+      <span class="tag tag-red">COGIC — Centre Opérationnel de Gestion Interministérielle des Crises</span>
+      <span class="tag tag-red">DGSCGC — Direction Générale de la Sécurité Civile et de la Gestion des Crises</span>
+      <span class="tag tag-orange">COZ — Centre Opérationnel de Zone</span>
+      <span class="tag tag-orange">EMIZ — État-Major Interministériel de Zone</span>
+      <span class="tag tag-blue">COD — Centre Opérationnel Départemental</span>
+      <span class="tag tag-blue">CODIS — Centre Opérationnel Départemental d'Incendie et de Secours</span>
+      <span class="tag tag-green">PCC — Poste de Commandement Communal</span>
+    </div>
+  </div>
+</section>
+
+<!-- =================== MOYENS =================== -->
+<section id="moyens" class="section">
+  <div class="section-title">Les<span class="dot"> Moyens</span></div>
+  <div class="section-lead">Ressources mobilisables dans le cadre de la gestion de crise</div>
+
+  <div class="moyens-grid">
+    <!-- Militaires -->
+    <div class="moyen-card">
+      <div class="moyen-header mh-military">
+        <div class="moyen-icon">⚔</div>
+        <h3>Pompiers sous statut militaire</h3>
+      </div>
+      <div class="moyen-body">
+        <ul class="bullet-list">
+          <li><strong>BSPP</strong> — Brigade de Sapeurs-Pompiers de Paris</li>
+          <li><strong>BMPM</strong> — Bataillon de Marins-Pompiers de Marseille</li>
+          <li><strong>ALAT</strong> — Bases de l'aviation légère de l'armée de terre</li>
+          <li>Marine nationale</li>
+          <li>Armée de l'air</li>
+          <li><strong>BMSC / UIISC</strong> 1, 4, 5, 7</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Civils -->
+    <div class="moyen-card">
+      <div class="moyen-header mh-civil">
+        <div class="moyen-icon">🚒</div>
+        <h3>Moyens civils</h3>
+      </div>
+      <div class="moyen-body">
+        <ul class="bullet-list">
+          <li><strong>SDIS</strong> — Service Départemental d'Incendie et de Secours</li>
+          <li><strong>ESOL</strong> — Établissement de Soutien Opérationnel et Logistique</li>
+          <li><strong>GHSC</strong> — Groupement d'Hélicoptères de la Sécurité Civile</li>
+          <li><strong>BSC</strong> — Base de la Sécurité Civile</li>
+          <li>Service de <strong>déminage</strong> de la SC</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bénévoles -->
+    <div class="moyen-card">
+      <div class="moyen-header mh-benevole">
+        <div class="moyen-icon">🤝</div>
+        <h3>Bénévoles</h3>
+      </div>
+      <div class="moyen-body">
+        <ul class="bullet-list">
+          <li><strong>RCSC</strong> — Réserve Communale de la Sécurité Civile</li>
+          <li>La <strong>réserve civique</strong></li>
+          <li><strong>AASC</strong> — Associations Agréées par la Sécurité Civile</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-box">
+    <div class="ib-label">Schéma de montée en puissance des moyens</div>
+    <p>Les moyens sont activés de façon <strong>progressive</strong> selon le niveau de gravité de la crise. Les SDIS constituent le premier niveau de réponse. L'activation des moyens nationaux (UIISC, GHSC, ESOL) se fait sur décision du <strong>DO (Préfet)</strong> en lien avec le <strong>COGIC/DGSCGC</strong>.</p>
+  </div>
+</section>
+
+<footer>
+  <span>🔥 <strong>Gestion de crise</strong> — Référentiel ENSOSP / DGSCGC</span>
+  <span>Préparation concours <strong>Lieutenant 1ère classe</strong></span>
+  <span>SDIS 38 — <strong>Isère</strong></span>
+</footer>
+
+<button class="scroll-top" id="scrollBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function toggleAcc(header) {
+    const body = header.nextElementSibling;
+    const chev = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chev.classList.toggle('open');
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollBtn');
+    btn.classList.toggle('visible', window.scrollY > 200);
+  });
+</script>
+</body>
+</html>

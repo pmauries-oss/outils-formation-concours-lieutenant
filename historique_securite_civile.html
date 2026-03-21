@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historique de la Sécurité Civile</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #c0392b;
+    --rouge-fonce: #96281b;
+    --orange: #e67e22;
+    --jaune: #f1c40f;
+    --jaune-clair: #fef9e7;
+    --bleu: #2c3e7a;
+    --bleu-clair: #d6e4f0;
+    --gris-fonce: #2c2c2c;
+    --gris: #555;
+    --gris-clair: #f4f4f4;
+    --blanc: #fff;
+    --vert-ligne: #5a8a3e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #e8e8e8;
+    color: var(--gris-fonce);
+  }
+
+  /* ─── EN-TÊTE ─── */
+  header {
+    background: linear-gradient(135deg, var(--rouge-fonce) 0%, var(--rouge) 40%, #d44000 100%);
+    color: white;
+    text-align: center;
+    padding: 28px 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 10px,
+      rgba(255,255,255,.04) 10px, rgba(255,255,255,.04) 20px
+    );
+  }
+  header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    position: relative;
+  }
+  header p.soustitre {
+    margin-top: 6px;
+    font-size: .95rem;
+    opacity: .85;
+    font-style: italic;
+    position: relative;
+  }
+
+  /* ─── LÉGENDE ─── */
+  .legende {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    align-items: center;
+    background: white;
+    padding: 10px 28px;
+    border-bottom: 3px solid var(--rouge);
+    font-size: .82rem;
+  }
+  .legende-item { display: flex; align-items: center; gap: 8px; }
+  .legende-carre {
+    width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0;
+  }
+  .carre-jaune { background: var(--jaune); border: 1px solid #c9a800; }
+  .carre-bleu  { background: var(--bleu-clair); border: 1px solid var(--bleu); }
+
+  /* ─── CONTENU PRINCIPAL ─── */
+  .wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+  }
+
+  /* ─── SECTION FRISE ─── */
+  .frise-section {
+    background: white;
+    margin: 20px 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    overflow: hidden;
+  }
+
+  /* ─── ZONE DESSUS (bulles jaunes = évolutions) ─── */
+  .zone-dessus {
+    padding: 16px 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-around;
+  }
+
+  /* ─── LIGNE DU TEMPS ─── */
+  .timeline-bar {
+    position: relative;
+    margin: 0 16px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+  .timeline-bar::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 14px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, var(--vert-ligne), #7ab055);
+    border-radius: 7px;
+    z-index: 0;
+  }
+  /* Flèche droite */
+  .timeline-bar::after {
+    content: '▶';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--vert-ligne);
+    font-size: 1.4rem;
+    z-index: 2;
+  }
+
+  .date-marqueur {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .date-marqueur .annee {
+    font-family: 'Oswald', sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    color: white;
+    background: var(--bleu);
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-top: 4px;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
+  }
+  .date-marqueur .icone-alerte {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .double-alerte { display: flex; gap: 2px; }
+
+  /* ─── ZONE DESSOUS (bulles bleues = catastrophes) ─── */
+  .zone-dessous {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-around;
+  }
+
+  /* ─── CARTES ─── */
+  .carte {
+    flex: 1 1 160px;
+    max-width: 220px;
+    min-width: 140px;
+    border-radius: 4px;
+    padding: 10px 11px;
+    font-size: .78rem;
+    line-height: 1.45;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    transition: transform .2s, box-shadow .2s;
+    cursor: default;
+  }
+  .carte:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+  }
+  .carte-jaune {
+    background: var(--jaune-clair);
+    border-left: 4px solid var(--jaune);
+    border-top: 2px solid #e5b800;
+  }
+  .carte-bleue {
+    background: var(--bleu-clair);
+    border-left: 4px solid var(--bleu);
+    border-bottom: 2px solid var(--bleu);
+  }
+  .carte .titre-carte {
+    font-family: 'Oswald', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .carte-jaune .titre-carte { color: var(--rouge-fonce); }
+  .carte-bleue  .titre-carte { color: var(--bleu); }
+
+  /* ─── CONNECTEURS (traits verticaux) – cosmétiques ─── */
+  .connecteur-haut, .connecteur-bas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .connecteur-haut::after, .connecteur-bas::before {
+    content: '';
+    width: 2px;
+    height: 20px;
+    background: var(--gris);
+    opacity: .35;
+  }
+
+  /* ─── SÉPARATEUR ─── */
+  .separateur {
+    height: 3px;
+    background: linear-gradient(90deg, var(--rouge) 0%, var(--orange) 60%, var(--jaune) 100%);
+    margin: 12px 0 8px;
+  }
+
+  /* ─── SECTION PERSONNALITÉS ─── */
+  .section-titre {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--rouge);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 16px 0 10px;
+    border-bottom: 2px solid var(--rouge);
+    margin-bottom: 16px;
+  }
+
+  .personnalites {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  }
+
+  .perso-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    background: var(--gris-clair);
+    border-radius: 4px;
+    border-top: 3px solid var(--rouge);
+    transition: box-shadow .2s;
+  }
+  .perso-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+
+  .perso-avatar {
+    width: 72px;
+    height: 88px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 2px solid var(--rouge);
+  }
+  .perso-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .perso-info .nom {
+    font-family: 'Oswald', sans-serif;
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--rouge-fonce);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .perso-info p {
+    font-size: .76rem;
+    line-height: 1.5;
+    color: var(--gris);
+  }
+
+  /* ─── PIED DE PAGE ─── */
+  footer {
+    text-align: center;
+    font-size: .72rem;
+    color: #888;
+    padding: 16px;
+    font-style: italic;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    .carte { max-width: 100%; }
+    .timeline-bar { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Historique de la Sécurité Civile</h1>
+  <p class="soustitre">Des origines à la loi MATRAS — évolutions législatives et catastrophes fondatrices</p>
+</header>
+
+<!-- Légende -->
+<div class="legende">
+  <div class="legende-item">
+    <div class="legende-carre carre-jaune"></div>
+    <span>Évolution de la sécurité civile</span>
+  </div>
+  <div class="legende-item">
+    <div class="legende-carre carre-bleu"></div>
+    <span>Catastrophes contribuant à l'évolution de la sécurité civile</span>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- ══════════════════════════════════
+       FRISE CHRONOLOGIQUE
+  ══════════════════════════════════ -->
+  <div class="frise-section">
+
+    <!-- ZONE HAUTE : évolutions (cartes jaunes) -->
+    <div class="zone-dessus">
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Incendie ambassade d'Autriche (Paris, 1810)</div>
+        Met en évidence l'absence d'organisation structurée pour faire face aux incendies à grande échelle. Souligne l'urgence de créer une force spécialisée.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Loi de 1884 — Responsabilité des communes</div>
+        Décentralise la gestion des SP aux communes, instaure une organisation nationale, met fin à l'hétérogénéité des moyens et compétences.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Catastrophe de Seveso (Italie, 1976)</div>
+        Accident chimique → directive Seveso en Europe, imposant des mesures strictes sur les risques industriels majeurs et les sites à haut risque.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">1988 — Corps départementaux</div>
+        Introduction de la notion de « corps départemental » pour professionnaliser les SP communaux, harmoniser les pratiques et améliorer les compétences.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Incendie du tunnel du Mont Blanc (1999)</div>
+        Renforce les normes de sécurité dans les tunnels et améliore les dispositifs de secours en milieux confinés.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Loi MOSC 2004</div>
+        Tourne décisif : fait de la SC l'affaire de tous, organise la réponse, stabilise les SDIS, améliore la carrière des SPP et favorise l'engagement des SPV.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Attentats de Paris (2015)</div>
+        Entraînent la révision des procédures d'intervention face aux attaques terroristes et renforcent la coordination entre services de secours et forces de l'ordre.
+      </div>
+
+      <div class="carte carte-jaune">
+        <div class="titre-carte">Réforme des ESD 2016</div>
+        Réforme des emplois supérieurs de direction visant à professionnaliser davantage les hauts fonctionnaires de la sécurité civile.
+      </div>
+
+    </div><!-- /zone-dessus -->
+
+    <!-- LIGNE DU TEMPS -->
+    <div class="timeline-bar">
+      <div class="date-marqueur">
+        <div class="icone-alerte">🔶</div>
+        <div class="annee">1811</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="icone-alerte">🔶</div>
+        <div class="annee">1884</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="double-alerte"><span>⚠️</span><span>⚠️</span></div>
+        <div class="annee">1939</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="double-alerte"><span>⚠️</span><span>⚠️</span></div>
+        <div class="annee">1982</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="icone-alerte">🔶</div>
+        <div class="annee">1988</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="double-alerte"><span>⚠️</span><span>⚠️</span></div>
+        <div class="annee">1996</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="double-alerte"><span>⚠️</span><span>⚠️</span></div>
+        <div class="annee">2004</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="icone-alerte">🔶</div>
+        <div class="annee">2011</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="icone-alerte">🔶</div>
+        <div class="annee">2016</div>
+      </div>
+      <div class="date-marqueur">
+        <div class="icone-alerte">⚠️</div>
+        <div class="annee">2019</div>
+      </div>
+    </div><!-- /timeline-bar -->
+
+    <!-- ZONE BASSE : catastrophes (cartes bleues) et jalons réglementaires -->
+    <div class="zone-dessous">
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">1811 — Création de la BSPP</div>
+        Napoléon fonde la Brigade des Sapeurs-Pompiers de Paris : première structure officielle de sécurité civile en France.
+      </div>
+
+      <div class="carte carte-bleue">
+        <div class="titre-carte">Catastrophe de Courrières (1906)</div>
+        1 099 morts → réforme de la réglementation sur la sécurité dans les mines, amélioration des dispositifs de secours industriels.
+      </div>
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">1939 — Bataillon de marins-pompiers de Marseille</div>
+        Le BMPM devient, à l'instar de la BSPP, une référence nationale en matière de sécurité civile.
+      </div>
+
+      <div class="carte carte-bleue">
+        <div class="titre-carte">Explosion raffinerie Feyzin (1966)</div>
+        Explosions d'ampleur en contexte complexe → mise en évidence de la nécessité d'élever le niveau technique des SP face aux risques technologiques.
+      </div>
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">1982 — Bicéphalisme</div>
+        Cohabitation préfet / président du CG pour diriger les SDIS → dualité de commandement.
+      </div>
+
+      <div class="carte carte-bleue">
+        <div class="titre-carte">Explosion usine AZF (2001)</div>
+        Renforcement des plans de prévention des risques technologiques, protocoles de sécurité plus rigoureux.
+      </div>
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">1996 — Départementalisation</div>
+        La loi renforce la dimension départementale de la SC, donne davantage de responsabilités aux SDIS.
+      </div>
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">2011 — Création de la DGSCGC</div>
+        Direction Générale de la Sécurité Civile et de la Gestion des Crises, pour renforcer la coordination nationale et la gestion des crises majeures.
+      </div>
+
+      <div class="carte carte-bleue">
+        <div class="titre-carte">Premier « Méga-feu » de forêt en France (2022)</div>
+        Accélère l'innovation : lutte contre les incendies, féminisation des SPV, modernisation des équipements, drones.
+      </div>
+
+      <div class="carte carte-jaune" style="border-top:none; border-bottom:2px solid #e5b800;">
+        <div class="titre-carte">2019 — Loi MATRAS</div>
+        Modernisation de l'action des territoires au service de la République et de l'adaptation.
+      </div>
+
+    </div><!-- /zone-dessous -->
+
+  </div><!-- /frise-section -->
+
+  <!-- ══════════════════════════════════
+       PERSONNALITÉS
+  ══════════════════════════════════ -->
+  <div class="separateur"></div>
+
+  <div class="section-titre">3 personnalités historiques de la sécurité civile en France</div>
+
+  <div class="personnalites">
+
+    <!-- Charles-Auguste Michel -->
+    <div class="perso-card">
+      <div class="perso-avatar">🎖️</div>
+      <div class="perso-info">
+        <div class="nom">Charles-Auguste Michel (1843–1914)</div>
+        <p>Capitaine du corps de Vailly dans l'Aisne, il est à l'origine de la création de la <strong>Fédération des sapeurs-pompiers de France</strong>. En 1881, il réunit 93 officiers de 18 départements pour tracer les contours d'une fédération nationale. Son objectif : unir pour être plus forts, veiller aux droits et aux intérêts des SP. Il meurt à 71 ans sous le bombardement de l'offensive allemande du 30 octobre 1914 sur sa ville.</p>
+      </div>
+    </div>
+
+    <!-- Le caporal Thibault -->
+    <div class="perso-card">
+      <div class="perso-avatar">🏅</div>
+      <div class="perso-info">
+        <div class="nom">Le caporal Thibault (1835–1881)</div>
+        <p>S'illustre lors d'un incendie ravageur rue Saint-Antoine à Paris, le 8 août 1868. Il effectue des sauvetages périlleux à l'aide d'une échelle à crochets, arrachant les victimes des flammes. Figure emblématique du courage et du dévouement, <strong>Napoléon III lui remet en personne la Légion d'honneur</strong> le 14 août 1868.</p>
+      </div>
+    </div>
+
+    <!-- Françoise Mabille -->
+    <div class="perso-card">
+      <div class="perso-avatar">👩‍🚒</div>
+      <div class="perso-info">
+        <div class="nom">Françoise Mabille (née en 1960)</div>
+        <p><strong>Première femme sapeur-pompier professionnel en France</strong>. Brevetée secouriste en 1973, elle intègre en 1974 les SPV de Barnétin (Seine-Maritime) : première femme officiellement dans les rangs. Elle obtient son diplôme professionnel en 1994 et prend sa retraite en 2011, après 37 ans de service.</p>
+      </div>
+    </div>
+
+  </div><!-- /personnalites -->
+
+</div><!-- /wrapper -->
+
+<footer>
+  Document pédagogique — Historique de la Sécurité Civile en France &bull; Sources : ENSOSP / DGSCGC
+</footer>
+
+</body>
+</html>

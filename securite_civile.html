@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fonctionnement de la Sécurité Civile</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #C0392B;
+    --rouge-vif: #E74C3C;
+    --orange: #E67E22;
+    --or: #F39C12;
+    --vert: #27AE60;
+    --vert-clair: #2ECC71;
+    --bleu: #2980B9;
+    --bleu-fonce: #1A3A5C;
+    --marine: #0D1B2A;
+    --gris-fonce: #1C2833;
+    --gris-moyen: #2C3E50;
+    --gris-clair: #34495E;
+    --blanc: #ECF0F1;
+    --blanc-doux: #BDC3C7;
+    
+    /* couleurs par axe */
+    --c1: #9B59B6; /* Prévention - violet */
+    --c2: #2980B9; /* Prévision - bleu */
+    --c3: #E74C3C; /* Opérationnel - rouge */
+    --c4: #E67E22; /* RETEX - orange */
+    --c5: #27AE60; /* Innovation - vert */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--marine);
+    color: var(--blanc);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #0D1B2A 0%, #1A3A5C 40%, #0D1B2A 100%);
+    border-bottom: 4px solid var(--rouge-vif);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      repeating-linear-gradient(90deg, rgba(192,57,43,0.04) 0px, rgba(192,57,43,0.04) 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(0deg, rgba(192,57,43,0.04) 0px, rgba(192,57,43,0.04) 1px, transparent 1px, transparent 80px);
+  }
+
+  .hero-emblem {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--blanc);
+    text-shadow: 0 0 40px rgba(231,76,60,0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span { color: var(--rouge-vif); }
+
+  .hero-sub {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--blanc-doux);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== NAV PILLS ===== */
+  .nav-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 30px;
+    border: 1.5px solid currentColor;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    background: transparent;
+    text-decoration: none;
+  }
+
+  .nav-pill:hover { opacity: 0.8; transform: translateY(-1px); }
+  .nav-pill.p1 { color: var(--c1); }
+  .nav-pill.p2 { color: var(--c2); }
+  .nav-pill.p3 { color: var(--c3); }
+  .nav-pill.p4 { color: var(--c4); }
+  .nav-pill.p5 { color: var(--c5); }
+
+  .nav-pill.active.p1 { background: var(--c1); color: white; }
+  .nav-pill.active.p2 { background: var(--c2); color: white; }
+  .nav-pill.active.p3 { background: var(--c3); color: white; }
+  .nav-pill.active.p4 { background: var(--c4); color: white; }
+  .nav-pill.active.p5 { background: var(--c5); color: white; }
+
+  /* ===== MAIN LAYOUT ===== */
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ===== SECTION ===== */
+  .section {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .section.visible { opacity: 1; transform: none; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid;
+  }
+
+  .section-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* couleurs par section */
+  .s1 .section-header { border-color: var(--c1); }
+  .s1 .section-num { background: var(--c1); }
+  .s1 .section-title { color: var(--c1); }
+  .s1 .tag { background: rgba(155,89,182,0.15); border-color: rgba(155,89,182,0.4); }
+  .s1 .card { border-color: rgba(155,89,182,0.25); }
+  .s1 .card-label { color: var(--c1); border-color: rgba(155,89,182,0.3); }
+
+  .s2 .section-header { border-color: var(--c2); }
+  .s2 .section-num { background: var(--c2); }
+  .s2 .section-title { color: var(--c2); }
+  .s2 .tag { background: rgba(41,128,185,0.15); border-color: rgba(41,128,185,0.4); }
+  .s2 .card { border-color: rgba(41,128,185,0.25); }
+  .s2 .card-label { color: var(--c2); border-color: rgba(41,128,185,0.3); }
+
+  .s3 .section-header { border-color: var(--c3); }
+  .s3 .section-num { background: var(--c3); }
+  .s3 .section-title { color: var(--c3); }
+  .s3 .tag { background: rgba(231,76,60,0.15); border-color: rgba(231,76,60,0.4); }
+  .s3 .card { border-color: rgba(231,76,60,0.25); }
+  .s3 .card-label { color: var(--c3); border-color: rgba(231,76,60,0.3); }
+
+  .s4 .section-header { border-color: var(--c4); }
+  .s4 .section-num { background: var(--c4); }
+  .s4 .section-title { color: var(--c4); }
+  .s4 .tag { background: rgba(230,126,34,0.15); border-color: rgba(230,126,34,0.4); }
+  .s4 .card { border-color: rgba(230,126,34,0.25); }
+  .s4 .card-label { color: var(--c4); border-color: rgba(230,126,34,0.3); }
+
+  .s5 .section-header { border-color: var(--c5); }
+  .s5 .section-num { background: var(--c5); }
+  .s5 .section-title { color: var(--c5); }
+  .s5 .tag { background: rgba(39,174,96,0.15); border-color: rgba(39,174,96,0.4); }
+  .s5 .card { border-color: rgba(39,174,96,0.25); }
+  .s5 .card-label { color: var(--c5); border-color: rgba(39,174,96,0.3); }
+
+  /* ===== CARDS GRID ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--gris-fonce);
+    border: 1px solid;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-label .chevron {
+    margin-left: auto;
+    transition: transform 0.25s ease;
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  .card-label.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    padding: 0.75rem 1rem;
+    display: none;
+  }
+
+  .card-body.open { display: block; }
+
+  .card-body ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-body ul li {
+    padding: 0.3rem 0;
+    padding-left: 1.1rem;
+    position: relative;
+    font-size: 0.875rem;
+    color: var(--blanc-doux);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .card-body ul li:last-child { border-bottom: none; }
+
+  .card-body ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.7rem;
+    top: 0.35rem;
+  }
+
+  .card-body ul li strong {
+    color: var(--blanc);
+    font-weight: 600;
+  }
+
+  /* ===== TAGS ===== */
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid;
+    font-size: 0.78rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ===== STATS BLOC (Opérationnel) ===== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .stat-card {
+    background: var(--gris-fonce);
+    border: 1px solid rgba(231,76,60,0.3);
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--rouge-vif);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--blanc-doux);
+    margin-top: 0.4rem;
+    font-weight: 500;
+  }
+
+  .stat-sub {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.2rem;
+  }
+
+  /* ===== BARRE DE REPARTITION ===== */
+  .repartition {
+    background: var(--gris-fonce);
+    border: 1px solid rgba(231,76,60,0.25);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .rep-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--blanc-doux);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .rep-bar {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 28px;
+    margin-bottom: 0.75rem;
+  }
+
+  .rep-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: white;
+    transition: flex 1.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .rep-seg.prof { background: var(--bleu); flex: 17; }
+  .rep-seg.vol { background: var(--vert); flex: 78; }
+  .rep-seg.mil { background: var(--gris-clair); flex: 5; }
+
+  .rep-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .rep-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--blanc-doux);
+  }
+
+  .rep-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* ===== RETEX METHODE ===== */
+  .methode-steps {
+    display: flex;
+    gap: 0;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .methode-step {
+    flex: 1;
+    min-width: 200px;
+    background: var(--gris-fonce);
+    border: 1px solid rgba(230,126,34,0.25);
+    padding: 1rem 1.25rem;
+    position: relative;
+  }
+
+  .methode-step:first-child { border-radius: 10px 0 0 10px; }
+  .methode-step:last-child { border-radius: 0 10px 10px 0; }
+
+  .methode-step:not(:last-child)::after {
+    content: '▶';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c4);
+    z-index: 2;
+    font-size: 0.8rem;
+  }
+
+  .methode-step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--c4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+
+  .methode-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--blanc);
+    margin-bottom: 0.4rem;
+  }
+
+  .methode-step p {
+    font-size: 0.8rem;
+    color: var(--blanc-doux);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .methode-steps { flex-direction: column; }
+    .methode-step:first-child { border-radius: 10px 10px 0 0; }
+    .methode-step:last-child { border-radius: 0 0 10px 10px; }
+    .methode-step:not(:last-child)::after { content: '▼'; right: auto; left: 50%; bottom: -12px; top: auto; transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-emblem">🚒</div>
+  <h1>Fonctionnement de la <span>Sécurité Civile</span></h1>
+  <p class="hero-sub">Organisation — Doctrine — Missions — Innovation</p>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <a href="#s1" class="nav-pill p1">① Prévention</a>
+  <a href="#s2" class="nav-pill p2">② Prévision</a>
+  <a href="#s3" class="nav-pill p3">③ Opérationnel</a>
+  <a href="#s4" class="nav-pill p4">④ RETEX</a>
+  <a href="#s5" class="nav-pill p5">⑤ Innovation</a>
+</nav>
+
+<main>
+
+  <!-- ===== 1. PRÉVENTION ===== -->
+  <section id="s1" class="section s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2 class="section-title">Prévention</h2>
+    </div>
+    <div class="cards-grid">
+
+      <!-- ERP -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🏛️ ERP — Établissements Recevant du Public
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li>Classification en <strong>5 catégories</strong> selon la fréquentation journalière</li>
+            <li>Réglementations particulières imposées selon la catégorie (<strong>règlement de sécurité</strong>)</li>
+            <li>Contrôles réguliers par les commissions de sécurité</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- IGH -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🏢 IGH — Immeubles de Grande Hauteur
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li><strong>CCH</strong> (Code de la Construction et de l'Habitation) fixe les règles de sécurité</li>
+            <li>Complété par le <strong>Règlement de sécurité du 30 décembre 2011</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Commission de sécurité -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🔍 Commission de sécurité — 4 types
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li><strong>Réception technique</strong> — une fois les travaux terminés, avant l'ouverture</li>
+            <li><strong>Périodique</strong> — selon le type et la catégorie</li>
+            <li><strong>Inopinée</strong> — déclenchée par le maire ou le préfet</li>
+            <li><strong>Levée d'avis défavorable</strong></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 2. PRÉVISION ===== -->
+  <section id="s2" class="section s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2 class="section-title">Prévision</h2>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Plans -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          📋 Plans
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <div class="tags-row">
+            <span class="tag">ORSEC</span><span class="tag">ETARE</span><span class="tag">PPI</span><span class="tag">PCS</span><span class="tag">PPMS</span>
+          </div>
+          <ul>
+            <li>Coordination avec les <strong>services partenaires</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SIG -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🗺️ SIG — Système d'Information Géographique
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li>Maîtrise spatiale des lieux d'intervention</li>
+            <li><strong>Cartographie, scénarios et simulation</strong></li>
+            <li>Graphique, chiffres clés, analyses</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- DECI -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          💧 DECI — Défense Extérieure Contre l'Incendie
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li><strong>Schéma DECI</strong> adapté aux vulnérabilités (ERP 1ère cat., ICPE, réglementations spéciales)</li>
+            <li>Maîtrise de l'<strong>apport hydraulique</strong> sur intervention</li>
+            <li>Gestion d'une base de données DECI</li>
+            <li><strong>Contrôle annuel des PEI</strong> (Points d'Eau Incendie)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Exercices -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🎯 Exercices et manœuvres
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li>Maintenir et améliorer les <strong>compétences</strong> opérationnelles</li>
+            <li>Coordination et préparation pour intervenir <strong>efficacement en situation réelle</strong></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 3. OPÉRATIONNEL ===== -->
+  <section id="s3" class="section s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2 class="section-title">Opérationnel</h2>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Traitement de l'alerte -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          📡 Traitement de l'alerte
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li><strong>CTA-CODIS</strong> traite les appels et coordonne les moyens de secours déclenchés</li>
+            <li>Possible montée en puissance avec une <strong>salle de crise</strong> et une salle de débordement</li>
+            <li>Relation avec les services partenaires : <strong>SAMU, FO, voirie, CROSS, élus</strong>, COD, COZ, COGIC, CIC</li>
+            <li><strong>SIC</strong> — Systèmes d'information et de communication</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Missions -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🚒 Missions
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li>Protéger les <strong>personnes, les animaux, les biens et l'environnement</strong></li>
+            <li>Intervenir en cas de <strong>catastrophes naturelles</strong></li>
+            <li>Secours d'urgence et <strong>accidents technologiques</strong></li>
+            <li>Gestion des risques majeurs</li>
+            <li>Coordination des secours et <strong>limitation des impacts</strong></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Moyens / Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" data-target="254000">0</div>
+        <div class="stat-label">Sapeurs-pompiers en France</div>
+        <div class="stat-sub">Au 31 décembre 2022</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-target="43000">0</div>
+        <div class="stat-label">SP Professionnels</div>
+        <div class="stat-sub">17 %</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-target="198800">0</div>
+        <div class="stat-label">SP Volontaires</div>
+        <div class="stat-sub">78 %</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-target="13000">0</div>
+        <div class="stat-label">Militaires</div>
+        <div class="stat-sub">5 %</div>
+      </div>
+    </div>
+
+    <div class="repartition">
+      <div class="rep-title">Répartition des effectifs</div>
+      <div class="rep-bar">
+        <div class="rep-seg prof">17 %</div>
+        <div class="rep-seg vol">78 %</div>
+        <div class="rep-seg mil">5 %</div>
+      </div>
+      <div class="rep-legend">
+        <div class="rep-leg-item"><div class="rep-dot" style="background:var(--bleu)"></div> SPP (17 %)</div>
+        <div class="rep-leg-item"><div class="rep-dot" style="background:var(--vert)"></div> SPV (78 %)</div>
+        <div class="rep-leg-item"><div class="rep-dot" style="background:var(--gris-clair)"></div> Militaires (5 %)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. RETEX ===== -->
+  <section id="s4" class="section s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2 class="section-title">RETEX — Retour d'Expérience</h2>
+    </div>
+
+    <!-- Objectifs -->
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="card-label" onclick="toggle(this)">
+        🎯 Objectifs
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body open">
+        <ul>
+          <li>Améliorer les <strong>procédures et protocoles</strong> d'intervention</li>
+          <li>Optimiser l'utilisation des <strong>moyens humains et matériels</strong></li>
+          <li>Renforcer la <strong>communication et la coordination</strong> entre les différents acteurs</li>
+          <li>Identifier de nouveaux besoins en matière de <strong>formation et d'équipement</strong></li>
+          <li>Prévenir les <strong>risques futurs</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Méthode -->
+    <div class="methode-steps">
+      <div class="methode-step">
+        <div class="methode-step-num">Étape 1</div>
+        <div class="methode-step-title">Collecte des données</div>
+        <p>Rapports d'intervention, témoignages, vidéos, photos…</p>
+      </div>
+      <div class="methode-step">
+        <div class="methode-step-num">Étape 2</div>
+        <div class="methode-step-title">Analyse des données</div>
+        <p>Identifier les causes, les facteurs de succès et les axes d'amélioration</p>
+      </div>
+      <div class="methode-step">
+        <div class="methode-step-num">Étape 3</div>
+        <div class="methode-step-title">Recommandations</div>
+        <p>Proposer des actions concrètes pour corriger les dysfonctionnements et améliorer les pratiques futures</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. INNOVATION ===== -->
+  <section id="s5" class="section s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2 class="section-title">Innovation</h2>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Technologie -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          💻 Technologie
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <div class="tags-row">
+            <span class="tag">Drones</span><span class="tag">NexSIS</span><span class="tag">RRF</span><span class="tag">IA</span>
+          </div>
+          <ul>
+            <li><strong>Équipements</strong> : drones, montres connectées, lance dysphasique, casques connectés</li>
+            <li><strong>Véhicules</strong> : électriques, autoprotection, assistance à la conduite</li>
+            <li><strong>Logiciels</strong> : Crimson Tactic, NexSIS, RRF, intelligence artificielle</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Technique -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          📖 Technique
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <div class="tags-row">
+            <span class="tag">GTO</span><span class="tag">GDO</span><span class="tag">GNR</span>
+          </div>
+          <ul>
+            <li><strong>GTO</strong> — Guides des Techniques Opérationnelles</li>
+            <li><strong>GDO</strong> — Guides de Doctrine Opérationnelle</li>
+            <li><strong>GNR</strong> — Guide National de Référence</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Formation -->
+      <div class="card">
+        <div class="card-label" onclick="toggle(this)">
+          🎓 Formation
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body open">
+          <ul>
+            <li><strong>FMPA</strong> : Formation de Maintien et de Perfectionnement des Acquis</li>
+            <li>Mise à jour régulière des compétences des SP</li>
+            <li>Utilisation de la <strong>réalité virtuelle</strong> et des simulateurs</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Fonctionnement de la Sécurité Civile — Document de référence — SDIS / ENSOSP
+</footer>
+
+<script>
+  // Accordéon cartes
+  function toggle(label) {
+    label.classList.toggle('open');
+    const body = label.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // Intersection Observer pour animations entrée
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  sections.forEach(s => observer.observe(s));
+
+  // Compteurs animés
+  function animateCounter(el, target, duration = 1800) {
+    let start = 0;
+    const step = target / (duration / 16);
+    const update = () => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.round(start).toLocaleString('fr-FR');
+      if (start < target) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = e.target.querySelectorAll('[data-target]');
+        nums.forEach(n => animateCounter(n, parseInt(n.dataset.target)));
+        statObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.stats-grid').forEach(g => statObserver.observe(g));
+
+  // Smooth scroll pour nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

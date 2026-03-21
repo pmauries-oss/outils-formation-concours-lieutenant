@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA DGSCGC – Carte mentale interactive</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #c0392b;
+    --rouge-vif: #e74c3c;
+    --or: #f39c12;
+    --or-clair: #f8d070;
+    --vert: #27ae60;
+    --vert-clair: #2ecc71;
+    --bleu: #2980b9;
+    --bleu-clair: #3498db;
+    --gris-fonce: #1a1a2e;
+    --gris-moyen: #16213e;
+    --gris-carte: #0f3460;
+    --texte: #ecf0f1;
+    --texte-doux: #bdc3c7;
+    --accent: #e94560;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--gris-fonce);
+    color: var(--texte);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    border-bottom: 3px solid var(--rouge-vif);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 80px
+    );
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.8rem 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-shield {
+    width: 80px; height: 80px; flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+  .header-text h1 span { color: var(--rouge-vif); }
+  .header-text p {
+    font-size: .95rem;
+    color: var(--texte-doux);
+    margin-top: .4rem;
+    letter-spacing: .04em;
+  }
+  .badge {
+    margin-left: auto;
+    background: rgba(231,76,60,.15);
+    border: 1px solid var(--rouge-vif);
+    border-radius: 8px;
+    padding: .6rem 1.2rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .badge span { display: block; font-family: 'Oswald', sans-serif; }
+  .badge .big { font-size: 1.4rem; color: var(--rouge-vif); }
+  .badge .small { font-size: .72rem; color: var(--texte-doux); letter-spacing: .08em; }
+
+  /* ─── INTRO BANNER ─── */
+  .intro-banner {
+    background: linear-gradient(90deg, rgba(192,57,43,.12), rgba(41,128,185,.12));
+    border-left: 4px solid var(--or);
+    margin: 1.5rem 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0 8px 8px 0;
+    font-size: .95rem;
+    line-height: 1.7;
+    color: var(--texte-doux);
+  }
+  .intro-banner strong { color: var(--or-clair); }
+
+  /* ─── NAV TABS ─── */
+  .nav-tabs {
+    display: flex;
+    gap: .5rem;
+    padding: 0 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .tab-btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: .85rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .55rem 1.2rem;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: all .25s;
+    position: relative;
+  }
+  .tab-btn.active { color: #fff; }
+  .tab-btn:not(.active) {
+    background: rgba(255,255,255,.06);
+    color: var(--texte-doux);
+  }
+  .tab-btn:hover:not(.active) { background: rgba(255,255,255,.12); }
+
+  /* couleurs par onglet */
+  .tab-btn[data-tab="1"] { background: var(--bleu); }
+  .tab-btn[data-tab="2"] { background: var(--vert); }
+  .tab-btn[data-tab="3"] { background: var(--rouge); }
+  .tab-btn[data-tab="4"] { background: #8e44ad; }
+  .tab-btn[data-tab="5"] { background: #d35400; }
+  .tab-btn[data-tab="1"]:not(.active) { background: rgba(41,128,185,.3); }
+  .tab-btn[data-tab="2"]:not(.active) { background: rgba(39,174,96,.3); }
+  .tab-btn[data-tab="3"]:not(.active) { background: rgba(192,57,43,.3); }
+  .tab-btn[data-tab="4"]:not(.active) { background: rgba(142,68,173,.3); }
+  .tab-btn[data-tab="5"]:not(.active) { background: rgba(211,84,0,.3); }
+
+  /* ─── MAIN CONTENT ─── */
+  main { padding: 0 2rem 3rem; }
+
+  .tab-panel { display: none; animation: fadeIn .3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+  }
+  .section-header .num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .section-header p { font-size: .88rem; opacity: .8; margin-top: .2rem; }
+
+  .s1 .section-header { background: linear-gradient(90deg, #1a5276, #2980b9); }
+  .s2 .section-header { background: linear-gradient(90deg, #1a5226, #27ae60); }
+  .s3 .section-header { background: linear-gradient(90deg, #6e1d14, #c0392b); }
+  .s4 .section-header { background: linear-gradient(90deg, #4a235a, #8e44ad); }
+  .s5 .section-header { background: linear-gradient(90deg, #784212, #d35400); }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+  }
+  .card {
+    background: var(--gris-moyen);
+    padding: 1.2rem 1.4rem;
+    transition: background .2s;
+  }
+  .card:hover { background: #1c2a4a; }
+  .card-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .card-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 1.2em;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .s1 .card-title::before { background: var(--bleu-clair); }
+  .s2 .card-title::before { background: var(--vert-clair); }
+  .s3 .card-title::before { background: var(--rouge-vif); }
+  .s4 .card-title::before { background: #a569bd; }
+  .s5 .card-title::before { background: #e67e22; }
+
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: .88rem;
+    color: var(--texte-doux);
+    padding: .3rem 0 .3rem .9rem;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    position: relative;
+    line-height: 1.5;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--or);
+    font-weight: 700;
+  }
+
+  /* ─── ORGA TABLE (tab 1) ─── */
+  .orga-block {
+    background: var(--gris-moyen);
+    border-radius: 0 0 10px 10px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-top: none;
+  }
+  .orga-block p {
+    font-size: .92rem;
+    color: var(--texte-doux);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .orga-block strong { color: var(--or-clair); }
+  .sous-directions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: .75rem;
+    margin-top: 1rem;
+  }
+  .sous-dir {
+    background: rgba(41,128,185,.12);
+    border: 1px solid rgba(41,128,185,.3);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    font-size: .88rem;
+    color: var(--texte-doux);
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+  }
+  .sous-dir::before {
+    content: '📋';
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+
+  /* ─── TIMELINE (historique) ─── */
+  .timeline {
+    background: var(--gris-moyen);
+    padding: 1.5rem 1.5rem 1.5rem 2rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+  }
+  .tl-item {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 36px;
+    top: 28px;
+    bottom: -1rem;
+    width: 2px;
+    background: rgba(255,255,255,.1);
+  }
+  .tl-year {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    color: var(--or-clair);
+    background: rgba(243,156,18,.12);
+    border: 1px solid rgba(243,156,18,.3);
+    border-radius: 6px;
+    padding: .3rem .6rem;
+    white-space: nowrap;
+    height: fit-content;
+    flex-shrink: 0;
+    min-width: 52px;
+    text-align: center;
+  }
+  .tl-text {
+    font-size: .88rem;
+    color: var(--texte-doux);
+    line-height: 1.5;
+    padding-top: .3rem;
+  }
+
+  /* ─── LOIS ─── */
+  .lois-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: .75rem;
+    background: var(--gris-moyen);
+    padding: 1.2rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+  }
+  .loi-card {
+    background: rgba(192,57,43,.08);
+    border: 1px solid rgba(192,57,43,.25);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+  }
+  .loi-card .loi-titre {
+    font-family: 'Oswald', sans-serif;
+    font-size: .9rem;
+    color: #e98a83;
+    margin-bottom: .4rem;
+    letter-spacing: .04em;
+  }
+  .loi-card p {
+    font-size: .83rem;
+    color: var(--texte-doux);
+    line-height: 1.5;
+  }
+
+  /* ─── SEPARATOR ─── */
+  .sep { height: 1.5rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .8rem;
+    color: rgba(255,255,255,.2);
+    border-top: 1px solid rgba(255,255,255,.06);
+    margin-top: 2rem;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: .1em;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .header-inner { flex-wrap: wrap; padding: 1.2rem; }
+    .header-text h1 { font-size: 1.8rem; }
+    .badge { margin-left: 0; }
+    main, .nav-tabs, .intro-banner { padding-left: 1rem; padding-right: 1rem; }
+    .intro-banner { margin: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <div class="header-inner">
+    <!-- Bouclier SVG simplifié -->
+    <svg class="logo-shield" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="40,4 74,18 74,46 40,76 6,46 6,18" fill="none" stroke="#e74c3c" stroke-width="3"/>
+      <polygon points="40,12 66,23 66,44 40,68 14,44 14,23" fill="rgba(231,76,60,.15)"/>
+      <text x="40" y="48" font-family="Oswald,sans-serif" font-size="22" fill="#e74c3c" text-anchor="middle" font-weight="700">SC</text>
+    </svg>
+    <div class="header-text">
+      <h1>LA <span>DGSCGC</span></h1>
+      <p>Direction Générale de la Sécurité Civile et de la Gestion des Crises</p>
+    </div>
+    <div class="badge">
+      <span class="big">5</span>
+      <span class="small">THÈMES</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ INTRO ═══════════ -->
+<div class="intro-banner">
+  La <strong>DGSCGC</strong> est une entité du <strong>Ministère de l'Intérieur</strong> chargée de la coordination des secours et de la gestion des crises en France. Acteur clé en matière de protection de la population, elle collabore étroitement avec les collectivités locales, les services de secours et les partenaires internationaux pour une réponse rapide et adaptée aux situations d'urgence. Placée sous l'autorité d'un préfet et du <strong>DG Julien Marion</strong>, elle emploie environ <strong>3 000 personnels</strong> civils et militaires répartis sur 60 sites. Son siège est situé <strong>Place Beauvau à Paris</strong>.
+</div>
+
+<!-- ═══════════ TABS ═══════════ -->
+<div class="nav-tabs">
+  <button class="tab-btn active" data-tab="1">① Présentation</button>
+  <button class="tab-btn" data-tab="2">② Prévention des risques</button>
+  <button class="tab-btn" data-tab="3">③ Gestion des crises</button>
+  <button class="tab-btn" data-tab="4">④ Coopérations</button>
+  <button class="tab-btn" data-tab="5">⑤ Enjeux actuels</button>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════
+     ONGLET 1 – PRÉSENTATION
+══════════════════════════════════ -->
+<div class="tab-panel active s1" id="tab1">
+
+  <!-- Organisation -->
+  <div class="section-header">
+    <div class="num">🏛</div>
+    <div>
+      <h2>Organisation</h2>
+      <p>Structure interne de la DGSCGC</p>
+    </div>
+  </div>
+  <div class="orga-block">
+    <p>La DGSCGC comprend un <strong>État-Major</strong> et une <strong>IGSC (Inspection Générale de la Sécurité Civile)</strong>. Elle se divise en <strong>4 sous-directions</strong> :</p>
+    <div class="sous-directions">
+      <div class="sous-dir">La sous-direction de la doctrine et des ressources humaines</div>
+      <div class="sous-dir">La sous-direction des services d'incendie et des acteurs du secours</div>
+      <div class="sous-dir">La sous-direction de la préparation, de l'anticipation et de la gestion des crises</div>
+      <div class="sous-dir">La sous-direction des moyens nationaux</div>
+      <div class="sous-dir">La sous-direction des affaires internationales, des ressources et de la stratégie</div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- Historique -->
+  <div class="section-header">
+    <div class="num">📅</div>
+    <div>
+      <h2>Historique</h2>
+      <p>Les grandes dates de la sécurité civile française</p>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1975</div><div class="tl-text">Création de la Direction de la défense et de la sécurité civile (DDSC)</div></div>
+    <div class="tl-item"><div class="tl-year">1986</div><div class="tl-text">Renommée Direction de la sécurité civile (DSC)</div></div>
+    <div class="tl-item"><div class="tl-year">1997</div><div class="tl-text">Renommée Direction de la défense et de la sécurité civile (DDSC)</div></div>
+    <div class="tl-item"><div class="tl-year">2008</div><div class="tl-text">Renommée Direction de la sécurité civile (DSC)</div></div>
+    <div class="tl-item"><div class="tl-year">2011</div><div class="tl-text">Renommée <strong style="color:var(--or-clair)">Direction Générale de la Sécurité Civile et de la Gestion des Crises (DGSCGC)</strong></div></div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- Réglementation -->
+  <div class="section-header">
+    <div class="num">⚖</div>
+    <div>
+      <h2>Réglementation</h2>
+      <p>Textes fondateurs et lois structurantes</p>
+    </div>
+  </div>
+  <div class="lois-grid">
+    <div class="loi-card">
+      <div class="loi-titre">Loi de 1987</div>
+      <p>Textes fondateurs de la sécurité civile en France. Vise à structurer l'organisation de la sécurité civile et à préciser les responsabilités des différents acteurs.</p>
+    </div>
+    <div class="loi-card">
+      <div class="loi-titre">Loi MOSC de 2004</div>
+      <p>Apparition du concept de résilience des territoires, des PCS (plans communaux de sauvegarde), des plans ORSEC.</p>
+    </div>
+    <div class="loi-card">
+      <div class="loi-titre">Loi du 5 juillet 2010</div>
+      <p>Définition des rôles de la DGSCGC, notamment en matière de coordination des actions de secours au niveau national et international.</p>
+    </div>
+    <div class="loi-card">
+      <div class="loi-titre">Loi n° 2021-1510 du 6 déc. 2021</div>
+      <p>Préparation et réponse aux crises sanitaires, adoptée à la suite de la pandémie de COVID-19.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ONGLET 2 – PRÉVENTION DES RISQUES
+══════════════════════════════════ -->
+<div class="tab-panel s2" id="tab2">
+  <div class="section-header">
+    <div class="num">🛡</div>
+    <div>
+      <h2>Prévention des risques</h2>
+      <p>Identification, sensibilisation et réglementation</p>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title">Identification et analyse des risques</div>
+      <ul>
+        <li>Recensement des risques naturels</li>
+        <li>Identification des risques technologiques</li>
+        <li>Utilisation d'outils de modélisation (SIG, modèles…)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Programmes de sensibilisation</div>
+      <ul>
+        <li>Campagnes de prévention pour le public</li>
+        <li>Formation des acteurs locaux</li>
+        <li>Éducation à la culture du risque</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Normes et réglementations</div>
+      <ul>
+        <li>Réglementation de la sécurité incendie</li>
+        <li>Prévention des risques naturels (PPRN) et des risques technologiques (PPRT)</li>
+        <li>Expertise dans la classification des sites SEVESO et ICPE</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ONGLET 3 – GESTION DES CRISES
+══════════════════════════════════ -->
+<div class="tab-panel s3" id="tab3">
+  <div class="section-header">
+    <div class="num">🚒</div>
+    <div>
+      <h2>Gestion des crises</h2>
+      <p>Planification, coordination et retour d'expérience</p>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title">Planification des interventions</div>
+      <ul>
+        <li>Plans ORSEC et PRÉVIRISQUE</li>
+        <li>Plan de continuité d'activité</li>
+        <li>Scénarios d'intervention</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Coordination des opérations</div>
+      <ul>
+        <li>Collaboration SDIS, SAMU et forces de l'ordre</li>
+        <li>Répartition des rôles et des missions des services partenaires</li>
+        <li>Mobilisation des moyens de secours</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Cellules de crise et PC</div>
+      <ul>
+        <li>Fonctionnement des postes de commandement</li>
+        <li>Communication en temps réel</li>
+        <li>Gestion des informations</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">RETEX – Retour d'expérience</div>
+      <ul>
+        <li>Analyse post-crise</li>
+        <li>Amélioration des doctrines et techniques opérationnelles</li>
+        <li>Partage d'expériences entre acteurs</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ONGLET 4 – COOPÉRATIONS
+══════════════════════════════════ -->
+<div class="tab-panel s4" id="tab4">
+  <div class="section-header">
+    <div class="num">🌍</div>
+    <div>
+      <h2>Coopérations nationales et internationales</h2>
+      <p>Partenaires institutionnels et organismes associés</p>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title">ANSC</div>
+      <ul>
+        <li>Agence du numérique de la sécurité civile</li>
+        <li>Développe le projet NexSIS, uniformisant les outils de traitement des alertes de l'ensemble des SDIS de France</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Union Européenne & Mécanisme de protection civile</div>
+      <ul>
+        <li>Aide alimentaire</li>
+        <li>Experts en logistique, en santé publique et en gestion des risques</li>
+        <li>Moyens humains et matériels (UIISC)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">ENSOSP et Entente Valabre</div>
+      <ul>
+        <li>École Nationale Supérieure des Officiers de Sapeurs-Pompiers (ENSOSP)</li>
+        <li>L'Entente Valabre est un centre de formation et de recherche dédié à la sécurité civile, spécialisé dans la prévention et la gestion des feux de forêt ainsi que d'autres risques naturels et technologiques</li>
+        <li>Forment les cadres de la sécurité civile nationale</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ONGLET 5 – ENJEUX ACTUELS
+══════════════════════════════════ -->
+<div class="tab-panel s5" id="tab5">
+  <div class="section-header">
+    <div class="num">🔭</div>
+    <div>
+      <h2>Enjeux actuels</h2>
+      <p>Défis contemporains et modernisation</p>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title">Adaptation aux nouveaux risques</div>
+      <ul>
+        <li>Catastrophes naturelles et dérèglement du climat</li>
+        <li>Cyber-attaques</li>
+        <li>Crises sanitaires</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Innovations et technologies</div>
+      <ul>
+        <li>Optimisation de l'utilisation des drones</li>
+        <li>Utilisation des intelligences artificielles</li>
+        <li>Cartographies interactives en temps réel</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Gestion humaine et financière</div>
+      <ul>
+        <li>Promouvoir l'attractivité des métiers de la sécurité civile</li>
+        <li>Gestion des budgets pour répondre aux besoins croissants et à la modernisation</li>
+        <li>Garantir des formations de qualité, en adéquation avec les enjeux actuels</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>DGSCGC · Direction Générale de la Sécurité Civile et de la Gestion des Crises · Document de révision</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.tab;
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab' + t).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

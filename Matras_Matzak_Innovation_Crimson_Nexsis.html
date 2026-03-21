@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiches de Révision — Sapeurs-Pompiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161920;
+    --surface2: #1e2230;
+    --border: #2a2f3d;
+    --accent: #e8332a;
+    --accent2: #ff6b35;
+    --gold: #f5a623;
+    --teal: #2dd4bf;
+    --purple: #a78bfa;
+    --text: #e8eaf0;
+    --text-dim: #8892a4;
+    --text-bright: #ffffff;
+    --tag-bg: #1a2035;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0a0c10 0%, #161a26 60%, #1a1020 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 64px;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 36px; height: 36px; }
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: .12em;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+  .header-title span { color: var(--accent); }
+  .header-subtitle {
+    font-size: .7rem;
+    color: var(--text-dim);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    display: block;
+  }
+  .badge {
+    margin-left: auto;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: .25rem .65rem;
+    border-radius: 2px;
+  }
+
+  /* ── NAV TABS ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 1.5rem;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 1rem 1.4rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--text-bright);
+    border-bottom-color: var(--accent);
+  }
+  .tab-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--surface2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
+    font-weight: 700;
+  }
+  .tab-btn.active .tab-num {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ── MAIN ── */
+  main { padding: 2.5rem 2rem 4rem; max-width: 1400px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION HERO ── */
+  .section-hero {
+    border-left: 4px solid var(--accent);
+    padding: 1.5rem 1.5rem 1.5rem 2rem;
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-hero::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(232,51,42,.04));
+    pointer-events: none;
+  }
+  .section-hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .7rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .4rem;
+  }
+  .section-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: .06em;
+    color: var(--text-bright);
+    line-height: 1;
+    margin-bottom: .8rem;
+  }
+  .section-hero p {
+    font-size: .92rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    max-width: 780px;
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  .col-span-2 { grid-column: span 2; }
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .col-span-2 { grid-column: span 1; }
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: #3a4055; }
+  .card-accent { border-top: 3px solid var(--accent); }
+  .card-gold { border-top: 3px solid var(--gold); }
+  .card-teal { border-top: 3px solid var(--teal); }
+  .card-purple { border-top: 3px solid var(--purple); }
+  .card-orange { border-top: 3px solid var(--accent2); }
+
+  .card-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .68rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: .5rem;
+  }
+  .card h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 1rem;
+  }
+  .card h3 {
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .card h3 .icon { color: var(--accent); font-size: .9rem; }
+
+  /* ── LIST ITEMS ── */
+  ul.sp-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+  ul.sp-list li {
+    font-size: .84rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  ul.sp-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: .7rem;
+    top: .15em;
+  }
+  ul.sp-list li strong { color: var(--text); font-weight: 600; }
+
+  /* ── PILL TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+  .tag {
+    font-size: .7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: .06em;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 3px;
+    background: var(--tag-bg);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .tag-red { background: rgba(232,51,42,.12); color: #ff7a74; border-color: rgba(232,51,42,.3); }
+  .tag-gold { background: rgba(245,166,35,.12); color: #f5c060; border-color: rgba(245,166,35,.3); }
+  .tag-teal { background: rgba(45,212,191,.12); color: #5ef0dc; border-color: rgba(45,212,191,.3); }
+  .tag-purple { background: rgba(167,139,250,.12); color: #c4b5fd; border-color: rgba(167,139,250,.3); }
+  .tag-orange { background: rgba(255,107,53,.12); color: #ff8c5c; border-color: rgba(255,107,53,.3); }
+
+  /* ── TIMELINE ── */
+  .timeline { display: flex; gap: 0; margin: 1.5rem 0; overflow-x: auto; padding-bottom: .5rem; }
+  .tl-item {
+    flex: 1;
+    min-width: 120px;
+    position: relative;
+    padding-top: 2rem;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    top: .6rem;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--border);
+  }
+  .tl-item:first-child::before { left: 50%; }
+  .tl-item:last-child::before { right: 50%; }
+  .tl-dot {
+    position: absolute;
+    top: .2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-year {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+  }
+  .tl-label {
+    text-align: center;
+    font-size: .72rem;
+    color: var(--text-dim);
+    padding: 0 .3rem;
+    line-height: 1.4;
+    margin-top: .2rem;
+  }
+
+  /* ── AFOM TABLE ── */
+  .afom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .afom-cell {
+    background: var(--surface);
+    padding: 1.2rem;
+  }
+  .afom-header {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: .8rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .afom-header.a { color: #4ade80; }
+  .afom-header.f { color: #f87171; }
+  .afom-header.o { color: #60a5fa; }
+  .afom-header.m { color: #facc15; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: rgba(232,51,42,.06);
+    border: 1px solid rgba(232,51,42,.2);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: .8rem 0;
+    font-size: .84rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .highlight strong { color: var(--accent); }
+
+  /* ── STAT BOXES ── */
+  .stat-row { display: flex; gap: .8rem; flex-wrap: wrap; margin: 1rem 0; }
+  .stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .7rem 1.2rem;
+    text-align: center;
+    min-width: 100px;
+    flex: 1;
+  }
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    letter-spacing: .05em;
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-size: .7rem;
+    color: var(--text-dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-top: .15rem;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .6rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .section-title::before {
+    content: '';
+    width: 3px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── NEXSIS FUNNEL ── */
+  .funnel-row {
+    display: flex;
+    gap: .8rem;
+    align-items: stretch;
+    margin-bottom: .8rem;
+  }
+  .funnel-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .8rem 1rem;
+    flex: 1;
+  }
+  .funnel-node h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: .4rem;
+  }
+  .funnel-node p {
+    font-size: .78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── GESTE SUAP BOX ── */
+  .suap-item {
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    padding: .8rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: .6rem;
+  }
+  .suap-item h4 {
+    font-size: .83rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: .35rem;
+  }
+  .suap-item p {
+    font-size: .78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    main { padding: 1.5rem 1rem 3rem; }
+    header { padding: 0 1rem; }
+  }
+
+  /* ── COLLAPSIBLE ── */
+  details { margin-bottom: .6rem; }
+  details summary {
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--text);
+    padding: .7rem .9rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .2s;
+  }
+  details summary:hover { background: #222636; }
+  details summary::after { content: '+'; color: var(--accent); font-size: 1.1rem; }
+  details[open] summary::after { content: '−'; }
+  details[open] summary { border-radius: 6px 6px 0 0; border-bottom-color: transparent; }
+  details .detail-body {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: .9rem;
+  }
+  details .detail-body ul.sp-list li { font-size: .81rem; }
+
+  .mb-1 { margin-bottom: 1rem; }
+  .mb-2 { margin-bottom: 2rem; }
+  .mt-1 { margin-top: 1rem; }
+  .mt-2 { margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="4" fill="#1e2230"/>
+      <path d="M18 4 L22 14 L32 14 L24 20 L27 30 L18 24 L9 30 L12 20 L4 14 L14 14 Z" fill="#e8332a" opacity=".9"/>
+    </svg>
+    <div>
+      <div class="header-title">SP <span>RÉVISION</span></div>
+      <span class="header-subtitle">Outils pédagogiques</span>
+    </div>
+  </div>
+  <div class="badge">Lieutenant 1ère Classe</div>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="showTab('matras')">
+    <span class="tab-num">1</span> Loi Matras
+  </button>
+  <button class="tab-btn" onclick="showTab('matzak')">
+    <span class="tab-num">2</span> Arrêt Matzak
+  </button>
+  <button class="tab-btn" onclick="showTab('innovation')">
+    <span class="tab-num">3</span> Innovation
+  </button>
+  <button class="tab-btn" onclick="showTab('crimson')">
+    <span class="tab-num">4</span> Crimson Tactic
+  </button>
+  <button class="tab-btn" onclick="showTab('nexsis')">
+    <span class="tab-num">5</span> NexSIS
+  </button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════ LOI MATRAS ══════════════════════════ -->
+<section id="matras" class="section active">
+  <div class="section-hero">
+    <div class="section-hero-tag">Législation — 22 avril 2021</div>
+    <h1>La Loi MATRAS</h1>
+    <p>La loi MATRAS a profondément transformé le paysage de la sécurité civile en France. Les collectivités territoriales jouent un rôle central dans sa mise en œuvre et doivent s'adapter à de nouvelles exigences. Si les défis sont nombreux, les opportunités de renforcer la protection des populations et des biens sont également importantes.</p>
+  </div>
+
+  <p class="section-title">Contexte &amp; piliers</p>
+  <div class="grid-3 mb-2">
+    <div class="card card-accent">
+      <div class="card-label">Pilier 1</div>
+      <h2>Renforcement de la sécurité civile</h2>
+      <ul class="sp-list">
+        <li><strong>Réponse aux enjeux contemporains :</strong> risques climatiques (sécheresses, inondations, tempêtes), cyberattaques, risques industriels</li>
+        <li><strong>Coordination des acteurs :</strong> État, collectivités, associations — réponse plus efficace en crise</li>
+        <li><strong>Adaptation aux nouvelles technologies :</strong> drones, intelligence artificielle</li>
+        <li><strong>Renforcement de la prévention :</strong> sensibilisation et information des populations</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <div class="card-label">Pilier 2</div>
+      <h2>Valorisation du volontariat</h2>
+      <ul class="sp-list">
+        <li><strong>Reconnaissance du rôle des SPV :</strong> les volontaires représentent <strong>80%</strong> des effectifs en France</li>
+        <li><strong>Amélioration des conditions d'exercice :</strong> conciliation vie professionnelle / engagement, meilleure formation</li>
+        <li><strong>Renforcement de la protection sociale</strong> des sapeurs-pompiers volontaires</li>
+      </ul>
+      <div class="tags mt-1">
+        <span class="tag tag-gold">80 % des effectifs</span>
+        <span class="tag tag-gold">SPV</span>
+      </div>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Pilier 3</div>
+      <h2>Modernisation des SDIS</h2>
+      <ul class="sp-list">
+        <li>Investissements matériels : nouveaux véhicules, EPI, drones, robots</li>
+        <li>Développement des compétences : santé, environnement, nouvelles technologies</li>
+        <li>Partenariats public-privé pour financer les projets de sécurité civile</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Principales mesures</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-accent">
+      <h2>Protection sociale des SPV</h2>
+      <ul class="sp-list">
+        <li><strong>Extension de la couverture :</strong> protection sociale étendue, y compris pour accident survenu en dehors du service actif mais lié à leur engagement</li>
+        <li><strong>Reconnaissance des pathologies professionnelles :</strong> facilite la reconnaissance des pathologies liées à l'exercice des fonctions de sapeur-pompier</li>
+      </ul>
+    </div>
+    <div class="card card-accent">
+      <h2>Numéro unique d'appel d'urgence</h2>
+      <ul class="sp-list">
+        <li><strong>Simplification de l'appel :</strong> permettre aux requérants d'appeler les secours plus facilement, quel que soit le type d'urgence</li>
+        <li><strong>Amélioration de la prise en charge :</strong> meilleure coordination entre les différents services d'urgence</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <h2>Réserve citoyenne</h2>
+      <ul class="sp-list">
+        <li><strong>Renforcement des capacités d'intervention :</strong> mobiliser des compétences spécifiques en cas de crise majeure</li>
+        <li><strong>Flexibilité :</strong> plus grande flexibilité aux SDIS pour faire face à des événements exceptionnels</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h2>Renforcement des moyens des SDIS</h2>
+      <ul class="sp-list">
+        <li>Financement acquisition de nouveaux véhicules et équipements</li>
+        <li>Drones, robots et matériels spécifiques</li>
+        <li>Soutien au développement des compétences SP dans les nouvelles technologies</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Nouveaux gestes SUAP</p>
+  <div class="grid-2 mb-2">
+    <div>
+      <div class="suap-item">
+        <h4>Médicaments — Asthme aigu grave / Douleurs aiguës</h4>
+        <p>Administration de produits médicamenteux auprès d'une personne présentant un asthme aigu grave (asthmatique connue) ou des douleurs aiguës.</p>
+      </div>
+      <div class="suap-item">
+        <h4>Voie orale / intra-nasale — Overdose / Douleurs</h4>
+        <p>Administration par voie orale ou intra-nasale auprès d'un patient présentant une overdose d'opiacés ou des douleurs aiguës.</p>
+      </div>
+    </div>
+    <div>
+      <div class="suap-item">
+        <h4>Auto-injecteur — Choc anaphylactique / Hypoglycémie</h4>
+        <p>Administration de produits médicamenteux par stylo auto-injecteur auprès d'une personne présentant un choc anaphylactique ou une hypoglycémie.</p>
+      </div>
+      <div class="suap-item">
+        <h4>ECG &amp; Hémoglobinémie</h4>
+        <p>Enregistrement et transmission d'électrocardiogramme. Recueil de l'hémoglobinémie.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-title">Conséquences pour les collectivités territoriales</p>
+  <div class="grid-2">
+    <div class="card card-purple">
+      <h2>Augmentation des dépenses</h2>
+      <ul class="sp-list">
+        <li>Équipement des SP : nouveaux véhicules, EPI, matériels collectifs</li>
+        <li>Formation : financement de formations continues et spécialisées</li>
+        <li>Travaux de prévention : zones inondables, renforcement des bâtiments</li>
+      </ul>
+    </div>
+    <div class="card card-orange">
+      <h2>Adaptation des plans de prévention</h2>
+      <ul class="sp-list">
+        <li><strong>Intégration des nouvelles dispositions :</strong> mise à jour des PCS tenant compte de la loi MATRAS</li>
+        <li><strong>Évaluation des risques :</strong> évaluation plus précise tenant compte du climat et des nouvelles menaces</li>
+        <li><strong>Mesures de prévention :</strong> PCS doivent définir des mesures plus précises et adaptées</li>
+        <li><strong>Plans intercommunaux de sauvegarde :</strong> coordination des actions en cas de crise majeure</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ ARRÊT MATZAK ══════════════════════════ -->
+<section id="matzak" class="section">
+  <div class="section-hero">
+    <div class="section-hero-tag">Jurisprudence européenne — CJUE 2018</div>
+    <h1>L'Arrêt MATZAK</h1>
+    <p>L'arrêt Matzak a mis en lumière les fragilités du modèle français de sécurité civile. Il est désormais nécessaire de trouver des solutions pour préserver le volontariat tout en garantissant les droits des sapeurs-pompiers volontaires et en adaptant le système aux nouveaux enjeux.</p>
+  </div>
+
+  <div class="highlight">
+    <strong>Principe fondamental :</strong> La CJUE a qualifié l'activité des sapeurs-pompiers volontaires belges — dans des conditions similaires aux SPV français — comme une <strong>activité de travailleur</strong>. Cette qualification entraîne l'application des règles européennes sur la durée du travail et de repos.
+  </div>
+
+  <p class="section-title">Contexte juridique</p>
+  <div class="grid-3 mb-2">
+    <div class="card card-accent">
+      <div class="card-label">Arrêt CJUE — 2018</div>
+      <h2>Reconnaissance comme travailleur</h2>
+      <ul class="sp-list">
+        <li>SPV belges dans conditions similaires aux SPV français</li>
+        <li>Qualification : <strong>activité de travailleur</strong></li>
+        <li>Application des règles EU sur durée du travail et repos</li>
+        <li>Limitation potentielle des heures de garde et de mission</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <div class="card-label">Conséquence 1</div>
+      <h2>Durée du travail et repos</h2>
+      <ul class="sp-list">
+        <li>Limites strictes sur la durée des gardes</li>
+        <li>Pourrait réduire la disponibilité des SPV pour intervenir</li>
+        <li>Mesure précise du temps de travail complexe lors des gardes à domicile</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Conséquence 2</div>
+      <h2>Rémunération</h2>
+      <ul class="sp-list">
+        <li>Question de la rémunération des SPV posée</li>
+        <li>Implications financières importantes pour les collectivités</li>
+        <li>Reconnaissance d'un statut de travailleur = coûts supplémentaires</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Enjeux pour le modèle français de sécurité civile</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-accent">
+      <h2>Un modèle en tension</h2>
+      <ul class="sp-list">
+        <li>Modèle français fondé en grande partie sur le volontariat (<strong>80%</strong>) confronté à une remise en cause de ses fondements</li>
+        <li>La reconnaissance d'un statut de travailleur pourrait <strong>décourager</strong> les potentiels volontaires, en particulier les jeunes et les actifs</li>
+        <li>Réduction potentielle de la disponibilité des SPV = impact sur la capacité de réponse aux missions</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <h2>La notion de "temps de travail effectif"</h2>
+      <ul class="sp-list">
+        <li>La CJUE a précisé que les périodes pendant lesquelles les SPV sont tenus de rester à proximité de leur caserne, prêts à intervenir, constituent du <strong>"temps de travail effectif"</strong></li>
+        <li>Conséquences directes sur le calcul des durées maximales de travail</li>
+        <li>Impact sur les périodes de repos et les congés</li>
+        <li>Notion d'astreinte : qualification juridique complexe — si considérée comme temps de travail, conséquences importantes sur le statut des SPV</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Implications pratiques</p>
+  <div class="grid-3 mb-2">
+    <div class="card">
+      <h3><span class="icon">⚠</span> Limitation des heures de garde</h3>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Les SPV pourraient se voir imposer des limites strictes sur la durée de leurs gardes, ce qui pourrait réduire leur disponibilité pour intervenir.</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon">💶</span> Augmentation des coûts</h3>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Pour compenser la réduction du nombre d'heures de garde, il pourrait être nécessaire de recruter davantage de SPV ou d'augmenter les effectifs professionnels, entraînant des coûts supplémentaires pour les collectivités.</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon">📐</span> Complexité de la mesure</h3>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">La mesure précise du temps de travail des SPV, notamment lors des gardes à domicile, pose des défis techniques et organisationnels majeurs.</p>
+    </div>
+  </div>
+
+  <p class="section-title">Réactions en France</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-purple">
+      <h2>Acteurs de la sécurité civile</h2>
+      <ul class="sp-list">
+        <li>Sapeurs-pompiers, élus locaux et associations de sécurité civile ont exprimé leurs <strong>inquiétudes</strong></li>
+        <li>Crainte quant aux conséquences sur le modèle français</li>
+      </ul>
+    </div>
+    <div class="card card-orange">
+      <h2>Gouvernement français</h2>
+      <ul class="sp-list">
+        <li>Souligné l'<strong>importance du volontariat</strong> dans le système de sécurité civile</li>
+        <li>Annoncé la mise en place d'une mission d'étude pour analyser les conséquences de l'arrêt Matzak</li>
+        <li>Proposition de solutions adaptées en cours</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Pistes de réflexion pour l'avenir</p>
+  <div class="grid-4">
+    <div class="card card-teal">
+      <div class="card-label">Piste 1</div>
+      <h2>Financement</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Trouver un équilibre entre la reconnaissance des droits des SPV et la préservation du modèle de volontariat.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Piste 2</div>
+      <h2>Adaptation du statut SPV</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Maintenir et renforcer l'attractivité du volontariat en améliorant les conditions d'exercice et en reconnaissant les compétences des SPV.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Piste 3</div>
+      <h2>Renforcement attractivité</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Des mesures doivent être prises pour maintenir et renforcer l'attractivité du volontariat.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Piste 4</div>
+      <h2>Diversification des secours</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Réfléchir à une diversification des moyens de secours, en développant les services d'incendie et de secours professionnels.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ INNOVATION ══════════════════════════ -->
+<section id="innovation" class="section">
+  <div class="section-hero">
+    <div class="section-hero-tag">Modernisation opérationnelle</div>
+    <h1>L'Innovation Technologique</h1>
+    <p>L'innovation technologique est essentielle pour les sapeurs-pompiers, car elle permet d'améliorer la rapidité, l'efficacité et la sécurité des interventions. En optimisant les outils et les méthodes, elle facilite une meilleure gestion des situations d'urgence tout en réduisant les risques pour les intervenants. Les nouvelles technologies permettent également de mieux anticiper et planifier les opérations, tout en offrant une capacité de réponse plus adaptée aux défis actuels.</p>
+  </div>
+
+  <p class="section-title">Matériels et équipements</p>
+  <div class="grid-2 mb-2">
+    <div>
+      <details>
+        <summary>🚒 Véhicules</summary>
+        <div class="detail-body">
+          <ul class="sp-list">
+            <li>Réduction de l'empreinte carbone</li>
+            <li>Carrosseries qui protègent les habitacles de la chaleur ou des projectiles</li>
+            <li>Meilleure autonomie</li>
+            <li>Meilleure sécurité en cas d'accident</li>
+            <li>Réduction des coûts d'exploitation à long terme</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary>🚁 Drones</summary>
+        <div class="detail-body">
+          <ul class="sp-list">
+            <li>Surveillance des massifs forestiers lors d'IFM critique</li>
+            <li>Intègrent une caméra thermique</li>
+            <li>Technologies LIDAR ou mesh 3D pour modéliser l'environnement</li>
+            <li>Accèdent à des zones difficiles</li>
+            <li>Localisent des victimes (départ de drones en pilotage automatique jusqu'au lieu de l'intervention)</li>
+            <li>Fournissent un maximum d'information au CTA-CODIS avant l'arrivée des SP</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <div>
+      <details>
+        <summary>🦺 EPI (Équipements de Protection Individuelle)</summary>
+        <div class="detail-body">
+          <ul class="sp-list">
+            <li>Surveillance des signes vitaux grâce à des montres connectées (saturation O², pouls, tension...)</li>
+            <li>Localisation GPS des SP lors d'interventions complexes (feu d'entrepôt, FDF, IBNB...)</li>
+            <li>Intégration de systèmes de communication (radio intégrée dans le casque)</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary>🤖 Robots d'intervention</summary>
+        <div class="detail-body">
+          <ul class="sp-list">
+            <li>Évoluent dans un volume sans engager de binôme</li>
+            <li>Intègrent une caméra thermique</li>
+            <li>Technologies LIDAR ou mesh 3D pour modéliser l'environnement</li>
+            <li><strong>Exemple :</strong> Robot d'intervention de la BSPP lors du feu de la cathédrale Notre-Dame de Paris</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <p class="section-title">Méthodes et techniques</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-teal">
+      <h2>Services de géomatique</h2>
+      <ul class="sp-list">
+        <li>Permettent de comprendre les processus territoriaux à travers les analyses spatiales et statistiques (SDACR, CODIS)</li>
+        <li>Permettent d'avoir des documents opérationnels comme outils d'aide à la décision</li>
+        <li>Optimisent l'organisation territoriale des SDIS (localisation des engins, des spécialités, des personnels)</li>
+      </ul>
+    </div>
+    <div class="card card-purple">
+      <h2>Simulation et réalité virtuelle</h2>
+      <ul class="sp-list">
+        <li>Formation immersive avec des scénarios sur les lieux du SDIS</li>
+        <li>Préparation à des situations complexes, avec des montées en puissance et des éléments perturbateurs</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <h2>Intelligence artificielle</h2>
+      <ul class="sp-list">
+        <li>Analyse de données pour une meilleure prise de décision</li>
+        <li>Prédiction des risques et indicateurs</li>
+        <li>Optimisation des interventions</li>
+        <li>Optimisation de la gestion des ressources humaines et matérielles</li>
+        <li>Propose des scénarios et des axes d'amélioration</li>
+        <li>Modélisation de la propagation des incendies, tempêtes, inondations pour anticiper les besoins</li>
+      </ul>
+    </div>
+    <div class="card card-orange">
+      <h2>Optimisation et performance + Traitement des alertes</h2>
+      <ul class="sp-list">
+        <li><strong>KPI :</strong> mesure de l'efficacité des interventions et de la satisfaction des usagers</li>
+        <li>Analyse des données d'intervention : identification des points forts et axes d'amélioration → programme de formation continue</li>
+        <li><strong>NexSIS :</strong> logiciel de traitement des alertes en commun pour tous les SDIS de France</li>
+        <li>Centre de traitement des appels commun avec d'autres services (force de l'ordre, SAMU)</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Partenariats</p>
+  <div class="grid-4">
+    <div class="card card-accent">
+      <div class="card-label">Partenaire 1</div>
+      <h2>Start-ups</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Collaboration gagnant-gagnant : mise en valeur de leur engagement auprès des SDIS, en contrepartie, les SDIS profitent de leurs compétences sur les évolutions technologiques.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-label">Partenaire 2</div>
+      <h2>Laboratoires de recherche</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Les SDIS peuvent co-financer des thèses sur des sujets spécifiques. <strong>Exemple :</strong> financement d'une thèse sur la modélisation 3D des bâtiments en temps réel avec les laboratoires d'architecture.</p>
+    </div>
+    <div class="card card-gold">
+      <div class="card-label">Partenaire 3</div>
+      <h2>Universités</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Partenariats pour mettre en pratique les connaissances des étudiants : stages de 3 à 5 mois dans divers domaines (géomatique, communication, informatique) à divers niveaux (BTS, licence, master).</p>
+    </div>
+    <div class="card card-purple">
+      <div class="card-label">Partenaire 4</div>
+      <h2>Industrie &amp; Armée</h2>
+      <p style="font-size:.82rem; color:var(--text-dim); line-height:1.5;">Adaptation des technologies aux besoins spécifiques des SDIS. L'armée est en avance sur la sécurité civile en innovation — renforcer les liens permet de mutualiser les financements publics et accélérer la modernisation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CRIMSON TACTIC ══════════════════════════ -->
+<section id="crimson" class="section">
+  <div class="section-hero">
+    <div class="section-hero-tag">Logiciel de commandement opérationnel</div>
+    <h1>Crimson Tactic</h1>
+    <p>Crimson Tactic est un logiciel qui lie la cartographie 3D et la gestion opérationnelle de commandement, afin de garantir une meilleure coordination opérationnelle. Initialement utilisé pour les feux de forêt dans les SDIS du sud-est, Crimson Tactic fait évoluer ses fonctionnalités pour répondre aux besoins d'une grande majorité de SDIS en France.</p>
+  </div>
+
+  <p class="section-title">Conception</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-accent">
+      <h2>CSgroup &amp; PôNT — Entente Valabre</h2>
+      <ul class="sp-list">
+        <li><strong>CSgroup :</strong> entreprise de développement informatique française</li>
+        <li><strong>PôNT (Pôle nouvelles technologies) de l'Entente Valabre :</strong> organisme public développant des outils informatiques et géomatiques pour optimiser la réponse de la sécurité civile</li>
+        <li>Ces deux entités ont collaboré pour créer un outil répondant aux besoins de la sécurité civile</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h2>VirtualGeo</h2>
+      <ul class="sp-list">
+        <li>Logiciel annexe à Crimson Tactic</li>
+        <li>Permet de paramétrer la cartographie, les données intégrées et les outils de GOC visibles</li>
+        <li>Les SDIS disposent d'une cartographie par défaut réalisée par le PôNT de l'Entente Valabre</li>
+        <li>Le service de géomatique du SDMIS a réalisé en autonomie une cartographie personnalisée — leur utilisation de Crimson Tactic est ainsi optimisée et adaptée</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Capacités</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-gold">
+      <h2>SITAC (Situation Tactique)</h2>
+      <ul class="sp-list">
+        <li>Nombreux pictogrammes et outils de DAO pour réaliser des SITAC jusqu'à leur réalisation sur un tableau blanc avec des feutres de couleurs</li>
+        <li>Les éléments créés apparaissent dans les différents outils GOC : lors de la création d'un GIFF, celui-ci se retrouve dans le module de recensement des engins et dans la synthèse automatique</li>
+      </ul>
+    </div>
+    <div class="card card-purple">
+      <h2>3D — Modèle Numérique de Terrain</h2>
+      <ul class="sp-list">
+        <li>Fonctionne avec un MNT (modèle numérique de terrain), permettant d'avoir le relief</li>
+        <li>Intégrant un mesh 3D (bâtiments en 3D) : représentation fidèle de la réalité</li>
+        <li>Possible d'intégrer des points LIDAR et des pictogrammes 3D (utile pour créer des RETEX)</li>
+      </ul>
+    </div>
+    <div class="card card-orange">
+      <h2>Outils d'analyse</h2>
+      <ul class="sp-list">
+        <li>Calcul d'aire</li>
+        <li>Calcul de surface</li>
+        <li>Calcul de distance</li>
+        <li>Calcul de périmètre</li>
+        <li>Cône de propagation pour FDF</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h2>GOC — Gestion Opérationnelle de Commandement</h2>
+      <ul class="sp-list">
+        <li>Module recensement des moyens SP</li>
+        <li>Module recensement des victimes et leur état</li>
+        <li>Module ordre initial, compte-rendu et discussions</li>
+        <li>Module OCT (ordre complémentaire de transmission)</li>
+        <li>Module liste des incidents</li>
+        <li>Module synthèse automatique</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card-accent mb-2">
+    <h2>Interopérabilité</h2>
+    <ul class="sp-list">
+      <li>Discussions avec le CTA-CODIS, avec la possibilité d'envoyer des photos et des messages vocaux</li>
+      <li>Possibilité de travailler à plusieurs comptes sur la même session — <strong>Exemple :</strong> Officier RENS et MOYENS travaillent sur la même session dans le véhicule poste de commandement</li>
+    </ul>
+  </div>
+
+  <p class="section-title">Analyse AFOM</p>
+  <div class="afom-grid">
+    <div class="afom-cell">
+      <div class="afom-header a">✚ Atouts</div>
+      <ul class="sp-list">
+        <li>Modules GOC et SITAC créés grâce à l'implication du PôNT de l'Entente Valabre</li>
+        <li>Participe au défi de la numérisation de la fonction publique, de la sécurité civile</li>
+        <li>Optimise la réponse des sapeurs-pompiers face aux risques climatiques contemporains</li>
+      </ul>
+    </div>
+    <div class="afom-cell">
+      <div class="afom-header f">✖ Faiblesses</div>
+      <ul class="sp-list">
+        <li>Cartographies attribuées par le PôNT non personnalisées, ni optimisées pour les besoins individuels des SDIS</li>
+        <li>Nécessite un haut débit de connexion au démarrage, pas toujours disponible dans les VPC</li>
+        <li>Nombre de licences limité à 6 ou 12 — les SDIS doivent choisir avec précaution les utilisateurs</li>
+      </ul>
+    </div>
+    <div class="afom-cell">
+      <div class="afom-header o">◆ Opportunités</div>
+      <ul class="sp-list">
+        <li>À l'avenir, pourrait permettre d'intégrer les BIM pour être utilisé par les services de prévention</li>
+        <li>Imaginer que Crimson Tactic intègre des flux LIDAR ou GPS en temps réel, permettant de visualiser les SP et leur environnement dans des milieux confinés</li>
+      </ul>
+    </div>
+    <div class="afom-cell">
+      <div class="afom-header m">⚡ Menaces</div>
+      <ul class="sp-list">
+        <li>Le nombre de licences limités est lié à une insuffisance des serveurs hôtes de Crimson Tactic</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ NEXSIS ══════════════════════════ -->
+<section id="nexsis" class="section">
+  <div class="section-hero">
+    <div class="section-hero-tag">SICO — Système d'Information et de Commandement Unifié</div>
+    <h1>NexSIS</h1>
+    <p>NexSIS est un système d'information et de commandement unifié (SICO) développé par l'Agence du Numérique de la Sécurité Civile (ANSC) pour les SDIS et les acteurs de la sécurité civile. Il a pour objectif de remplacer les anciens systèmes hétérogènes (ARTEMIS, START) et de proposer une solution unique, moderne et performante pour la gestion des alertes et des opérations de secours.</p>
+  </div>
+
+  <p class="section-title">Contexte</p>
+  <div class="grid-2 mb-2">
+    <div class="card card-accent">
+      <h2>Historique</h2>
+      <ul class="sp-list">
+        <li>Projet lancé par l'ANSC pour moderniser la gestion des opérations de secours en France</li>
+        <li>Réponse aux évolutions technologiques et aux nouveaux enjeux de la sécurité civile :</li>
+        <li>Augmentation du nombre d'appels, complexification des interventions, coordination interdépartementale</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h2>Objectifs</h2>
+      <ul class="sp-list">
+        <li>Améliorer la gestion des interventions</li>
+        <li>Optimiser la collaboration interservices</li>
+        <li>Remplacer ARTEMIS et START</li>
+        <li>Uniformiser les pratiques et procédures</li>
+        <li>Assurer une traçabilité et une amélioration continue</li>
+        <li>Permettre la gestion de crise entre plusieurs SDIS</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Timeline de déploiement</p>
+  <div class="card mb-2">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2019</div>
+        <div class="tl-label">Lancement du projet NexSIS par l'ANSC</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2020</div>
+        <div class="tl-label">SDIS 77 déploie NexSIS pour la première fois — Phase pilote</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2021</div>
+        <div class="tl-label">11 SDIS déploient NexSIS — Phase pilote</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2022</div>
+        <div class="tl-label">Phase industrielle — déploiement accéléré</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2026</div>
+        <div class="tl-label">Déploiement dans tous les SDIS</div>
+      </div>
+    </div>
+    <div class="tags mt-1">
+      <span class="tag">Phase de développement</span>
+      <span class="tag">Phase de préfiguration</span>
+      <span class="tag tag-teal">Phase pilote</span>
+      <span class="tag tag-gold">Phase industrielle</span>
+    </div>
+  </div>
+
+  <p class="section-title">Fonctionnalités — 3 composantes</p>
+  <div class="funnel-row">
+    <div class="funnel-node">
+      <h4>SGA — Système de Gestion des Alertes</h4>
+      <p>Outil de réception et de qualification des appels d'urgence visant à traiter une alerte le plus rapidement possible et à la partager à l'ensemble des services d'urgence concernés. Composé d'outils communs d'aide à la qualification. Intègre en pré-décroché les résultats de géolocalisation issus notamment de l'AML.</p>
+    </div>
+  </div>
+  <div class="funnel-row">
+    <div class="funnel-node">
+      <h4>SGO — Système de Gestion des Opérations</h4>
+      <p>L'outil métier qui reçoit les données du SGA et permet une réponse opérationnelle aux demandes de secours. Comporte 2 outils fusionnés au quotidien et dissociables en situation de crise : <strong>outil de logistique opérationnelle</strong> (construire la réponse opérationnelle, mobiliser les moyens les plus pertinents grâce au moteur de mobilisation) + <strong>outil de conduite des opérations</strong> (superviser une opération de bout en bout, gérer les informations multiples et complexes, conserver un lien mobile et numérique constant entre les acteurs de la chaîne de secours).</p>
+    </div>
+  </div>
+  <div class="funnel-row mb-2">
+    <div class="funnel-node">
+      <h4>SIG — Système d'Information Géographique</h4>
+      <p>Intervient sur toute la chaîne de traitement d'une situation d'urgence : du routage de l'appel à la supervision des opérations en cours, en passant par la localisation de l'alerte et la détermination du contexte opérationnel et de la priorité opérationnelle. Sur le plan national, nourri par son interfaçage avec des partenaires (IGN — réseau routier navigable). Sur le plan local, s'appuie sur les données des SIG locaux des SIS.</p>
+    </div>
+  </div>
+
+  <p class="section-title">Défis du déploiement</p>
+  <div class="grid-3 mb-2">
+    <div class="card card-accent">
+      <h2>Interopérabilité</h2>
+      <ul class="sp-list">
+        <li>Intégration de NexSIS avec les systèmes existants (architecture réseau, SIG et l'open-source)</li>
+      </ul>
+    </div>
+    <div class="card card-gold">
+      <h2>Formation</h2>
+      <ul class="sp-list">
+        <li>Mise en place de formations adaptées pour les utilisateurs de tous niveaux</li>
+        <li>Accompagnement du changement et adaptation des pratiques professionnelles</li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h2>Sécurisation</h2>
+      <ul class="sp-list">
+        <li>Protection des données sensibles et conformité aux réglementations en vigueur</li>
+        <li>Hébergé sur le Cloud privé du Ministère de l'Intérieur</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-title">Financement</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-val">37M€</div>
+      <div class="stat-lbl">Budget sur 7 ans</div>
+    </div>
+    <div class="stat" style="flex:3;">
+      <div style="text-align:left;">
+        <ul class="sp-list">
+          <li>Financement par des dotations de l'État et des redevances versées par les SDIS</li>
+          <li>Investissement de l'État pour moderniser et numériser la fonction publique</li>
+          <li>Les SDIS réalisent des économies d'échelles : ils financent actuellement, sans mutualisation, des solutions informatiques de gestion des secours à l'échelle départementale</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

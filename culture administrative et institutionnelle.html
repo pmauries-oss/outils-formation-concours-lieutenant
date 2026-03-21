@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révision Lieutenant 1ère Classe – Culture Administrative</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0d1b2e;
+    --navy2:  #152540;
+    --blue:   #1a3a6e;
+    --blueL:  #2255a4;
+    --accent: #e8501a;
+    --gold:   #f5a623;
+    --teal:   #0e8a8a;
+    --green:  #1a7a4a;
+    --white:  #f4f6fa;
+    --light:  #dde4f0;
+    --text:   #e8edf5;
+    --muted:  #8fa3bf;
+    --card:   #1e2f4a;
+    --card2:  #162035;
+    --radius: 10px;
+    --shadow: 0 4px 20px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--navy2) 0%, #0a1520 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 18px 30px;
+    display: flex; align-items: center; gap: 20px;
+    position: sticky; top:0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,.6);
+  }
+  .logo-sp {
+    width: 48px; height: 48px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items:center; justify-content:center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 14px;
+    color: #fff; flex-shrink:0;
+    letter-spacing: .5px;
+  }
+  .header-title { flex:1 }
+  .header-title h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 22px;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--white);
+  }
+  .header-title p {
+    font-size: 12px; color: var(--muted);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .badge {
+    background: var(--accent); color:#fff;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  /* ── TABS ── */
+  .tabs-bar {
+    background: var(--navy2);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    display: flex; overflow-x: auto;
+    scrollbar-width: none; padding: 0 20px;
+    gap: 4px;
+  }
+  .tabs-bar::-webkit-scrollbar { display:none; }
+  .tab-btn {
+    padding: 14px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); cursor: pointer;
+    border: none; background: transparent;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap; transition: all .25s;
+    position: relative;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active {
+    color: var(--white);
+    border-bottom-color: var(--accent);
+  }
+  .tab-num {
+    display: inline-flex; align-items:center; justify-content:center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--blueL); color: #fff;
+    font-size: 11px; margin-right: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .tab-btn.active .tab-num { background: var(--accent); }
+
+  /* ── CONTENT AREA ── */
+  .content { padding: 30px; max-width: 1400px; margin: 0 auto; }
+  .panel { display:none; animation: fadeIn .3s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    background: linear-gradient(135deg, var(--blue) 0%, #0e2340 100%);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    border-left: 5px solid var(--accent);
+    position: relative; overflow: hidden;
+  }
+  .section-header::after {
+    content: ''; position: absolute; right:-30px; top:-30px;
+    width: 150px; height: 150px; border-radius: 50%;
+    background: rgba(255,255,255,.03);
+  }
+  .section-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 26px;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--white);
+  }
+  .section-header .subtitle {
+    margin-top: 8px; font-size: 13.5px; color: var(--light);
+    line-height: 1.6; max-width: 800px;
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  @media (max-width: 1100px) { .grid4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 900px) {
+    .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,.06);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+  .card.accent-blue  { border-top: 3px solid var(--blueL); }
+  .card.accent-red   { border-top: 3px solid var(--accent); }
+  .card.accent-gold  { border-top: 3px solid var(--gold); }
+  .card.accent-teal  { border-top: 3px solid var(--teal); }
+  .card.accent-green { border-top: 3px solid var(--green); }
+
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 15px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--gold); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .icon {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: rgba(245,166,35,.15);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 12px;
+  }
+  .card ul { padding-left: 16px; }
+  .card ul li {
+    font-size: 13px; line-height: 1.65; color: var(--text);
+    margin-bottom: 5px;
+  }
+  .card ul li strong {
+    color: var(--gold); font-weight: 600;
+  }
+
+  /* ── PILLAR / CALLOUT ── */
+  .callout {
+    background: linear-gradient(135deg, rgba(26,58,110,.6) 0%, rgba(14,26,48,.6) 100%);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 16px 20px; margin-bottom: 20px;
+    font-size: 13.5px; color: var(--light); line-height: 1.7;
+  }
+  .callout strong { color: var(--gold); }
+
+  /* ── ROW LABEL ── */
+  .row-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--muted); margin: 28px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .row-label::after {
+    content: ''; flex:1; height:1px;
+    background: rgba(255,255,255,.08);
+  }
+
+  /* ── COMPARE BOXES ── */
+  .compare-wrap {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
+    align-items: stretch; margin: 20px 0;
+  }
+  .compare-vs {
+    display:flex; align-items:center; justify-content:center;
+    padding: 0 20px;
+  }
+  .lightning { font-size: 32px; }
+  .compare-left, .compare-right {
+    background: var(--card); border-radius: var(--radius);
+    padding: 22px; border: 1px solid rgba(255,255,255,.07);
+  }
+  .compare-left { border-right: none; border-radius: var(--radius) 0 0 var(--radius); border-top: 3px solid var(--blueL); }
+  .compare-right { border-left: none; border-radius: 0 var(--radius) var(--radius) 0; border-top: 3px solid var(--accent); }
+  @media (max-width: 700px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+    .compare-left, .compare-right { border-radius: var(--radius); }
+    .compare-vs { padding: 12px 0; }
+  }
+  .compare-head {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 17px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .compare-left .compare-head { color: #7ab8f5; }
+  .compare-right .compare-head { color: #f5906a; }
+
+  /* ── FLOW / TIMELINE ── */
+  .flow-row {
+    display: flex; gap: 0; align-items: stretch;
+    margin: 18px 0;
+  }
+  .flow-item {
+    flex:1; background: var(--card);
+    padding: 16px 14px; font-size: 12.5px;
+    border-top: 3px solid var(--blueL);
+    border: 1px solid rgba(255,255,255,.06);
+    position: relative; text-align: center;
+    transition: background .2s;
+  }
+  .flow-item:hover { background: #253c5f; }
+  .flow-item:not(:last-child)::after {
+    content: '→'; position: absolute; right: -14px; top:50%;
+    transform: translateY(-50%); color: var(--muted);
+    font-size: 18px; z-index:2;
+  }
+  .flow-item:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .flow-item:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
+  .flow-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 6px; letter-spacing: 1px;
+  }
+
+  /* ── EU INSTITUTION CARDS ── */
+  .eu-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 2px solid rgba(255,255,255,.08);
+    box-shadow: var(--shadow);
+    transition: transform .2s, border-color .2s;
+  }
+  .eu-card:hover { transform: translateY(-3px); border-color: var(--blueL); }
+  .eu-card .inst-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 17px;
+    text-transform: uppercase; letter-spacing: 1.5px; color: var(--white);
+    margin-bottom: 3px;
+  }
+  .eu-card .inst-city {
+    font-size: 11.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 12px; font-style: italic;
+  }
+  .eu-card ul { padding-left: 14px; }
+  .eu-card ul li { font-size: 12.5px; color: var(--light); line-height: 1.6; margin-bottom: 4px; }
+
+  /* ── BUDGET DONUT LABELS ── */
+  .budget-ring {
+    background: var(--card);
+    border-radius: 50%; width: 140px; height: 140px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; margin: 0 auto 16px;
+    border: 6px solid var(--blueL);
+    box-shadow: 0 0 30px rgba(34,85,164,.3);
+  }
+  .budget-ring .big-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 26px; color: var(--white);
+    line-height: 1;
+  }
+  .budget-ring .big-unit { font-size: 11px; color: var(--muted); }
+
+  .budget-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 8px;
+    background: rgba(255,255,255,.04);
+    margin-bottom: 6px; font-size: 13px;
+    transition: background .2s;
+  }
+  .budget-item:hover { background: rgba(255,255,255,.08); }
+  .budget-pct {
+    min-width: 46px; text-align: right;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 16px; color: var(--gold);
+  }
+  .budget-bar {
+    flex:1; height: 6px; background: rgba(255,255,255,.1);
+    border-radius: 3px; overflow:hidden;
+  }
+  .budget-bar-fill { height:100%; border-radius:3px; }
+
+  /* ── PRESIDENT TIMELINE ── */
+  .pres-line {
+    display: flex; gap: 0; margin: 20px 0;
+    overflow-x: auto; padding-bottom: 10px;
+  }
+  .pres-item {
+    flex-shrink: 0; text-align: center; cursor: default;
+    position: relative;
+  }
+  .pres-item::after {
+    content:''; position: absolute; top: 26px; right:-1px;
+    width: 2px; height: 30px; background: rgba(255,255,255,.1);
+  }
+  .pres-item:last-child::after { display:none; }
+  .pres-year {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; color: var(--muted);
+    padding: 4px 10px;
+  }
+  .pres-name {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 8px 14px; margin: 0 1px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--white); white-space: nowrap;
+    transition: background .2s, color .2s;
+  }
+  .pres-item:hover .pres-name { background: var(--blueL); color:#fff; }
+  .pres-item:last-child .pres-name { border-right-color: var(--accent); border-top: 3px solid var(--accent); }
+
+  /* ── INSTITUTION NODE ── */
+  .inst-diagram {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 16px; padding: 20px 0;
+  }
+  .inst-top { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+  .inst-mid { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+  .inst-node {
+    background: var(--card);
+    border: 2px solid var(--blueL);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    text-align: center;
+    max-width: 200px;
+    box-shadow: var(--shadow);
+    transition: transform .2s, border-color .2s;
+    cursor: default;
+  }
+  .inst-node:hover { transform: translateY(-3px); border-color: var(--gold); }
+  .inst-node.primary { border-color: var(--accent); max-width: 220px; }
+  .inst-node .n-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 14px;
+    text-transform: uppercase; color: var(--white);
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .inst-node .n-role {
+    font-size: 11.5px; color: var(--muted);
+  }
+  .inst-arrow { color: var(--muted); font-size: 22px; }
+
+  /* ── CHIPS ── */
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top: 12px; }
+  .chip {
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: .8px;
+  }
+  .chip-blue   { background: rgba(34,85,164,.3); color: #7ab8f5; border: 1px solid rgba(34,85,164,.5); }
+  .chip-red    { background: rgba(232,80,26,.2); color: #f5906a; border: 1px solid rgba(232,80,26,.4); }
+  .chip-gold   { background: rgba(245,166,35,.2); color: var(--gold); border: 1px solid rgba(245,166,35,.4); }
+  .chip-teal   { background: rgba(14,138,138,.2); color: #5fdde8; border: 1px solid rgba(14,138,138,.4); }
+  .chip-green  { background: rgba(26,122,74,.2); color: #5fe89a; border: 1px solid rgba(26,122,74,.4); }
+
+  /* ── HIGHLIGHT BOX ── */
+  .hbox {
+    background: linear-gradient(135deg, rgba(232,80,26,.12), rgba(232,80,26,.04));
+    border: 1px solid rgba(232,80,26,.3); border-radius: var(--radius);
+    padding: 16px 20px; margin: 16px 0;
+    font-size: 13.5px; color: var(--light); line-height: 1.7;
+  }
+  .hbox strong { color: var(--accent); }
+  .hbox.blue { background: linear-gradient(135deg, rgba(34,85,164,.12), rgba(34,85,164,.04)); border-color: rgba(34,85,164,.3); }
+  .hbox.blue strong { color: #7ab8f5; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 30px;
+    color: var(--muted); font-size: 12px;
+    border-top: 1px solid rgba(255,255,255,.05);
+    margin-top: 40px;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── PROGRESS BAR (for budget) ── */
+  .mb-section { margin-bottom: 28px; }
+  .mb-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 18px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  /* ── STRUCTURE TABLE ── */
+  .struct-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .struct-table th {
+    background: var(--navy2); color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    padding: 12px 14px; text-align: left;
+    border-bottom: 2px solid var(--accent);
+  }
+  .struct-table td {
+    padding: 11px 14px; color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    vertical-align: top; line-height: 1.6;
+  }
+  .struct-table tr:hover td { background: rgba(255,255,255,.03); }
+  .struct-table td strong { color: var(--gold); }
+  .struct-table td.role { color: var(--muted); font-size: 12.5px; }
+
+  /* ── NUMBER BADGE ── */
+  .nbadge {
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color:#fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 15px;
+    flex-shrink: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-sp">SP</div>
+  <div class="header-title">
+    <h1>Révision – Culture Administrative & Institutionnelle</h1>
+    <p>Concours interne Lieutenant 1ère Classe SPP – SDIS 38</p>
+  </div>
+  <div class="badge">5 Thèmes</div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab(0)"><span class="tab-num">1</span>Préfectures & Sécu. Civile</button>
+  <button class="tab-btn" onclick="showTab(1)"><span class="tab-num">2</span>Budget de l'État</button>
+  <button class="tab-btn" onclick="showTab(2)"><span class="tab-num">3</span>Pouvoirs de Police</button>
+  <button class="tab-btn" onclick="showTab(3)"><span class="tab-num">4</span>Institutions UE</button>
+  <button class="tab-btn" onclick="showTab(4)"><span class="tab-num">5</span>5ème République</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL 1 – PRÉFECTURES & SÉCURITÉ CIVILE
+═══════════════════════════════════════════════════════ -->
+<div class="content">
+<div class="panel active" id="panel-0">
+
+  <div class="section-header">
+    <h2>Le rôle des Préfectures et des Services de l'État dans la Sécurité Civile</h2>
+    <div class="subtitle">Les préfectures et les services de l'État assurent la coordination de la prévention des risques, la gestion des crises et la protection des populations. Sous l'autorité du préfet, ils mobilisent les ressources locales et nationales pour répondre aux situations d'urgence.</div>
+  </div>
+
+  <div class="row-label"><span class="nbadge">1</span> Le Préfet – Représentant de l'État</div>
+  <div class="grid3">
+    <div class="card accent-blue">
+      <div class="card-title"><div class="icon">👤</div>Rôle général</div>
+      <ul>
+        <li><strong>Interface</strong> entre l'État, les collectivités territoriales et la population</li>
+        <li><strong>Garant</strong> de l'ordre public et de la sécurité civile</li>
+        <li><strong>Activation</strong> des moyens d'urgence nationaux selon l'ampleur de la crise</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title"><div class="icon">🎯</div>Direction des opérations (DO)</div>
+      <ul>
+        <li>Activation et <strong>pilotage</strong> des dispositifs de secours</li>
+        <li>Coordination des <strong>moyens humains et matériels</strong></li>
+        <li>Prise de <strong>décision stratégique</strong> en situation de crise</li>
+      </ul>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title"><div class="icon">📋</div>Missions spécifiques</div>
+      <ul>
+        <li>Validation et <strong>déclenchement des plans ORSEC</strong></li>
+        <li>Suivi des risques et <strong>évaluation des dispositifs</strong></li>
+        <li>Développement d'une <strong>culture de prévention</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-label"><span class="nbadge">2</span> Les Services de l'État</div>
+  <table class="struct-table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Sigle</th>
+        <th>Missions principales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Service Interministériel de Défense et de Protection Civile</strong></td>
+        <td><span class="chip chip-blue">SIDPC</span></td>
+        <td>Conçoit et met en œuvre les plans ORSEC · Assiste le préfet dans les décisions stratégiques · Évalue les besoins matériels et humains · Supervise l'activation du COD</td>
+      </tr>
+      <tr>
+        <td><strong>Direction Départementale des Territoires</strong></td>
+        <td><span class="chip chip-gold">DDT</span></td>
+        <td>Identifie les zones à risques (inondations, avalanches, séismes) · Établit des plans de prévention adaptés · Évalue les projets d'aménagement du territoire</td>
+      </tr>
+      <tr>
+        <td><strong>Direction Départementale de la Sécurité Publique</strong></td>
+        <td><span class="chip chip-teal">DDSP</span></td>
+        <td>Assure la tranquillité publique · Encadre les manifestations · Prévient les troubles à l'ordre public · Intervient dans l'analyse des accidents graves</td>
+      </tr>
+      <tr>
+        <td><strong>Direction Régionale de l'Environnement, de l'Aménagement et du Logement</strong></td>
+        <td><span class="chip chip-red">DREAL</span></td>
+        <td>Suivi des sites SEVESO (hauts risques) · Plans de gestion des risques technologiques (PPRT) · Contrôle des ICPE</td>
+      </tr>
+      <tr>
+        <td><strong>Autres partenaires</strong></td>
+        <td></td>
+        <td>Agence Régionale de Santé <strong>(ARS)</strong> · Service Départemental d'Incendie et de Secours <strong>(SDIS)</strong> · Groupement de Gendarmerie Départementale <strong>(GGD)</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row-label"><span class="nbadge">3</span> Outils de la Sécurité Civile au niveau préfectoral</div>
+  <div class="grid3">
+    <div class="card accent-red">
+      <div class="card-title"><div class="icon">📄</div>Plans ORSEC</div>
+      <ul>
+        <li>Organise sous l'autorité du préfet la <strong>mobilisation, la mise en œuvre et la coordination</strong> des actions de toute personne publique et privée concourant à la protection générale des populations</li>
+      </ul>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title"><div class="icon">🏛️</div>Centre Opérationnel Départemental (COD)</div>
+      <ul>
+        <li>Activé par le préfet lors d'un <strong>événement majeur</strong></li>
+        <li>Rassemble <strong>sécurité civile, police, gendarmerie nationales, services de l'État, représentants des collectivités</strong></li>
+        <li>Présidé par le préfet</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title"><div class="icon">📌</div>Autres plans</div>
+      <ul>
+        <li><strong>PCS</strong> (Plan Communal de Sauvegarde) : élaboré par les communes, mesures à prendre en cas de crise locale</li>
+        <li><strong>PPI</strong> (Plans Particuliers d'Intervention) : spécifiques aux établissements classés SEVESO</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-label"><span class="nbadge">4</span> Rôle en situation de crise – Centres opérationnels</div>
+  <div class="grid3">
+    <div class="card accent-red">
+      <div class="card-title"><div class="icon">🇫🇷</div>COGIC – National</div>
+      <ul>
+        <li>Centre Opérationnel de Gestion Interministérielle des Crises</li>
+        <li>Décide d'envoyer les <strong>unités nationales</strong> (UIISC, moyens aériens)</li>
+        <li>Coordonne les <strong>ministères</strong> pour une réponse adaptée</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title"><div class="icon">🗺️</div>COZ – Zonal</div>
+      <ul>
+        <li>Centre Opérationnel Zonal</li>
+        <li>Mobilise les moyens des <strong>départements voisins</strong></li>
+        <li>Informe le COGIC des besoins additionnels (logistique lourde, secours spécialisés)</li>
+      </ul>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title"><div class="icon">📍</div>COD – Départemental</div>
+      <ul>
+        <li>Centre Opérationnel Départemental</li>
+        <li>Signale ses besoins au COZ (renforts en personnels, matériels, engins)</li>
+        <li>Coordonne l'action au niveau du <strong>département le plus touché</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="hbox blue">
+    <strong>Flux d'information :</strong> le COD départemental remonte ses besoins → au COZ zonal → qui informe le COGIC national. Réponse nationale en cascade descendante.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL 2 – BUDGET DE L'ÉTAT
+═══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-1">
+
+  <div class="section-header">
+    <h2>Le Budget de l'État</h2>
+    <div class="subtitle">Le budget de l'État est un document financier annuel qui traduit en chiffres les choix politiques d'un gouvernement. Il détermine les ressources à mobiliser (impôts, taxes, emprunts) et les affectations de ces ressources aux différents secteurs de l'action publique.</div>
+  </div>
+
+  <div class="grid2">
+    <!-- DÉPENSES -->
+    <div class="card accent-blue mb-section">
+      <h3>📤 Les Dépenses – 480 Mds € (2024)</h3>
+      <div class="budget-ring">
+        <div class="big-num">480</div>
+        <div class="big-unit">Mds € · 2024</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">36 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:100%; background:#e8501a;"></div></div>
+        <div>Dépenses de personnel</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">30 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:83%; background:#2255a4;"></div></div>
+        <div>Dépenses d'intervention</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">14,6 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:41%; background:#f5a623;"></div></div>
+        <div>Dépenses de fonctionnement</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">11 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:31%; background:#0e8a8a;"></div></div>
+        <div>Charges de la dette de l'État</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">4,6 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:13%; background:#7ab8f5;"></div></div>
+        <div>Dépenses d'investissement</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">3,7 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:10%; background:#5fdde8;"></div></div>
+        <div>Dépenses d'opérations financières</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">0,3 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:1%; background:#8fa3bf;"></div></div>
+        <div>Dotations des pouvoirs publics</div>
+      </div>
+    </div>
+
+    <!-- RECETTES -->
+    <div class="card accent-gold mb-section">
+      <h3>📥 Les Recettes – 371 Mds € (2024)</h3>
+      <div class="budget-ring" style="border-color: var(--gold);">
+        <div class="big-num">371</div>
+        <div class="big-unit">Mds € · 2024</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">27,2 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:100%; background:#f5a623;"></div></div>
+        <div>Taxe sur la valeur ajoutée (TVA)</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">25,2 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:93%; background:#e8501a;"></div></div>
+        <div>Impôt sur le revenu (IR)</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">19,4 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:71%; background:#2255a4;"></div></div>
+        <div>Impôt sur les sociétés (IS)</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">18 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:66%; background:#0e8a8a;"></div></div>
+        <div>Autres contributions fiscales</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">6 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:22%; background:#7ab8f5;"></div></div>
+        <div>Recettes non fiscales</div>
+      </div>
+      <div class="budget-item">
+        <div class="budget-pct">4,1 %</div>
+        <div class="budget-bar"><div class="budget-bar-fill" style="width:15%; background:#5fdde8;"></div></div>
+        <div>Taxe intérieure de consommation sur les produits énergétiques</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hbox">
+    <strong>La charge de la dette</strong> (11 % des dépenses en 2024) représente les intérêts à payer chaque année sur les emprunts de l'État. Elle exerce une pression directe sur les finances publiques. Même une dette élevée peut être soutenable si les taux d'intérêt sont bas, mais une hausse de ces derniers peut rapidement alourdir les dépenses de l'État.
+  </div>
+
+  <div class="row-label">Dette publique française – Points clés</div>
+  <div class="grid3">
+    <div class="card accent-teal">
+      <div class="card-title">📉 Crise des Subprimes (2008)</div>
+      <ul>
+        <li>Accélération brutale de l'endettement</li>
+        <li>Plans de relance massifs</li>
+        <li>Recettes fiscales en chute</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title">🦠 Covid-19 (2020)</div>
+      <ul>
+        <li>2ème choc majeur de la dette</li>
+        <li>Quoi qu'il en coûte : chômage partiel, aides massives</li>
+        <li>Emballement inédit des dépenses</li>
+      </ul>
+    </div>
+    <div class="card accent-red">
+      <div class="card-title">⚠️ Situation actuelle</div>
+      <ul>
+        <li><strong>3 000 Mds €</strong> au 31 mars 2023</li>
+        <li>Trajectoire continue depuis 1980</li>
+        <li>Enjeu : maîtriser la charge sans casser la croissance</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL 3 – POUVOIRS DE POLICE
+═══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-2">
+
+  <div class="section-header">
+    <h2>Les Pouvoirs de Police Administrative et Judiciaire</h2>
+    <div class="subtitle">Deux régimes complémentaires : la police administrative prévient les troubles à l'ordre public ; la police judiciaire réprime les infractions pénales une fois commises.</div>
+  </div>
+
+  <div class="compare-wrap">
+    <div class="compare-left">
+      <div class="compare-head">Police Administrative</div>
+      <div class="chips" style="margin-bottom:14px;">
+        <span class="chip chip-blue">Préventive</span>
+        <span class="chip chip-blue">Ordre public</span>
+        <span class="chip chip-blue">Services publics</span>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">🎯 Objectif</div>
+        <ul><li>Prévenir les troubles à l'ordre public et assurer le bon fonctionnement des services publics. <strong>Caractère préventif.</strong></li></ul>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">🔧 Moyens</div>
+        <ul>
+          <li>Mesures réglementaires (arrêtés, circulaires)</li>
+          <li>Actes individuels (autorisations, interdictions)</li>
+          <li>Recours à la force publique si nécessité</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">⚖️ Contrôle</div>
+        <ul><li>Soumis au contrôle du <strong>juge administratif</strong> (magistrats administratifs)</li></ul>
+      </div>
+      <div class="card" style="background: var(--card2);">
+        <div class="card-title">💡 Exemples</div>
+        <ul>
+          <li>Réglementation des manifestations</li>
+          <li>Fermeture d'un commerce dangereux pour la santé publique</li>
+          <li>Gestion d'une crise sanitaire</li>
+        </ul>
+      </div>
+      <div class="row-label" style="margin-top:16px; margin-bottom:10px;">Sous-catégories</div>
+      <div class="chips">
+        <span class="chip chip-blue">Police générale (sécurité, salubrité)</span>
+        <span class="chip chip-blue">Police spéciale (transports, urbanisme)</span>
+        <span class="chip chip-blue">Pouvoirs du maire</span>
+        <span class="chip chip-blue">Pouvoirs du préfet</span>
+      </div>
+    </div>
+    <div class="compare-vs"><div class="lightning">⚡</div></div>
+    <div class="compare-right">
+      <div class="compare-head">Police Judiciaire</div>
+      <div class="chips" style="margin-bottom:14px;">
+        <span class="chip chip-red">Répressive</span>
+        <span class="chip chip-red">Infraction pénale</span>
+        <span class="chip chip-red">Poursuites</span>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">🎯 Objectif</div>
+        <ul><li>Réprimer les infractions pénales, identifier leurs auteurs et les déférer à la justice. <strong>Caractère répressif.</strong></li></ul>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">🔧 Moyens</div>
+        <ul>
+          <li>Enquêtes, gardes à vue</li>
+          <li>Perquisitions, saisies, etc.</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:12px; background: var(--card2);">
+        <div class="card-title">⚖️ Contrôle</div>
+        <ul><li>Soumis au contrôle du <strong>juge judiciaire</strong> (procureur de la République, juge d'instruction)</li></ul>
+      </div>
+      <div class="card" style="background: var(--card2);">
+        <div class="card-title">💡 Exemples</div>
+        <ul>
+          <li>Enquête sur un vol</li>
+          <li>Arrestation en flagrant délit</li>
+          <li>Poursuite d'un délit routier</li>
+        </ul>
+      </div>
+      <div class="row-label" style="margin-top:16px; margin-bottom:10px;">Phases judiciaires</div>
+      <div class="chips">
+        <span class="chip chip-red">Enquête préliminaire</span>
+        <span class="chip chip-red">Instruction</span>
+        <span class="chip chip-red">Jugement</span>
+        <span class="chip chip-red">Exécution des peines</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-label">Articulation entre les deux polices</div>
+  <div class="grid2">
+    <div class="hbox blue">
+      <strong>De l'administratif au judiciaire :</strong> La police administrative, en assurant une surveillance générale du territoire, peut être le premier maillon de la chaîne pénale en constatant une infraction. Elle transmet alors le dossier à la police judiciaire, chargée d'identifier les auteurs et de réunir les preuves nécessaires à la poursuite pénale.
+    </div>
+    <div class="hbox">
+      <strong>Du judiciaire à l'administratif :</strong> Inversement, la police judiciaire, dans le cadre de ses enquêtes, peut être amenée à prendre des mesures conservatoires de caractère administratif (saisie de biens, fermeture provisoire) afin de préserver les preuves ou d'empêcher la continuation de l'infraction.
+    </div>
+  </div>
+
+  <div class="card accent-gold">
+    <div class="card-title">📌 Exemple concret – Manifestation non déclarée</div>
+    <ul>
+      <li>La <strong>police administrative</strong> peut décider de dissoudre la manifestation (trouble à l'ordre public) → pouvoir de police administrative</li>
+      <li>Si des violences éclatent (outrages, rébellion...) → des infractions pénales sont commises</li>
+      <li>La <strong>police judiciaire</strong> intervient pour identifier et poursuivre les auteurs, tout en exécutant les décisions de la police administrative</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL 4 – INSTITUTIONS UE
+═══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-3">
+
+  <div class="section-header">
+    <h2>Les 7 Institutions de l'Union Européenne</h2>
+    <div class="subtitle">L'Union européenne est une construction démocratique qui repose sur un système institutionnel permettant de concilier les intérêts des États membres et les attentes des citoyens. Les différentes institutions travaillent ensemble pour garantir la démocratie, la transparence et l'efficacité dans la prise de décision.</div>
+  </div>
+
+  <!-- TOP LEVEL -->
+  <div class="row-label">Architecture institutionnelle</div>
+
+  <div style="text-align:center; margin-bottom: 24px;">
+    <div class="card accent-red" style="display:inline-block; max-width:400px; text-align:left; margin-bottom:16px;">
+      <div class="card-title" style="justify-content:center;">🇪🇺 Conseil européen — Bruxelles</div>
+      <ul>
+        <li>28 chefs d'État ou de gouvernement + Président de la Commission</li>
+        <li>Définit les <strong>grandes orientations de politique générale</strong> nécessaires au développement de l'UE</li>
+        <li>Donne l'impulsion aux autres institutions</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid3" style="align-items:stretch;">
+    <div class="eu-card" style="border-top: 3px solid var(--blueL);">
+      <div class="inst-name">Parlement Européen</div>
+      <div class="inst-city">📍 Strasbourg</div>
+      <ul>
+        <li><strong>751 députés</strong> élus au suffrage universel direct pour 5 ans</li>
+        <li>Pouvoirs <strong>budgétaires et de contrôle</strong></li>
+        <li>Pouvoir d'approbation et de <strong>censure de la Commission</strong></li>
+        <li>Partage le <strong>pouvoir de codécision</strong> avec le Conseil de l'UE</li>
+      </ul>
+    </div>
+    <div class="eu-card" style="border-top: 3px solid var(--accent);">
+      <div class="inst-name">Commission Européenne</div>
+      <div class="inst-city">📍 Bruxelles</div>
+      <ul>
+        <li><strong>28 commissaires</strong>, 1 par État membre</li>
+        <li><strong>Gardienne des traités</strong></li>
+        <li>Gère les <strong>fonds communautaires</strong></li>
+        <li>Propose les <strong>projets d'actes communautaires</strong></li>
+        <li>Reçoit propositions du Conseil européen et fait des propositions au PE et au Conseil de l'UE</li>
+      </ul>
+    </div>
+    <div class="eu-card" style="border-top: 3px solid var(--gold);">
+      <div class="inst-name">Conseil de l'UE</div>
+      <div class="inst-city">📍 Bruxelles</div>
+      <ul>
+        <li><strong>28 ministres</strong> des États membres réunis en conseil</li>
+        <li>Représentation des <strong>intérêts des États membres</strong></li>
+        <li>Pouvoirs <strong>législatifs</strong> (avec le Parlement européen)</li>
+        <li>Pouvoirs <strong>exécutifs</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout" style="text-align:center; margin: 16px 0;">
+    🔄 <strong>Pouvoir de codécision</strong> — Le Parlement européen et le Conseil de l'UE légifèrent ensemble sur proposition de la Commission européenne.
+  </div>
+
+  <div class="grid3">
+    <div class="eu-card" style="border-top: 3px solid var(--teal);">
+      <div class="inst-name">Banque Centrale Européenne</div>
+      <div class="inst-city">📍 Francfort</div>
+      <ul>
+        <li>Conseil des gouverneurs des banques centrales nationales de la zone euro + Directoire de 6 membres</li>
+        <li><strong>Conduit la politique monétaire</strong> de la zone euro</li>
+        <li>Assure sa <strong>mise en œuvre</strong></li>
+      </ul>
+    </div>
+    <div class="eu-card" style="border-top: 3px solid var(--green);">
+      <div class="inst-name">Cour des Comptes</div>
+      <div class="inst-city">📍 Luxembourg</div>
+      <ul>
+        <li><strong>28 membres</strong> (1 par État membre)</li>
+        <li>Examine la légalité et la régularité des <strong>recettes et dépenses</strong> de l'UE</li>
+        <li>Contrôle la <strong>bonne gestion financière</strong> des fonds communautaires</li>
+      </ul>
+    </div>
+    <div class="eu-card" style="border-top: 3px solid #9b59b6;">
+      <div class="inst-name">Cour de Justice de l'UE</div>
+      <div class="inst-city">📍 Luxembourg</div>
+      <ul>
+        <li><strong>28 juges</strong> (1 par État membre) + <strong>8 avocats généraux</strong></li>
+        <li>Assure le <strong>respect du droit de l'UE</strong> dans l'interprétation et l'application des traités et du droit dérivé</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-label">Récapitulatif mémo</div>
+  <table class="struct-table">
+    <thead>
+      <tr><th>Institution</th><th>Siège</th><th>Pouvoir principal</th><th>Composition</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Conseil européen</strong></td><td>Bruxelles</td><td>Orientation politique générale</td><td>28 chefs d'État</td></tr>
+      <tr><td><strong>Commission européenne</strong></td><td>Bruxelles</td><td>Initiative législative, gardienne des traités</td><td>28 commissaires</td></tr>
+      <tr><td><strong>Parlement européen</strong></td><td>Strasbourg</td><td>Codécision, budget, contrôle</td><td>751 députés élus au SUD</td></tr>
+      <tr><td><strong>Conseil de l'UE</strong></td><td>Bruxelles</td><td>Codécision, exécutif</td><td>28 ministres</td></tr>
+      <tr><td><strong>BCE</strong></td><td>Francfort</td><td>Politique monétaire zone €</td><td>Gouverneurs + Directoire</td></tr>
+      <tr><td><strong>Cour des comptes</strong></td><td>Luxembourg</td><td>Contrôle financier</td><td>28 membres</td></tr>
+      <tr><td><strong>Cour de justice</strong></td><td>Luxembourg</td><td>Interprétation/application du droit UE</td><td>28 juges + 8 avocats généraux</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PANEL 5 – 5ème RÉPUBLIQUE
+═══════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-4">
+
+  <div class="section-header">
+    <h2>Fonctionnement de la 5ème République</h2>
+    <div class="subtitle">La Constitution de 1958 a donné naissance à un régime politique spécifique, la Vème République, dont l'architecture institutionnelle se caractérise par un exécutif fort et un Parlement bicaméral (deux assemblées représentatives). Elle est le résultat d'un compromis entre les partisans d'un régime présidentiel et ceux d'un régime parlementaire.</div>
+  </div>
+
+  <div class="row-label">Les acteurs et leurs pouvoirs</div>
+  <div class="grid2">
+    <!-- PRÉSIDENT -->
+    <div class="card accent-red">
+      <div class="card-title" style="color:#f5906a;">👔 Le Président de la République – Élu pour 5 ans</div>
+      <div class="chips" style="margin-bottom: 10px;">
+        <span class="chip chip-red">Pouvoir exécutif</span>
+        <span class="chip chip-red">Chef de l'État</span>
+      </div>
+      <ul>
+        <li><strong>Chef de l'État :</strong> Incarne l'unité nationale, représente la France à l'étranger, garantit le respect de la Constitution</li>
+        <li><strong>Pouvoir exécutif :</strong> Nomme le Premier ministre, préside le Conseil des ministres, dispose du pouvoir de dissolution de l'Assemblée nationale</li>
+        <li><strong>Défense nationale :</strong> Chef des armées</li>
+        <li><strong>Relations internationales :</strong> Négocie et ratifie les traités internationaux</li>
+      </ul>
+    </div>
+    <!-- GOUVERNEMENT -->
+    <div class="card accent-gold">
+      <div class="card-title" style="color:var(--gold);">🏛️ Le Gouvernement</div>
+      <div class="chips" style="margin-bottom: 10px;">
+        <span class="chip chip-gold">Premier ministre</span>
+        <span class="chip chip-gold">Ministres</span>
+        <span class="chip chip-gold">Secrétaires d'État</span>
+      </div>
+      <ul>
+        <li><strong>Pouvoir exécutif :</strong> Met en œuvre les lois votées par le Parlement</li>
+        <li><strong>Direction de la politique nationale :</strong> Définit et met en œuvre les grandes orientations politiques du pays</li>
+        <li><strong>Préparation des lois :</strong> Présente les projets de loi au Parlement</li>
+        <li>Peut engager sa responsabilité devant l'Assemblée nationale (<strong>question de confiance</strong>)</li>
+      </ul>
+    </div>
+    <!-- PARLEMENT -->
+    <div class="card accent-blue">
+      <div class="card-title" style="color:#7ab8f5;">📜 Le Parlement – Pouvoir législatif</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top:10px;">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; color:#7ab8f5; font-size:13px; text-transform:uppercase; margin-bottom:6px;">Assemblée Nationale</div>
+          <ul>
+            <li><strong>577 députés</strong> élus au SUD pour 5 ans</li>
+            <li>Chambre basse du Parlement</li>
+            <li>Vote les lois et le budget</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; color:#5fdde8; font-size:13px; text-transform:uppercase; margin-bottom:6px;">Sénat</div>
+          <ul>
+            <li><strong>348 sénateurs</strong> élus pour 6 ans</li>
+            <li>Chambre haute du Parlement</li>
+            <li>Élu au suffrage universel indirect</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.08);">
+        <ul>
+          <li><strong>Contrôle du gouvernement :</strong> Interpelle les ministres, vote des motions de censure, mène des enquêtes parlementaires</li>
+          <li><strong>Représentation nationale :</strong> Exprime la volonté générale et défend les intérêts de la nation</li>
+        </ul>
+      </div>
+    </div>
+    <!-- CONSEIL CONSTITUTIONNEL -->
+    <div class="card accent-teal">
+      <div class="card-title" style="color:#5fdde8;">⚖️ Le Conseil Constitutionnel – 9 membres · 9 ans</div>
+      <ul>
+        <li><strong>Garant de la Constitution :</strong> Veille à ce que les lois et les actes du gouvernement soient conformes à la Constitution</li>
+        <li><strong>Contrôle de constitutionnalité :</strong> Peut être saisi par le Président, le Premier ministre, le président de l'Assemblée nationale ou du Sénat, ou un groupe de députés/sénateurs</li>
+        <li><strong>Composition :</strong> 3 membres nommés par le Président de la République + 3 par le président de l'Assemblée nationale + 3 par le président du Sénat</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-label">Mécanismes de contrôle et d'équilibre</div>
+  <div class="grid3">
+    <div class="card accent-red">
+      <div class="card-title">🔄 Droit de dissolution</div>
+      <ul>
+        <li>Le Président peut dissoudre l'<strong>Assemblée nationale</strong></li>
+        <li>Entraîne de <strong>nouvelles élections législatives</strong></li>
+        <li>Contre-pouvoir face aux blocages parlementaires</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title">⚡ Motion de censure</div>
+      <ul>
+        <li>L'Assemblée nationale peut renverser le <strong>Gouvernement</strong></li>
+        <li>Votée à la <strong>majorité absolue</strong> des membres</li>
+        <li>Contre-pouvoir de l'Assemblée sur l'Exécutif</li>
+      </ul>
+    </div>
+    <div class="card accent-blue">
+      <div class="card-title">🗳️ Question de confiance</div>
+      <ul>
+        <li>Le Premier ministre peut engager la <strong>responsabilité du gouvernement</strong></li>
+        <li>Sur son programme ou une <strong>déclaration de politique générale</strong></li>
+        <li>Réaffirme l'assise parlementaire du gouvernement</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-label">Les Grands Électeurs & le Suffrage</div>
+  <div class="callout">
+    Les <strong>Grands Électeurs</strong> sont chargés d'élire les sénateurs au suffrage universel indirect. Ils comprennent : <strong>les députés, les conseillers régionaux, les conseillers départementaux et les délégués des conseils municipaux.</strong>
+    Les <strong>Électeurs</strong> (+18 ans) participent aux élections législatives, présidentielles et aux référendums. La Constitution est consultée par référendum.
+  </div>
+
+  <div class="row-label">Les Présidents de la 5ème République</div>
+  <div class="pres-line">
+    <div class="pres-item">
+      <div class="pres-year">1959</div>
+      <div class="pres-name">DE GAULLE</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">1969</div>
+      <div class="pres-name">POMPIDOU</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">1974</div>
+      <div class="pres-name">GISCARD D'ESTAING</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">1981</div>
+      <div class="pres-name">MITTERRAND</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">1995</div>
+      <div class="pres-name">CHIRAC</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">2007</div>
+      <div class="pres-name">SARKOZY</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">2012</div>
+      <div class="pres-name">HOLLANDE</div>
+    </div>
+    <div class="pres-item">
+      <div class="pres-year">2017</div>
+      <div class="pres-name">MACRON</div>
+    </div>
+  </div>
+
+  <div class="hbox blue">
+    <strong>Régime semi-présidentiel :</strong> La 5ème République combine un <strong>exécutif fort</strong> (président élu au suffrage universel direct depuis 1962) avec un <strong>gouvernement responsable devant le Parlement</strong>. En cas de cohabitation, le Premier ministre appartient à une majorité parlementaire différente du Président.
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<footer>
+  Outil de révision — <span>Concours Lieutenant 1ère Classe SPP</span> · SDIS 38 · Culture Administrative & Institutionnelle
+</footer>
+
+<script>
+function showTab(idx) {
+  document.querySelectorAll('.panel').forEach((p,i) => {
+    p.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', i === idx);
+  });
+}
+</script>
+</body>
+</html>

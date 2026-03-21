@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Déroulement de Carrière — Sapeurs-Pompiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #c0392b;
+    --rouge-fonce: #922b21;
+    --rouge-vif: #e74c3c;
+    --or: #d4a017;
+    --or-clair: #f0c040;
+    --noir: #1a1a1a;
+    --gris-fonce: #2c2c2c;
+    --gris: #3d3d3d;
+    --gris-clair: #f5f5f0;
+    --blanc: #ffffff;
+    --vert: #27ae60;
+    --vert-clair: #2ecc71;
+    --bleu: #2980b9;
+    --violet: #8e44ad;
+    --texte: #2c2c2c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #f0ede8;
+    color: var(--texte);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, var(--noir) 0%, var(--rouge-fonce) 50%, var(--rouge) 100%);
+    padding: 36px 40px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent, transparent 30px,
+      rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 31px
+    );
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--or);
+    color: var(--noir);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--blanc);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .hero h1 span { color: var(--or-clair); }
+  .hero-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* ─── NAV TABS ─── */
+  .nav-tabs {
+    display: flex;
+    background: var(--gris-fonce);
+    overflow-x: auto;
+    gap: 2px;
+    padding: 0 20px;
+    border-bottom: 3px solid var(--rouge);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tab {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.55);
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all .2s;
+    white-space: nowrap;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-tab:hover { color: rgba(255,255,255,0.85); }
+  .nav-tab.active {
+    color: var(--or-clair);
+    border-bottom-color: var(--or-clair);
+  }
+  .nav-tab .num {
+    background: var(--rouge);
+    color: #fff;
+    font-size: 11px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-tab.active .num { background: var(--or); color: var(--noir); }
+
+  /* ─── CONTENT ─── */
+  .content { max-width: 1300px; margin: 0 auto; padding: 30px 20px 60px; }
+
+  .section { display: none; animation: fadeIn .3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--rouge);
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    background: var(--rouge);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--rouge-fonce);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .section-title p { color: #777; font-size: 13px; margin-top: 2px; }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .cards-grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+  .cards-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+  /* ─── CARD ─── */
+  .card {
+    background: #fff;
+    border-radius: 6px;
+    border-left: 4px solid var(--rouge);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--rouge);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header.or { background: var(--or); }
+  .card-header.vert { background: var(--vert); }
+  .card-header.bleu { background: var(--bleu); }
+  .card-header.violet { background: var(--violet); }
+  .card-header.noir { background: var(--gris-fonce); }
+  .card-header h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .card-body { padding: 14px; }
+
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    padding: 5px 0 5px 16px;
+    position: relative;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 13px;
+    color: #333;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--rouge);
+    font-size: 11px;
+    top: 7px;
+  }
+  .card ul li strong { color: var(--rouge-fonce); }
+
+  /* ─── BADGE ─── */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge-rouge { background: rgba(192,57,43,0.12); color: var(--rouge-fonce); }
+  .badge-vert { background: rgba(39,174,96,0.12); color: #1e8449; }
+  .badge-or { background: rgba(212,160,23,0.15); color: #7d6008; }
+
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight {
+    background: linear-gradient(135deg, #fff9f0, #fff5e6);
+    border: 1px solid #f0c040;
+    border-left: 4px solid var(--or);
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .highlight-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7d6008;
+    margin-bottom: 6px;
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .flow-step {
+    background: var(--rouge);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .flow-arrow { color: var(--rouge); font-size: 18px; font-weight: bold; }
+
+  /* ─── TABLE ─── */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .info-table th {
+    background: var(--gris-fonce);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 13px;
+  }
+  .info-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .info-table tr:nth-child(even) td { background: #fafaf8; }
+  .info-table tr:hover td { background: #fff5f5; }
+
+  /* ─── DISPO BOXES ─── */
+  .dispo-group { margin-bottom: 18px; }
+  .dispo-group-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .dispo-group-title.droit { background: var(--bleu); }
+  .dispo-group-title.office { background: var(--violet); }
+  .dispo-group-title.discret { background: var(--gris); }
+
+  /* ─── FULL WIDTH CARD ─── */
+  .card-full { grid-column: 1 / -1; }
+
+  /* ─── INFO ROW ─── */
+  .info-row {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label {
+    font-weight: 600;
+    color: var(--rouge-fonce);
+    min-width: 200px;
+    flex-shrink: 0;
+  }
+
+  /* ─── CONGES LIST ─── */
+  .conges-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .conge-pill {
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12.5px;
+    color: var(--rouge-fonce);
+    font-weight: 600;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .cards-grid-3 { grid-template-columns: 1fr; }
+    .cards-grid-2 { grid-template-columns: 1fr; }
+    .nav-tabs { padding: 0 10px; }
+    .nav-tab { padding: 12px 12px; font-size: 12px; }
+    .info-label { min-width: 140px; }
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--gris-fonce);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 18px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  footer span { color: rgba(255,255,255,0.65); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Fonction Publique Territoriale</div>
+  <h1>Déroulement de Carrière <span>chez les SP</span></h1>
+  <p class="hero-sub">Sapeurs-Pompiers Professionnels · FPT · SDIS</p>
+</div>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="showSection('s1', this)">
+    <span class="num">1</span> Lignes directrices
+  </div>
+  <div class="nav-tab" onclick="showSection('s2', this)">
+    <span class="num">2</span> Le Recrutement
+  </div>
+  <div class="nav-tab" onclick="showSection('s3', this)">
+    <span class="num">3</span> Avancement
+  </div>
+  <div class="nav-tab" onclick="showSection('s4', this)">
+    <span class="num">4</span> Positions
+  </div>
+  <div class="nav-tab" onclick="showSection('s5', this)">
+    <span class="num">5</span> Fin de carrière
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 1 — LIGNES DIRECTRICES DE GESTION
+  ═══════════════════════════════════════════════ -->
+  <div id="s1" class="section active">
+    <div class="section-header">
+      <div class="section-icon">1</div>
+      <div class="section-title">
+        <h2>Les Lignes Directrices de Gestion</h2>
+        <p>Cadre stratégique RH · Loi du 6 août 2019 · Transformation de la Fonction Publique</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-header noir">
+          <h3>🏛️ Loi du 6 août 2019</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Transformation de la Fonction Publique</li>
+            <li>Cadre de référence pour les LDG</li>
+            <li>Réforme du dialogue social et des instances</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>📊 Stratégie pluriannuelle RH</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>GPEEC</strong> : Gestion prévisionnelle des effectifs, emplois et compétences</li>
+            <li>Donner de la visibilité aux agents sur leurs perspectives de carrière</li>
+            <li><strong>Stratégie sur 6 ans</strong>, calée sur les cycles électoraux du conseil d'administration</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header or">
+          <h3>🎯 Orientations générales</h3>
+        </div>
+        <div class="card-body">
+          <p style="font-size:12.5px; color:#888; font-weight:600; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px;">Promotion & Valorisation des parcours</p>
+          <ul>
+            <li>Fixer les critères généraux pour les promotions au choix dans les grades et cadres d'emplois</li>
+            <li>Fixer les mesures favorisant l'évolution professionnelle des agents et leur accès aux responsabilités supérieures</li>
+            <li>Préciser les critères pris en compte pour l'évolution des agents (formations suivies, conditions particulières, capacité d'adaptation, aptitude au commandement, etc.)</li>
+            <li>Préciser le taux de promotion interne (après négociation avec les organisations syndicales)</li>
+            <li>Préciser le budget voté et la politique souhaitée pour maîtriser la masse salariale</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header vert">
+          <h3>📋 Le Rapport Social Unique (RSU)</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Issu du décret du <strong>30 novembre 2020</strong></li>
+            <li>Rapport annuel, sur l'<strong>année civile écoulée</strong></li>
+            <li>Sert de socle pour établir les LDG</li>
+            <li>Aborde l'ensemble des éléments sociaux des SDIS (GPEEC, recrutements, formations, parcours pro, etc.)</li>
+            <li>Donne lieu à un débat au <strong>comité social territorial</strong></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 2 — LE RECRUTEMENT
+  ═══════════════════════════════════════════════ -->
+  <div id="s2" class="section">
+    <div class="section-header">
+      <div class="section-icon">2</div>
+      <div class="section-title">
+        <h2>Le Recrutement</h2>
+        <p>Concours · Stage · Titularisation · Agent contractuel</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">Concours</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Stage</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Titularisation</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Fonctionnaire</div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-header">
+          <h3>🏆 Les Concours</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Recrutement sur <strong>liste d'aptitude</strong> après concours : <em>principal mode de recrutement</em></li>
+            <li><strong>Concours externe</strong> : sur les diplômes</li>
+            <li><strong>Concours interne</strong> : sur l'ancienneté</li>
+            <li>Réussir un concours ne signifie pas avoir un poste — il donne le droit de postuler sur un poste</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header or">
+          <h3>📝 Le Stage</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Période probatoire pour <strong>vérifier les qualités professionnelles</strong> de l'agent</li>
+            <li>Période de <strong>1 an</strong> chez les SPP</li>
+            <li>À l'issue, l'autorité territoriale peut :
+              <ul style="margin-top:6px; margin-left:10px;">
+                <li style="list-style:disc; padding:3px 0">Refuser la titularisation</li>
+                <li style="list-style:disc; padding:3px 0">Prolonger exceptionnellement le stage</li>
+                <li style="list-style:disc; padding:3px 0">Effectuer la titularisation de l'agent</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header vert">
+          <h3>✅ La Titularisation</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Fait suite à la <strong>période de stage</strong></li>
+            <li>L'agent devient <strong>fonctionnaire</strong> et fait officiellement partie de la fonction publique</li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">⚠️ Point clé</div>
+            La titularisation marque l'entrée définitive dans la FPT. Elle confère la <strong>stabilité de l'emploi</strong> et les droits attachés au statut de fonctionnaire.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bleu">
+          <h3>📄 Agent Contractuel (CDD)</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Peut occuper un poste <strong>permanent ou non permanent</strong></li>
+            <li><strong>Non permanent</strong> : pour accroissement temporaire ou saisonnier d'activité, ou pour un projet identifié</li>
+            <li><strong>Permanent</strong> : pour un remplacement temporaire ou poste vacant</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 3 — AVANCEMENT
+  ═══════════════════════════════════════════════ -->
+  <div id="s3" class="section">
+    <div class="section-header">
+      <div class="section-icon">3</div>
+      <div class="section-title">
+        <h2>Avancement et Changement de Cadre d'Emplois</h2>
+        <p>Échelon · Grade · Changement de cadre d'emplois</p>
+      </div>
+    </div>
+
+    <div class="cards-grid cards-grid-3">
+
+      <div class="card">
+        <div class="card-header vert">
+          <h3>📈 Avancement d'Échelon</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Avancement automatique</strong> lié à l'ancienneté</li>
+            <li>Il se fait à <strong>l'échelon directement supérieur</strong></li>
+            <li>À une cadence unique</li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">Automatique</div>
+            Progression garantie sans condition particulière autre que l'ancienneté dans l'échelon.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header or">
+          <h3>⬆️ Avancement de Grade</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Non automatique</strong></li>
+            <li>Lié à un <strong>examen professionnel</strong></li>
+            <li>Ou au <strong>choix</strong> (tableau d'avancement) par l'autorité territoriale</li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">Décision de l'autorité</div>
+            Nécessite une démarche active ou la reconnaissance de l'employeur.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header violet">
+          <h3>🔄 Changement de Cadre d'Emplois</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Non automatique</strong></li>
+            <li>Lié à la réussite d'un <strong>concours</strong></li>
+            <li>Ou d'une <strong>promotion interne</strong></li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">Mobilité verticale</div>
+            Permet de changer de filière ou d'accéder à une catégorie supérieure.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 20px;">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Type d'avancement</th>
+            <th>Automatique ?</th>
+            <th>Condition</th>
+            <th>Acteur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Avancement d'échelon</strong></td>
+            <td><span class="badge badge-vert">✓ OUI</span></td>
+            <td>Ancienneté dans l'échelon</td>
+            <td>Automatique (cadence unique)</td>
+          </tr>
+          <tr>
+            <td><strong>Avancement de grade</strong></td>
+            <td><span class="badge badge-rouge">✗ NON</span></td>
+            <td>Examen professionnel ou choix</td>
+            <td>Autorité territoriale / tableau d'avancement</td>
+          </tr>
+          <tr>
+            <td><strong>Changement de cadre d'emplois</strong></td>
+            <td><span class="badge badge-rouge">✗ NON</span></td>
+            <td>Réussite d'un concours ou promotion interne</td>
+            <td>Agent + autorité</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 4 — POSITIONS DES FONCTIONNAIRES
+  ═══════════════════════════════════════════════ -->
+  <div id="s4" class="section">
+    <div class="section-header">
+      <div class="section-icon">4</div>
+      <div class="section-title">
+        <h2>Les Positions des Fonctionnaires</h2>
+        <p>Activité · Cumul · Mobilité · Temps partiel · Mise à disposition · Détachement · Disponibilité</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-header vert">
+          <h3>✅ L'Activité</h3>
+        </div>
+        <div class="card-body">
+          <p style="font-size:12.5px; font-weight:600; color:#888; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px;">Droits aux congés</p>
+          <div class="conges-pills">
+            <span class="conge-pill">Annuel (5 semaines)</span>
+            <span class="conge-pill">Maladie (max 1 an)</span>
+            <span class="conge-pill">Longue maladie (max 3 ans)</span>
+            <span class="conge-pill">Longue durée</span>
+            <span class="conge-pill">Maternité</span>
+            <span class="conge-pill">Paternité</span>
+            <span class="conge-pill">Formation professionnelle</span>
+            <span class="conge-pill">VAE</span>
+            <span class="conge-pill">Bilan de compétences</span>
+            <span class="conge-pill">Formation syndicale</span>
+            <span class="conge-pill">Proche aidant</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header or">
+          <h3>⊕ Le Cumul d'Activités</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>L'agent public est autorisé à cumuler une activité accessoire, sous réserve qu'elle ne porte pas atteinte au fonctionnement normal du service</li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">⚠️ Condition</div>
+            L'activité accessoire ne doit pas nuire à l'exercice des fonctions principales.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bleu">
+          <h3>↔️ La Mobilité</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>La mutation</strong> : changer d'emploi sans changer de grade, de corps ou de cadre d'emplois au sein de la même fonction publique</li>
+            <li><strong>L'intégration directe</strong> : intégrer un nouveau corps ou cadre d'emplois, y compris en changeant d'administration ou de fonction publique <em>sans détachement préalable</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header violet">
+          <h3>⏱️ Le Temps Partiel</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Pas inférieur au <strong>mi-temps</strong></li>
+            <li>Assimilé au temps plein pour l'avancement, la promotion ou la formation</li>
+            <li>Possible à l'occasion de <strong>naissance</strong> jusqu'à 3 ans de l'enfant</li>
+            <li>Possible pour donner des soins à son conjoint, son enfant ou un ascendant atteint d'un handicap</li>
+            <li>Possible pour <strong>reprendre une entreprise</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header noir">
+          <h3>🤝 La Mise à Disposition</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Hors du service, mais <strong>rattaché à son corps ou cadre d'emplois</strong> d'origine</li>
+            <li>Exemple : auprès des collectivités territoriales, d'organisations internationales, d'une institution de l'Union européenne, etc.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>🔀 Le Détachement</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Fonctionnaire placé hors de son corps d'origine et continuant à bénéficier dans ce corps de ses droits à avancement et retraite</li>
+            <li>Exemple : exercer un mandat syndical, des fonctions de membre du gouvernement</li>
+            <li>Le corps et le cadre d'emplois d'accueil doivent être de <strong>même catégorie</strong> que celui d'origine</li>
+            <li><strong>Durée courte</strong> : 6 mois max, et 1 an à l'étranger ou en outre-mer</li>
+            <li><strong>Durée longue</strong> : supérieure à 6 mois et inférieure à 5 ans</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DISPONIBILITÉ -->
+    <div style="margin-top: 24px;">
+      <div class="card card-full">
+        <div class="card-header">
+          <h3>⏸️ La Disponibilité</h3>
+        </div>
+        <div class="card-body">
+          <div class="cards-grid cards-grid-3" style="gap:16px; margin-top:4px;">
+
+            <div class="dispo-group">
+              <div class="dispo-group-title droit">📘 Disponibilité de Droit</div>
+              <ul style="list-style:none; padding:0;">
+                <li style="padding:5px 0 5px 16px; position:relative; border-bottom:1px solid #f0ede8; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#2980b9;">▸</span>
+                  Pour raison familiale : <strong>3 ans max</strong>
+                </li>
+                <li style="padding:5px 0 5px 16px; position:relative; border-bottom:1px solid #f0ede8; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#2980b9;">▸</span>
+                  Pour exercer un mandat d'élu local : <strong>durée du mandat</strong>
+                </li>
+                <li style="padding:5px 0 5px 16px; position:relative; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#2980b9;">▸</span>
+                  Pour se rendre dans un DOM en vue d'adopter un enfant : <strong>6 semaines max</strong>
+                </li>
+              </ul>
+            </div>
+
+            <div class="dispo-group">
+              <div class="dispo-group-title office">🔄 Disponibilité d'Office (attente de réintégration)</div>
+              <ul style="list-style:none; padding:0;">
+                <li style="padding:5px 0 5px 16px; position:relative; border-bottom:1px solid #f0ede8; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#8e44ad;">▸</span>
+                  Fonctionnaire interrompant son détachement et qui ne peut être réintégré faute d'emploi vacant → jusqu'à ce qu'un poste lui soit proposé
+                </li>
+                <li style="padding:5px 0 5px 16px; position:relative; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#8e44ad;">▸</span>
+                  Expiration d'un congé parental, ayant refusé un emploi de la même collectivité : <strong>3 ans max</strong> ou prorogée jusqu'à la 3ème proposition d'emplois
+                </li>
+              </ul>
+            </div>
+
+            <div class="dispo-group">
+              <div class="dispo-group-title discret">🗂️ Disponibilité Discrétionnaire</div>
+              <ul style="list-style:none; padding:0;">
+                <li style="padding:5px 0 5px 16px; position:relative; border-bottom:1px solid #f0ede8; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#555;">▸</span>
+                  Pour étude ou recherche : <strong>3 ans max</strong>
+                </li>
+                <li style="padding:5px 0 5px 16px; position:relative; border-bottom:1px solid #f0ede8; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#555;">▸</span>
+                  Pour convenances personnelles : <strong>5 ans max</strong>
+                </li>
+                <li style="padding:5px 0 5px 16px; position:relative; font-size:13px;">
+                  <span style="position:absolute;left:0;color:#555;">▸</span>
+                  Pour reprendre une entreprise : <strong>2 ans max</strong>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 5 — FIN DE CARRIÈRE
+  ═══════════════════════════════════════════════ -->
+  <div id="s5" class="section">
+    <div class="section-header">
+      <div class="section-icon">5</div>
+      <div class="section-title">
+        <h2>La Fin de Carrière</h2>
+        <p>Cessation de fonction · Condition d'âge · Durée de service · Prime de feu · Reclassement</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-header noir">
+          <h3>🚪 Cessation de Fonction</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Rupture conventionnelle</strong> dans la fonction publique en test jusqu'en 2025</li>
+            <li>Indemnité de rupture en fonction de l'ancienneté</li>
+            <li><strong>Licenciement</strong> : pas obligatoirement d'indemnité de licenciement en fonction du motif</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>🎂 La Condition d'Âge (limite)</h3>
+        </div>
+        <div class="card-body">
+          <table class="info-table" style="margin-top:4px;">
+            <thead>
+              <tr>
+                <th>Catégorie</th>
+                <th>Âge limite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Emplois catégorie <strong>sédentaire</strong></td>
+                <td><strong>64 ans</strong></td>
+              </tr>
+              <tr>
+                <td>Emplois catégorie <strong>active</strong></td>
+                <td><strong>59 ans</strong></td>
+              </tr>
+              <tr>
+                <td>Emplois catégorie <strong>super-active</strong></td>
+                <td><strong>54 ans</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header or">
+          <h3>📅 Condition de Durée de Service</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Retraite avec pension à l'âge dérogatoire de la catégorie active : durée de service de <strong>17 années</strong></li>
+            <li>Attribution d'une pension subordonnée à la présentation d'une <strong>demande adressée au directeur général de la caisse des dépôts et consignations</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header vert">
+          <h3>🔥 Prime de Feu — Calcul de la Pension</h3>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Minimum <strong>17 années de service</strong> en qualité de SPP</li>
+            <li>La prime de feu, <strong>élément essentiel de la rémunération des SPP</strong>, est un facteur déterminant dans le calcul de la pension de retraite</li>
+            <li>Contribue à valoriser leur carrière</li>
+          </ul>
+          <div class="highlight">
+            <div class="highlight-title">🔑 Point important</div>
+            La prime de feu est intégrée dans le calcul de la pension, valorisant la spécificité des missions des SPP.
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-full">
+        <div class="card-header bleu">
+          <h3>🔄 Reclassement et Projet de Fin de Carrière (PFC)</h3>
+        </div>
+        <div class="card-body">
+          <div class="cards-grid" style="gap:12px; margin-top:4px;">
+
+            <div style="background:#f8fbff; border:1px solid #d6eaf8; border-radius:4px; padding:12px;">
+              <p style="font-weight:600; color:#2980b9; font-size:13px; margin-bottom:8px;">📌 Emploi non opérationnel dans le SDIS</p>
+              <p style="font-size:13px; color:#444;">L'agent peut être affecté à un poste non opérationnel au sein du SDIS, adapté à son état de santé ou à ses capacités.</p>
+            </div>
+
+            <div style="background:#f8fff9; border:1px solid #d5f5e3; border-radius:4px; padding:12px;">
+              <p style="font-weight:600; color:#1e8449; font-size:13px; margin-bottom:8px;">🔀 Reclassement opérationnel</p>
+              <p style="font-size:13px; color:#444;">Reclassement pour raison opérationnelle dans un autre cadre d'emplois ou corps (détachement).</p>
+            </div>
+
+            <div style="background:#fff8f8; border:1px solid #fadbd8; border-radius:4px; padding:12px;">
+              <p style="font-weight:600; color:#c0392b; font-size:13px; margin-bottom:8px;">🏥 Congé pour Raison Opérationnelle (CRO)</p>
+              <p style="font-size:13px; color:#444;">Dispositif spécifique permettant au SPP d'anticiper sa fin de carrière en bénéficiant d'un congé adapté aux contraintes opérationnelles.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<footer>
+  <span>DÉROULEMENT DE CARRIÈRE · SAPEURS-POMPIERS PROFESSIONNELS</span><br>
+  Basé sur la carte de connaissances Hugo FRÉROU · FPT · SDIS
+</footer>
+
+<script>
+  function showSection(id, tab) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Mentale - Le Risque Bâtimentaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fire-red: #C41E3A;
+            --fire-orange: #E65100;
+            --fire-yellow: #FFB300;
+            --dark-navy: #0D1B2A;
+            --steel-blue: #1B263B;
+            --metal-gray: #415A77;
+            --silver: #778DA9;
+            --white: #E0E1DD;
+            --gold: #D4AF37;
+            --safety-green: #2E7D32;
+            --alert-blue: #1565C0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, var(--dark-navy) 0%, var(--steel-blue) 50%, var(--metal-gray) 100%);
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, var(--fire-red) 0%, var(--fire-orange) 50%, var(--fire-yellow) 100%);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0,0,0,0.1) 10px,
+                rgba(0,0,0,0.1) 20px
+            );
+        }
+
+        .header h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: var(--steel-blue);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-link {
+            background: linear-gradient(135deg, var(--metal-gray), var(--steel-blue));
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, var(--fire-orange), var(--fire-red));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
+        }
+
+        /* Main Container */
+        .mindmap-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--fire-red), var(--fire-orange));
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title .icon {
+            font-size: 2rem;
+        }
+
+        .section-content {
+            background: rgba(27, 38, 59, 0.95);
+            border-radius: 0 0 10px 10px;
+            padding: 1.5rem;
+            border: 2px solid var(--metal-gray);
+            border-top: none;
+        }
+
+        /* Node Grid */
+        .node-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Main Node */
+        .main-node {
+            background: linear-gradient(135deg, var(--steel-blue), var(--dark-navy));
+            border-radius: 12px;
+            padding: 1.25rem;
+            border-left: 5px solid var(--fire-orange);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at top right, rgba(230, 81, 0, 0.1), transparent);
+        }
+
+        .main-node:hover {
+            transform: translateX(5px);
+            box-shadow: -5px 5px 20px rgba(230, 81, 0, 0.2);
+        }
+
+        .node-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--fire-yellow);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Sub-items */
+        .sub-items {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sub-item {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-bottom: 1px solid rgba(119, 141, 169, 0.2);
+        }
+
+        .sub-item:last-child {
+            border-bottom: none;
+        }
+
+        .sub-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--fire-orange);
+            font-weight: bold;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.2), rgba(230, 81, 0, 0.1));
+            border: 1px solid var(--fire-red);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .highlight-box .label {
+            font-weight: 700;
+            color: var(--fire-yellow);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Info Tag */
+        .info-tag {
+            display: inline-block;
+            background: var(--metal-gray);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.25rem 0.25rem 0.25rem 0;
+        }
+
+        .info-tag.red { background: var(--fire-red); }
+        .info-tag.orange { background: var(--fire-orange); }
+        .info-tag.green { background: var(--safety-green); }
+        .info-tag.blue { background: var(--alert-blue); }
+        .info-tag.gold { background: var(--gold); color: var(--dark-navy); }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--fire-red), var(--fire-orange));
+            padding: 0.75rem;
+            text-align: left;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-table td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid rgba(119, 141, 169, 0.3);
+            background: rgba(13, 27, 42, 0.5);
+        }
+
+        .data-table tr:hover td {
+            background: rgba(65, 90, 119, 0.5);
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, var(--dark-navy), var(--steel-blue));
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .formula-box .formula {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-box .description {
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        /* Connector lines for visual hierarchy */
+        .branch-container {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .branch-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--fire-orange), var(--fire-red));
+            border-radius: 2px;
+        }
+
+        /* Special cards */
+        .key-point {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .key-point-title {
+            font-family: 'Oswald', sans-serif;
+            color: var(--gold);
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .node-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .nav-container {
+                display: none;
+            }
+        }
+
+        /* Collapsible sections */
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-header::after {
+            content: ' ▼';
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .collapsed .collapsible-header::after {
+            transform: rotate(-90deg);
+        }
+
+        .collapsed .section-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🔥 Le Risque Bâtimentaire</h1>
+        <p class="subtitle">Carte mentale complète pour Sapeurs-Pompiers — Préparation Lieutenant 1ère Classe</p>
+    </header>
+
+    <nav class="nav-container">
+        <div class="nav-links">
+            <a href="#materiaux" class="nav-link">Matériaux & Classements</a>
+            <a href="#erp-general" class="nav-link">ERP Généralités</a>
+            <a href="#ssi" class="nav-link">SSI & Alarmes</a>
+            <a href="#construction" class="nav-link">Construction ERP</a>
+            <a href="#desenfumage" class="nav-link">Désenfumage</a>
+            <a href="#moyens" class="nav-link">Moyens de Secours</a>
+            <a href="#habitations" class="nav-link">Habitations</a>
+            <a href="#igh" class="nav-link">IGH</a>
+        </div>
+    </nav>
+
+    <main class="mindmap-container">
+
+        <!-- SECTION 1: Matériaux et Classements -->
+        <section id="materiaux" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🧱</span>
+                Matériaux, Réaction et Résistance au Feu
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Réaction au Feu (Classement M)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag green">M0</span> Incombustible</li>
+                            <li class="sub-item"><span class="info-tag blue">M1</span> Non inflammable</li>
+                            <li class="sub-item"><span class="info-tag orange">M2</span> Difficilement inflammable</li>
+                            <li class="sub-item"><span class="info-tag orange">M3</span> Moyennement inflammable</li>
+                            <li class="sub-item"><span class="info-tag red">M4</span> Facilement inflammable</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Euroclasses (Pouvoir Combustible)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag green">A1</span> Incombustible (≈ M0) — pas de s et d</li>
+                            <li class="sub-item"><span class="info-tag green">A2</span> Peu combustible (≈ M0)</li>
+                            <li class="sub-item"><span class="info-tag blue">B</span> Contribution très limitée (≈ M1)</li>
+                            <li class="sub-item"><span class="info-tag orange">C</span> Contribution limitée (≈ M2)</li>
+                            <li class="sub-item"><span class="info-tag orange">D</span> Contribution acceptable (≈ M3)</li>
+                            <li class="sub-item"><span class="info-tag red">E / F</span> Contribution notable / Non classé</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Critères complémentaires</div>
+                            <p><strong>s (smoke)</strong> : Génération de fumées (s1 à s3)</p>
+                            <p><strong>d (drop)</strong> : Gouttes enflammées (d0 à d2)</p>
+                            <p><strong>FL</strong> : Revêtements de sols</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Résistance au Feu</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag gold">Coupe-feu (CF)</span> Étanche aux gaz, fumées, chaleur + isolation thermique</li>
+                            <li class="sub-item"><span class="info-tag orange">Pare-flammes (PF)</span> Étanche aux flammes et gaz chauds (E)</li>
+                            <li class="sub-item"><span class="info-tag blue">Stable au feu (SF)</span> Capacité portante maintenue (R)</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Notation Européenne</div>
+                            <p><strong>R</strong> = Résistance mécanique (capacité portante)</p>
+                            <p><strong>E</strong> = Étanchéité aux gaz et flammes</p>
+                            <p><strong>I</strong> = Isolation thermique</p>
+                            <p><strong>S</strong> = Étanchéité aux fumées</p>
+                            <p><strong>M</strong> = Résistance aux chocs</p>
+                            <p>Temps en <strong>minutes</strong> (ex: REI 120)</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Règle du 421 (Circulations Horizontales)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag red">Sol</span> M4 maximum</li>
+                            <li class="sub-item"><span class="info-tag orange">Murs</span> M2 maximum</li>
+                            <li class="sub-item"><span class="info-tag blue">Plafond</span> M1 maximum</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Couvertures de Bâtiments</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>Classe T</strong> (temps en minutes) : passage du feu à travers</li>
+                            <li class="sub-item">T5, T15, T30</li>
+                            <li class="sub-item"><strong>Indice I</strong> : vitesse de propagation</li>
+                            <li class="sub-item">I1, I2, I3</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Câbles (NFC 32-070)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">C1</span> Ne propagent pas l'incendie</li>
+                            <li class="sub-item"><span class="info-tag green">CR1</span> Résistants au feu</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Potentiel Calorifique</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">= Charge calorifique</li>
+                            <li class="sub-item">Quantité de chaleur dégagée par la combustion complète de tous les matériaux d'un local</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ERP Généralités -->
+        <section id="erp-general" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🏛️</span>
+                ERP — Généralités & Catégories
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Texte de Référence</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag gold">Arrêté du 25 juin 1980</span></li>
+                            <li class="sub-item">Dispositions générales du règlement de sécurité contre les risques d'incendie et de panique dans les ERP</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Définition ERP</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Bâtiment où des <strong>réunions sur invitation</strong> ont lieu = ERP</li>
+                            <li class="sub-item">Local associatif avec <strong>réunions payantes</strong> = ERP</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Catégories d'ERP</div>
+                        <table class="data-table">
+                            <tr>
+                                <th>Cat.</th>
+                                <th>Effectif</th>
+                                <th>Groupe</th>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag red">1ère</span></td>
+                                <td>> 1500 personnes</td>
+                                <td>1er groupe</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag orange">2ème</span></td>
+                                <td>701 à 1500</td>
+                                <td>1er groupe</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag orange">3ème</span></td>
+                                <td>301 à 700</td>
+                                <td>1er groupe</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag blue">4ème</span></td>
+                                <td>≤ 300 (sauf 5ème)</td>
+                                <td>1er groupe</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag green">5ème</span></td>
+                                <td>< seuil assujettissement</td>
+                                <td>2ème groupe</td>
+                            </tr>
+                        </table>
+                        <div class="highlight-box">
+                            <div class="label">Calcul de la catégorie</div>
+                            <p><strong>1er groupe</strong> : effectif public + personnel</p>
+                            <p>Passage en 1ère catégorie : à partir de <strong>1501 personnes</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="main-node" style="grid-column: span 2;">
+                        <div class="node-title">Types d'ERP — Liste complète</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <p style="color: var(--fire-yellow); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">Établissements installés dans un bâtiment</p>
+                                <ul class="sub-items">
+                                    <li class="sub-item"><span class="info-tag blue">J</span> Structures d'accueil pour personnes âgées ou handicapées</li>
+                                    <li class="sub-item"><span class="info-tag orange">L</span> Salles d'audition, conférences, réunions, spectacles, à usages multiples</li>
+                                    <li class="sub-item"><span class="info-tag red">M</span> Magasins de vente, centres commerciaux</li>
+                                    <li class="sub-item"><span class="info-tag orange">N</span> Restaurants, débits de boissons (cafés, bars, brasseries)</li>
+                                    <li class="sub-item"><span class="info-tag blue">O</span> Hôtels, pensions de famille</li>
+                                    <li class="sub-item"><span class="info-tag gold">P</span> Salles de danse (dancing), salles de jeux (billard, jeux électroniques), casinos</li>
+                                    <li class="sub-item"><span class="info-tag green">R</span> Établissements d'enseignement, colonies de vacances, centres de loisirs sans hébergement</li>
+                                    <li class="sub-item"><span class="info-tag blue">S</span> Bibliothèques, centres de documentation et de consultation d'archives</li>
+                                    <li class="sub-item"><span class="info-tag orange">T</span> Salles d'expositions (à vocation commerciale)</li>
+                                    <li class="sub-item"><span class="info-tag red">U</span> Établissements de soins (hôpitaux, cliniques)</li>
+                                    <li class="sub-item"><span class="info-tag gold">V</span> Établissements de culte</li>
+                                    <li class="sub-item"><span class="info-tag green">W</span> Administrations, banques, bureaux</li>
+                                    <li class="sub-item"><span class="info-tag blue">X</span> Établissements sportifs couverts</li>
+                                    <li class="sub-item"><span class="info-tag orange">Y</span> Musées</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p style="color: var(--fire-yellow); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem;">Établissements spéciaux</p>
+                                <ul class="sub-items">
+                                    <li class="sub-item"><span class="info-tag red">PA</span> Établissements de plein air</li>
+                                    <li class="sub-item"><span class="info-tag orange">CTS</span> Chapiteaux, tentes, structures itinérantes</li>
+                                    <li class="sub-item"><span class="info-tag blue">SG</span> Structures gonflables</li>
+                                    <li class="sub-item"><span class="info-tag gold">PS</span> Parcs de stationnement couverts</li>
+                                    <li class="sub-item"><span class="info-tag green">GA</span> Gares accessibles au public (ferroviaires, routières, maritimes, aériennes)</li>
+                                    <li class="sub-item"><span class="info-tag blue">OA</span> Hôtels-restaurants d'altitude</li>
+                                    <li class="sub-item"><span class="info-tag orange">EF</span> Établissements flottants (bateaux stationnaires, péniches)</li>
+                                    <li class="sub-item"><span class="info-tag red">REF</span> Refuges de montagne</li>
+                                </ul>
+                                <div class="highlight-box" style="margin-top: 1rem;">
+                                    <div class="label">MAM (Maisons d'Assistants Maternels)</div>
+                                    <p>Locaux accessibles au public en RDC → dispositions 5ème catégorie</p>
+                                </div>
+                                <div class="highlight-box" style="margin-top: 0.5rem;">
+                                    <div class="label">SSI obligatoire catégorie A</div>
+                                    <p>Types <strong>J.O.U.R</strong> (établissements avec hébergement/sommeil/soins)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Commissions de Sécurité</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>CCDSA</strong> : Présidée par le préfet</li>
+                            <li class="sub-item">Compétente pour IGH et 1ère catégorie</li>
+                            <li class="sub-item">Traite accessibilité handicapés</li>
+                            <li class="sub-item">Protection forêts contre incendie</li>
+                            <li class="sub-item">DDSIS = membre permanent</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Types de Visites</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag green">Initiale</span> Ouverture établissement</li>
+                            <li class="sub-item"><span class="info-tag blue">Périodique</span> 3 ou 5 ans selon type</li>
+                            <li class="sub-item"><span class="info-tag orange">Réception</span> Après travaux soumis à autorisation</li>
+                            <li class="sub-item"><span class="info-tag red">Inopinée</span> Demande maire/préfet, manquements graves</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Périodicité type J.O.U.R 4ème cat.</div>
+                            <p>Tous les <strong>3 ans</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Dossier Permis de Construire</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Notice descriptive (matériaux)</li>
+                            <li class="sub-item">Notice de sécurité (activité)</li>
+                            <li class="sub-item">Plans (largeurs passages)</li>
+                            <li class="sub-item">Surfaces accessibles au public</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Prévention</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">= Recherche de mesures pour <strong>empêcher un feu de se déclarer</strong></li>
+                            <li class="sub-item">Objectif : empêcher la propagation</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Mesures passives</div>
+                            <p>• Compartimentage</p>
+                            <p>• Stabilité au feu du bâtiment</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SSI et Alarmes -->
+        <section id="ssi" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🚨</span>
+                SSI, Alarmes & Détection
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Architecture du SSI</div>
+                        <div class="branch-container">
+                            <ul class="sub-items">
+                                <li class="sub-item"><strong>SSI</strong> = SDI + SMSI</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            <div class="label">SDI (Système Détection Incendie)</div>
+                            <p>• <strong>DM</strong> : Déclencheurs manuels</p>
+                            <p>• <strong>DA</strong> : Détecteurs automatiques</p>
+                            <p>• <strong>ECS</strong> : Équipement contrôle et signalisation</p>
+                        </div>
+                        <div class="highlight-box">
+                            <div class="label">SMSI (Système Mise en Sécurité Incendie)</div>
+                            <p>Fonctions : évacuation, compartimentage, désenfumage</p>
+                            <p>Composé du <strong>CMSI</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">CMSI (Centralisateur)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">US</span> Unité de Signalisation</li>
+                            <li class="sub-item"><span class="info-tag orange">UGA</span> Unité de Gestion d'Alarme</li>
+                            <li class="sub-item"><span class="info-tag gold">UCMC</span> Unité Commande Manuelle Centralisée</li>
+                            <li class="sub-item"><span class="info-tag green">UGIS</span> Unité Gestion Issues de Secours (optionnel)</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">DCT (Dispositifs Commandés Terminaux)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>DAS</strong> : Dispositifs actionnés de sécurité</li>
+                            <li class="sub-item"><strong>DS</strong> : Diffuseurs sonores</li>
+                            <li class="sub-item"><strong>BAAS</strong> : Blocs autonomes alarme sonore</li>
+                            <li class="sub-item">Ventilateurs de désenfumage</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Types d'Équipements d'Alarme</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag red">Types 1, 2a, 2b</span> Comportent une temporisation</li>
+                            <li class="sub-item"><span class="info-tag blue">Type 4</span> Tout dispositif sonore</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Types d'alarme</div>
+                            <p><strong>Alarme restreinte</strong> : Signal sonore et visuel pour le personnel pendant temporisation</p>
+                            <p><strong>Alarme générale</strong> : Audible de tous points, minimum <strong>5 minutes</strong></p>
+                            <p><strong>Alerte</strong> : Action de demander intervention des secours</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Détecteurs Automatiques</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>Optique de flammes</strong> : Cellule photosensible détectant les radiations</li>
+                            <li class="sub-item">Détecteurs de fumée</li>
+                            <li class="sub-item">Détecteurs thermiques</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">SSI Types J.O.U.R</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">SSI de <span class="info-tag red">catégorie A</span> obligatoire</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">SSIAP (Personnel Sécurité)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">SSIAP 1</span> Agent de service sécurité incendie</li>
+                            <li class="sub-item"><span class="info-tag orange">SSIAP 2</span> Chef d'équipe sécurité incendie</li>
+                            <li class="sub-item"><span class="info-tag red">SSIAP 3</span> Chef de service sécurité incendie</li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--silver);">Arrêté du 2 mai 2005</p>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">DAAF</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Obligatoires dans tous les lieux d'habitation</li>
+                            <li class="sub-item">Depuis le <span class="info-tag gold">8 mars 2015</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Code du Travail — Alarme</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Locaux > 50 personnes : alarme sonore obligatoire</li>
+                            <li class="sub-item">Locaux avec matières inflammables : alarme sonore obligatoire</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Construction ERP -->
+        <section id="construction" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🏗️</span>
+                Construction & Dégagements ERP
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Façades Accessibles</div>
+                        <table class="data-table">
+                            <tr>
+                                <th>Effectif / Catégorie</th>
+                                <th>Façades requises</th>
+                            </tr>
+                            <tr>
+                                <td>> 3500 personnes</td>
+                                <td>2 opposées ou 3 réparties</td>
+                            </tr>
+                            <tr>
+                                <td>2501 à 3500</td>
+                                <td>2 façades</td>
+                            </tr>
+                            <tr>
+                                <td>1501 à 2500</td>
+                                <td>2 façades</td>
+                            </tr>
+                            <tr>
+                                <td>2ème et 3ème cat.</td>
+                                <td>1 façade</td>
+                            </tr>
+                            <tr>
+                                <td>4ème cat.</td>
+                                <td>1 façade</td>
+                            </tr>
+                        </table>
+                        <div class="highlight-box">
+                            <div class="label">Caractéristiques façade accessible</div>
+                            <p>• Intervention à tous niveaux</p>
+                            <p>• Sortie normale au niveau d'accès</p>
+                            <p>• Baies : 10 à 20m même niveau, ≥ 4m entre niveaux</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Unité de Passage (UP)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">1 UP = <span class="info-tag gold">0,60 m</span></li>
+                            <li class="sub-item">1 UP seul = <span class="info-tag blue">0,90 m</span></li>
+                            <li class="sub-item">2 UP = <span class="info-tag orange">1,40 m</span></li>
+                            <li class="sub-item">≥ 3 UP = n × 0,60 m</li>
+                        </ul>
+                        <div class="formula-box">
+                            <div class="formula">Calcul UP</div>
+                            <div class="description">
+                                ≤ 500 pers. : centaine sup. + 1 UP<br>
+                                > 500 pers. : chiffre de la centaine
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Calcul des Dégagements</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>1-19 pers.</strong> : 1 dégagement (1 UP)</li>
+                            <li class="sub-item"><strong>20-50 pers.</strong> : 2 dégagements ou 1 + accessoire</li>
+                            <li class="sub-item"><strong>51-100 pers.</strong> : 2 × 1 UP ou 1 × 2 UP + accessoire</li>
+                            <li class="sub-item"><strong>> 100 pers.</strong> : 2 dégagements jusqu'à 500, +1 par tranche de 500</li>
+                        </ul>
+                        <div class="key-point">
+                            <div class="key-point-title">⚠️ Tout ERP = minimum 2 sorties</div>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Types de Dégagements</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag green">Normal</span> Compte dans le nombre minimal imposé</li>
+                            <li class="sub-item"><span class="info-tag blue">Accessoire</span> Imposé si normaux mal répartis</li>
+                            <li class="sub-item"><span class="info-tag orange">Supplémentaire</span> À l'initiative de l'exploitant (surnombre)</li>
+                            <li class="sub-item"><span class="info-tag gold">De secours</span> Non utilisé en permanence, sert à l'évacuation</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Distances Maximales</div>
+                        <table class="data-table">
+                            <tr>
+                                <th>Situation</th>
+                                <th>Distance</th>
+                            </tr>
+                            <tr>
+                                <td>RDC vers sortie (choix multiple)</td>
+                                <td>50 m</td>
+                            </tr>
+                            <tr>
+                                <td>RDC vers sortie (pas de choix)</td>
+                                <td>30 m</td>
+                            </tr>
+                            <tr>
+                                <td>Étage vers escalier protégé (choix)</td>
+                                <td>40 m</td>
+                            </tr>
+                            <tr>
+                                <td>Étage en cul-de-sac</td>
+                                <td>30 m</td>
+                            </tr>
+                            <tr>
+                                <td>Vers escalier non protégé</td>
+                                <td>30 m</td>
+                            </tr>
+                            <tr>
+                                <td>Débouché escalier encloisonné → sortie</td>
+                                <td>20 m</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Escaliers</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>Mains courantes</strong> :</li>
+                            <li class="sub-item">1 UP = 1 main courante</li>
+                            <li class="sub-item">≥ 2 UP = 1 de chaque côté</li>
+                            <li class="sub-item"><strong>Non protégés admis</strong> : max 1 niveau au-dessus et au-dessous du RDC</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Secteurs et Compartiments</div>
+                        <div class="highlight-box">
+                            <div class="label">Secteurs (CO 25)</div>
+                            <p>• Chaque niveau divisé selon nb d'escaliers normaux</p>
+                            <p>• Surfaces équivalentes</p>
+                            <p>• Surface max : 800 m²</p>
+                            <p>• Paroi CF 1h, porte PF 30 min</p>
+                        </div>
+                        <div class="highlight-box">
+                            <div class="label">Compartiments (CO 25)</div>
+                            <p>• Minimum 2 par niveau</p>
+                            <p>• Peut s'étendre sur 2 niveaux</p>
+                            <p>• Issue ≥ 2 UP si > 100 pers.</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Règle du C + D</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Obstacle au passage du feu entre étages par les baies</li>
+                            <li class="sub-item"><strong>C</strong> = distance verticale (haut baie → bas baie supérieure)</li>
+                            <li class="sub-item"><strong>D</strong> = distance horizontale (vitrage → balcon/auvent)</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Applicable si</div>
+                            <p>• Locaux sommeil au-dessus du 1er étage</p>
+                            <p>• Façades > 8 m de hauteur</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Isolement par rapport aux Tiers</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>Latéral (contigu)</strong> : CF 2h (3h si risques particuliers)</li>
+                            <li class="sub-item"><strong>Façades < 8m</strong> : une façade PF 1h (CF 1h si sommeil > 1er étage)</li>
+                            <li class="sub-item"><strong>Conduit traversant</strong> : CF paroi en minutes (ex: CF 2h → CF 120 min)</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Sous-sols — Majoration Effectif</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Si > 2 m profondeur et > 100 personnes</li>
+                            <li class="sub-item">Majoration 10% par mètre au-delà de 2 m (max 6)</li>
+                            <li class="sub-item">Non comptée pour catégorie ni dégagements RDC</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Portes</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">> 50 personnes : ouverture dans le sens de la sortie</li>
+                            <li class="sub-item">Portes accès escaliers : sens de la sortie</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Sprinklers (Type M)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Obligatoire à partir de <span class="info-tag red">3000 m²</span></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Désenfumage -->
+        <section id="desenfumage" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">💨</span>
+                Désenfumage
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Méthodes de Désenfumage</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">Balayage</span> Apport air neuf + évacuation fumées</li>
+                            <li class="sub-item"><span class="info-tag orange">Différence de pression</span> Volume protégé vs sinistré en dépression</li>
+                            <li class="sub-item"><span class="info-tag green">Combinaison</span> des deux méthodes</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Circulations Horizontales</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Obligatoire si longueur > <span class="info-tag red">30 m</span></li>
+                            <li class="sub-item">Également si > 40 m (selon question)</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Désenfumage Naturel (IT 246)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><strong>Parcours rectiligne</strong> : bouches tous les 10 m</li>
+                            <li class="sub-item"><strong>Parcours non rectiligne</strong> : tous les 7 m</li>
+                            <li class="sub-item">Surface : 0,10 dm² par UP</li>
+                            <li class="sub-item">Porte local ≤ 5 m d'une amenée/extraction</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Position des bouches</div>
+                            <p><strong>Amenée d'air</strong> : partie haute ≤ 1 m du plancher</p>
+                            <p><strong>Évacuation</strong> : partie basse ≥ 1,80 m du plancher</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Désenfumage Mécanique (IT 246)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">1 bouche minimum pour <span class="info-tag gold">320 m²</span></li>
+                            <li class="sub-item">Débit : 1 m³/s pour 100 m² (min 1,5 m³/s/local)</li>
+                            <li class="sub-item">1 ventilateur max pour 2 cantons</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Cantons de Désenfumage</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Surface max canton (naturel efficace) : <span class="info-tag red">1600 m²</span></li>
+                            <li class="sub-item">Pour locaux > 2000 m² ou > 60 m de longueur</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Locaux à Désenfumer</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">> 300 m² en RDC</li>
+                            <li class="sub-item">> 100 m² sans ouverture sur l'extérieur</li>
+                            <li class="sub-item">Code du travail : > 150 m² en sous-sol</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Moyens de Secours -->
+        <section id="moyens" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🧯</span>
+                Moyens de Secours & Éclairage
+            </h2>
+            <div class="section-content">
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Extincteurs (ERP)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">1 extincteur par <span class="info-tag orange">200 m²</span> environ</li>
+                            <li class="sub-item">Contenance min <span class="info-tag blue">6 litres</span> (eau)</li>
+                            <li class="sub-item">Manipulation facile</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Feux de classe F</div>
+                            <p>Extincteur : <strong>Dioxyde de carbone (CO₂)</strong></p>
+                        </div>
+                        <div class="highlight-box">
+                            <div class="label">Feux de classe B</div>
+                            <p>CO₂ / Neige carbonique / Anhydride carbonique</p>
+                            <p>Action : étouffement, inhibition, léger refroidissement</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">R.I.A. (MS 15)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">À l'intérieur du bâtiment, près des locaux à protéger</li>
+                            <li class="sub-item">Toute surface doit être efficacement atteinte</li>
+                            <li class="sub-item">Risques importants : tout point battu par 2 jets</li>
+                            <li class="sub-item">Signalés si en armoire, sans condamnation</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Colonnes Sèches</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Cheminement raccord → hydrant : <span class="info-tag red">≤ 60 m</span></li>
+                            <li class="sub-item">Conformes à norme française</li>
+                            <li class="sub-item">Pancarte indiquant escalier desservi</li>
+                            <li class="sub-item">Obligatoires si locaux risques importants > 18 m</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Colonnes Humides (MS 23-24)</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Débit : 60 m³/h, pression 4,5 à 8,5 bars</li>
+                            <li class="sub-item">Durée : temps stabilité au feu (min 1h)</li>
+                            <li class="sub-item">Réalimentation : 2 orifices 65 mm</li>
+                            <li class="sub-item">Niveau accès pompiers, < 60 m d'un hydrant</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Éclairage de Sécurité</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Assure évacuation sûre en cas de défaillance</li>
+                            <li class="sub-item"><strong>2 fonctions</strong> : évacuation et anti-panique</li>
+                            <li class="sub-item">Obligatoire ≥ 50 personnes</li>
+                            <li class="sub-item">Salles > 100 m² en sous-sol</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Éclairage d'Évacuation</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Foyers lumineux couloirs : <span class="info-tag blue">≤ 15 m</span> d'espacement</li>
+                            <li class="sub-item">Obligatoire > 50 personnes</li>
+                            <li class="sub-item">Salles > 100 m² en sous-sol</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Locaux à Risques</div>
+                        <div class="highlight-box">
+                            <div class="label">Risques moyens</div>
+                            <p>• Machinerie d'ascenseur</p>
+                            <p>• Isolés par planchers CF 1h</p>
+                        </div>
+                        <div class="highlight-box">
+                            <div class="label">Risques importants</div>
+                            <p>• Réceptacle vide-ordures</p>
+                            <p>• Parois verticales CF 2h</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Moyens de Secours ERP</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Service de sécurité incendie</li>
+                            <li class="sub-item">R.I.A.</li>
+                            <li class="sub-item">Extincteurs</li>
+                            <li class="sub-item">Colonnes sèches/humides</li>
+                            <li class="sub-item">Systèmes d'extinction automatique</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Habitations -->
+        <section id="habitations" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🏠</span>
+                Bâtiments d'Habitation
+            </h2>
+            <div class="section-content">
+                
+                <div class="key-point">
+                    <div class="key-point-title">📜 Texte de référence</div>
+                    <p><strong>Arrêté du 31 janvier 1986</strong> — Protection contre l'incendie des bâtiments d'habitation</p>
+                </div>
+
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">1ère Famille</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Individuelles isolées/jumelées ≤ R+1</li>
+                            <li class="sub-item">Individuelles RDC groupées en bande</li>
+                            <li class="sub-item">Individuelles R+1 en bande si structures indépendantes</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p><strong>SF</strong> : 15 min | <strong>CF plancher</strong> : 15 min (haut sous-sol)</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">2ème Famille</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Individuelles isolées/jumelées > R+1</li>
+                            <li class="sub-item">Individuelles R+1 en bande, structures non indépendantes</li>
+                            <li class="sub-item">Individuelles > R+1 groupées en bande</li>
+                            <li class="sub-item">Collectives ≤ R+3</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p><strong>SF</strong> : 30 min | <strong>CF plancher</strong> : 30 min</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">3ème Famille A</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Plancher bas ≤ 28 m</li>
+                            <li class="sub-item">≤ R+7</li>
+                            <li class="sub-item">Distance porte → escalier ≤ 10 m</li>
+                            <li class="sub-item">Accès escaliers par voie échelles</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p><strong>SF</strong> : 1h | <strong>CF plancher</strong> : 1h</p>
+                            <p>Colonne sèche 65 mm par escalier</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">3ème Famille B</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Plancher bas ≤ 28 m</li>
+                            <li class="sub-item">Ne répond pas aux critères 3A</li>
+                            <li class="sub-item">Accès escaliers < 50 m d'une voie engins</li>
+                            <li class="sub-item">> R+7 = colonnes sèches obligatoires</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p><strong>SF</strong> : 1h | <strong>CF plancher</strong> : 1h</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">4ème Famille</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Plancher bas > 28 m et ≤ 50 m</li>
+                            <li class="sub-item">Accès escaliers protégés < 50 m voie engins</li>
+                            <li class="sub-item">Si locaux autres qu'habitation → IGH</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p><strong>SF</strong> : 1h30 | <strong>CF plancher</strong> : 1h30</p>
+                        </div>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Colonnes Sèches Habitation</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Obligatoire dès <span class="info-tag red">> 7 étages</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Parcs de Stationnement Contigus</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">> 100 m² contigu à habitation</li>
+                            <li class="sub-item">Murs <span class="info-tag orange">CF 1h</span> si 2ème famille</li>
+                            <li class="sub-item">Communication par sas ≥ 3 m²</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Logements-Foyers</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">GMP ≤ 300 et GIR 1-2 ≤ 10% → Habitation</li>
+                            <li class="sub-item">Au-delà → ERP type J</li>
+                            <li class="sub-item">Services collectifs = ERP</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: IGH -->
+        <section id="igh" class="section">
+            <h2 class="section-title collapsible-header">
+                <span class="icon">🏢</span>
+                Immeubles de Grande Hauteur (IGH)
+            </h2>
+            <div class="section-content">
+                
+                <div class="key-point">
+                    <div class="key-point-title">📜 Textes de référence</div>
+                    <p><strong>Arrêté du 30 décembre 2011</strong> + Articles du Code de la Construction et de l'Habitation</p>
+                </div>
+
+                <div class="node-grid">
+                    
+                    <div class="main-node">
+                        <div class="node-title">Classes d'IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">GHA</span> Habitation</li>
+                            <li class="sub-item"><span class="info-tag orange">GHO</span> Hôtel</li>
+                            <li class="sub-item"><span class="info-tag green">GHW 1</span> Bureaux ≤ 50 m</li>
+                            <li class="sub-item"><span class="info-tag red">GHW 2</span> Bureaux > 50 m</li>
+                            <li class="sub-item"><span class="info-tag gold">GHZ</span> Habitation 28-50 m avec autres locaux</li>
+                            <li class="sub-item"><span class="info-tag blue">GHTC</span> Tour de contrôle</li>
+                            <li class="sub-item"><span class="info-tag red">ITGH</span> Plancher bas > 200 m</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Implantation</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">< <span class="info-tag red">3 km</span> d'un centre de secours principal</li>
+                            <li class="sub-item">≥ <span class="info-tag orange">8 m</span> des bâtiments alentour</li>
+                            <li class="sub-item">Sorties < 30 m d'une voie à double sens</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Objectifs Réglementaires</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Pas de risque pour zones contigües</li>
+                            <li class="sub-item">Continuité de vie des compartiments non sinistrés</li>
+                            <li class="sub-item">Évacuation partielle (locaux sinistrés/menacés)</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Évacuation — 3 Phases</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag green">1ère phase</span> Occupants compartiment sinistré → compartiment refuge</li>
+                            <li class="sub-item"><span class="info-tag orange">2ème phase</span> Évacuation progressive</li>
+                            <li class="sub-item"><span class="info-tag red">3ème phase</span> Évacuation générale</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">SSI en IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">SSI <span class="info-tag red">catégorie A (option IGH)</span></li>
+                            <li class="sub-item">Détecteurs dans circulations horizontales communes ET privatives</li>
+                            <li class="sub-item">Plusieurs niveaux : désenfumage au niveau détecté uniquement</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Alarme IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Détecteur → mise en sécurité compartiment <strong>sans temporisation</strong></li>
+                            <li class="sub-item">Désenfumage automatique compartiment concerné</li>
+                            <li class="sub-item">Dispositifs phoniques à tous les niveaux</li>
+                            <li class="sub-item">Hauteur ~ 1,30 m, près de chaque escalier</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Dégagements IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Circulations horizontales communes reliées à chaque niveau</li>
+                            <li class="sub-item">Accès escaliers : 10 à 30 m l'un de l'autre</li>
+                            <li class="sub-item"><strong>GHO</strong> : porte appartement → escalier ≤ 20 m</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Extincteurs IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Minimum <span class="info-tag orange">2 appareils</span> par niveau</li>
+                            <li class="sub-item">Au moins 1 pour <span class="info-tag blue">200 m²</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Sources d'Énergie</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Source de <strong>remplacement obligatoire</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Espace d'Attente Sécurisé</div>
+                        <ul class="sub-items">
+                            <li class="sub-item">Signalisation adaptée + consignes</li>
+                            <li class="sub-item">Éclairage de sécurité</li>
+                            <li class="sub-item">Liaison phonique vers SSIAP</li>
+                        </ul>
+                    </div>
+
+                    <div class="main-node">
+                        <div class="node-title">Visites de Sécurité IGH</div>
+                        <ul class="sub-items">
+                            <li class="sub-item"><span class="info-tag blue">GH A</span> : tous les 3 ans</li>
+                            <li class="sub-item"><span class="info-tag orange">GH O</span> : tous les 3 ans</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <div class="label">Avis possibles</div>
+                            <p>C (Conforme) | NC (Non conforme) | SO (Sans objet) | PM (Pour mémoire)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer style="background: var(--dark-navy); padding: 2rem; text-align: center; border-top: 3px solid var(--fire-red);">
+        <p style="color: var(--silver); font-size: 0.9rem;">
+            🔥 Carte Mentale — Le Risque Bâtimentaire | Préparation Lieutenant 1ère Classe SPP<br>
+            <span style="color: var(--fire-yellow);">Document de révision — Non contractuel</span>
+        </p>
+    </footer>
+
+    <script>
+        // Collapsible sections
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.closest('.section').classList.toggle('collapsed');
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

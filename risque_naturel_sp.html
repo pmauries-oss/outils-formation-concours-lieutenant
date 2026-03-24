@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Risque Naturel — Sapeurs-Pompiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #060c08;
+    --bg2:     #091110;
+    --surface: #0c1a10;
+    --surface2:#10201a;
+    --green:   #00e676;
+    --teal:    #1de9b6;
+    --yellow:  #ffd600;
+    --orange:  #ff6d00;
+    --red:     #ff1744;
+    --blue:    #40c4ff;
+    --brown:   #a1887f;
+    --text:    #d4edd8;
+    --muted:   #4d7a5a;
+    --border:  rgba(0,230,118,0.14);
+    --glow:    0 0 22px rgba(0,230,118,0.25);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(0,230,118,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,118,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(6,12,8,0.93); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:0 2rem; height:60px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-brand {
+    font-family:'Orbitron',monospace; font-weight:900; font-size:0.8rem;
+    color:var(--green); letter-spacing:.18em; text-transform:uppercase;
+  }
+  .nav-brand span { color:var(--yellow); }
+  .nav-links { display:flex; gap:.4rem; list-style:none; flex-wrap:wrap; }
+  .nav-links a {
+    font-family:'Share Tech Mono',monospace; font-size:.68rem;
+    color:var(--muted); text-decoration:none;
+    padding:4px 10px; border:1px solid transparent; border-radius:3px;
+    transition:all .2s; letter-spacing:.05em; text-transform:uppercase;
+  }
+  .nav-links a:hover {
+    color:var(--green); border-color:var(--border);
+    background:rgba(0,230,118,0.05);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:80px 2rem 2rem; overflow:hidden;
+  }
+  .hero-ring {
+    position:absolute; border-radius:50%; border:1px solid;
+    animation:pulse-ring 5s ease-in-out infinite;
+  }
+  .hero-ring:nth-child(1){width:280px;height:280px;border-color:rgba(0,230,118,.18);animation-delay:0s}
+  .hero-ring:nth-child(2){width:480px;height:480px;border-color:rgba(0,230,118,.11);animation-delay:.9s}
+  .hero-ring:nth-child(3){width:680px;height:680px;border-color:rgba(0,230,118,.06);animation-delay:1.8s}
+  .hero-ring:nth-child(4){width:880px;height:880px;border-color:rgba(0,230,118,.03);animation-delay:2.7s}
+  @keyframes pulse-ring {
+    0%,100%{transform:scale(1);opacity:1}
+    50%{transform:scale(1.04);opacity:.5}
+  }
+  .hero-symbol {
+    font-size:5rem; line-height:1; margin-bottom:1.5rem;
+    filter:drop-shadow(0 0 30px var(--green));
+    animation:float 4s ease-in-out infinite; position:relative; z-index:1;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  .hero-content { position:relative; z-index:1; }
+  .hero-eyebrow {
+    font-family:'Share Tech Mono',monospace; font-size:.73rem;
+    color:var(--green); letter-spacing:.4em; text-transform:uppercase;
+    margin-bottom:1rem; opacity:0; animation:fade-up .8s .2s forwards;
+  }
+  .hero-title {
+    font-family:'Orbitron',monospace; font-weight:900;
+    font-size:clamp(2rem,6vw,4.5rem); line-height:1.1;
+    color:#fff; text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:.5rem; opacity:0; animation:fade-up .8s .4s forwards;
+  }
+  .hero-title .accent { color:var(--green); }
+  .hero-subtitle {
+    font-family:'Orbitron',monospace; font-weight:400;
+    font-size:clamp(.75rem,2vw,1rem); color:var(--yellow);
+    letter-spacing:.28em; text-transform:uppercase; margin-bottom:2rem;
+    opacity:0; animation:fade-up .8s .6s forwards;
+  }
+  .hero-tags {
+    display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap;
+    opacity:0; animation:fade-up .8s .8s forwards;
+  }
+  .tag {
+    font-family:'Share Tech Mono',monospace; font-size:.68rem;
+    padding:4px 13px; border:1px solid var(--border); border-radius:20px;
+    color:var(--muted); background:rgba(0,230,118,0.03); letter-spacing:.08em;
+  }
+  @keyframes fade-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    overflow:hidden; background:rgba(0,230,118,0.05);
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    padding:8px 0; margin-bottom:4rem;
+  }
+  .ticker { display:flex; gap:3rem; animation:ticker 40s linear infinite; white-space:nowrap; }
+  .ticker-item { font-family:'Share Tech Mono',monospace; font-size:.7rem; color:var(--muted); letter-spacing:.08em; }
+  .ticker-item span { color:var(--green); }
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ── MAIN ── */
+  main {
+    position:relative; z-index:1;
+    max-width:1120px; margin:0 auto; padding:0 2rem 6rem;
+  }
+
+  section { margin-bottom:5rem; }
+
+  .section-header {
+    display:flex; align-items:center; gap:1rem;
+    margin-bottom:2rem; padding-bottom:1rem;
+    border-bottom:1px solid var(--border);
+  }
+  .section-number {
+    font-family:'Orbitron',monospace; font-size:.62rem;
+    color:var(--green); background:rgba(0,230,118,0.08);
+    border:1px solid rgba(0,230,118,0.22); padding:3px 9px;
+    border-radius:3px; letter-spacing:.15em;
+  }
+  .section-title {
+    font-family:'Orbitron',monospace; font-weight:700;
+    font-size:clamp(.95rem,2.5vw,1.35rem); color:#fff;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+
+  /* ── GRIDS ── */
+  .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem; }
+  .grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.2rem; }
+  .grid-4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; }
+
+  /* ── CARD ── */
+  .card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:1.5rem;
+    transition:all .3s; position:relative; overflow:hidden;
+  }
+  .card::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--green),transparent);
+    opacity:0; transition:opacity .3s;
+  }
+  .card:hover { border-color:rgba(0,230,118,0.35); background:var(--surface2); transform:translateY(-3px); box-shadow:var(--glow); }
+  .card:hover::before { opacity:1; }
+  .card-icon { font-size:1.9rem; margin-bottom:.7rem; }
+  .card-title {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.82rem;
+    color:var(--green); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.7rem;
+  }
+  .card p { font-size:.86rem; line-height:1.75; color:var(--text); opacity:.9; }
+  .card ul { font-size:.84rem; line-height:1.8; padding-left:1rem; opacity:.9; }
+  .card li { margin-bottom:.15rem; }
+
+  /* ── ALERT BOXES ── */
+  .alert-box {
+    border:1px solid; border-radius:8px; padding:1.1rem 1.4rem;
+    margin-bottom:1rem; display:flex; gap:1rem; align-items:flex-start;
+  }
+  .alert-icon { font-size:1.3rem; flex-shrink:0; margin-top:2px; }
+  .alert-content h4 {
+    font-family:'Orbitron',monospace; font-size:.75rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.1em; margin-bottom:.35rem;
+  }
+  .alert-content p { font-size:.83rem; line-height:1.65; }
+  .alert-danger  { border-color:rgba(255,23,68,.3);   background:rgba(255,23,68,.05); }
+  .alert-danger  .alert-content h4 { color:var(--red); }
+  .alert-warn    { border-color:rgba(255,214,0,.3);   background:rgba(255,214,0,.05); }
+  .alert-warn    .alert-content h4 { color:var(--yellow); }
+  .alert-info    { border-color:rgba(0,230,118,.22);  background:rgba(0,230,118,.04); }
+  .alert-info    .alert-content h4 { color:var(--green); }
+  .alert-blue    { border-color:rgba(64,196,255,.25); background:rgba(64,196,255,.04); }
+  .alert-blue    .alert-content h4 { color:var(--blue); }
+
+  /* ── TABLE ── */
+  .data-table { width:100%; border-collapse:collapse; font-size:.84rem; }
+  .data-table th {
+    font-family:'Orbitron',monospace; font-size:.67rem; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--green);
+    background:rgba(0,230,118,0.06); padding:.8rem 1rem; text-align:left;
+    border-bottom:1px solid var(--border);
+  }
+  .data-table td {
+    padding:.78rem 1rem; border-bottom:1px solid rgba(0,230,118,0.06);
+    vertical-align:top; line-height:1.6;
+  }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:rgba(0,230,118,0.03); }
+
+  /* ── BADGE ── */
+  .badge {
+    display:inline-block; padding:2px 9px; border-radius:3px;
+    font-family:'Share Tech Mono',monospace; font-size:.72rem; font-weight:bold;
+  }
+  .badge-green  { background:rgba(0,230,118,.15); color:var(--green); }
+  .badge-yellow { background:rgba(255,214,0,.15);  color:var(--yellow); }
+  .badge-orange { background:rgba(255,109,0,.15);  color:var(--orange); }
+  .badge-red    { background:rgba(255,23,68,.15);  color:var(--red); }
+  .badge-blue   { background:rgba(64,196,255,.15); color:var(--blue); }
+  .badge-teal   { background:rgba(29,233,182,.15); color:var(--teal); }
+
+  /* ── RICHTER VIS ── */
+  .richter-vis { display:flex; flex-direction:column; gap:.5rem; }
+  .richter-row { display:grid; grid-template-columns:40px 1fr 150px; align-items:center; gap:.8rem; }
+  .richter-deg {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:1rem;
+    text-align:center;
+  }
+  .richter-bar-wrap { height:26px; background:rgba(255,255,255,.04); border-radius:4px; overflow:hidden; }
+  .richter-bar {
+    height:100%; border-radius:4px;
+    display:flex; align-items:center; padding-left:8px;
+    font-family:'Share Tech Mono',monospace; font-size:.68rem;
+    color:rgba(0,0,0,.7); font-weight:bold;
+  }
+  .richter-label { font-size:.75rem; color:var(--muted); font-family:'Share Tech Mono',monospace; }
+
+  /* ── SISMICITE ZONES ── */
+  .zones-sismo { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .zone-sismo-row {
+    display:grid; grid-template-columns:140px 1fr;
+    border-bottom:1px solid var(--border); transition:background .2s;
+  }
+  .zone-sismo-row:last-child { border-bottom:none; }
+  .zone-sismo-row:hover { background:rgba(0,230,118,.025); }
+  .zone-sismo-label {
+    padding:1rem; display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.7rem;
+    text-transform:uppercase; letter-spacing:.08em; text-align:center;
+  }
+  .zone-sismo-content { padding:1rem; border-left:1px solid var(--border); font-size:.84rem; line-height:1.7; }
+
+  /* ── VOLCANS ── */
+  .eruption-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+  .erupt-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:1.3rem; text-align:center; transition:all .3s;
+  }
+  .erupt-card:hover { transform:translateY(-4px); box-shadow:var(--glow); }
+  .erupt-icon { font-size:2rem; margin-bottom:.6rem; }
+  .erupt-title {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.72rem;
+    color:var(--orange); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.7rem;
+  }
+  .erupt-card p { font-size:.8rem; line-height:1.6; color:#8abeaa; }
+
+  /* ── PPR ZONES ── */
+  .ppr-zones { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .ppr-row { display:grid; grid-template-columns:110px 1fr; border-bottom:1px solid var(--border); }
+  .ppr-row:last-child { border-bottom:none; }
+  .ppr-zone-label {
+    padding:1.1rem; display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.08em; text-align:center;
+  }
+  .ppr-zone-content { padding:1.1rem; border-left:1px solid var(--border); font-size:.84rem; line-height:1.7; }
+  .pz-red   { background:rgba(255,23,68,.07); }
+  .pz-red   .ppr-zone-label { color:var(--red); }
+  .pz-blue  { background:rgba(64,196,255,.05); }
+  .pz-blue  .ppr-zone-label { color:var(--blue); }
+  .pz-white { background:rgba(255,255,255,.025); }
+  .pz-white .ppr-zone-label { color:#ccc; }
+
+  /* ── BEAUFORT ── */
+  .beaufort-table { display:flex; flex-direction:column; gap:.4rem; }
+  .bft-row { display:grid; grid-template-columns:50px 100px 1fr; align-items:center; gap:.8rem; }
+  .bft-deg {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:1.1rem;
+    text-align:center;
+  }
+  .bft-bar-wrap { height:22px; background:rgba(255,255,255,.04); border-radius:3px; overflow:hidden; }
+  .bft-bar { height:100%; border-radius:3px; }
+  .bft-label { font-size:.78rem; color:var(--muted); font-family:'Share Tech Mono',monospace; }
+
+  /* ── STEPS ── */
+  .steps { display:flex; flex-direction:column; position:relative; }
+  .steps::before {
+    content:''; position:absolute; left:24px; top:30px; bottom:30px;
+    width:1px; background:linear-gradient(to bottom,var(--green),transparent);
+  }
+  .step { display:flex; gap:1.5rem; padding:1.4rem 0; border-bottom:1px solid var(--border); position:relative; }
+  .step:last-child { border-bottom:none; }
+  .step-num {
+    width:48px; height:48px; border-radius:50%; border:2px solid var(--green);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.85rem;
+    color:var(--green); flex-shrink:0; background:var(--bg2);
+    position:relative; z-index:1; transition:all .3s;
+  }
+  .step:hover .step-num { background:var(--green); color:var(--bg); box-shadow:var(--glow); }
+  .step-content h4 {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.8rem;
+    color:#fff; text-transform:uppercase; letter-spacing:.08em;
+    margin-bottom:.35rem; margin-top:.55rem;
+  }
+  .step-content p { font-size:.85rem; line-height:1.75; color:var(--text); opacity:.87; }
+
+  /* ── INONDATION TYPES ── */
+  .inond-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+  .inond-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-top:3px solid var(--blue); border-radius:8px; padding:1.3rem;
+    transition:all .3s;
+  }
+  .inond-card:hover { transform:translateY(-3px); box-shadow:0 0 20px rgba(64,196,255,.2); }
+  .inond-title {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.74rem;
+    color:var(--blue); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem;
+  }
+  .inond-card p { font-size:.82rem; line-height:1.65; color:#8abeaa; }
+
+  /* ── SAFFIR SIMPSON ── */
+  .saffir { display:grid; grid-template-columns:repeat(5,1fr); gap:.8rem; }
+  @media(max-width:700px){ .saffir { grid-template-columns:1fr 1fr; } }
+  .saffir-cat {
+    border-radius:8px; padding:1.2rem .8rem; text-align:center;
+    border:1px solid var(--border); transition:all .3s;
+  }
+  .saffir-cat:hover { transform:translateY(-4px); }
+  .saffir-num {
+    font-family:'Orbitron',monospace; font-weight:900; font-size:2.2rem;
+    line-height:1; margin-bottom:.3rem;
+  }
+  .saffir-label {
+    font-family:'Share Tech Mono',monospace; font-size:.66rem;
+    letter-spacing:.1em; text-transform:uppercase; margin-bottom:.6rem;
+  }
+  .saffir-cat p { font-size:.74rem; line-height:1.5; color:#8abeaa; }
+  .sc1 { background:rgba(0,230,118,.07);  } .sc1 .saffir-num,.sc1 .saffir-label { color:var(--green); }
+  .sc2 { background:rgba(255,214,0,.06);  } .sc2 .saffir-num,.sc2 .saffir-label { color:var(--yellow); }
+  .sc3 { background:rgba(255,109,0,.07);  } .sc3 .saffir-num,.sc3 .saffir-label { color:var(--orange); }
+  .sc4 { background:rgba(255,23,68,.07);  } .sc4 .saffir-num,.sc4 .saffir-label { color:var(--red); }
+  .sc5 { background:rgba(200,0,200,.07);  } .sc5 .saffir-num,.sc5 .saffir-label { color:#e040fb; }
+
+  /* ── AVAL TYPES ── */
+  .aval-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1rem; }
+  .aval-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:1.3rem; transition:all .3s;
+  }
+  .aval-card:hover { transform:translateY(-3px); }
+  .aval-title {
+    font-family:'Orbitron',monospace; font-weight:700; font-size:.74rem;
+    text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem;
+  }
+  .aval-card p { font-size:.82rem; line-height:1.65; color:#8abeaa; }
+  .av-plaque .aval-title  { color:#fff; }
+  .av-poudre .aval-title  { color:var(--blue); }
+  .av-humide .aval-title  { color:var(--teal); }
+
+  /* ── SCROLL FADE ── */
+  .fade-in { opacity:0; transform:translateY(28px); transition:opacity .7s,transform .7s; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    position:relative; z-index:1;
+    border-top:1px solid var(--border); padding:2rem;
+    text-align:center; color:var(--muted);
+    font-family:'Share Tech Mono',monospace; font-size:.7rem; letter-spacing:.1em;
+  }
+  footer span { color:var(--green); }
+
+  @media(max-width:768px){ .nav-links{display:none} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">🌍 <span>Risque</span> Naturel</div>
+  <ul class="nav-links">
+    <li><a href="#seisme">Sismique</a></li>
+    <li><a href="#volcan">Volcanique</a></li>
+    <li><a href="#risque-majeur">Risque majeur</a></li>
+    <li><a href="#terrain">Terrain</a></li>
+    <li><a href="#tempete">Tempête</a></li>
+    <li><a href="#inondation">Inondation</a></li>
+    <li><a href="#autres">Avalanche / Feux</a></li>
+    <li><a href="#reglementation">Réglementation</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-content">
+    <div class="hero-symbol">🌍</div>
+    <div class="hero-eyebrow">Sapeurs-Pompiers — Concours Lieutenant</div>
+    <h1 class="hero-title">Le Risque<br><span class="accent">Naturel</span></h1>
+    <div class="hero-subtitle">Séisme · Volcan · Inondation · Tempête · Terrain · Feux</div>
+    <div class="hero-tags">
+      <span class="tag">Aléa &amp; Risque majeur</span>
+      <span class="tag">DDRM / DICRIM / PCS</span>
+      <span class="tag">PPR / Loi Barnier</span>
+      <span class="tag">Météo-France / Vigicrues</span>
+      <span class="tag">ORSEC</span>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">🌍 <span>1er risque France</span> : l'inondation</span>
+    <span class="ticker-item">🏔️ Séismes : <span>Richter (magnitude)</span> — MSK (intensité)</span>
+    <span class="ticker-item">🌋 Volcans français : <span>Soufrière (Guadeloupe)</span> — Piton de la Fournaise (Réunion)</span>
+    <span class="ticker-item">🌀 Cyclones : échelle <span>Saffir-Simpson</span> — 5 catégories</span>
+    <span class="ticker-item">📋 <span>DDRM</span> → Préfet | <span>DICRIM</span> → Maire | <span>PCS</span> → Commune</span>
+    <span class="ticker-item">❄️ Avalanche de <span>plaque</span> : 80% des accidents</span>
+    <span class="ticker-item">🔥 <span>PROMETHEE</span> : base données incendies forêt méditerranéenne</span>
+    <span class="ticker-item">🌍 <span>1er risque France</span> : l'inondation</span>
+    <span class="ticker-item">🏔️ Séismes : <span>Richter (magnitude)</span> — MSK (intensité)</span>
+    <span class="ticker-item">🌋 Volcans français : <span>Soufrière (Guadeloupe)</span> — Piton de la Fournaise (Réunion)</span>
+    <span class="ticker-item">🌀 Cyclones : échelle <span>Saffir-Simpson</span> — 5 catégories</span>
+    <span class="ticker-item">📋 <span>DDRM</span> → Préfet | <span>DICRIM</span> → Maire | <span>PCS</span> → Commune</span>
+    <span class="ticker-item">❄️ Avalanche de <span>plaque</span> : 80% des accidents</span>
+    <span class="ticker-item">🔥 <span>PROMETHEE</span> : base données incendies forêt méditerranéenne</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     01 — RISQUE MAJEUR & DÉFINITIONS
+════════════════════════════════════════════ -->
+<section id="risque-majeur" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Risque Majeur — Définitions</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Aléa</div>
+      <p>Phénomène <strong>potentiellement dangereux</strong>, plus ou moins probable, d'origine naturelle ou humaine. C'est la <em>cause génératrice</em> du risque. Il est caractérisé par son intensité et sa probabilité d'occurrence.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚠️</div>
+      <div class="card-title">Risque Majeur</div>
+      <p>Combinaison d'un <strong>aléa à fréquence faible</strong> et d'une <strong>gravité très élevée</strong> (nombreuses victimes, lourds dégâts matériels, impacts forts sur l'environnement). Défini par la <strong>courbe de Farmer</strong> (3 niveaux : courant, moyen, majeur).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏘️</div>
+      <div class="card-title">Vulnérabilité &amp; Enjeux</div>
+      <p>Un <strong>enjeu</strong> est ce qui peut être affecté (personnes, biens, environnement). La <strong>vulnérabilité</strong> exprime la sensibilité d'un enjeu à l'aléa. Risque = Aléa × Enjeux × Vulnérabilité.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗂️</div>
+      <div class="card-title">3 Grandes Familles</div>
+      <p>Les risques majeurs se répartissent en <strong>3 familles</strong> : risques <strong>naturels</strong> (séisme, inondation, tempête, feux…), risques <strong>technologiques</strong> (industriel, nucléaire, TMD…), risques <strong>sanitaires</strong> (pandémie, épidémie).</p>
+    </div>
+  </div>
+
+  <div class="alert-box alert-warn">
+    <div class="alert-icon">🇫🇷</div>
+    <div class="alert-content">
+      <h4>Chiffres clés France</h4>
+      <p><strong>2 communes sur 3</strong> exposées à au moins un risque naturel. Premier risque naturel par importance des dommages : <strong>l'inondation</strong>. Ouragan Irma (2017) : 11 morts à Saint-Martin, 95 % du bâti détruit. Explosion AZF Toulouse (2001) : 31 morts, ~3 000 blessés (risque technologique).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     02 — DOCUMENTS (DDRM / DICRIM / PCS)
+════════════════════════════════════════════ -->
+<section class="fade-in">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Documents de Prévention — DDRM · DICRIM · PCS</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">🏛️</div>
+      <div class="step-content">
+        <h4>DDRM — Dossier Départemental sur les Risques Majeurs</h4>
+        <p>Rédigé par le <strong>préfet</strong> (art. R125-11 Code de l'Environnement). Recense toutes les communes à risques du département, les informations sur aléas naturels et technologiques, les mesures de prévention et de sauvegarde. Il est transmis aux maires via le <strong>TIM (Transmission d'Information au Maire)</strong>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">🏠</div>
+      <div class="step-content">
+        <h4>DICRIM — Document d'Information Communal sur les Risques Majeurs</h4>
+        <p>Réalisé par le <strong>maire</strong>. Reprend les informations transmises par le préfet. Informe les habitants de la commune sur les risques technologiques et naturels qui les concernent. <strong>Librement consultable en mairie.</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">📋</div>
+      <div class="step-content">
+        <h4>PCS — Plan Communal de Sauvegarde</h4>
+        <p>Institué par la <strong>loi MOSC du 13 août 2004</strong>. <strong>Obligatoire</strong> pour les communes soumises à un PPR approuvé ou dans le champ d'application d'un PPI, et pour les communes situées en zone de sismicité définie par voie règlementaire. Document local de l'organisation de la sécurité civile.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">📐</div>
+      <div class="step-content">
+        <h4>PPRNP — Plan de Prévention des Risques Naturels Prévisibles</h4>
+        <p>Créé par la <strong>loi Barnier (1995)</strong>. Approuvé par <strong>arrêté préfectoral</strong>, soumis à enquête publique et avis des communes. Annexé au PLU. Peut interdire toute construction. Son dossier comprend un rapport de présentation, une carte de zonage réglementaire et un règlement. Remplace les PER, Plans de Surfaces Submersibles et périmètres de risque.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="card-title">Loi Barnier (1995)</div>
+      <p>Crée le PPRNP. Instaure le <strong>principe du pollueur-payeur</strong>. Prévoit l'expropriation des biens menacés par des risques naturels majeurs mettant gravement en danger des vies humaines.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Loi Bachelot (2003)</div>
+      <p>Loi relative à la <strong>prévention des risques technologiques et naturels</strong>. Renforce les obligations d'information et crée les PPRT pour les risques technologiques.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">IAL — Info Acquéreurs &amp; Locataires</div>
+      <p>En vigueur depuis le <strong>1er juin 2006</strong>. Vendeur et bailleur d'un bien bâti doivent joindre au contrat de vente un <strong>état des risques naturels et technologiques de moins de 6 mois</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Site Géorisques</div>
+      <p>Édité par le <strong>ministère du Développement durable</strong>, conçu par le <strong>BRGM</strong>. Portail de référence pour consulter les risques naturels et technologiques par commune.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">BRGM</div>
+      <p>Bureau de Recherches Géologiques et Minières. Établissement public qui gère les ressources et risques du sol et du sous-sol. Réalise l'inventaire des cavités souterraines (<strong>BD Cavités</strong>).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Fonds Barnier (FPRNM)</div>
+      <p>Fonds de Prévention des Risques Naturels Majeurs. Alimenté par la <strong>part CatNat des primes d'assurance</strong> (habitation + véhicule). Finance indemnités d'expropriation et limitation d'accès aux biens exposés.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     03 — RISQUE SISMIQUE
+════════════════════════════════════════════ -->
+<section id="seisme" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Risque Sismique</h2>
+  </div>
+
+  <!-- Structure Terre -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Structure de la Terre (surface → centre)</h3>
+  <div class="alert-box alert-info" style="margin-bottom:1.5rem">
+    <div class="alert-icon">🌐</div>
+    <div class="alert-content">
+      <h4>Ordre des couches</h4>
+      <p><strong>Croûtes océanique &amp; continentale</strong> (lithosphère) → <strong>Manteau supérieur</strong> (asthénosphère) → <strong>Manteau inférieur</strong> → <strong>Noyau externe</strong> (&gt; 4 000 °C) → <strong>Noyau interne</strong>. Croûte océanique : 5–15 km | Croûte continentale : 30–65 km.</p>
+    </div>
+  </div>
+
+  <!-- Tectonique -->
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">↔️</div>
+      <div class="card-title">Divergence</div>
+      <p>Deux plaques s'éloignent l'une de l'autre. Exemple : <strong>plaque africaine / plaque somalienne</strong>. Crée des dorsales océaniques.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏔️</div>
+      <div class="card-title">Convergence &amp; Collision</div>
+      <p>Rapprochement de deux plaques. <strong>Cause principale des chaînes de montagne</strong> (Alpes, Himalaya). Quand une plaque s'enfonce sous l'autre : <strong>subduction</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">↕️</div>
+      <div class="card-title">Coulissage</div>
+      <p>Deux plaques glissent latéralement l'une contre l'autre. Exemple : <strong>faille de San Andreas</strong> (Californie). Source de séismes importants.</p>
+    </div>
+  </div>
+
+  <!-- Vocabulaire séisme -->
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">📍</div>
+      <div class="card-title">Foyer / Hypocentre</div>
+      <p>Région de la faille d'où partent les ondes sismiques. Situé en profondeur dans la croûte ou le manteau.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Épicentre</div>
+      <p>Point de la surface terrestre à la verticale du foyer. C'est là où <strong>l'intensité du séisme est la plus importante</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Échelles -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Échelles de Mesure</h3>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:1.5rem">
+    <table class="data-table">
+      <thead><tr><th>Échelle</th><th>Ce qu'elle mesure</th><th>Caractéristiques</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--yellow)">Richter</strong></td>
+          <td><strong>Magnitude</strong> — énergie libérée par le séisme à la source</td>
+          <td>Augmenter de 1 degré = multiplier l'énergie par <strong>30</strong>. Au-dessus de 9 : destruction sur très vaste zone.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--teal)">MSK (Mercalli modifiée)</strong></td>
+          <td><strong>Intensité</strong> — effets et dommages en un lieu donné</td>
+          <td>Fait correspondre le ressenti des secousses et les dégâts observables. En relation avec l'intensité (subjective).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Richter visualisation -->
+  <div class="card" style="margin-bottom:1.5rem">
+    <div class="card-title" style="margin-bottom:1rem">Visualisation — Échelle de Richter</div>
+    <div class="richter-vis">
+      <div class="richter-row">
+        <div class="richter-deg" style="color:var(--green)">3–4</div>
+        <div class="richter-bar-wrap"><div class="richter-bar" style="width:20%;background:var(--green)">Faible</div></div>
+        <div class="richter-label">Ressenti, peu de dégâts</div>
+      </div>
+      <div class="richter-row">
+        <div class="richter-deg" style="color:var(--teal)">4–5</div>
+        <div class="richter-bar-wrap"><div class="richter-bar" style="width:35%;background:var(--teal)">Modéré</div></div>
+        <div class="richter-label">Dommages légers</div>
+      </div>
+      <div class="richter-row">
+        <div class="richter-deg" style="color:var(--yellow)">5–6</div>
+        <div class="richter-bar-wrap"><div class="richter-bar" style="width:52%;background:var(--yellow)">Fort</div></div>
+        <div class="richter-label">Dommages importants</div>
+      </div>
+      <div class="richter-row">
+        <div class="richter-deg" style="color:var(--orange)">6–7</div>
+        <div class="richter-bar-wrap"><div class="richter-bar" style="width:70%;background:var(--orange)">Majeur</div></div>
+        <div class="richter-label">Destructions étendues</div>
+      </div>
+      <div class="richter-row">
+        <div class="richter-deg" style="color:var(--red)">≥ 8</div>
+        <div class="richter-bar-wrap"><div class="richter-bar" style="width:95%;background:var(--red)">Extrême</div></div>
+        <div class="richter-label">Destruction vaste zone</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zones sismiques France -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">5 Zones de Sismicité en France</h3>
+  <div class="zones-sismo" style="margin-bottom:1.5rem">
+    <div class="zone-sismo-row">
+      <div class="zone-sismo-label" style="color:var(--green)">Zone 1</div>
+      <div class="zone-sismo-content"><strong>Sismicité très faible</strong> — majorité du territoire. Risque quasi nul.</div>
+    </div>
+    <div class="zone-sismo-row">
+      <div class="zone-sismo-label" style="color:var(--teal)">Zone 2</div>
+      <div class="zone-sismo-content"><strong>Sismicité faible</strong> — Bretagne, partie du Massif Central.</div>
+    </div>
+    <div class="zone-sismo-row">
+      <div class="zone-sismo-label" style="color:var(--yellow)">Zone 3</div>
+      <div class="zone-sismo-content"><strong>Sismicité modérée</strong> — Alpes du Nord, Vosges, Alsace.</div>
+    </div>
+    <div class="zone-sismo-row">
+      <div class="zone-sismo-label" style="color:var(--orange)">Zone 4</div>
+      <div class="zone-sismo-content"><strong>Sismicité moyenne</strong> — Alpes du Sud, Pyrénées, Antilles.</div>
+    </div>
+    <div class="zone-sismo-row">
+      <div class="zone-sismo-label" style="color:var(--red)">Zone 5</div>
+      <div class="zone-sismo-content"><strong>Sismicité forte</strong> — Antilles (Guadeloupe, Martinique). Zone la plus exposée.</div>
+    </div>
+  </div>
+
+  <!-- Réseaux de surveillance -->
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">RESIF</div>
+      <p>Réseau Sismologique et Géodésique Français. Coordonné par l'Institut National des Sciences de l'Univers (CNRS). Contribue à l'infrastructure européenne <strong>EPOS</strong>. Étudie les aléas naturels sismiques.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">BCSF</div>
+      <p>Bureau Central Sismologique Français. Coordonne, diffuse et archive les <strong>observations sismologiques</strong> sur le territoire national.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">RéNaSS</div>
+      <p>Réseau National de Surveillance Sismique. Se base sur les enregistrements des stations de l'infrastructure <strong>EPOS France</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     04 — RISQUE VOLCANIQUE
+════════════════════════════════════════════ -->
+<section id="volcan" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Risque Volcanique</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">🌋</div>
+      <div class="card-title">Volcans Français</div>
+      <p>• <strong>Grande Soufrière</strong> — Guadeloupe (éruption en cours)<br>
+         • <strong>Piton de la Fournaise</strong> — La Réunion (effusif, très actif)<br>
+         • <strong>Montagne Pelée</strong> — Martinique (explosive)<br>
+         • <strong>Chaîne des Puys</strong> — Auvergne (endormi)</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Origine du Volcanisme</div>
+      <p>Principalement lié aux <strong>zones de divergence</strong> (dorsales) et aux <strong>zones de convergence</strong> (subduction). Le magma résulte d'une fusion partielle de roches à l'intérieur du manteau, puis s'accumule dans une <strong>chambre magmatique</strong> (manteau supérieur).</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Types d'Éruptions</h3>
+  <div class="eruption-types" style="margin-bottom:1.5rem">
+    <div class="erupt-card">
+      <div class="erupt-icon">🌊</div>
+      <div class="erupt-title">Effusive</div>
+      <p>La lave s'écoule sous forme de <strong>coulées</strong>. Les gaz s'échappent facilement. Lave fluide. Édifice en <strong>bouclier</strong>. Piton de la Fournaise.</p>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">💥</div>
+      <div class="erupt-title">Explosive</div>
+      <p>Les gaz s'échappent de <strong>manière brutale</strong>. La lave est projetée dans les airs. Lave plus visqueuse. Édifice en <strong>cône</strong>.</p>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">💧</div>
+      <div class="erupt-title">Phréatique</div>
+      <p>Libération soudaine de <strong>vapeur d'eau</strong> sans magma. Éjection de matériaux de toutes tailles.</p>
+    </div>
+    <div class="erupt-card">
+      <div class="erupt-icon">🌊💥</div>
+      <div class="erupt-title">Phréatomagmatique</div>
+      <p>Interaction eau + magma. Libération soudaine de <strong>vapeur + éjection de matériaux</strong>. Très explosive.</p>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div class="card-title" style="color:var(--red)">Nuée Ardente</div>
+      <p>Aérosol dense de <strong>gaz volcanique + cendres + blocs rocheux</strong>. Vitesses pouvant atteindre <strong>700 km/h</strong>. Températures supérieures à 300°C. Phénomène le plus meurtrier.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--orange)">
+      <div class="card-title" style="color:var(--orange)">Coulée Pyroclastique</div>
+      <p>Mélange de <strong>gaz, vapeur d'eau et particules solides</strong> provenant d'une éruption volcanique. Dévale les flancs du volcan.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--brown)">
+      <div class="card-title" style="color:var(--brown)">Lahar</div>
+      <p>Coulée torrentielle prenant la forme d'une <strong>boue très concentrée</strong> (mélange de cendres et d'eau). Peut parcourir des dizaines de km.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--teal)">
+      <div class="card-title" style="color:var(--teal)">REVOSIMA</div>
+      <p>Réseau de Surveillance Volcanologique et Sismologique de <strong>Mayotte</strong>. Surveille l'activité du volcan sous-marin découvert en 2019.</p>
+    </div>
+  </div>
+
+  <!-- Alertes ORSEC volcanique -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Niveaux d'Alerte ORSEC — Risque Volcanique</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Martinique</div>
+      <p><strong>5 niveaux</strong> : Vert → Jaune → Orange → Rouge → <strong>Gris</strong> (vigilance post-éruptive)</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Guadeloupe</div>
+      <p>La <strong>pré-alerte orange</strong> a pour objectif de <strong>préparer l'évacuation imminente</strong> des populations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     05 — MOUVEMENT DE TERRAIN
+════════════════════════════════════════════ -->
+<section id="terrain" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2 class="section-title">Risque Mouvement de Terrain</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">🐌</div>
+      <div class="card-title">Mouvements Lents &amp; Continus</div>
+      <ul>
+        <li><strong>Glissements de terrain</strong> — couches argileuses ou marneuses</li>
+        <li><strong>Gonflement-retrait des argiles</strong> — lié aux variations d'humidité</li>
+        <li><strong>Tassements et affaissements</strong> de sols</li>
+        <li><strong>Reptation</strong> — manteau neigeux (quelques mm/jour)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Mouvements Rapides &amp; Discontinus</div>
+      <ul>
+        <li><strong>Effondrements</strong> — cavités souterraines</li>
+        <li><strong>Coulées boueuses</strong> — argiles saturées en eau</li>
+        <li><strong>Éboulements / chutes de blocs</strong></li>
+        <li><strong>Laves torrentielles</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">Gonflement-Retrait Argiles</div>
+      <p>Les sols argileux <strong>fixent l'eau</strong> (gonflement) puis la perdent (retrait). Provoque des fissures dans les bâtiments. Lié aux épisodes de sécheresse. Risque majeur pour le bâti individuel.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Marnières</div>
+      <p>Cavités souterraines <strong>creusées par l'homme</strong> pour extraire de la marne. Risques d'effondrements localisés (sinkhole). Recensées dans la BD Cavités du BRGM.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Suffosion</div>
+      <p>Phénomène d'<strong>érosion interne</strong> affectant principalement les sables et les limons. L'eau entraîne des particules fines, créant des vides souterrains.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Parades contre les Instabilités</h3>
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card" style="border-top:3px solid var(--red)">
+      <div class="card-title" style="color:var(--red)">Parades Actives (agissent sur le phénomène)</div>
+      <ul>
+        <li>Injection de béton (consolidation)</li>
+        <li>Élimination de pierres (purge)</li>
+        <li>Drainage des eaux</li>
+        <li>Ancrage par tirants</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div class="card-title" style="color:var(--blue)">Parades Passives (protègent contre les effets)</div>
+      <ul>
+        <li>Pose de grillages ou filets perdus</li>
+        <li>Création de fossés de réception</li>
+        <li>Mise en place de merlons</li>
+        <li>Éloignement du bâti</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">CENARIS</div>
+      <p>Centre National de Surveillance des Risques du Sol et du Sous-Sol. Infrastructure de l'<strong>INERIS</strong>, hébergée par Mines Nancy, créé en 2006. Centre d'<strong>expertise, de recherche et d'alerte</strong>. Compétent pour surveiller les <strong>barrages et digues</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Terme "Amortissement"</div>
+      <p>Face à des mouvements de terrain déclarés, l'amortissement désigne le fait que la <strong>déformation diminue</strong> progressivement au fil du temps.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     06 — DOCUMENTS D'URBANISME
+════════════════════════════════════════════ -->
+<section class="fade-in">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2 class="section-title">Documents d'Urbanisme</h2>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">PLU — Plan Local d'Urbanisme</div>
+      <p>Remplace le <strong>Plan d'Occupation des Sols (POS)</strong>. Définit le projet global d'aménagement de la commune. Zones graphiques : <strong>U</strong> (urbaine), <strong>AU</strong> (à urbaniser), <strong>N</strong> (naturelle/forestière). Composé de 5 documents dont le <strong>PAS</strong> (Projet d'Aménagement Stratégique).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">SCoT — Schéma de Cohérence Territoriale</div>
+      <p>Outil de <strong>planification stratégique intercommunale</strong>. Se compose de : rapport de présentation + PADD (Projet d'Aménagement et de Développement Durables). Niveau intermédiaire entre SRADDET et PLU.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">SRADDET</div>
+      <p>Schéma Régional d'Aménagement, de Développement Durable et d'Égalité des Territoires. Issu de la <strong>loi NOTRe</strong>. Précise la stratégie régionale. Intègre le <strong>SRCE</strong> (Schéma Régional de Cohérence Écologique).</p>
+    </div>
+  </div>
+
+  <div class="alert-box alert-info">
+    <div class="alert-icon">⚖️</div>
+    <div class="alert-content">
+      <h4>Hiérarchie des normes — Documents d'urbanisme</h4>
+      <p>Loi nationale (ex : loi Littoral) → <strong>PPR</strong> → <strong>SRADDET</strong> → <strong>SCoT</strong> → <strong>PLU</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     07 — RISQUE TEMPÊTE & CYCLONE
+════════════════════════════════════════════ -->
+<section id="tempete" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2 class="section-title">Risque Tempête &amp; Cyclone</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">🌬️</div>
+      <div class="card-title">Pression Atmosphérique</div>
+      <p>Varie de <strong>950 à 1 050 hectopascals</strong>. Plus l'air est chaud, plus il peut contenir de vapeur d'eau. La tempête est caractérisée par des <strong>vents moyens ≥ 89 km/h</strong> (degré 10 sur l'échelle de Beaufort).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌀</div>
+      <div class="card-title">Fronts Météorologiques</div>
+      <ul>
+        <li><strong>Frontogenèse</strong> : processus par lequel un front prend naissance ou s'intensifie</li>
+        <li><strong>Frontolyse</strong> : processus par lequel un front s'affaiblit ou disparaît</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Beaufort simplifié -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Échelle de Beaufort — 13 degrés (vitesse moyenne sur 10 min)</h3>
+  <div class="card" style="margin-bottom:1.5rem">
+    <div class="beaufort-table">
+      <div class="bft-row"><div class="bft-deg" style="color:var(--green)">0</div><div class="bft-bar-wrap"><div class="bft-bar" style="width:5%;background:var(--green)"></div></div><div class="bft-label">Calme — &lt; 1 km/h</div></div>
+      <div class="bft-row"><div class="bft-deg" style="color:var(--teal)">6</div><div class="bft-bar-wrap"><div class="bft-bar" style="width:42%;background:var(--teal)"></div></div><div class="bft-label">Vent frais — 39–49 km/h</div></div>
+      <div class="bft-row"><div class="bft-deg" style="color:var(--yellow)">8</div><div class="bft-bar-wrap"><div class="bft-bar" style="width:62%;background:var(--yellow)"></div></div><div class="bft-label">Coup de vent — 62–74 km/h</div></div>
+      <div class="bft-row"><div class="bft-deg" style="color:var(--orange)">10</div><div class="bft-bar-wrap"><div class="bft-bar" style="width:80%;background:var(--orange)"></div></div><div class="bft-label">Tempête — 89–102 km/h ⚡</div></div>
+      <div class="bft-row"><div class="bft-deg" style="color:var(--red)">12</div><div class="bft-bar-wrap"><div class="bft-bar" style="width:100%;background:var(--red)"></div></div><div class="bft-label">Ouragan — ≥ 118 km/h</div></div>
+    </div>
+  </div>
+
+  <!-- Cyclone -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Formation &amp; Caractéristiques des Cyclones</h3>
+  <div class="alert-box alert-blue" style="margin-bottom:1.5rem">
+    <div class="alert-icon">🌊</div>
+    <div class="alert-content">
+      <h4>Conditions de formation</h4>
+      <p>Température océan &gt; <strong>26°C</strong> sur les 60 premiers mètres · Taux d'humidité élevé · <strong>Force de Coriolis</strong> importante (régions tropicales) · Chute importante de la pression atmosphérique. Se déplace lentement : <strong>10 à 40 km/h</strong>. L'œil est entouré de cumulonimbus avec vents pouvant atteindre <strong>350 km/h</strong>. Tourne dans le sens des aiguilles d'une montre dans l'<strong>hémisphère sud</strong>.</p>
+    </div>
+  </div>
+
+  <div class="alert-box alert-warn" style="margin-bottom:1.5rem">
+    <div class="alert-icon">⚡</div>
+    <div class="alert-content">
+      <h4>Seuils de classification</h4>
+      <p>Vents &gt; <strong>63 km/h</strong> : Tempête tropicale · Vents &gt; <strong>118 km/h</strong> : Cyclone tropical · Échelle de mesure : <strong>Saffir-Simpson</strong> (5 catégories)</p>
+    </div>
+  </div>
+
+  <!-- Saffir Simpson -->
+  <div class="saffir" style="margin-bottom:1.5rem">
+    <div class="saffir-cat sc1">
+      <div class="saffir-num">1</div>
+      <div class="saffir-label">Faible</div>
+      <p>119–153 km/h. Dégâts mineurs.</p>
+    </div>
+    <div class="saffir-cat sc2">
+      <div class="saffir-num">2</div>
+      <div class="saffir-label">Modéré</div>
+      <p>154–177 km/h. Dégâts importants.</p>
+    </div>
+    <div class="saffir-cat sc3">
+      <div class="saffir-num">3</div>
+      <div class="saffir-label">Étendu</div>
+      <p>178–208 km/h. Dégâts considérables.</p>
+    </div>
+    <div class="saffir-cat sc4">
+      <div class="saffir-num">4</div>
+      <div class="saffir-label">Extrême</div>
+      <p>209–251 km/h. Dégâts catastrophiques.</p>
+    </div>
+    <div class="saffir-cat sc5">
+      <div class="saffir-num">5</div>
+      <div class="saffir-label">Catastrophique</div>
+      <p><strong>&gt; 250 km/h</strong>. Destructions totales.</p>
+    </div>
+  </div>
+
+  <!-- ORSEC cyclone -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Dispositif ORSEC Cyclones</div>
+      <p>Dispositif <strong>spécifique</strong>, préparé et activé par le <strong>préfet</strong>. L'<strong>alerte violette cyclonique</strong> indique que des vents vont dépasser les <strong>200 km/h en rafales</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Veille Cyclonique</div>
+      <p>L'<strong>OMM</strong> (Organisation Météorologique Mondiale) a mis en place une veille mondiale. Centre météorologique régional spécialisé : <strong>Météo France de Saint-Denis (La Réunion)</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     08 — RISQUE INONDATION
+════════════════════════════════════════════ -->
+<section id="inondation" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">08</span>
+    <h2 class="section-title">Risque Inondation — 1er risque en France</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-icon">🏞️</div>
+      <div class="card-title">Lits des Cours d'Eau</div>
+      <p>• <strong>Lit mineur</strong> : espace occupé <em>en permanence</em> par la rivière.<br>
+         • <strong>Lit majeur</strong> : espace occupé lors d'une inondation.<br>
+         • <strong>Crue centennale</strong> : 1 chance sur 100 de se produire chaque année.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌊</div>
+      <div class="card-title">Vocabulaire</div>
+      <p>• <strong>Embâcle</strong> : accumulation de matériaux transportés par les flots.<br>
+         • <strong>Mitigation</strong> (du latin <em>mitigare</em> = adoucir) : mise en œuvre de mesures destinées à réduire les dommages associés aux risques.<br>
+         • <strong>GEMAPI</strong> : compétence de gestion des milieux aquatiques et prévention des inondations.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">Types d'Inondations</h3>
+  <div class="inond-grid" style="margin-bottom:1.5rem">
+    <div class="inond-card">
+      <div class="inond-title">Par débordement</div>
+      <p>Le cours d'eau sort de son lit mineur et envahit le lit majeur. Inondation <strong>lente</strong> pour les grandes plaines.</p>
+    </div>
+    <div class="inond-card">
+      <div class="inond-title">Par ruissellement</div>
+      <p>Pluies exceptionnelles quand la <strong>capacité d'infiltration ou d'évacuation est insuffisante</strong>. Peut être très rapide.</p>
+    </div>
+    <div class="inond-card">
+      <div class="inond-title">Par remontée de nappe</div>
+      <p>Inondation dite <strong>"lente"</strong>. La nappe phréatique monte jusqu'à la surface. Zones à faible profondeur de nappe.</p>
+    </div>
+    <div class="inond-card">
+      <div class="inond-title">Par rupture d'ouvrage</div>
+      <p>Rupture de digue ou de barrage. Inondation <strong>soudaine et très violente</strong>. Risque majeur en aval.</p>
+    </div>
+  </div>
+
+  <!-- Acteurs inondation -->
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">SCHAPI</div>
+      <p>Service Central d'Hydrométéorologie et d'Appui à la Prévision des Inondations. Produit et diffuse la <strong>vigilance crue</strong> (vigicrues). Valide et publie la carte avec les SPC.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Vigicrues</div>
+      <p><strong>4 niveaux</strong> : vert (pas de vigilance) → jaune → orange → rouge. À défaut de vigilance, le cours d'eau apparaît en <strong>vert</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">PAPI</div>
+      <p>Programme d'Action de Prévention des Inondations. La version <strong>PAPI 3</strong> marque l'entrée en vigueur de la compétence <strong>GEMAPI</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">TRI</div>
+      <p><strong>Territoires à Risque Important d'Inondation</strong>. Document représentant les emprises inondables dans des zones à enjeux majeurs.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">EPRI</div>
+      <p><strong>Évaluation Préliminaire des Risques d'Inondation</strong>. Permet d'estimer les personnes et les biens exposés au risque inondation.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">OFB</div>
+      <p><strong>Office Français de la Biodiversité</strong>. Remplace l'AFB et l'ONEMA. Dispose d'un conseil d'administration. Exerce les polices administrative et judiciaire relative à l'<strong>eau</strong>.</p>
+    </div>
+  </div>
+
+  <!-- GEMAPI missions -->
+  <div class="alert-box alert-blue">
+    <div class="alert-icon">🏗️</div>
+    <div class="alert-content">
+      <h4>Missions GEMAPI — Intercommunalités</h4>
+      <p>Aménager les <strong>bassins versants</strong> · Entretenir et aménager les <strong>cours d'eau</strong> · Assurer la protection et restauration des <strong>zones humides</strong> · Surveiller, entretenir et réhabiliter les <strong>digues</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     09 — AVALANCHE & FEU DE FORÊT
+════════════════════════════════════════════ -->
+<section id="autres" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">09</span>
+    <h2 class="section-title">Risques Avalanche &amp; Feu de Forêt</h2>
+  </div>
+
+  <!-- AVALANCHE -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">❄️ Risque Avalanche</h3>
+
+  <div class="alert-box alert-blue" style="margin-bottom:1.5rem">
+    <div class="alert-icon">📊</div>
+    <div class="alert-content">
+      <h4>Points clés</h4>
+      <p>Les avalanches sont les catastrophes naturelles les <strong>moins meurtrières</strong> dans le monde. <strong>95 % des cas</strong> correspondent à un risque individuel. Avalanche de <strong>plaque</strong> : cause 80 % des accidents.</p>
+    </div>
+  </div>
+
+  <div class="aval-grid" style="margin-bottom:1.5rem">
+    <div class="aval-card av-plaque" style="border-top:3px solid #fff">
+      <div class="aval-title">Avalanche de Plaque ⭐</div>
+      <p>Le plus souvent formée sous l'<strong>action du vent</strong>. Constituée de <strong>neige compacte</strong>. Provoque <strong>80 % des accidents</strong>. Plaque sous le vent : mal ancrée à la sous-couche → très dangereuse. Plaque au vent : compressée → non dangereuse.</p>
+    </div>
+    <div class="aval-card av-poudre" style="border-top:3px solid var(--blue)">
+      <div class="aval-title">Avalanche de Poudreuse</div>
+      <p>Constituée de <strong>particules de neige et de glace en suspension</strong> dans l'air. Forme un nuage pouvant atteindre <strong>50 à 100 m de haut</strong>.</p>
+    </div>
+    <div class="aval-card av-humide" style="border-top:3px solid var(--teal)">
+      <div class="aval-title">Avalanche de Neige Humide</div>
+      <p>Se produit lors d'un <strong>redoux important</strong>, due à la présence d'eau liquide liée à la <strong>fonte du manteau neigeux</strong>. Plus lente mais très destructrice.</p>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">Reptation</div>
+      <p>Sous l'effet de la gravité, le manteau neigeux progresse vers le bas de <strong>quelques millimètres par jour</strong>. Mouvement lent et continu.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Fluage</div>
+      <p>Les <strong>couches supérieures glissent plus vite</strong> que les couches du fond. Différentiel de vitesse entre strates.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Bulletins Avalanche</div>
+      <p>Élaborés par <strong>Météo France</strong>. Disponibles chaque jour à <strong>16h</strong>. Grenoble (bulletin Alpes), Tarbes (bulletin Pyrénées). Échelle européenne : <strong>5 niveaux</strong>.</p>
+    </div>
+  </div>
+
+  <!-- PPR avalanche zones -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.78rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;">Zones PPR Avalanche</h3>
+  <div class="ppr-zones" style="margin-bottom:2rem">
+    <div class="ppr-row pz-red">
+      <div class="ppr-zone-label">Zone Rouge</div>
+      <div class="ppr-zone-content"><strong>Inconstructible</strong> — zone directement exposée. Aucune construction autorisée.</div>
+    </div>
+    <div class="ppr-row pz-blue">
+      <div class="ppr-zone-label">Zone Bleue</div>
+      <div class="ppr-zone-content">Construction possible sous <strong>conditions et prescriptions</strong> particulières de construction.</div>
+    </div>
+    <div class="ppr-row pz-white">
+      <div class="ppr-zone-label">Zone Blanche</div>
+      <div class="ppr-zone-content">Zone non soumise à risque réglementaire. Construction autorisée sans prescription spécifique.</div>
+    </div>
+  </div>
+
+  <!-- FEU DE FORÊT -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.82rem;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">🔥 Feu de Forêt</h3>
+
+  <div class="alert-box alert-warn" style="margin-bottom:1.5rem">
+    <div class="alert-icon">📊</div>
+    <div class="alert-content">
+      <h4>Chiffres clés</h4>
+      <p>Le territoire métropolitain français compte environ <strong>17 millions d'hectares</strong> de forêt. Base de données officielle pour les incendies en zone méditerranéenne : <strong>PROMETHEE</strong>.</p>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div class="card-title">Maquis (sols siliceux)</div>
+      <p>Formation végétale basse, <strong>fermée et dense</strong>. D'inflammabilité moyenne, elle <strong>transmet rapidement le feu aux strates supérieures</strong>.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--teal)">
+      <div class="card-title">Garrigue (sols calcaires)</div>
+      <p>Formation végétale basse, mais plutôt <strong>ouverte</strong>. Pousse sur des sols calcaires ou des landes.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Orbitron',monospace;font-size:.78rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;">Strates Végétales</h3>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:1.5rem">
+    <table class="data-table">
+      <thead><tr><th>Strate</th><th>Description</th><th>Rôle dans l'incendie</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--green)">Herbacée</strong></td>
+          <td>Graminées, herbes hautes</td>
+          <td>Propagation rapide au sol, allumage facile</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--teal)">Ligneux bas</strong></td>
+          <td>Maquis, garrigue, broussailles &lt; 2 m</td>
+          <td><strong>Échelle vers les strates supérieures</strong>. Inflammabilité variable.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--orange)">Ligneux hauts</strong></td>
+          <td>Arbres, forêt</td>
+          <td>Feux de cimes. Propagation aérienne.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">Essences Pyrophiles (favorisent les feux)</div>
+      <p>• <strong>Pin Sylvestre</strong><br>• <strong>Arbousier</strong><br>• Pin Maritime, Eucalyptus</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Essences Pyrorésistantes (résistent aux feux)</div>
+      <p>• <strong>Bruyères arborescentes</strong><br>• <strong>Châtaignier</strong><br>• <strong>Pin d'Alep</strong></p>
+    </div>
+  </div>
+
+  <div class="alert-box alert-info" style="margin-bottom:1.5rem">
+    <div class="alert-icon">⛰️</div>
+    <div class="alert-content">
+      <h4>Relief &amp; propagation du feu</h4>
+      <p>Sur une pente, le feu accélère en montant. <strong>Passée la crête</strong> : le vent se calme, les flammes se redressent, et le feu devient <strong>descendant</strong> → propagation ralentie.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ONF — Office National des Forêts</div>
+    <p>Assure la <strong>Défense de la Forêt contre l'Incendie (DFCi)</strong>. Protège le <strong>littoral</strong>. Restaure des <strong>terrains en montagne</strong>. Participe à la gestion durable des forêts publiques.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     10 — RÉGLEMENTATION & ACTEURS
+════════════════════════════════════════════ -->
+<section id="reglementation" class="fade-in">
+  <div class="section-header">
+    <span class="section-number">10</span>
+    <h2 class="section-title">Réglementation &amp; Acteurs</h2>
+  </div>
+
+  <!-- Météo France -->
+  <h3 style="font-family:'Orbitron',monospace;font-size:.8rem;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">🌦️ Météo-France &amp; Vigilance</h3>
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">Carte de Vigilance</div>
+      <p><strong>4 niveaux</strong> (vert, jaune, orange, rouge). Actualisée <strong>2 fois par jour</strong> (6h et 16h). <strong>9 types</strong> de vigilance dont canicule, vagues-submersion. Validée par le <strong>Centre National de Prévision (CNP)</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Vigilance Cyclone</div>
+      <p>Peut comporter jusqu'à <strong>6 niveaux</strong> de vigilance spécifiques aux départements d'outre-mer exposés.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Canicule</div>
+      <p>En cas de vigilance canicule, Météo-France contacte l'<strong>Agence Nationale de Santé Publique</strong> pour connaître l'effet des températures attendues sur la santé.</p>
+    </div>
+  </div>
+
+  <!-- Organismes -->
+  <div class="grid-3" style="margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-title">Institut des Risques Majeurs</div>
+      <p>Association <strong>loi 1901</strong>. Situé à <strong>Grenoble</strong>, créé en <strong>1988</strong> à l'initiative d'<strong>Haroun Tazieff</strong>. Contribue à l'information préventive des populations sur les risques majeurs.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">ONRN</div>
+      <p>Observatoire National des Risques Naturels. Intégré au <strong>COPRNM</strong>. La <strong>Caisse Centrale de Réassurance</strong> est membre de son comité. Produit des indicateurs sur les phénomènes naturels et la prévention.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">COPRNM</div>
+      <p>Conseil d'Orientation pour la Prévention des Risques Naturels Majeurs. Émet des avis sur les politiques de réduction de vulnérabilité. L'État le consulte pour l'<strong>évaluation des risques d'inondation</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">CRED</div>
+      <p>Centre de Recherche sur l'<strong>Épidémiologie des Désastres</strong>. Critères de définition d'une catastrophe : nombre de <strong>morts</strong> + coût des <strong>dommages</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">ERCC</div>
+      <p>Centre européen de coordination de la <strong>réaction d'urgence</strong>. Assure une permanence en matière de protection civile au niveau européen.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Radon</div>
+      <p>Gaz radioactif naturel, <strong>inodore et incolore</strong>. Issu de la désintégration de l'uranium et du radium. Principal risque : <strong>inhalation</strong> dans les habitations (sous-sols granitiques).</p>
+    </div>
+  </div>
+
+  <!-- Gravité -->
+  <div class="alert-box alert-info" style="margin-bottom:1rem">
+    <div class="alert-icon">📊</div>
+    <div class="alert-content">
+      <h4>Échelle de Gravité des Dommages (risques naturels)</h4>
+      <p><strong>6 classes</strong> de 0 à 5. Comprend des indications sur les dommages <strong>humains</strong> et les dommages <strong>matériels</strong>.</p>
+    </div>
+  </div>
+
+  <div class="alert-box alert-warn">
+    <div class="alert-icon">🌪️</div>
+    <div class="alert-content">
+      <h4>Tornades — Échelle de FUJITA</h4>
+      <p>Échelle servant à classer les tornades par ordre de gravité, en fonction des dégâts qu'elles occasionnent. Ne pas confondre avec l'échelle de <strong>Saffir-Simpson</strong> (cyclones) ni l'échelle de <strong>Beaufort</strong> (vents).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ★ MÉMO CONCOURS
+════════════════════════════════════════════ -->
+<section class="fade-in">
+  <div class="section-header">
+    <span class="section-number">★</span>
+    <h2 class="section-title">Mémo Concours — Points Clés à Maîtriser</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="alert-box alert-warn" style="margin-bottom:0">
+      <div class="alert-icon">🎯</div>
+      <div class="alert-content">
+        <h4>Pièges fréquents en QCM</h4>
+        <p>
+          • Richter = <strong>magnitude</strong> (énergie) ≠ MSK = <strong>intensité</strong> (effets)<br>
+          • Séismes les plus dévastateurs : <strong>tectoniques</strong><br>
+          • 5 zones de sismicité en France<br>
+          • DDRM → <strong>Préfet</strong> | DICRIM → <strong>Maire</strong><br>
+          • PPR : approuvé = <strong>arrêté préfectoral</strong> + enquête publique + annexé au PLU<br>
+          • PPR approuvé = <strong>servitude d'utilité publique</strong><br>
+          • Maquis = sol <strong>siliceux</strong> | Garrigue = sol <strong>calcaire</strong>
+        </p>
+      </div>
+    </div>
+    <div class="alert-box alert-info" style="margin-bottom:0">
+      <div class="alert-icon">📌</div>
+      <div class="alert-content">
+        <h4>Acronymes indispensables</h4>
+        <p>
+          • <strong>DDRM</strong> : Dossier Départemental sur les Risques Majeurs<br>
+          • <strong>DICRIM</strong> : Document d'Information Communal sur les Risques Majeurs<br>
+          • <strong>PPRNP</strong> : Plan de Prévention des Risques Naturels Prévisibles<br>
+          • <strong>SCHAPI</strong> : Service Central d'Hydrométéorologie et d'Appui à la Prévision des Inondations<br>
+          • <strong>PAPI</strong> : Programme d'Action de Prévention des Inondations<br>
+          • <strong>TRI</strong> : Territoire à Risque Important d'Inondation<br>
+          • <strong>BRGM</strong> / <strong>CENARIS</strong> / <strong>INERIS</strong> / <strong>ONF</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>🌍 RISQUE NATUREL</span> — Outil de préparation concours Sapeurs-Pompiers<br>
+  <span style="color:var(--muted);font-size:.63rem;margin-top:.4rem;display:block;">Contenu à vocation pédagogique — Se référer aux textes officiels en vigueur</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

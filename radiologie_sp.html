@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Risque Radiologique — Sapeurs-Pompiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a12;
+    --bg2: #080f1a;
+    --surface: #0c1624;
+    --surface2: #111e30;
+    --cyan: #00e5ff;
+    --cyan2: #00bcd4;
+    --yellow: #ffea00;
+    --orange: #ff6d00;
+    --red: #ff1744;
+    --green: #00e676;
+    --text: #cfe8f5;
+    --muted: #5a7a96;
+    --border: rgba(0,229,255,0.15);
+    --glow: 0 0 20px rgba(0,229,255,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,10,18,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: var(--cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .nav-brand span { color: var(--yellow); }
+
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .nav-links a:hover {
+    color: var(--cyan);
+    border-color: var(--border);
+    background: rgba(0,229,255,0.05);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 2rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+
+  .hero-ring:nth-child(1) {
+    width: 300px; height: 300px;
+    border-color: rgba(0,229,255,0.15);
+    animation-delay: 0s;
+  }
+  .hero-ring:nth-child(2) {
+    width: 500px; height: 500px;
+    border-color: rgba(0,229,255,0.1);
+    animation-delay: 0.8s;
+  }
+  .hero-ring:nth-child(3) {
+    width: 700px; height: 700px;
+    border-color: rgba(0,229,255,0.06);
+    animation-delay: 1.6s;
+  }
+  .hero-ring:nth-child(4) {
+    width: 900px; height: 900px;
+    border-color: rgba(0,229,255,0.03);
+    animation-delay: 2.4s;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.5; }
+  }
+
+  .hero-symbol {
+    font-size: 5rem;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 30px var(--cyan));
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.4s forwards;
+  }
+
+  .hero-title .accent { color: var(--cyan); }
+
+  .hero-subtitle {
+    font-family: 'Orbitron', monospace;
+    font-weight: 400;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    color: var(--yellow);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.6s forwards;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fade-up 0.8s 0.8s forwards;
+  }
+
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    background: rgba(0,229,255,0.03);
+    letter-spacing: 0.1em;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MAIN CONTENT */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    color: var(--cyan);
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.15em;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #fff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  section { margin-bottom: 5rem; }
+
+  /* CARDS GRID */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    border-color: rgba(0,229,255,0.35);
+    background: var(--surface2);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .card-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* RADIATION TYPES */
+  .rad-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+
+  .rad-card {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rad-card:hover { transform: translateY(-4px); }
+
+  .rad-letter {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .rad-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .rad-card p { font-size: 0.82rem; line-height: 1.6; color: #8aafca; }
+
+  .rad-alpha { border-top: 3px solid var(--yellow); }
+  .rad-alpha .rad-letter, .rad-alpha .rad-name { color: var(--yellow); }
+
+  .rad-beta { border-top: 3px solid var(--orange); }
+  .rad-beta .rad-letter, .rad-beta .rad-name { color: var(--orange); }
+
+  .rad-gamma { border-top: 3px solid var(--cyan); }
+  .rad-gamma .rad-letter, .rad-gamma .rad-name { color: var(--cyan); }
+
+  .rad-neutron { border-top: 3px solid var(--red); }
+  .rad-neutron .rad-letter, .rad-neutron .rad-name { color: var(--red); }
+
+  /* PENETRATION TABLE */
+  .penetration-vis {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow-x: auto;
+  }
+
+  .pen-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 200px;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .pen-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .pen-bar-wrap { position: relative; height: 28px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; }
+
+  .pen-bar {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(0,0,0,0.7);
+    font-weight: bold;
+    transition: width 1.5s ease;
+  }
+
+  .pen-protection {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* UNITS TABLE */
+  .units-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+
+  .units-table th {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    background: rgba(0,229,255,0.06);
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .units-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(0,229,255,0.06);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .units-table tr:last-child td { border-bottom: none; }
+  .units-table tr:hover td { background: rgba(0,229,255,0.03); }
+
+  .unit-name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--yellow);
+  }
+
+  .unit-symbol {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--cyan);
+    font-size: 0.9rem;
+  }
+
+  /* ZONES CONTAMINATION */
+  .zones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .zone-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .zone-row:last-child { border-bottom: none; }
+  .zone-row:hover { background: rgba(0,229,255,0.03); }
+
+  .zone-label {
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .zone-content {
+    padding: 1.2rem;
+    border-left: 1px solid var(--border);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+
+  .zone-content strong {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .zone-exc { background: rgba(255,23,68,0.08); }
+  .zone-exc .zone-label { color: var(--red); border-right-color: rgba(255,23,68,0.3); }
+  .zone-exc .zone-content strong { color: var(--red); }
+
+  .zone-con { background: rgba(255,109,0,0.08); }
+  .zone-con .zone-label { color: var(--orange); }
+  .zone-con .zone-content strong { color: var(--orange); }
+
+  .zone-sup { background: rgba(255,234,0,0.06); }
+  .zone-sup .zone-label { color: var(--yellow); }
+  .zone-sup .zone-content strong { color: var(--yellow); }
+
+  .zone-acc { background: rgba(0,230,118,0.06); }
+  .zone-acc .zone-label { color: var(--green); }
+  .zone-acc .zone-content strong { color: var(--green); }
+
+  /* EPI */
+  .epi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+
+  .epi-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .epi-item:hover {
+    border-color: rgba(0,229,255,0.3);
+    box-shadow: var(--glow);
+  }
+
+  .epi-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+
+  .epi-name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .epi-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* PRINCIPES */
+  .principes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) { .principes { grid-template-columns: 1fr; } }
+
+  .principe-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .principe-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    transition: opacity 0.3s;
+    opacity: 0;
+  }
+
+  .principe-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .principe-card:hover::after { opacity: 1; }
+
+  .p1::after { background: var(--cyan); }
+  .p2::after { background: var(--yellow); }
+  .p3::after { background: var(--orange); }
+
+  .principe-letter {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .p1 .principe-letter { color: var(--cyan); text-shadow: 0 0 30px rgba(0,229,255,0.5); }
+  .p2 .principe-letter { color: var(--yellow); text-shadow: 0 0 30px rgba(255,234,0,0.5); }
+  .p3 .principe-letter { color: var(--orange); text-shadow: 0 0 30px rgba(255,109,0,0.5); }
+
+  .principe-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .principe-card p { font-size: 0.84rem; line-height: 1.7; color: #8aafca; }
+
+  /* ALERTE BOX */
+  .alert-box {
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .alert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .alert-content h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+  .alert-content p { font-size: 0.84rem; line-height: 1.6; }
+
+  .alert-danger { border-color: rgba(255,23,68,0.3); background: rgba(255,23,68,0.06); }
+  .alert-danger .alert-content h4 { color: var(--red); }
+
+  .alert-warn { border-color: rgba(255,234,0,0.3); background: rgba(255,234,0,0.05); }
+  .alert-warn .alert-content h4 { color: var(--yellow); }
+
+  .alert-info { border-color: rgba(0,229,255,0.25); background: rgba(0,229,255,0.04); }
+  .alert-info .alert-content h4 { color: var(--cyan); }
+
+  /* DOSE TABLE */
+  .dose-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+  }
+
+  .dose-table th {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    background: rgba(0,229,255,0.06);
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dose-table td {
+    padding: 0.75rem 0.8rem;
+    border-bottom: 1px solid rgba(0,229,255,0.06);
+    vertical-align: middle;
+  }
+
+  .dose-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+
+  .badge-green { background: rgba(0,230,118,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(255,234,0,0.15); color: var(--yellow); }
+  .badge-orange { background: rgba(255,109,0,0.15); color: var(--orange); }
+  .badge-red { background: rgba(255,23,68,0.15); color: var(--red); }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 30px;
+    bottom: 30px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+  }
+
+  .step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--cyan);
+    flex-shrink: 0;
+    background: var(--bg2);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
+  }
+
+  .step:hover .step-num {
+    background: var(--cyan);
+    color: var(--bg);
+    box-shadow: var(--glow);
+  }
+
+  .step-content h4 {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+    margin-top: 0.6rem;
+  }
+
+  .step-content p { font-size: 0.86rem; line-height: 1.7; color: var(--text); opacity: 0.85; }
+
+  /* ORGANES TABLE */
+  .organes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+
+  .organe-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    transition: all 0.3s;
+  }
+
+  .organe-card:hover {
+    border-color: rgba(0,229,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  .organe-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sens-badge {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  .sens-high { background: rgba(255,23,68,0.2); color: var(--red); }
+  .sens-mid { background: rgba(255,109,0,0.2); color: var(--orange); }
+  .sens-low { background: rgba(0,230,118,0.15); color: var(--green); }
+
+  .organe-card p { font-size: 0.8rem; line-height: 1.5; color: #8aafca; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  footer span { color: var(--cyan); }
+
+  /* SECTION SCROLL ANIMATION */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* TICKER */
+  .ticker-wrap {
+    overflow: hidden;
+    background: rgba(0,229,255,0.06);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+    margin-bottom: 4rem;
+  }
+
+  .ticker {
+    display: flex;
+    gap: 4rem;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .ticker-item span { color: var(--cyan); }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .pen-row { grid-template-columns: 60px 1fr; }
+    .pen-protection { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">☢ <span>Risque</span> Radiologique</div>
+  <ul class="nav-links">
+    <li><a href="#rayonnements">Rayonnements</a></li>
+    <li><a href="#unites">Unités</a></li>
+    <li><a href="#effets">Effets</a></li>
+    <li><a href="#zones">Zones</a></li>
+    <li><a href="#protection">Protection</a></li>
+    <li><a href="#intervention">Intervention</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <div class="hero-content">
+    <div class="hero-symbol">☢</div>
+    <div class="hero-eyebrow">Sapeurs-Pompiers — Concours Lieutenant</div>
+    <h1 class="hero-title">Le Risque<br><span class="accent">Radiologique</span></h1>
+    <div class="hero-subtitle">Nucléaire · Radiologique · Biologique · Chimique</div>
+    <div class="hero-tags">
+      <span class="tag">Rayonnements ionisants</span>
+      <span class="tag">Radioprotection</span>
+      <span class="tag">NRBC</span>
+      <span class="tag">Dosimétrie</span>
+      <span class="tag">Intervention SP</span>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">☢ <span>NRBC</span> — Nucléaire Radiologique Biologique Chimique</span>
+    <span class="ticker-item">☢ <span>Rayonnements</span> α — β — γ — neutrons</span>
+    <span class="ticker-item">☢ <span>Sievert</span> — Becquerel — Gray — Rem</span>
+    <span class="ticker-item">☢ Zones : <span>exclusion / contrôle / surveillance / accès limité</span></span>
+    <span class="ticker-item">☢ Principes : <span>Distance — Temps — Écrans</span></span>
+    <span class="ticker-item">☢ <span>NRBC</span> — Nucléaire Radiologique Biologique Chimique</span>
+    <span class="ticker-item">☢ <span>Rayonnements</span> α — β — γ — neutrons</span>
+    <span class="ticker-item">☢ <span>Sievert</span> — Becquerel — Gray — Rem</span>
+    <span class="ticker-item">☢ Zones : <span>exclusion / contrôle / surveillance / accès limité</span></span>
+    <span class="ticker-item">☢ Principes : <span>Distance — Temps — Écrans</span></span>
+  </div>
+</div>
+
+<main>
+
+  <!-- 1. FONDAMENTAUX -->
+  <section id="fondamentaux" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2 class="section-title">Fondamentaux de la Radioactivité</h2>
+    </div>
+
+    <div class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="card">
+        <div class="card-icon" style="color:var(--cyan)">⚛️</div>
+        <div class="card-title">La Radioactivité</div>
+        <p>Propriété de certains noyaux atomiques instables (radionucléides) qui se désintègrent spontanément en émettant des <strong>rayonnements ionisants</strong>. Ce phénomène est naturel et permanent — la matière se transforme jusqu'à atteindre un état stable.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="color:var(--yellow)">⚡</div>
+        <div class="card-title">Rayonnements Ionisants</div>
+        <p>Rayonnements capables d'<strong>arracher des électrons</strong> aux atomes qu'ils traversent, créant des ions. Cette ionisation est à l'origine des effets biologiques sur le vivant. L'œil humain ne les voit pas, le nez ne les sent pas.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="color:var(--orange)">⏱️</div>
+        <div class="card-title">Période Radioactive (T½)</div>
+        <p>Temps nécessaire pour que <strong>la moitié des atomes</strong> radioactifs se désintègrent. Elle varie de quelques millionièmes de seconde (Po-214) à des milliards d'années (U-238). Paramètre fondamental pour l'évaluation du risque.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="color:var(--red)">🔬</div>
+        <div class="card-title">Radionucléides Courants</div>
+        <p>Iode-131 (T½ = 8 jours, thyroïde), Césium-137 (T½ = 30 ans, muscles), Strontium-90 (T½ = 29 ans, os), Radon-222 (T½ = 3,8 jours, poumons), Uranium-235 (T½ = 703 millions d'années).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. TYPES DE RAYONNEMENTS -->
+  <section id="rayonnements" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Types de Rayonnements</h2>
+    </div>
+
+    <div class="rad-types" style="margin-bottom: 2rem;">
+      <div class="rad-card rad-alpha">
+        <div class="rad-letter">α</div>
+        <div class="rad-name">Alpha</div>
+        <p>Particule lourde (2 protons + 2 neutrons). Faible pouvoir de pénétration : arrêtée par une feuille de papier ou quelques cm d'air. <strong>Dangereux par inhalation ou ingestion</strong>. Émetteurs : Plutonium-239, Radium-226.</p>
+      </div>
+      <div class="rad-card rad-beta">
+        <div class="rad-letter">β</div>
+        <div class="rad-name">Bêta</div>
+        <p>Électron ou positron émis par le noyau. Arrêté par quelques mm d'aluminium ou quelques mètres d'air. Dangereux par <strong>contact cutané et contamination interne</strong>. Émetteurs : Iode-131, Strontium-90.</p>
+      </div>
+      <div class="rad-card rad-gamma">
+        <div class="rad-letter">γ</div>
+        <div class="rad-name">Gamma</div>
+        <p>Rayonnement électromagnétique (photon). <strong>Très pénétrant</strong> : nécessite du plomb épais ou béton. Risque externe majeur. Principal risque lors d'interventions. Émetteurs : Cobalt-60, Césium-137.</p>
+      </div>
+      <div class="rad-card rad-neutron">
+        <div class="rad-letter">n</div>
+        <div class="rad-name">Neutrons</div>
+        <p>Particule neutre très pénétrante. Arrêtée par l'<strong>eau, paraffine ou polyéthylène</strong>. Peut <strong>activer</strong> des matériaux non radioactifs. Uniquement lors de réactions nucléaires (centrales, bombes).</p>
+      </div>
+    </div>
+
+    <!-- POUVOIR DE PÉNÉTRATION -->
+    <div class="penetration-vis">
+      <div class="section-header" style="margin-bottom:1.5rem;">
+        <span class="section-number" style="font-size:0.6rem">VIS</span>
+        <h3 style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;text-transform:uppercase;letter-spacing:0.1em">Pouvoir de Pénétration Comparé</h3>
+      </div>
+
+      <div class="pen-row">
+        <div class="pen-label" style="color:var(--yellow)">Alpha α</div>
+        <div class="pen-bar-wrap">
+          <div class="pen-bar" style="width:15%;background:var(--yellow)">Faible</div>
+        </div>
+        <div class="pen-protection" style="color:var(--yellow)">🛡️ Peau / papier</div>
+      </div>
+      <div class="pen-row">
+        <div class="pen-label" style="color:var(--orange)">Bêta β</div>
+        <div class="pen-bar-wrap">
+          <div class="pen-bar" style="width:40%;background:var(--orange)">Moyen</div>
+        </div>
+        <div class="pen-protection" style="color:var(--orange)">🛡️ Alu 5 mm / plexi</div>
+      </div>
+      <div class="pen-row">
+        <div class="pen-label" style="color:var(--cyan)">Gamma γ</div>
+        <div class="pen-bar-wrap">
+          <div class="pen-bar" style="width:85%;background:var(--cyan)">Élevé</div>
+        </div>
+        <div class="pen-protection" style="color:var(--cyan)">🛡️ Plomb / béton épais</div>
+      </div>
+      <div class="pen-row">
+        <div class="pen-label" style="color:var(--red)">Neutrons n</div>
+        <div class="pen-bar-wrap">
+          <div class="pen-bar" style="width:95%;background:var(--red)">Très élevé</div>
+        </div>
+        <div class="pen-protection" style="color:var(--red)">🛡️ Eau / paraffine</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. UNITÉS DE MESURE -->
+  <section id="unites" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2 class="section-title">Unités de Mesure</h2>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="units-table">
+        <thead>
+          <tr>
+            <th>Unité</th>
+            <th>Symbole</th>
+            <th>Grandeur mesurée</th>
+            <th>Ancienne unité</th>
+            <th>Correspondance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="unit-name">Becquerel</span></td>
+            <td><span class="unit-symbol">Bq</span></td>
+            <td><strong>Activité radioactive</strong> — nombre de désintégrations par seconde</td>
+            <td style="color:var(--muted)">Curie (Ci)</td>
+            <td style="color:var(--muted)">1 Ci = 37 × 10⁹ Bq</td>
+          </tr>
+          <tr>
+            <td><span class="unit-name">Gray</span></td>
+            <td><span class="unit-symbol">Gy</span></td>
+            <td><strong>Dose absorbée</strong> — énergie déposée par unité de masse (J/kg)</td>
+            <td style="color:var(--muted)">Rad</td>
+            <td style="color:var(--muted)">1 Gy = 100 rad</td>
+          </tr>
+          <tr>
+            <td><span class="unit-name">Sievert</span></td>
+            <td><span class="unit-symbol">Sv</span></td>
+            <td><strong>Dose efficace</strong> — dose absorbée pondérée par le type de rayonnement et les tissus</td>
+            <td style="color:var(--muted)">Rem</td>
+            <td style="color:var(--muted)">1 Sv = 100 rem</td>
+          </tr>
+          <tr>
+            <td><span class="unit-name">Sievert/h</span></td>
+            <td><span class="unit-symbol">Sv/h</span></td>
+            <td><strong>Débit de dose</strong> — dose reçue par unité de temps, mesure terrain</td>
+            <td style="color:var(--muted)">rem/h</td>
+            <td style="color:var(--muted)">Utilisé par les détecteurs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert-box alert-info" style="margin-top:1.5rem;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-content">
+        <h4>Facteur de pondération (wR)</h4>
+        <p>Les rayonnements α ont un wR = 20, les β et γ un wR = 1. La même énergie déposée par des alpha est <strong>20 fois plus nocive</strong> biologiquement. Dose (Sv) = Dose (Gy) × wR</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. EFFETS BIOLOGIQUES -->
+  <section id="effets" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2 class="section-title">Effets Biologiques sur l'Homme</h2>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:2rem;">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Effets Déterministes</div>
+        <p>Apparaissent <strong>obligatoirement au-delà d'un seuil de dose</strong>. La gravité augmente avec la dose. Effets prévisibles : érythème cutané, syndrome aigu des rayonnements, cataracte, stérilité. Seuil : environ <strong>0,5 Gy</strong> pour les premiers effets.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎲</div>
+        <div class="card-title">Effets Stochastiques</div>
+        <p>Apparaissent <strong>de façon aléatoire</strong>, sans seuil de dose. La probabilité d'apparition augmente avec la dose, mais pas la gravité. Principaux effets : <strong>cancers et leucémies</strong>, mutations génétiques. Peuvent apparaître après des années.</p>
+      </div>
+    </div>
+
+    <!-- TABLEAU DOSES / EFFETS -->
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:2rem;">
+      <table class="dose-table">
+        <thead>
+          <tr>
+            <th>Dose reçue</th>
+            <th>Effet biologique</th>
+            <th>Gravité</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:'Share Tech Mono',monospace;color:var(--cyan)">&lt; 100 mSv</td>
+            <td>Aucun effet déterministe observable. Risque stochastique très faible.</td>
+            <td><span class="dose-badge badge-green">FAIBLE</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Share Tech Mono',monospace;color:var(--yellow)">0,5 – 1 Gy</td>
+            <td>Premiers effets hématologiques (baisse des globules blancs). Nausées possibles.</td>
+            <td><span class="dose-badge badge-yellow">MODÉRÉ</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Share Tech Mono',monospace;color:var(--orange)">1 – 4 Gy</td>
+            <td>Syndrome aigu des rayonnements : nausées, vomissements, aplasie médullaire.</td>
+            <td><span class="dose-badge badge-orange">GRAVE</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Share Tech Mono',monospace;color:var(--red)">4 – 6 Gy</td>
+            <td>DL50 : 50% de mortalité sans traitement. Aplasie sévère, hémorragies.</td>
+            <td><span class="dose-badge badge-red">CRITIQUE</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Share Tech Mono',monospace;color:var(--red)">&gt; 6 Gy</td>
+            <td>Mortalité quasi certaine. Atteintes digestives et neurologiques. Décès en jours.</td>
+            <td><span class="dose-badge badge-red">LÉTAL</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SENSIBILITÉ DES ORGANES -->
+    <h3 style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Radiosensibilité des Organes</h3>
+    <div class="organes-grid">
+      <div class="organe-card">
+        <div class="organe-title">Moelle osseuse <span class="sens-badge sens-high">Très haute</span></div>
+        <p>Premiers atteints. Aplasie médullaire avec arrêt de production des cellules sanguines.</p>
+      </div>
+      <div class="organe-card">
+        <div class="organe-title">Gonades <span class="sens-badge sens-high">Très haute</span></div>
+        <p>Stérilité temporaire ou définitive selon la dose. Risque mutagène sur la descendance.</p>
+      </div>
+      <div class="organe-card">
+        <div class="organe-title">Thyroïde <span class="sens-badge sens-high">Haute</span></div>
+        <p>Particulièrement sensible à l'iode radioactif (I-131). Protection : comprimés d'iode stable.</p>
+      </div>
+      <div class="organe-card">
+        <div class="organe-title">Cristallin <span class="sens-badge sens-mid">Moyenne</span></div>
+        <p>Développement de cataractes radio-induites à partir de quelques Gy.</p>
+      </div>
+      <div class="organe-card">
+        <div class="organe-title">Peau <span class="sens-badge sens-mid">Moyenne</span></div>
+        <p>Érythème cutané dès 2 Gy. Radiodermite et nécrose aux doses élevées.</p>
+      </div>
+      <div class="organe-card">
+        <div class="organe-title">Os / Muscles <span class="sens-badge sens-low">Faible</span></div>
+        <p>Radiorésistants. Nécessitent des doses très élevées pour être affectés.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CONTAMINATION -->
+  <section id="contamination" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2 class="section-title">Irradiation vs Contamination</h2>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:2rem;">
+      <div class="card" style="border-color:rgba(0,229,255,0.3);">
+        <div class="card-icon" style="color:var(--cyan)">📡</div>
+        <div class="card-title">Irradiation</div>
+        <p><strong>Exposition à une source extérieure</strong> au corps. Rayonnements traversent l'organisme. Aucun radionucléide dans le corps. S'arrête dès qu'on s'éloigne de la source ou qu'elle est supprimée. <em>Exemple :</em> radiographie médicale, proximité d'une source γ.</p>
+      </div>
+      <div class="card" style="border-color:rgba(255,109,0,0.3);">
+        <div class="card-icon" style="color:var(--orange)">☣️</div>
+        <div class="card-title">Contamination</div>
+        <p><strong>Présence de matières radioactives</strong> sur ou dans le corps. <strong>Externe :</strong> sur la peau, les vêtements (décontaminable). <strong>Interne :</strong> ingestion, inhalation, plaie (grave, irradiation de l'intérieur). Persiste tant que le radionucléide est présent.</p>
+      </div>
+    </div>
+
+    <div class="alert-box alert-warn">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <h4>Point clé concours</h4>
+        <p>Une victime <strong>irradiée n'est pas dangereuse</strong> pour les secouristes (elle n'émet pas de rayonnements). En revanche, une victime <strong>contaminée</strong> peut contaminer les intervenants par transfert de particules. La décontamination est une priorité avant la prise en charge médicale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ZONES D'INTERVENTION -->
+  <section id="zones" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <h2 class="section-title">Zonage NRBC</h2>
+    </div>
+
+    <div class="zones-container" style="margin-bottom:1.5rem;">
+      <div class="zone-row zone-exc">
+        <div class="zone-label">Zone d'Exclusion<br>(ZE)</div>
+        <div class="zone-content">
+          <strong>☢ Zone chaude — accès strictement interdit au grand public</strong>
+          Périmètre directement contaminé ou irradié. Seuls les intervenants équipés de <strong>tenues de protection complètes (NRBC)</strong> et dosimètres opérationnels y accèdent. Débit de dose supérieur aux valeurs guides d'intervention. Durée d'exposition strictement limitée.
+        </div>
+      </div>
+      <div class="zone-row zone-con">
+        <div class="zone-label">Zone de Contrôle<br>(ZC)</div>
+        <div class="zone-content">
+          <strong>⚠️ Zone tiède — sas de décontamination</strong>
+          Interface entre la zone chaude et la zone froide. Lieu de <strong>décontamination des intervenants et des victimes</strong>. Mise en place du couloir de décontamination. Habillage et déshabillage sous surveillance. Débitmètre de zone.
+        </div>
+      </div>
+      <div class="zone-row zone-sup">
+        <div class="zone-label">Zone de Soutien<br>(ZS)</div>
+        <div class="zone-content">
+          <strong>⚡ Zone froide — commandement et logistique</strong>
+          Implantation du <strong>PCA (Poste de Commandement Avancé)</strong>, des moyens médicaux, du ravitaillement en EPI. Pas de contamination. Regroupement des victimes décontaminées pour prise en charge médicale. PCO éventuel.
+        </div>
+      </div>
+      <div class="zone-row zone-acc">
+        <div class="zone-label">Périmètre de Sécurité</div>
+        <div class="zone-content">
+          <strong>✅ Périmètre extérieur — périmètre de sécurité public</strong>
+          Bouclage de la zone par les forces de l'ordre. Éloignement du public. Déviation des circulations. Mise à l'abri des populations riveraines (confinement). Information du public.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. PRINCIPES DE RADIOPROTECTION -->
+  <section id="protection" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <h2 class="section-title">Principes de Radioprotection (DTE)</h2>
+    </div>
+
+    <div class="principes" style="margin-bottom:2rem;">
+      <div class="principe-card p1">
+        <div class="principe-letter">D</div>
+        <div class="principe-title">Distance</div>
+        <p>Le débit de dose diminue selon la <strong>loi en 1/D²</strong> (source ponctuelle). Doubler la distance divise la dose par 4. S'éloigner est le moyen le plus simple et le plus efficace de réduire l'exposition.</p>
+      </div>
+      <div class="principe-card p2">
+        <div class="principe-letter">T</div>
+        <div class="principe-title">Temps</div>
+        <p>La dose reçue est <strong>proportionnelle au temps</strong> d'exposition. Réduire le temps au strict nécessaire. Rotation des équipes. Planifier les gestes avant d'entrer en zone. La rapidité d'exécution est une protection.</p>
+      </div>
+      <div class="principe-card p3">
+        <div class="principe-letter">E</div>
+        <div class="principe-title">Écrans</div>
+        <p>Interposer des matériaux absorbants entre la source et la personne. <strong>Plomb et béton</strong> contre γ, <strong>aluminium</strong> contre β, <strong>papier ou peau</strong> contre α, <strong>eau ou paraffine</strong> contre neutrons.</p>
+      </div>
+    </div>
+
+    <!-- EPI NRBC -->
+    <h3 style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Équipements de Protection Individuelle (EPI NRBC)</h3>
+    <div class="epi-grid">
+      <div class="epi-item">
+        <div class="epi-icon">🦺</div>
+        <div class="epi-name">Tenue NRBC</div>
+        <p>Combinaison étanche intégrale (type 1B ou 1C selon risque)</p>
+      </div>
+      <div class="epi-item">
+        <div class="epi-icon">😷</div>
+        <div class="epi-name">ARI / Demi-masque</div>
+        <p>Protection des voies respiratoires contre les aérosols radioactifs</p>
+      </div>
+      <div class="epi-item">
+        <div class="epi-icon">🧤</div>
+        <div class="epi-name">Gants multi-couches</div>
+        <p>Sur-gants étanches, gants intérieurs de protection thermique</p>
+      </div>
+      <div class="epi-item">
+        <div class="epi-icon">📟</div>
+        <div class="epi-name">Dosimètre opérationnel</div>
+        <p>Dosimètre électronique actif avec alarme de seuil</p>
+      </div>
+      <div class="epi-item">
+        <div class="epi-icon">🔦</div>
+        <div class="epi-name">Détecteur</div>
+        <p>Radiamètre (débit de dose), contaminamètre (surface)</p>
+      </div>
+      <div class="epi-item">
+        <div class="epi-icon">💊</div>
+        <div class="epi-name">Iode Stable</div>
+        <p>Comprimé d'iodure de potassium (saturation thyroïdienne)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. LIMITES DE DOSES -->
+  <section class="fade-in">
+    <div class="section-header">
+      <span class="section-number">08</span>
+      <h2 class="section-title">Limites de Doses Réglementaires</h2>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:1.5rem;">
+      <table class="dose-table">
+        <thead>
+          <tr>
+            <th>Population</th>
+            <th>Dose efficace annuelle</th>
+            <th>Dose équivalente cristallin</th>
+            <th>Remarque</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Public</strong></td>
+            <td><span class="dose-badge badge-green">1 mSv/an</span></td>
+            <td>15 mSv/an</td>
+            <td>Hors expositions médicales et naturelles</td>
+          </tr>
+          <tr>
+            <td><strong>Travailleurs</strong> (cat. A&B)</td>
+            <td><span class="dose-badge badge-yellow">20 mSv/an</span></td>
+            <td>150 mSv/an</td>
+            <td>Décret du 4 juillet 2016</td>
+          </tr>
+          <tr>
+            <td><strong>Intervention d'urgence</strong></td>
+            <td><span class="dose-badge badge-orange">100 mSv</span></td>
+            <td>—</td>
+            <td>Sauvetage de vies, actions importantes</td>
+          </tr>
+          <tr>
+            <td><strong>Intervention exceptionnelle</strong></td>
+            <td><span class="dose-badge badge-red">500 mSv</span></td>
+            <td>—</td>
+            <td>Sur la base du volontariat, enjeu vital</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert-box alert-danger">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-content">
+        <h4>Principe ALARA</h4>
+        <p><strong>As Low As Reasonably Achievable</strong> — toute exposition doit être maintenue au niveau le plus bas qu'il est raisonnablement possible d'atteindre, compte tenu des facteurs économiques et sociaux. Ce principe guide toute la radioprotection.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. INTERVENTION SP -->
+  <section id="intervention" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">09</span>
+      <h2 class="section-title">Conduite de l'Intervention SP</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Réflexe NRBC — Ne pas s'engager sans bilan</h4>
+          <p>Dès qu'un risque NRBC est suspecté ou confirmé, <strong>stopper les équipes non équipées</strong> à distance de sécurité. Reconnaître les indices : symboles ☢, étiquetage transport (classe 7), détection par appareils, victimes en nombre inexpliqué.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Transmission au CTA / CODIS</h4>
+          <p>Alerter immédiatement la chaîne de commandement. Préciser : nature du risque supposé, nombre de victimes, conditions météo (vent ++), localisation précise. Demande de <strong>renforts spécialisés</strong> : cellule NRBC, SAMU.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Zonage et bouclage</h4>
+          <p>Établir les zones d'exclusion, de contrôle, de soutien. <strong>Se positionner vent dans le dos</strong> (source en aval). Tenir compte de la topographie. Périmètre de sécurité minimum : selon le protocole en vigueur et la mesure de terrain.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Habillage et entrée en zone chaude</h4>
+          <p>Habillage en binôme, contrôle mutuel de l'étanchéité. Mise en route des dosimètres (réinitialisation). Enregistrement de l'heure d'entrée. Durée d'exposition limitée selon le débit de dose mesuré. <strong>Jamais seul en zone chaude.</strong></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h4>Prise en charge des victimes</h4>
+          <p>Extraction des victimes de la zone d'exclusion vers la zone de décontamination. <strong>Décontamination avant soins</strong> : déshabillage (élimine 80% de la contamination), rinçage eau tiède et savon doux. Puis tri médical et évacuation vers hôpital référent.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <div class="step-content">
+          <h4>Déshabillage et décontamination des intervenants</h4>
+          <p>Déshabillage en zone tiède selon protocole (de l'extérieur vers l'intérieur). Contrôle de contamination cutanée. Retrait des dosimètres et relevé des doses. <strong>Suivi médical</strong> si dépassement de seuil. Consignation réglementaire.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. RÉGLEMENTATION -->
+  <section id="reglementation" class="fade-in">
+    <div class="section-header">
+      <span class="section-number">10</span>
+      <h2 class="section-title">Cadre Réglementaire & Acteurs</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">🏛️</div>
+        <div class="card-title">ASN</div>
+        <p><strong>Autorité de Sûreté Nucléaire</strong> — autorité administrative indépendante. Contrôle le respect des règles de sûreté et de radioprotection en France.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">🔬</div>
+        <div class="card-title">IRSN</div>
+        <p><strong>Institut de Radioprotection et de Sûreté Nucléaire</strong> — expertise technique, recherche. Appui à l'ASN et aux pouvoirs publics en cas d'incident.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">⚡</div>
+        <div class="card-title">CEA</div>
+        <p><strong>Commissariat à l'Énergie Atomique</strong> — recherche nucléaire civile et militaire. Expert en cas d'accidents nucléaires.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">☢️</div>
+        <div class="card-title">EDF — CNPE</div>
+        <p><strong>Centre Nucléaire de Production d'Électricité</strong> — 56 réacteurs en France. Plan d'urgence interne (PUI) et plan particulier d'intervention (PPI) autour des centrales.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">📋</div>
+        <div class="card-title">PPI</div>
+        <p><strong>Plan Particulier d'Intervention</strong> — dispositif ORSEC spécifique aux installations nucléaires. Zones de 2 km (mise à l'abri immédiate) et 10 km (évacuation éventuelle).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="font-size:1.5rem">🚒</div>
+        <div class="card-title">Cellule NRBC SDIS</div>
+        <p>Équipe spécialisée du SDIS pour interventions NRBC. Équipements de détection, de décontamination et de protection de haut niveau.</p>
+      </div>
+    </div>
+
+    <div class="alert-box alert-info" style="margin-top:1.5rem;">
+      <div class="alert-icon">📖</div>
+      <div class="alert-content">
+        <h4>Textes de référence</h4>
+        <p>Code de la santé publique (art. R1333-1 et s.) — Décret n°2016-848 du 28 juin 2016 (limites de doses) — Loi TSN du 13 juin 2006 (transparence et sécurité nucléaire) — Règlement AIEA — Directives Euratom 2013/59.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉCAP QCM -->
+  <section class="fade-in">
+    <div class="section-header">
+      <span class="section-number">★</span>
+      <h2 class="section-title">Mémo Concours — Points Clés</h2>
+    </div>
+
+    <div class="grid-2">
+      <div class="alert-box alert-warn" style="margin-bottom:0;">
+        <div class="alert-icon">🎯</div>
+        <div class="alert-content">
+          <h4>Retenir absolument</h4>
+          <p>
+            • α arrêté par la peau / papier<br>
+            • β arrêté par quelques mm d'aluminium<br>
+            • γ nécessite du plomb ou béton épais<br>
+            • 1 Sv = 100 rem / 1 Gy = 100 rad / 1 Ci = 37 GBq<br>
+            • DL50 ≈ 4-6 Gy corps entier sans traitement<br>
+            • Dose travailleurs : 20 mSv/an — Public : 1 mSv/an
+          </p>
+        </div>
+      </div>
+      <div class="alert-box alert-info" style="margin-bottom:0;">
+        <div class="alert-icon">📌</div>
+        <div class="alert-content">
+          <h4>Acronymes à maîtriser</h4>
+          <p>
+            • <strong>DTE</strong> : Distance — Temps — Écrans<br>
+            • <strong>ALARA</strong> : As Low As Reasonably Achievable<br>
+            • <strong>ASN</strong> : Autorité de Sûreté Nucléaire<br>
+            • <strong>IRSN</strong> : Institut de Radioprotection et Sûreté Nucléaire<br>
+            • <strong>PPI</strong> : Plan Particulier d'Intervention<br>
+            • <strong>ZE/ZC/ZS</strong> : Zones NRBC
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>☢ RISQUE RADIOLOGIQUE</span> — Outil de préparation concours Sapeurs-Pompiers<br>
+  <span style="color:var(--muted);font-size:0.65rem;margin-top:0.4rem;display:block;">Contenu à vocation pédagogique — Se référer aux textes officiels en vigueur pour toute application opérationnelle</span>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

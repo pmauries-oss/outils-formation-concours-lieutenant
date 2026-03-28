@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risque Chimique — Cours SP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --bg2: #141720;
+    --bg3: #1c2030;
+    --border: #2a2f42;
+    --orange: #ff6b1a;
+    --orange2: #ff8c42;
+    --red: #d93025;
+    --yellow: #f5c542;
+    --green: #2ec86e;
+    --blue: #3b82f6;
+    --cyan: #22d3ee;
+    --text: #e8eaf0;
+    --muted: #7a7f99;
+    --accent-glow: rgba(255,107,26,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a0a02 0%, #0d0f14 60%);
+    border-bottom: 2px solid var(--orange);
+    padding: 0;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 24px rgba(255,107,26,0.25);
+  }
+  .header-inner {
+    display: flex; align-items: center; gap: 20px;
+    padding: 14px 32px;
+  }
+  .header-icon {
+    font-size: 2.2rem; filter: drop-shadow(0 0 10px var(--orange));
+  }
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 3px; color: var(--orange);
+    text-shadow: 0 0 20px rgba(255,107,26,0.5);
+  }
+  .header-sub {
+    font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 2px;
+  }
+  .header-badge {
+    margin-left: auto;
+    background: rgba(255,107,26,0.12);
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 0.72rem; color: var(--orange2); text-transform: uppercase; letter-spacing: 1.5px;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex; overflow-x: auto; background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    padding: 12px 20px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .nav-tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); background: var(--accent-glow); }
+
+  /* ── LAYOUT ── */
+  .main { flex: 1; padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION HEADER ── */
+  .s-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .s-icon { font-size: 2.2rem; }
+  .s-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; color: var(--orange); }
+  .s-desc { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  /* ── CARDS & BLOCKS ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-weight: 700; font-size: 1rem; color: var(--orange2); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .num {
+    background: var(--orange); color: #000; border-radius: 4px;
+    padding: 2px 8px; font-size: 0.75rem; font-weight: 700;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── ACCORDION ── */
+  .accordion { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .acc-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; cursor: pointer; background: var(--bg3);
+    font-weight: 600; font-size: 0.9rem; user-select: none;
+    transition: background 0.15s;
+  }
+  .acc-header:hover { background: var(--bg2); }
+  .acc-header.open { background: rgba(255,107,26,0.08); color: var(--orange2); border-bottom: 1px solid var(--border); }
+  .acc-arrow { transition: transform 0.2s; font-size: 0.75rem; color: var(--muted); }
+  .acc-header.open .acc-arrow { transform: rotate(180deg); color: var(--orange); }
+  .acc-body { display: none; padding: 16px 20px; background: var(--bg2); line-height: 1.7; }
+  .acc-body.open { display: block; }
+
+  /* ── KEY-VALUE TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th {
+    background: rgba(255,107,26,0.12); color: var(--orange2);
+    padding: 10px 14px; text-align: left; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--cyan); }
+
+  /* ── BADGES / PILLS ── */
+  .badge {
+    display: inline-block; border-radius: 4px; padding: 2px 9px; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .badge-orange { background: rgba(255,107,26,0.2); color: var(--orange2); border: 1px solid rgba(255,107,26,0.4); }
+  .badge-red { background: rgba(217,48,37,0.2); color: #ff6b6b; border: 1px solid rgba(217,48,37,0.4); }
+  .badge-yellow { background: rgba(245,197,66,0.15); color: var(--yellow); border: 1px solid rgba(245,197,66,0.3); }
+  .badge-green { background: rgba(46,200,110,0.15); color: var(--green); border: 1px solid rgba(46,200,110,0.3); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+  .badge-cyan { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.3); }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    border-radius: 6px; padding: 12px 16px; margin-bottom: 14px;
+    display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem;
+  }
+  .alert-warn { background: rgba(245,197,66,0.08); border-left: 3px solid var(--yellow); }
+  .alert-danger { background: rgba(217,48,37,0.1); border-left: 3px solid var(--red); }
+  .alert-info { background: rgba(59,130,246,0.08); border-left: 3px solid var(--blue); }
+  .alert-success { background: rgba(46,200,110,0.08); border-left: 3px solid var(--green); }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .alert-text strong { display: block; margin-bottom: 3px; }
+
+  /* ── FORMULA ── */
+  .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 16px; margin: 8px 0;
+    color: var(--cyan); font-size: 0.9rem;
+  }
+
+  /* ── THRESHOLD SCALE ── */
+  .threshold-bar { margin: 20px 0; }
+  .t-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .t-label { font-size: 0.8rem; color: var(--muted); width: 55px; text-align: right; flex-shrink: 0; }
+  .t-bar { height: 22px; border-radius: 4px; display: flex; align-items: center; padding-left: 10px; font-size: 0.78rem; font-weight: 600; }
+  .t-name { font-size: 0.82rem; color: var(--text); }
+
+  /* ── QCM ── */
+  .qcm-block { margin-bottom: 20px; }
+  .qcm-q { font-weight: 600; margin-bottom: 10px; color: var(--text); font-size: 0.92rem; }
+  .qcm-q span { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
+  .qcm-options { display: flex; flex-direction: column; gap: 7px; }
+  .qcm-opt {
+    padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px;
+    cursor: pointer; font-size: 0.87rem; transition: all 0.15s;
+    background: var(--bg3); display: flex; align-items: center; gap: 10px;
+  }
+  .qcm-opt:hover { border-color: var(--orange); background: rgba(255,107,26,0.05); }
+  .qcm-opt.correct { background: rgba(46,200,110,0.12); border-color: var(--green); color: var(--green); }
+  .qcm-opt.wrong { background: rgba(217,48,37,0.1); border-color: var(--red); color: #ff6b6b; }
+  .qcm-opt.reveal-correct { background: rgba(46,200,110,0.08); border-color: rgba(46,200,110,0.4); }
+  .opt-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; }
+  .qcm-expl { margin-top: 10px; padding: 10px 14px; background: var(--bg3); border-radius: 6px; font-size: 0.84rem; color: var(--muted); display: none; }
+  .qcm-expl.show { display: block; }
+  .qcm-score { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--orange); text-align: center; margin: 12px 0; }
+  .score-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
+  .score-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--cyan)); border-radius: 4px; transition: width 0.6s ease; }
+  .btn { padding: 10px 22px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.15s; letter-spacing: 0.5px; }
+  .btn-orange { background: var(--orange); color: #000; }
+  .btn-orange:hover { background: var(--orange2); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  p { line-height: 1.75; margin-bottom: 10px; }
+  ul, ol { padding-left: 20px; line-height: 1.9; }
+  li { margin-bottom: 3px; }
+  strong { color: var(--orange2); }
+  sub { font-size: 0.72em; }
+  sup { font-size: 0.72em; }
+
+  @media (max-width: 700px) {
+    .main { padding: 16px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .header-inner { padding: 12px 16px; }
+    .header-title { font-size: 1.4rem; }
+    .header-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-icon">🔥</div>
+    <div>
+      <div class="header-title">Risque Chimique</div>
+      <div class="header-sub">Sapeurs-Pompiers — Préparation Concours Lieutenant</div>
+    </div>
+    <div class="header-badge">SDIS 38 · ENSOSP</div>
+  </div>
+  <nav class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" data-section="s0">⚗️ Chimie générale</button>
+    <button class="nav-tab" data-section="s1">🔥 Risque thermique</button>
+    <button class="nav-tab" data-section="s2">💥 Explosions</button>
+    <button class="nav-tab" data-section="s3">🧯 Méthodo opérat.</button>
+    <button class="nav-tab" data-section="s4">☠️ Risque toxique</button>
+    <button class="nav-tab" data-section="s5">🏭 ICPE &amp; Plans</button>
+    <button class="nav-tab" data-section="s6">🚛 TMD</button>
+    <button class="nav-tab" data-section="s7">💧 Poll. aquatique</button>
+    <button class="nav-tab" data-section="s8">🎯 QCM Entraînement</button>
+  </nav>
+</header>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 0 — CHIMIE GÉNÉRALE
+══════════════════════════════════════════════════════ -->
+<section id="s0" class="section active">
+  <div class="s-header">
+    <div class="s-icon">⚗️</div>
+    <div>
+      <div class="s-title">Chimie Générale</div>
+      <div class="s-desc">Atome, états de la matière, thermodynamique, acides/bases, hydrocarbures</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🔬 L'Atome</div>
+      <table>
+        <tr><th>Symbole</th><th>Signification</th></tr>
+        <tr><td class="mono">Z</td><td>Numéro atomique = nombre de <strong>protons</strong></td></tr>
+        <tr><td class="mono">A</td><td>Nombre de masse = protons + neutrons</td></tr>
+        <tr><td class="mono">Isotope</td><td>Même Z, mais A différent</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:12px;">
+        <div class="alert-icon">ℹ️</div>
+        <div class="alert-text">Le <strong>tableau de Mendeleïev</strong> classe les éléments chimiques par numéro atomique croissant.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ Ions</div>
+      <p>Un ion est un atome ayant perdu ou gagné des électrons :</p>
+      <ul>
+        <li><strong>Cation</strong> (+) : atome ayant <em>perdu</em> des électrons</li>
+        <li><strong>Anion</strong> (−) : atome ayant <em>gagné</em> des électrons</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      États de la matière & changements d'état
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Changement d'état</th><th>Transition</th></tr>
+        <tr><td><strong>Fusion</strong></td><td>Solide → Liquide</td></tr>
+        <tr><td><strong>Solidification</strong></td><td>Liquide → Solide</td></tr>
+        <tr><td><strong>Vaporisation</strong></td><td>Liquide → Gaz</td></tr>
+        <tr><td><strong>Liquéfaction</strong></td><td>Gaz → Liquide</td></tr>
+        <tr><td><strong>Sublimation</strong></td><td>Solide → Gaz (direct)</td></tr>
+        <tr><td><strong>Condensation</strong></td><td>Gaz → Solide (direct)</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:12px;">
+        <div class="alert-icon">📍</div>
+        <div class="alert-text"><strong>Point triple :</strong> point où les 3 phases (solide, liquide, gazeux) coexistent simultanément. La pression ET la température y sont fixes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Thermodynamique
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Énergie interne (U)</strong> : énergie totale du système à volume constant.</p>
+          <p><strong>Entropie (S)</strong> : mesure du désordre du système.</p>
+          <p><strong>Pression (Pa)</strong> : unité SI = le Pascal (Pa).</p>
+        </div>
+        <div>
+          <p><strong>Température en Kelvin :</strong></p>
+          <div class="formula">T(K) = T(°C) + 273,15</div>
+          <p><strong>Pression de Vapeur Saturante (PVS)</strong> : pression à laquelle la phase gazeuse d'une substance est en équilibre avec sa phase liquide ou solide.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Oxydoréduction
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div class="card" style="margin:0">
+          <div class="card-title">Oxydant</div>
+          <ul>
+            <li>Capte (gagne) des électrons</li>
+            <li>Subit une <strong>réduction</strong></li>
+            <li>C'est un <strong>comburant</strong> en combustion</li>
+          </ul>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-title">Réducteur</div>
+          <ul>
+            <li>Cède (perd) des électrons</li>
+            <li>Subit une <strong>oxydation</strong></li>
+            <li>C'est un <strong>combustible</strong> en combustion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Acides, bases & pH
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Acide</strong> : espèce capable de <em>libérer</em> un ion H⁺ (proton).</p>
+          <p><strong>Base</strong> : espèce capable de <em>capter</em> un ion H⁺ (proton).</p>
+          <p>Une <strong>substance alcaline</strong> est basique.</p>
+        </div>
+        <div>
+          <table>
+            <tr><th>pH</th><th>Nature</th></tr>
+            <tr><td>0 → 7</td><td><span class="badge badge-red">Acide</span></td></tr>
+            <tr><td>= 7</td><td><span class="badge badge-green">Neutre</span></td></tr>
+            <tr><td>7 → 14</td><td><span class="badge badge-blue">Basique</span></td></tr>
+          </table>
+          <p style="margin-top:8px; font-size:0.85rem; color:var(--muted)">Plus le pH est élevé, plus la solution est basique.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Hydrocarbures
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Famille</th><th>Formule générale</th><th>Exemples</th></tr>
+        <tr>
+          <td><strong>Alcanes</strong></td>
+          <td class="mono">CₙH₂ₙ₊₂</td>
+          <td>Méthane (CH₄), Éthane (C₂H₆), Butane (C₄H₁₀), Propane (C₃H₈)</td>
+        </tr>
+        <tr>
+          <td><strong>Alcènes</strong></td>
+          <td class="mono">CₙH₂ₙ</td>
+          <td>Éthylène, Propylène…</td>
+        </tr>
+        <tr>
+          <td><strong>Alcynes</strong></td>
+          <td class="mono">CₙH₂ₙ₋₂</td>
+          <td>Acétylène (C₂H₂)</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px; font-size:0.85rem; color:var(--muted)">Le butane correspond à la formule brute <strong>C₄H₁₀</strong>.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 1 — RISQUE THERMIQUE
+══════════════════════════════════════════════════════ -->
+<section id="s1" class="section">
+  <div class="s-header">
+    <div class="s-icon">🔥</div>
+    <div>
+      <div class="s-title">Risque Thermique</div>
+      <div class="s-desc">Combustion, tétraèdre du feu, LIE/LSE, seuils thermiques, mousses</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      La combustion & le tétraèdre du feu
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>La combustion est une <strong>réaction chimique d'oxydoréduction exothermique</strong> entre :</p>
+      <div class="grid-3" style="margin:14px 0">
+        <div class="card" style="margin:0; text-align:center">
+          <div style="font-size:2rem">🪵</div>
+          <div style="font-weight:700; color:var(--orange2); margin:6px 0">Combustible</div>
+          <div style="font-size:0.82rem; color:var(--muted)">Réducteur — cède des électrons</div>
+        </div>
+        <div class="card" style="margin:0; text-align:center">
+          <div style="font-size:2rem">💨</div>
+          <div style="font-weight:700; color:var(--orange2); margin:6px 0">Comburant</div>
+          <div style="font-size:0.82rem; color:var(--muted)">Oxydant — capte des électrons</div>
+        </div>
+        <div class="card" style="margin:0; text-align:center">
+          <div style="font-size:2rem">⚡</div>
+          <div style="font-weight:700; color:var(--orange2); margin:6px 0">Énergie d'activation</div>
+          <div style="font-size:0.82rem; color:var(--muted)">Source de chaleur</div>
+        </div>
+      </div>
+      <p>Le 4e élément du tétraèdre est la <strong>réaction en chaîne</strong>.</p>
+      <div class="alert alert-info">
+        <div class="alert-icon">🔥</div>
+        <div class="alert-text">La <strong>flamme de prémélange</strong> s'approche des conditions stœchiométriques dans son mélange combustible/comburant.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Points caractéristiques
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Terme</th><th>Définition</th></tr>
+        <tr>
+          <td><strong>Point d'auto-inflammation</strong></td>
+          <td>Température minimale à laquelle les vapeurs émises s'enflamment <em>sans source de chaleur externe</em></td>
+        </tr>
+        <tr>
+          <td><strong>Point d'inflammation</strong></td>
+          <td>Température à partir de laquelle la combustion continue même si on retire la source de chaleur</td>
+        </tr>
+        <tr>
+          <td><strong>PVS</strong></td>
+          <td>Pression de Vapeur Saturante : pression d'équilibre gaz ↔ liquide/solide</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Limites d'inflammabilité (LIE / LSE)
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>LIE (Limite Inférieure d'Explosivité)</strong> : concentration en deçà de laquelle le mélange est trop pauvre pour s'enflammer.</p>
+          <p><strong>LSE (Limite Supérieure d'Explosivité)</strong> : concentration au-delà de laquelle le mélange est trop riche pour s'enflammer.</p>
+          <div class="alert alert-warn">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text">Si la <strong>température augmente</strong>, le domaine d'inflammabilité <strong>augmente</strong>. Si la pression baisse, la LIE augmente et le domaine diminue.</div>
+          </div>
+        </div>
+        <div>
+          <table>
+            <tr><th>Gaz</th><th>LIE</th><th>LSE</th></tr>
+            <tr><td><strong>Méthane</strong></td><td class="mono">5 %</td><td class="mono">15 %</td></tr>
+            <tr><td><strong>Propane</strong></td><td class="mono">2,1 %</td><td class="mono">9,5 %</td></tr>
+            <tr><td><strong>Acétylène</strong></td><td class="mono">2,3 %</td><td class="mono">83 %</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Seuils thermiques réglementaires
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Seuil</th><th>Valeur</th><th>Zone de danger</th></tr>
+        <tr>
+          <td><span class="badge badge-yellow">SEI</span> — Effets Irréversibles</td>
+          <td class="mono"><strong>3 kW/m²</strong></td>
+          <td>Dangers significatifs pour la vie humaine</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">SEL</span> — Effets Létaux</td>
+          <td class="mono"><strong>5 kW/m²</strong></td>
+          <td>Dangers graves pour la vie humaine</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">SELS</span> — Effets Létaux Significatifs</td>
+          <td class="mono"><strong>8 kW/m²</strong></td>
+          <td>Dangers très graves pour la vie humaine</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">Béton / Structures</span></td>
+          <td class="mono"><strong>20 kW/m²</strong></td>
+          <td>Tenue du béton pendant plusieurs heures — dégâts très graves hors béton</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Classes de feux & extincteurs
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Classe</th><th>Nature du feu</th><th>Signalétique</th></tr>
+        <tr><td><strong>A</strong></td><td>Feux de solides (bois, papier…)</td><td>—</td></tr>
+        <tr><td><strong>B</strong></td><td>Feux de liquides inflammables</td><td>—</td></tr>
+        <tr><td><strong>C</strong></td><td>Feux de gaz</td><td>—</td></tr>
+        <tr><td><strong>D</strong></td><td>Feux de métaux</td><td>—</td></tr>
+        <tr><td><strong>Électrique</strong></td><td>Feux d'origine électrique</td><td class="badge badge-orange">Aucune signalétique de classe</td></tr>
+        <tr><td><strong>F</strong></td><td>Feux d'huiles et graisses végétales/animales</td><td class="badge badge-orange">Aucune signalétique de classe</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:12px;">
+        <div class="alert-icon">❄️</div>
+        <div class="alert-text">Les <strong>extincteurs à neige carbonique (CO₂)</strong> agissent par étouffement. Le gaz carbonique est inerte et efficace sur les feux de classe <strong>B</strong>. La neige se transforme en gaz au contact du foyer.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      La mousse extinctrice
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Foisonnement</strong> = rapport du volume de mousse sur le volume de solution moussante (pré-mélange).</p>
+          <div class="formula">Foisonnement = V(mousse) / V(solution moussante)</div>
+          <table style="margin-top:10px">
+            <tr><th>Type</th><th>Foisonnement</th></tr>
+            <tr><td>Bas foisonnement</td><td class="mono">&lt; 20</td></tr>
+            <tr><td>Moyen foisonnement</td><td class="mono">20 → 200</td></tr>
+            <tr><td>Haut foisonnement</td><td class="mono">&gt; 200</td></tr>
+          </table>
+          <p style="margin-top:8px; font-size:0.84rem; color:var(--muted)">Le <strong>haut foisonnement</strong> permet le déversement dans des espaces clos (caves…).</p>
+        </div>
+        <div>
+          <p><strong>Concentration</strong> = volume d'émulseur sur le volume de solution moussante.</p>
+          <p><strong>Taux d'application</strong> = débit de solution moussante par la surface en feu (L/min/m²).</p>
+          <div class="alert alert-warn">
+            <div class="alert-icon">📋</div>
+            <div class="alert-text"><strong>Taux d'application opérationnel réflexe (ENSOSP) :</strong><br>
+              • <strong>10 L/min/m²</strong> — feux d'hydrocarbures<br>
+              • <strong>20 L/min/m²</strong> — liquides polaires (méthanol, éthanol…)
+            </div>
+          </div>
+          <p>Le groupe LIF (ENSOSP) comprend : 2 CD, 1 CEM 8000L, 2 MPR 2000/15, 2 LCM 2000 L/Mn.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 2 — EXPLOSIONS
+══════════════════════════════════════════════════════ -->
+<section id="s2" class="section">
+  <div class="s-header">
+    <div class="s-icon">💥</div>
+    <div>
+      <div class="s-title">Risque Explosion</div>
+      <div class="s-desc">Déflagration, détonation, BLEVE, UVCE, boil over, slop over, froth over</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">⚡ Déflagration</div>
+      <ul>
+        <li>Régime d'explosion le plus fréquent</li>
+        <li>Vitesse de la flamme <strong>inférieure à la vitesse du son</strong></li>
+        <li>Onde de pression modérée</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💥 Détonation</div>
+      <ul>
+        <li>Nécessite un mélange stœchiométrique</li>
+        <li>Vitesse supérieure à la vitesse du son (onde de choc)</li>
+        <li>Souvent initiée par une déflagration</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      BLEVE — Boiling Liquid Expanding Vapor Explosion
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p><strong>BLEVE</strong> = Boiling Liquid Vapor Explosion.</p>
+      <p>C'est l'<strong>explosion pneumatique de vapeurs provenant d'un liquide en ébullition</strong> dans un réservoir clos.</p>
+      <div class="grid-2" style="margin:14px 0">
+        <div>
+          <div class="alert alert-danger">
+            <div class="alert-icon">🔴</div>
+            <div class="alert-text">
+              <strong>Causes :</strong>
+              <ul>
+                <li>Surchauffe d'un gaz liquéfié dans un espace clos</li>
+                <li>Surchauffe d'un liquide dans un réservoir clos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="alert alert-warn">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text">
+              <strong>Effets principaux :</strong>
+              <ul>
+                <li>Effets thermiques (boule de feu si gaz inflammable)</li>
+                <li>Effets missiles (projections)</li>
+              </ul>
+              Le phénomène de boule de feu n'est observé qu'en présence de <strong>gaz liquéfié inflammable</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      UVCE — Unconfined Vapor Cloud Explosion
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p><strong>UVCE</strong> = explosion d'un nuage de vapeurs combustibles mélangées avec l'oxydant de l'air, <strong>à l'air libre</strong>.</p>
+      <ul>
+        <li>Produit des <strong>effets thermiques</strong> et des <strong>effets de pression</strong></li>
+        <li>Une source d'allumage permet l'inflammation du nuage gazeux</li>
+        <li>Si la combustion du nuage ne produit pas d'effet de pression → <strong>flash fire</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Boil over, Slop over, Froth over
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Phénomène</th><th>Définition</th></tr>
+        <tr>
+          <td><strong>Boil over</strong></td>
+          <td>Explosion par vaporisation. Le passage de l'eau (état liquide → gazeux) crée un effet piston qui projette des gouttelettes d'hydrocarbure enflammées sous forme de boule de feu. Se produit lors d'un incendie dans un réservoir d'hydrocarbures liquides.</td>
+        </tr>
+        <tr>
+          <td><strong>Slop over</strong></td>
+          <td>Débordement par <em>ébullition</em> dû à l'application accidentelle d'eau à la surface d'un produit lourd en combustion.</td>
+        </tr>
+        <tr>
+          <td><strong>Froth over</strong></td>
+          <td>Débordement par <em>moussage</em> pouvant se produire lors de l'extinction d'un feu d'hydrocarbure.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Seuils de pression — Effets d'explosion
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Seuil</th><th>Pression</th><th>Zone</th></tr>
+        <tr>
+          <td><span class="badge badge-yellow">SEI</span> Effets irréversibles (vie humaine)</td>
+          <td class="mono"><strong>50 mbar</strong></td>
+          <td>Zone de dangers significatifs</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">SEL</span> Effets létaux (vie humaine)</td>
+          <td class="mono"><strong>140 mbar</strong></td>
+          <td>Zone de dangers graves</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">SELS</span> Effets létaux significatifs</td>
+          <td class="mono"><strong>200 mbar</strong></td>
+          <td>Zone de dangers très graves</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">Dégâts structures</span></td>
+          <td class="mono"><strong>300 mbar</strong></td>
+          <td>Dégâts très graves sur les structures</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Poussières — Hexagone de l'explosion
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>L'explosion de poussières nécessite 6 conditions (hexagone) :</p>
+      <div class="grid-2">
+        <ul>
+          <li><strong>Combustible</strong> (poussière inflammable)</li>
+          <li><strong>Comburant</strong> (oxygène)</li>
+          <li><strong>Source d'inflammation</strong></li>
+        </ul>
+        <ul>
+          <li><strong>Dispersion</strong> en nuage</li>
+          <li><strong>Concentration</strong> dans le domaine explosif</li>
+          <li><strong>Confinement</strong></li>
+        </ul>
+      </div>
+      <div class="alert alert-info">
+        <div class="alert-icon">🌾</div>
+        <div class="alert-text">Seules les poussières combustibles peuvent exploser. Un auto-échauffement des grains peut se transformer en combustion. Dans un silo, les grains en présence d'O₂ subissent : <strong>respiration</strong> et <strong>oxydation</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 3 — MÉTHODOLOGIE OPÉRATIONNELLE
+══════════════════════════════════════════════════════ -->
+<section id="s3" class="section">
+  <div class="s-header">
+    <div class="s-icon">🧯</div>
+    <div>
+      <div class="s-title">Méthodologie Opérationnelle</div>
+      <div class="s-desc">Calculs mousse/émulseur, feux de silos, toxicologie de terrain</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header open" onclick="toggle(this)">
+      Calcul du volume d'émulseur
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open">
+      <div class="formula">
+        Vol. Solution Moussante (SM) = Taux d'applic. × Durée × Surface<br>
+        Vol. Émulseur = Vol. SM × Concentration (%)
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="card" style="margin:0">
+          <div class="card-title"><span class="num">EX 1</span> Bac 600 m² / 30 min</div>
+          <p style="font-size:0.85rem">Taux = 5 L/min/m², Conc. = 5 %</p>
+          <div class="formula" style="font-size:0.8rem">
+            5 × 30 = 150 L/m²<br>
+            150 × 600 = 90 000 L de SM<br>
+            90 000 × 5 % = <strong>4 500 L = 4,5 m³</strong>
+          </div>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-title"><span class="num">EX 2</span> Bac 800 m² / 40 min</div>
+          <p style="font-size:0.85rem">Taux = 5 L/min/m², Conc. = 5 %</p>
+          <div class="formula" style="font-size:0.8rem">
+            5 × 40 = 200 L/m²<br>
+            200 × 800 = 160 000 L de SM<br>
+            160 000 × 5 % = <strong>8 000 L = 8 m³</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Intervention en silo
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Auto-échauffement</strong> des grains → dégagement de :</p>
+          <ul>
+            <li>Monoxyde de carbone (CO)</li>
+            <li>Dioxyde de carbone (CO₂)</li>
+            <li>Alcools</li>
+            <li>Chaleur</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Signes visuels</strong> d'auto-inflammation / fort échauffement :</p>
+          <ul>
+            <li>Goudrons sur les parois</li>
+            <li>Fissures</li>
+          </ul>
+        </div>
+        <div>
+          <div class="alert alert-danger">
+            <div class="alert-icon">🚫</div>
+            <div class="alert-text"><strong>Eau à proscrire</strong> lors d'un feu au cœur du silo. L'eau peut être utilisée pour <em>fixer les poussières</em> et éviter leur mise en suspension.</div>
+          </div>
+          <div class="alert alert-info">
+            <div class="alert-icon">📏</div>
+            <div class="alert-text"><strong>Périmètres de sécurité réflexes :</strong><br>
+              • 25 m pour un silo plat<br>
+              • 1,5 × hauteur (phase réfléchie)
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="grid-2">
+        <div>
+          <p><strong>Inertage optimal</strong> :</p>
+          <ul>
+            <li>Point chaud > 60°C à la caméra thermique (céréales)</li>
+            <li>Feu à cœur</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Injection de gaz inerte adaptée pour :</strong></p>
+          <ul>
+            <li>Céréales</li>
+            <li>Luzerne</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Feux de surface d'oléagineux :</strong></p>
+          <ul>
+            <li>La mousse évite la mise en suspension des fines poussières</li>
+            <li>Comportement du colza = feu d'hydrocarbures</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Voies d'intoxication & types d'intoxication
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="alert alert-warn">
+        <div class="alert-icon">💨</div>
+        <div class="alert-text">La voie la plus fréquente d'entrée des substances toxiques dans le corps humain : <strong>l'inhalation</strong>.</div>
+      </div>
+      <table>
+        <tr><th>Type</th><th>Durée</th><th>Définition</th></tr>
+        <tr>
+          <td><span class="badge badge-red">Aigüe</span></td>
+          <td>&lt; 24 h</td>
+          <td>Doses massives reçues en une courte durée</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Subaigüe</span></td>
+          <td>Quelques jours → semaines</td>
+          <td>Doses répétées sur une courte période</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Chronique</span></td>
+          <td>Quelques mois → années</td>
+          <td>Expositions répétées sur longue durée</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 4 — RISQUE TOXIQUE
+══════════════════════════════════════════════════════ -->
+<section id="s4" class="section">
+  <div class="s-header">
+    <div class="s-icon">☠️</div>
+    <div>
+      <div class="s-title">Risque Toxique</div>
+      <div class="s-desc">Valeurs seuils, DL50, VLCT, IDLH, ERPG, AEGL, VSTAF — Toxiques de guerre</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header open" onclick="toggle(this)">
+      Doses et concentrations toxiques
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open">
+      <table>
+        <tr><th>Valeur</th><th>Définition</th></tr>
+        <tr>
+          <td><strong>DL 0</strong></td>
+          <td>Dose maximale testée ne provoquant aucune mortalité dans la population étudiée</td>
+        </tr>
+        <tr>
+          <td><strong>DL 50</strong></td>
+          <td>Dose pour laquelle on constate 50 % de décès sur une population testée</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">La <strong>dose</strong> = quantité de toxique pénétrant par contact cutané, oculaire ou ingestion.</p>
+      <p>Pour l'inhalation, on parle également de <strong>concentration</strong>.</p>
+      <p>Unités : <span class="mono">ppm</span> ou <span class="mono">mg/m³</span>. Exemple : <strong>0,5 % CO = 5 000 ppm</strong>.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Valeurs professionnelles françaises (VME / VLE / VLCT)
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Sigle</th><th>Nom</th><th>Définition</th></tr>
+        <tr>
+          <td class="mono"><strong>VME</strong></td>
+          <td>Valeur Moyenne d'Exposition</td>
+          <td>Concentration sur 8h de travail — protection maladies professionnelles</td>
+        </tr>
+        <tr>
+          <td class="mono"><strong>VLE</strong></td>
+          <td>Valeur Limite d'Exposition</td>
+          <td>Valeur plafond instantanée — protection maladies professionnelles</td>
+        </tr>
+        <tr>
+          <td class="mono"><strong>VLCT</strong></td>
+          <td>Valeur Limite à Court Terme</td>
+          <td>Concentration à ne pas dépasser pendant <strong>15 minutes</strong> en milieu professionnel</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Valeurs d'urgence — IDLH, ERPG, AEGL, VSTAF
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Sigle</th><th>Nom complet</th><th>Particularités</th></tr>
+        <tr>
+          <td class="mono"><strong>IDLH</strong></td>
+          <td>Immediately Dangerous to Life or Health</td>
+          <td>Seuil des effets irréversibles — valeur unique</td>
+        </tr>
+        <tr>
+          <td class="mono"><strong>ERPG</strong></td>
+          <td>Emergency Response Planning Guideline</td>
+          <td>Durée unique d'1h — 3 niveaux (1 à 3) — population générale</td>
+        </tr>
+        <tr>
+          <td class="mono"><strong>AEGL</strong></td>
+          <td>Acute Exposure Guideline Level</td>
+          <td>Population sensible incluse — 5 durées — seuils létaux, irréversibles, réversibles</td>
+        </tr>
+        <tr>
+          <td class="mono"><strong>VSTAF</strong></td>
+          <td>Valeurs Seuils de Toxicité Aigüe Française</td>
+          <td>8 temps d'exposition (1 à 480 min) — population générale hors hypersensibles</td>
+        </tr>
+      </table>
+      <div style="margin-top:16px">
+        <table>
+          <tr><th>Niveau</th><th>ERPG</th><th>AEGL</th><th>VSTAF</th></tr>
+          <tr>
+            <td>Effets réversibles</td>
+            <td><span class="badge badge-green">ERPG 1</span></td>
+            <td><span class="badge badge-green">AEGL 1</span></td>
+            <td><span class="badge badge-green">SER</span></td>
+          </tr>
+          <tr>
+            <td>Effets irréversibles</td>
+            <td>—</td>
+            <td><span class="badge badge-yellow">AEGL 2</span> + <span class="badge badge-yellow">IDLH</span></td>
+            <td><span class="badge badge-yellow">SEI</span></td>
+          </tr>
+          <tr>
+            <td>Effets létaux</td>
+            <td><span class="badge badge-red">ERPG 3</span></td>
+            <td><span class="badge badge-red">AEGL 3</span></td>
+            <td><span class="badge badge-orange">SELS</span> / <span class="badge badge-red">SPEL</span></td>
+          </tr>
+        </table>
+      </div>
+      <div class="alert alert-info" style="margin-top:12px;">
+        <div class="alert-icon">🎯</div>
+        <div class="alert-text">La valeur qui prend en compte les <strong>populations sensibles</strong> = <strong>AEGL</strong>. La valeur développée pour les situations d'urgence avec une seule durée et 3 niveaux = <strong>ERPG</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Toxiques de guerre
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Famille</th><th>Effets</th><th>Exemples</th></tr>
+        <tr>
+          <td><strong>Neurotoxiques</strong></td>
+          <td>Dangereux par contact cutané. Attaque le système nerveux.</td>
+          <td>Sarin (GB), Novitchok…</td>
+        </tr>
+        <tr>
+          <td><strong>Vésicants</strong></td>
+          <td>Irritation des voies respiratoires, lésions peau/muqueuses</td>
+          <td>Ypérite (gaz moutarde), Léwisite</td>
+        </tr>
+        <tr>
+          <td><strong>Suffocants</strong></td>
+          <td>Lèsent les voies respiratoires / poumons</td>
+          <td>Chlore, Phosgène</td>
+        </tr>
+        <tr>
+          <td><strong>Hémotoxiques</strong></td>
+          <td>Bloquent l'absorption de l'O₂ dans le sang</td>
+          <td>Acide cyanhydrique (HCN)</td>
+        </tr>
+        <tr>
+          <td><strong>Incapacitants / Neutralisants</strong></td>
+          <td>Rendent temporairement inaptes</td>
+          <td>Lacrymogènes</td>
+        </tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:12px">
+        <div class="alert-icon">📋</div>
+        <div class="alert-text">Face à une action terroriste mettant en cause des matières chimiques : <strong>circulaire 700/SGDSN/PSE/PPS du 2 octobre 2018</strong>.<br>
+        La circulaire 750 comporte des éléments pour faire face à la découverte de plis suspects (agents radiologiques).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      CMIC — Cellule Mobile d'Intervention Chimique
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Composition :</strong> 7 agents dont :</p>
+          <ul>
+            <li>1 équipe reconnaissance (chef RCH1 + FAE chef d'équipe)</li>
+            <li>2 équipes intervention possibles</li>
+            <li>Équipiers de reconnaissance : titulaires UV RCH1</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Chef de CMIC</strong> : commande les équipes de reconnaissance et d'intervention.</p>
+        </div>
+        <div>
+          <p><strong>Matériels de détection :</strong></p>
+          <ul>
+            <li><strong>AP2C</strong> : Appareil Portatif de Contrôle de la Contamination (détecte le sarin)</li>
+            <li><strong>RADART</strong> : partage de connaissances entre spécialités et scientifiques — peut constituer un ERE (Élément de Reconnaissance et d'Évaluation)</li>
+          </ul>
+          <p style="margin-top:6px; font-size:0.83rem; color:var(--muted)">Le COGIC active le réseau RADART via la fiche expression de besoin.</p>
+        </div>
+      </div>
+      <hr class="divider">
+      <p><strong>Masques filtrants CMIC :</strong></p>
+      <table>
+        <tr><th>Type</th><th>Protection</th></tr>
+        <tr><td class="mono">E</td><td>Gaz et vapeurs <strong>acides</strong></td></tr>
+        <tr><td class="mono">K</td><td>Gaz et vapeurs d'<strong>ammoniaque</strong></td></tr>
+      </table>
+      <p style="margin-top:10px"><strong>Idées de manœuvre sur la source :</strong> emploi d'une pioche, formation d'un bouchon de glace.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 5 — ICPE & PLANS D'URGENCE
+══════════════════════════════════════════════════════ -->
+<section id="s5" class="section">
+  <div class="s-header">
+    <div class="s-icon">🏭</div>
+    <div>
+      <div class="s-title">ICPE & Plans d'Urgence</div>
+      <div class="s-desc">SEVESO, PPRT, POI, PPI, REACH, CLP, circulaire 700, ORSAN</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header open" onclick="toggle(this)">
+      ICPE — Installations Classées pour la Protection de l'Environnement
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open">
+      <p>Loi du <strong>19 juillet 1976</strong> relative aux ICPE.</p>
+      <p>Régimes auxquels une ICPE peut être soumise :</p>
+      <div class="grid-2">
+        <ul>
+          <li><span class="badge badge-green">D</span> Déclaration</li>
+          <li><span class="badge badge-yellow">DC</span> Déclaration avec contrôle périodique</li>
+        </ul>
+        <ul>
+          <li><span class="badge badge-orange">E</span> Enregistrement</li>
+          <li><span class="badge badge-red">A</span> Autorisation</li>
+        </ul>
+      </div>
+      <p style="margin-top:8px; font-size:0.85rem; color:var(--muted)">Le régime <strong>AS</strong> est supprimé (directive SEVESO 3) et remplacé par les seuils Seveso Bas / Haut.</p>
+      <hr class="divider">
+      <p><strong>Inspecteurs ICPE :</strong> assermentés par l'État — dépendent des <strong>DREAL</strong> et <strong>DDETSPP</strong> — placés sous l'autorité du préfet.</p>
+      <p><strong>CODERST</strong> : Conseil Départemental en matière d'Environnement et des Risques Sanitaires et Technologiques. Donne un avis au préfet sur les projets d'actes réglementaires ICPE.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Directive SEVESO 3 (2012)
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <ul>
+        <li>Prend en compte le règlement <strong>CLP</strong></li>
+        <li>Renforce l'<strong>information du public</strong></li>
+        <li>Supprime le régime AS (remplacé par seuils Bas/Haut)</li>
+        <li>Crée les <strong>CSS</strong> (Commissions de Suivi de Site) qui se substituent aux CLIC</li>
+      </ul>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="card" style="margin:0">
+          <div class="card-title">SEVESO Seuil Haut</div>
+          <ul>
+            <li>POI établi avant mise en service</li>
+            <li>Testé tous les &lt; 1 an</li>
+            <li>Mis à jour tous les &lt; 3 ans</li>
+          </ul>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-title">SEVESO Seuil Bas</div>
+          <ul>
+            <li>POI obligatoire depuis 1er janvier 2023</li>
+            <li>Testé et mis à jour tous les 3 ans</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:10px">Étude de danger : rédigée par l'<strong>INERIS</strong> (Institut National de l'Environnement Industriel et des Risques).<br>
+      4 zones de dangers à partir des études de dangers : très graves, graves, significatifs, indirects par explosion des vitres.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Plans d'urgence — POI, PPI, PPRT
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Plan</th><th>Rédacteur</th><th>Périmètre</th><th>Points clés</th></tr>
+        <tr>
+          <td><strong>POI</strong><br>Plan d'Opération Interne</td>
+          <td>Exploitant (DOI)</td>
+          <td>Sinistre ne débordant pas à l'extérieur de l'établissement</td>
+          <td>Outil de gestion de crise interne. Le COS commande les moyens publics et privés si les SP interviennent.</td>
+        </tr>
+        <tr>
+          <td><strong>PPI</strong><br>Plan Particulier d'Intervention</td>
+          <td>Préfet</td>
+          <td>Organisation des secours à l'échelle du territoire</td>
+          <td>Impose un PCS. En cas de déclenchement, les écoles mettent en œuvre le PPMS.</td>
+        </tr>
+        <tr>
+          <td><strong>PPRT</strong><br>Plan de Prévention des Risques Technologiques</td>
+          <td>Préfet (élaboration + approbation)</td>
+          <td>Mesures préventives zones habitées + sites industriels</td>
+          <td>Implique collectivités (SCOT, PLU) et exploitants. Mesures d'expropriation financées par l'industriel et l'État.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Circulaire 700 — Intervention en contexte NRBC
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>Circulaire <strong>700/SGDSN/PSE/PPS du 2 octobre 2018</strong> — applicable face aux actions terroristes mettant en cause des matières chimiques.</p>
+      <div class="grid-2" style="margin:12px 0">
+        <div class="card" style="margin:0">
+          <div class="card-title">Zone d'exclusion</div>
+          <ul>
+            <li>Comprend la zone de danger <strong>immédiat</strong> (rayon préconisé : 100 m)</li>
+            <li>Comprend la zone de danger <strong>sous le vent</strong></li>
+          </ul>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-title">Zone sous le vent</div>
+          <ul>
+            <li>500 m en cas d'attentat à ciel ouvert</li>
+            <li>Angle d'ouverture de 40°</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <tr><th>Élément</th><th>Définition / Responsable</th></tr>
+        <tr><td><strong>CADI</strong></td><td>Centre d'Accueil Des victimes Impliquées</td></tr>
+        <tr><td><strong>Sas entrée/sortie</strong></td><td>Responsabilité du COS entre zone de soutien et zone de danger</td></tr>
+        <tr><td><strong>Plan NRBC</strong></td><td>Remplace PIRATOX, BIOTOX, PIRATOME — classé « confidentiel défense » — déclinaison zonale — introduit ORSEC NRBCe</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Plan ORSAN
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>Dispositif d'organisation des soins français — mis en œuvre en cas de menace sanitaire grave.</p>
+      <table>
+        <tr><th>Volet</th><th>Signification</th></tr>
+        <tr><td><span class="badge badge-blue">ORSAN AMAVI</span></td><td>Accueil massif de victimes non contaminées</td></tr>
+        <tr><td><span class="badge badge-cyan">ORSAN CLIM</span></td><td>Phénomène climatique</td></tr>
+        <tr><td><span class="badge badge-green">ORSAN EPI-VAC</span></td><td>Épidémie / pandémie (campagne de vaccination)</td></tr>
+        <tr><td><span class="badge badge-orange">ORSAN BIO</span></td><td>Risque biologique connu ou émergent</td></tr>
+        <tr><td><span class="badge badge-red">ORSAN NRC</span></td><td>Risque Nucléaire, Radiologique, Chimique</td></tr>
+      </table>
+      <p style="margin-top:10px; font-size:0.84rem; color:var(--muted)">ORSAN déclenché lors des attaques terroristes du 13 novembre 2015 à Paris et lors de l'épidémie de CORONAVIRUS.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      REACH & CLP
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>REACH</strong> (règlement européen) :</p>
+          <ul>
+            <li><strong>R</strong>egistrement de toutes les substances fabriquées ou importées &gt; 1 t/an</li>
+            <li><strong>E</strong>valuation des propositions d'essais</li>
+            <li><strong>A</strong>utorisation pour les substances extrêmement préoccupantes</li>
+            <li>Restrictions pour gérer les risques des substances <strong>CH</strong>imiques</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>CLP</strong> (Classification, Labelling, Packaging) :</p>
+          <ul>
+            <li>Communiquer aux travailleurs les dangers des substances chimiques</li>
+            <li>Crée <strong>9 pictogrammes</strong> de dangers</li>
+            <li>Remplace les anciens symboles de danger</li>
+          </ul>
+          <p style="margin-top:6px; font-size:0.83rem; color:var(--muted)">Le règlement CLP est intégré à la directive SEVESO 3.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      DICRIM & TRANSAID
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>DICRIM</strong> contient :</p>
+          <ul>
+            <li>Informations sur les risques naturels et technologiques</li>
+            <li>Mesures de prévention, protection et sauvegarde</li>
+            <li>Moyens d'alerte en cas de risque</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Protocole TRANSAID</strong> :</p>
+          <ul>
+            <li>L'industriel peut intervenir sur le lieu de l'accident avec ses moyens</li>
+            <li>Il apporte son expertise sur le produit impliqué</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 6 — TRANSPORT DE MATIÈRES DANGEREUSES
+══════════════════════════════════════════════════════ -->
+<section id="s6" class="section">
+  <div class="s-header">
+    <div class="s-icon">🚛</div>
+    <div>
+      <div class="s-title">Transport de Matières Dangereuses</div>
+      <div class="s-desc">ADR, RID, codes danger, plaques TMD, guide orange</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header open" onclick="toggle(this)">
+      Réglementations par mode de transport
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open">
+      <table>
+        <tr><th>Mode</th><th>Accord/Règlement</th><th>Organisme</th></tr>
+        <tr><td>🚛 <strong>Route</strong></td><td class="mono"><strong>ADR</strong></td><td>Accord européen international</td></tr>
+        <tr><td>🚂 <strong>Ferroviaire</strong></td><td class="mono"><strong>RID</strong></td><td>Règlement international ferroviaire</td></tr>
+        <tr><td>✈️ <strong>Aérien</strong></td><td class="mono"><strong>OACI</strong></td><td>Organisation de l'Aviation Civile Internationale</td></tr>
+        <tr><td>🚢 <strong>Maritime (colis)</strong></td><td class="mono"><strong>IMDG</strong></td><td>International Maritime Dangerous Goods</td></tr>
+        <tr><td>⚓ <strong>Ports maritimes</strong></td><td class="mono"><strong>RPM</strong></td><td>Règlement Ports Maritimes</td></tr>
+        <tr><td>🌊 <strong>Pollution marine</strong></td><td class="mono"><strong>MARPOL</strong></td><td>OMI — prévention pollution de la mer</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Codes danger ADR
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <table>
+        <tr><th>Code</th><th>Signification</th></tr>
+        <tr><td class="mono"><strong>22</strong></td><td>Gaz réfrigéré</td></tr>
+        <tr><td class="mono"><strong>30</strong></td><td>Matière liquide inflammable (point d'éclair ≥ 23°C)</td></tr>
+        <tr><td class="mono"><strong>44</strong></td><td>Matière solide inflammable à température élevée en état fondu</td></tr>
+        <tr><td class="mono"><strong>68</strong></td><td>Toxique + Corrosif (ex : Chlore)</td></tr>
+        <tr><td class="mono"><strong>X423</strong></td><td>Matière solide inflammable réagissant avec l'eau en dégageant des gaz inflammables</td></tr>
+        <tr><td class="mono"><strong>606</strong></td><td>Matière infectieuse</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:12px">
+        <div class="alert-icon">🪧</div>
+        <div class="alert-text">Le <strong>gasoil</strong> : code danger <strong>30</strong> — n° ONU <strong>1202</strong>. L'<strong>ammoniac (NH₃)</strong> : Toxique, Corrosif, Irritant — peut former des mélanges explosifs avec l'air.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Guide orange des sapeurs-pompiers genevois
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p>Système de code couleur :</p>
+          <ul>
+            <li>🔴 <strong>Rouge</strong> = Feu</li>
+            <li>⚪ <strong>Blanc</strong> = Réaction avec l'eau</li>
+          </ul>
+          <p style="margin-top:8px">Un code de <strong>0 à 4</strong> indique l'intensité du danger.</p>
+        </div>
+        <div>
+          <p>Le <strong>Chlore</strong> :</p>
+          <ul>
+            <li>Code danger : 68</li>
+            <li>Toxique + Corrosif</li>
+          </ul>
+          <p style="margin-top:8px">Le <strong>CO (monoxyde de carbone)</strong> :</p>
+          <ul>
+            <li>Se fixe sur l'hémoglobine</li>
+            <li><strong>Explosif</strong> (en plus d'être toxique)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Atmosphère & dispersion
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>La couche la plus basse de l'atmosphère terrestre = <strong>troposphère</strong>.</p>
+      <p>La pression atmosphérique est mesurée à l'aide d'un <strong>baromètre</strong>. Elle <strong>diminue</strong> avec l'altitude.</p>
+      <p>Si la <strong>température augmente</strong> → on peut observer le passage de l'état solide → liquide → gazeux de la substance chimique (impact sur la dispersion).</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 7 — POLLUTION AQUATIQUE
+══════════════════════════════════════════════════════ -->
+<section id="s7" class="section">
+  <div class="s-header">
+    <div class="s-icon">💧</div>
+    <div>
+      <div class="s-title">Pollution Aquatique</div>
+      <div class="s-desc">Nappes, paramètres, eutrophisation, barrages, acteurs</div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header open" onclick="toggle(this)">
+      Types de nappes souterraines
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open">
+      <div class="grid-2">
+        <div class="card" style="margin:0">
+          <div class="card-title">Nappe libre</div>
+          <p>En contact direct avec la surface — vulnérable aux pollutions d'infiltration.</p>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-title">Nappe captive</div>
+          <p>Séparée de la surface par une couche <strong>imperméable</strong> → protection contre les eaux d'infiltration contaminées.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Paramètres de surveillance d'une pollution fluviale
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Paramètres organoleptiques :</strong></p>
+          <ul>
+            <li>Couleur</li>
+            <li>Odeur</li>
+            <li>Turbidité (présence de boues)</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Paramètres physico-chimiques :</strong></p>
+          <ul>
+            <li>Teneur en oxygène</li>
+            <li>Acido-basicité (pH)</li>
+            <li>Température</li>
+            <li>Conductivité</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:10px"><strong>Liquides polaires :</strong> méthanol, éthanol (nécessitent des émulseurs spéciaux, taux d'application 20 L/min/m²).</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Eutrophisation
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p>Phénomène d'<strong>enrichissement des eaux en sels minéraux</strong> (principalement nitrates et phosphates) → prolifération d'algues parfois toxiques.</p>
+      <p>Stades d'évolution : oligotrophe → mésotrophe → <strong>eutrophe</strong> (stade le plus avancé).</p>
+      <p>Pollution organique des eaux souterraines = due aux eaux usées industrielles, domestiques et/ou agricoles.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-header" onclick="toggle(this)">
+      Techniques de lutte & barrages
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="grid-2">
+        <div>
+          <p><strong>Absorption :</strong></p>
+          <ul>
+            <li>Utilisation de <strong>charbon actif</strong></li>
+            <li>Transfère les polluants de la phase gaz vers la phase liquide</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Barrages statiques :</strong></p>
+          <ul>
+            <li>Barrage en <strong>épi</strong></li>
+            <li>Barrage en <strong>cascade</strong></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="divider">
+      <p><strong>Acteurs de la police de l'eau :</strong></p>
+      <ul>
+        <li><strong>OFB</strong> (Office Français de la Biodiversité)</li>
+        <li><strong>MISEN</strong> (Mission Inter-Services de l'Eau et de la Nature)</li>
+        <li><strong>DREAL</strong></li>
+        <li><strong>Gendarmerie</strong></li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 8 — QCM ENTRAÎNEMENT
+══════════════════════════════════════════════════════ -->
+<section id="s8" class="section">
+  <div class="s-header">
+    <div class="s-icon">🎯</div>
+    <div>
+      <div class="s-title">QCM Entraînement</div>
+      <div class="s-desc">20 questions issues du document — cliquez sur votre réponse</div>
+    </div>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div style="display:flex; gap:12px; margin-top:24px">
+    <button class="btn btn-orange" onclick="submitQuiz()">Valider mes réponses</button>
+    <button class="btn btn-outline" onclick="resetQuiz()">Recommencer</button>
+  </div>
+
+  <div id="quizResult" style="display:none; margin-top:24px; text-align:center">
+    <div class="card">
+      <div class="qcm-score" id="scoreDisplay">0 / 20</div>
+      <div class="score-bar"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+      <p id="scoreMsg" style="color:var(--muted); margin-bottom:16px"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// ── Navigation ──
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.section).classList.add('active');
+  });
+});
+
+// ── Accordion ──
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
+// ── QCM Data ──
+const questions = [
+  {
+    q: "Dans les changements d'état de la matière, qu'appelle-t-on la sublimation ?",
+    options: ["Le passage de l'état liquide à l'état gazeux","Le passage de l'état gazeux à l'état liquide","Le passage de l'état solide à l'état gazeux","Le passage de l'état gazeux à l'état solide"],
+    answer: 2, expl: "La sublimation est le passage direct de l'état SOLIDE à l'état GAZEUX."
+  },
+  {
+    q: "Quelle est la LIE du méthane ?",
+    options: ["2,1 %","3 %","5 %","83 %"],
+    answer: 2, expl: "Le méthane a une LIE de 5 % et une LSE de 15 %."
+  },
+  {
+    q: "Pour un effet thermique, quel est le seuil des effets irréversibles (SEI) ?",
+    options: ["1 kW/m²","3 kW/m²","5 kW/m²","8 kW/m²"],
+    answer: 1, expl: "SEI = 3 kW/m² (dangers significatifs pour la vie humaine)."
+  },
+  {
+    q: "BLEVE signifie :",
+    options: ["Boiling Liquid Vapor Explosion","Blast Level Vapor Effect","Burning Liquid Vapour Explosion","Boiling Liquid Volume Expansion"],
+    answer: 0, expl: "BLEVE = Boiling Liquid Vapor Explosion : explosion pneumatique de vapeurs d'un liquide en ébullition."
+  },
+  {
+    q: "La voie la plus fréquente d'entrée des substances toxiques dans le corps humain :",
+    options: ["Cutanée","Ingestion","Inhalation","Oculaire"],
+    answer: 2, expl: "L'inhalation est la voie la plus fréquente d'intoxication."
+  },
+  {
+    q: "Quel accord régit le transport routier de marchandises dangereuses ?",
+    options: ["RID","IMDG","ADR","RPM"],
+    answer: 2, expl: "L'ADR (Accord pour les Dangers Routiers) régit le transport routier."
+  },
+  {
+    q: "Le taux d'application opérationnel réflexe pour les liquides polaires (ENSOSP) :",
+    options: ["5 L/min/m²","10 L/min/m²","15 L/min/m²","20 L/min/m²"],
+    answer: 3, expl: "20 L/min/m² pour les liquides polaires (méthanol, éthanol…). 10 L/min/m² pour les hydrocarbures."
+  },
+  {
+    q: "Qu'appelle-t-on la DL 50 ?",
+    options: ["Dose pour 50 % de survie","Dose provoquant 50 % de décès","Dose maximale sans mortalité","Concentration létale à 50 minutes"],
+    answer: 1, expl: "DL 50 = Dose Létale 50 : dose pour laquelle on constate 50 % de décès sur la population testée."
+  },
+  {
+    q: "La circulaire 700 est applicable face à :",
+    options: ["Tout accident chimique industriel","Une action terroriste mettant en cause des matières chimiques","Un BLEVE","Une pollution aquatique"],
+    answer: 1, expl: "La circulaire 700/SGDSN/PSE/PPS du 2 octobre 2018 s'applique lors d'actions terroristes chimiques."
+  },
+  {
+    q: "Le foisonnement est :",
+    options: ["Le rapport volume d'émulseur / volume de solution moussante","Le rapport volume de mousse / volume de solution moussante","Le débit de solution moussante par surface","Le taux de concentration en émulseur"],
+    answer: 1, expl: "Foisonnement = Volume de mousse / Volume de solution moussante."
+  },
+  {
+    q: "Quel est le seuil des effets létaux significatifs (SELS) pour une explosion dans les ICPE ?",
+    options: ["50 mbar","140 mbar","200 mbar","300 mbar"],
+    answer: 2, expl: "SELS pression = 200 mbar (zone de dangers très graves). SEI = 50 mbar. Dégâts structures = 300 mbar."
+  },
+  {
+    q: "La valeur ERPG est déterminée sur un temps d'exposition de :",
+    options: ["15 minutes","30 minutes","1 heure","8 heures"],
+    answer: 2, expl: "ERPG = durée unique d'1 heure — 3 niveaux d'exposition."
+  },
+  {
+    q: "Le gaz Sarin est un :",
+    options: ["Vésicant","Suffocant","Neurotoxique","Hémotoxique"],
+    answer: 2, expl: "Le Sarin est un agent neurotoxique, dangereux notamment par contact cutané."
+  },
+  {
+    q: "Dans une CMIC, combien d'agents la composent ?",
+    options: ["5","6","7","9"],
+    answer: 2, expl: "Une CMIC est composée de 7 agents."
+  },
+  {
+    q: "Le CODERST est :",
+    options: ["Un plan de secours","Un organisme de transport","Le Conseil Départemental compétent en Environnement et Risques Sanitaires et Technologiques","Une directive européenne"],
+    answer: 2, expl: "CODERST : Conseil Départemental compétent en matière d'Environnement et des Risques Sanitaires et Technologiques."
+  },
+  {
+    q: "La nappe captive est :",
+    options: ["En contact direct avec la surface","Séparée de la surface par une couche imperméable","La nappe alimentant les rivières","La nappe la plus polluée"],
+    answer: 1, expl: "La nappe captive est protégée par une couche imperméable qui la sépare de la surface."
+  },
+  {
+    q: "Le haut foisonnement est adapté pour :",
+    options: ["Les feux d'hydrocarbures en plein air","Les déversements dans des espaces clos","Les feux de forêt","Les feux de véhicules"],
+    answer: 1, expl: "Le haut foisonnement (> 200) permet le déversement dans des espaces clos comme les caves."
+  },
+  {
+    q: "À combien de PPM correspond 0,5 % de monoxyde de carbone ?",
+    options: ["500 ppm","1 000 ppm","5 000 ppm","50 000 ppm"],
+    answer: 2, expl: "0,5 % = 5 000 ppm (1 % = 10 000 ppm)."
+  },
+  {
+    q: "Le slop over est :",
+    options: ["Un débordement par moussage","Une explosion de nuage de vapeurs","Un débordement par ébullition dû à l'application accidentelle d'eau","Un phénomène de boule de feu"],
+    answer: 2, expl: "Slop over = débordement par ébullition due à l'application accidentelle d'eau à la surface d'un produit lourd en combustion."
+  },
+  {
+    q: "La directive SEVESO 3 (2012) prend en compte :",
+    options: ["La réglementation MARPOL","Le règlement CLP","Le protocole TRANSAID","La circulaire 700"],
+    answer: 1, expl: "La directive SEVESO 3 intègre le règlement CLP et renforce l'information du public."
+  }
+];
+
+let userAnswers = {};
+let submitted = false;
+
+function buildQuiz() {
+  const c = document.getElementById('quizContainer');
+  c.innerHTML = '';
+  questions.forEach((q, i) => {
+    const block = document.createElement('div');
+    block.className = 'qcm-block';
+    block.innerHTML = `
+      <div class="qcm-q">Q${i+1}. ${q.q} <span>(1 réponse)</span></div>
+      <div class="qcm-options" id="opts-${i}">
+        ${q.options.map((o,j) => `
+          <div class="qcm-opt" onclick="selectAnswer(${i},${j})" id="opt-${i}-${j}">
+            <div class="opt-dot" id="dot-${i}-${j}"></div>
+            <span>${o}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="qcm-expl" id="expl-${i}">💡 ${q.expl}</div>
+    `;
+    c.appendChild(block);
+  });
+}
+
+function selectAnswer(q, opt) {
+  if (submitted) return;
+  // clear previous selection
+  questions[q].options.forEach((_,j) => {
+    document.getElementById(`opt-${q}-${j}`).style.borderColor = '';
+    document.getElementById(`opt-${q}-${j}`).style.background = '';
+    document.getElementById(`dot-${q}-${j}`).style.background = '';
+  });
+  userAnswers[q] = opt;
+  document.getElementById(`opt-${q}-${opt}`).style.borderColor = 'var(--orange)';
+  document.getElementById(`opt-${q}-${opt}`).style.background = 'rgba(255,107,26,0.08)';
+  document.getElementById(`dot-${q}-${opt}`).style.background = 'var(--orange)';
+}
+
+function submitQuiz() {
+  submitted = true;
+  let score = 0;
+  questions.forEach((q, i) => {
+    const sel = userAnswers[i];
+    // reveal correct
+    document.getElementById(`opt-${i}-${q.answer}`).classList.add('reveal-correct');
+    if (sel === undefined) {
+      // no answer
+    } else if (sel === q.answer) {
+      document.getElementById(`opt-${i}-${sel}`).className = 'qcm-opt correct';
+      score++;
+    } else {
+      document.getElementById(`opt-${i}-${sel}`).className = 'qcm-opt wrong';
+    }
+    document.getElementById(`expl-${i}`).classList.add('show');
+  });
+
+  const pct = Math.round(score/questions.length*100);
+  document.getElementById('scoreDisplay').textContent = `${score} / ${questions.length}`;
+  document.getElementById('scoreFill').style.width = pct + '%';
+  let msg = pct >= 80 ? '🏆 Excellent ! Prêt pour le concours.' : pct >= 60 ? '👍 Bien ! Quelques révisions encore.' : '📚 Continuez à réviser !';
+  document.getElementById('scoreMsg').textContent = msg + ` (${pct}%)`;
+  document.getElementById('quizResult').style.display = 'block';
+  document.getElementById('quizResult').scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz() {
+  submitted = false;
+  userAnswers = {};
+  document.getElementById('quizResult').style.display = 'none';
+  buildQuiz();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

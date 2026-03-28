@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Risque Bâtimentaire — Formation SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e10;
+    --bg2: #141619;
+    --bg3: #1c1f24;
+    --bg4: #242830;
+    --rouge: #d42b2b;
+    --rouge2: #b01f1f;
+    --rouge-glow: rgba(212,43,43,0.15);
+    --or: #e8a020;
+    --vert: #2ea86a;
+    --bleu: #2e7fd4;
+    --text: #e8eaf0;
+    --text2: #a8adb8;
+    --border: #2e3340;
+    --border2: #3a404f;
+    --tag-bg: rgba(212,43,43,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, #0d0e10 0%, #1a0a0a 50%, #0d0e10 100%);
+    border-bottom: 2px solid var(--rouge);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 30px rgba(212,43,43,0.2);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 24px;
+  }
+
+  .badge-sp {
+    background: var(--rouge);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  header h1 span { color: var(--rouge); }
+
+  .header-meta {
+    margin-left: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* ===== LAYOUT ===== */
+  .layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .nav-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rouge);
+    padding: 12px 18px 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover { background: var(--bg3); color: var(--text); border-left-color: var(--border2); }
+  .nav-item.active { background: var(--rouge-glow); color: #fff; border-left-color: var(--rouge); }
+
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    flex: 1;
+    padding: 32px 36px;
+    overflow-y: auto;
+    max-width: 960px;
+  }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  /* ===== SECTION TITLES ===== */
+  .section-header {
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rouge);
+    margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .section-intro {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 700px;
+  }
+
+  /* ===== CARDS ===== */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; margin-bottom: 28px; }
+
+  .card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+  .card.rouge { border-top: 3px solid var(--rouge); }
+  .card.or { border-top: 3px solid var(--or); }
+  .card.vert { border-top: 3px solid var(--vert); }
+  .card.bleu { border-top: 3px solid var(--bleu); }
+
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .card-body strong { color: var(--text); }
+
+  /* ===== TABLES ===== */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: var(--rouge);
+    color: #fff;
+  }
+
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  tbody tr:hover { background: var(--bg3); }
+  tbody tr:nth-child(even) { background: var(--bg2); }
+  tbody tr:nth-child(even):hover { background: var(--bg3); }
+
+  td {
+    padding: 9px 14px;
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  td strong { color: var(--text); }
+  td .pill { display: inline-block; }
+
+  /* ===== BLOCKS ===== */
+  .h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    margin: 28px 0 14px;
+    padding-left: 12px;
+    border-left: 3px solid var(--rouge);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--or);
+    margin: 20px 0 10px;
+  }
+
+  .info-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .info-box.alerte { border-left: 4px solid var(--rouge); }
+  .info-box.note { border-left: 4px solid var(--bleu); }
+  .info-box.cle { border-left: 4px solid var(--or); }
+  .info-box.ok { border-left: 4px solid var(--vert); }
+
+  .info-box-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .info-box.alerte .info-box-title { color: var(--rouge); }
+  .info-box.note .info-box-title { color: var(--bleu); }
+  .info-box.cle .info-box-title { color: var(--or); }
+  .info-box.ok .info-box-title { color: var(--vert); }
+
+  .info-box strong { color: var(--text); }
+
+  /* ===== PILL / BADGE ===== */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .pill-r { background: rgba(212,43,43,0.18); color: #ff7070; }
+  .pill-o { background: rgba(232,160,32,0.18); color: var(--or); }
+  .pill-g { background: rgba(46,168,106,0.18); color: #5de08a; }
+  .pill-b { background: rgba(46,127,212,0.18); color: #70b4ff; }
+
+  /* ===== ACCORDION ===== */
+  .accordion { margin-bottom: 8px; border-radius: 6px; border: 1px solid var(--border); overflow: hidden; }
+
+  .accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: var(--bg3);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: var(--bg4); }
+  .accordion-header.open { background: var(--rouge-glow); border-bottom: 1px solid var(--border); }
+
+  .accordion-arrow { transition: transform 0.2s; font-size: 10px; color: var(--text2); }
+  .accordion-header.open .accordion-arrow { transform: rotate(180deg); }
+
+  .accordion-body {
+    display: none;
+    padding: 16px;
+    background: var(--bg2);
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .accordion-body.open { display: block; }
+  .accordion-body strong { color: var(--text); }
+  .accordion-body ul { padding-left: 18px; margin: 8px 0; }
+  .accordion-body ul li { margin-bottom: 4px; }
+
+  /* ===== LIST ITEMS ===== */
+  .def-list { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; margin-bottom: 16px; }
+  .def-list dt { font-family: 'Share Tech Mono', monospace; color: var(--rouge); font-size: 12px; padding-top: 2px; white-space: nowrap; }
+  .def-list dd { color: var(--text2); line-height: 1.6; }
+  .def-list dd strong { color: var(--text); }
+
+  /* ===== QCM ===== */
+  .qcm-container { display: flex; flex-direction: column; gap: 0; }
+
+  .qcm-progress-bar {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .qcm-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .qcm-score span { color: var(--rouge); }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg4);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--rouge);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .qcm-stat { font-size: 12px; color: var(--text2); text-align: right; white-space: nowrap; }
+
+  .question-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .question-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--rouge);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .question-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg2);
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.5;
+    transition: all 0.15s;
+    font-family: 'Barlow', sans-serif;
+    width: 100%;
+  }
+
+  .option-btn:hover:not(:disabled) { border-color: var(--border2); color: var(--text); background: var(--bg4); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: var(--vert); background: rgba(46,168,106,0.12); color: #5de08a; }
+  .option-btn.wrong { border-color: var(--rouge); background: rgba(212,43,43,0.12); color: #ff7070; }
+  .option-btn.missed { border-color: var(--vert); border-style: dashed; }
+
+  .option-letter {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: var(--bg4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .explanation {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: rgba(46,127,212,0.1);
+    border-left: 3px solid var(--bleu);
+    font-size: 12px;
+    color: #9ec9ff;
+    line-height: 1.6;
+  }
+
+  .explanation.show { display: block; }
+
+  .qcm-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary { background: var(--rouge); color: #fff; }
+  .btn-primary:hover { background: var(--rouge2); }
+  .btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+  /* ===== SCHEMA SSI ===== */
+  .ssi-schema {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .ssi-top {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .ssi-box {
+    flex: 1;
+    background: var(--bg4);
+    border-radius: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+
+  .ssi-box-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .ssi-box-title.rouge { color: var(--rouge); }
+  .ssi-box-title.bleu { color: var(--bleu); }
+  .ssi-box-title.or { color: var(--or); }
+
+  .ssi-sub { font-size: 12px; color: var(--text2); line-height: 1.8; }
+  .ssi-sub li { list-style: none; padding-left: 0; }
+  .ssi-sub li::before { content: "▸ "; color: var(--text2); font-size: 10px; }
+
+  .ssi-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--text2);
+    flex-shrink: 0;
+    padding-top: 20px;
+  }
+
+  /* ===== FAMILLES ===== */
+  .famille-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-bottom: 20px; }
+
+  .famille-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .famille-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+  }
+
+  .famille-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rouge);
+    margin-bottom: 4px;
+  }
+
+  .famille-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .famille-body { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .famille-body strong { color: var(--text); }
+
+  /* ===== IGH GRID ===== */
+  .igh-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 10px; margin-bottom: 20px; }
+
+  .igh-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+  }
+
+  .igh-code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--rouge);
+    margin-bottom: 4px;
+  }
+
+  .igh-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .igh-detail { font-size: 11px; color: var(--text2); line-height: 1.5; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #1a0808 0%, #0d0e10 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "🏢";
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.07;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rouge);
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .hero-text { font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 600px; }
+  .hero-text strong { color: var(--text); }
+
+  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+  .htag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  /* ===== SCROLLBAR ===== */
+  .content::-webkit-scrollbar { width: 6px; }
+  .content::-webkit-scrollbar-track { background: transparent; }
+  .content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .content { padding: 20px; }
+    .famille-grid { grid-template-columns: 1fr; }
+    .ssi-top { flex-direction: column; }
+    .ssi-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="badge-sp">🔥 SDIS</div>
+    <h1>Risque <span>Bâtimentaire</span></h1>
+    <div class="header-meta">Formation LT · Révision concours</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section-title">Cours</div>
+    <div class="nav-item active" data-target="intro" onclick="showSection(this)">
+      <span class="nav-icon">🏠</span>Introduction générale
+    </div>
+    <div class="nav-item" data-target="reaction" onclick="showSection(this)">
+      <span class="nav-icon">🔥</span>Réaction au feu
+    </div>
+    <div class="nav-item" data-target="resistance" onclick="showSection(this)">
+      <span class="nav-icon">🧱</span>Résistance au feu
+    </div>
+    <div class="nav-item" data-target="erp-gen" onclick="showSection(this)">
+      <span class="nav-icon">🏢</span>ERP — Généralités
+    </div>
+    <div class="nav-item" data-target="erp-const" onclick="showSection(this)">
+      <span class="nav-icon">📐</span>ERP — Construction
+    </div>
+    <div class="nav-item" data-target="desenfumage" onclick="showSection(this)">
+      <span class="nav-icon">💨</span>Désenfumage
+    </div>
+    <div class="nav-item" data-target="ssi" onclick="showSection(this)">
+      <span class="nav-icon">🔔</span>Systèmes d'alarme & SSI
+    </div>
+    <div class="nav-item" data-target="commissions" onclick="showSection(this)">
+      <span class="nav-icon">📋</span>Commissions de sécurité
+    </div>
+    <div class="nav-section-title">Bâtiments spéciaux</div>
+    <div class="nav-item" data-target="habitations" onclick="showSection(this)">
+      <span class="nav-icon">🏠</span>Habitations (familles)
+    </div>
+    <div class="nav-item" data-target="igh" onclick="showSection(this)">
+      <span class="nav-icon">🏙️</span>IGH
+    </div>
+    <div class="nav-item" data-target="travail" onclick="showSection(this)">
+      <span class="nav-icon">⚙️</span>Code du travail
+    </div>
+    <div class="nav-section-title">Entraînement</div>
+    <div class="nav-item" data-target="qcm" onclick="showSection(this)">
+      <span class="nav-icon">✏️</span>QCM interactif
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ========== INTRO ========== -->
+    <div class="section-page active" id="intro">
+      <div class="hero">
+        <div class="hero-title">Module 01 — Introduction</div>
+        <div class="hero-subtitle">Le risque bâtimentaire</div>
+        <div class="hero-text">
+          Ensemble des <strong>risques liés aux caractéristiques constructives</strong> des bâtiments susceptibles d'influencer le développement d'un incendie et la sécurité des personnes. La réglementation française s'articule autour de trois grands textes.
+        </div>
+        <div class="hero-tags">
+          <span class="htag">ERP</span><span class="htag">Habitations</span><span class="htag">IGH</span>
+          <span class="htag">Code du travail</span><span class="htag">Prévention</span>
+        </div>
+      </div>
+
+      <div class="h3">⚖️ Textes réglementaires fondamentaux</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Texte</th><th>Domaine d'application</th><th>Champ couvert</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Arrêté du 25 juin 1980</strong></td><td>ERP</td><td>Dispositions générales du règlement de sécurité contre les risques d'incendie et de panique</td></tr>
+            <tr><td><strong>Arrêté du 31 janvier 1986</strong></td><td>Habitations</td><td>Protection contre l'incendie des bâtiments d'habitation</td></tr>
+            <tr><td><strong>Arrêté du 30 décembre 2011</strong></td><td>IGH</td><td>Règlement de sécurité pour les immeubles de grande hauteur</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🎯 Prévention & Prévision</div>
+      <div class="cards-grid">
+        <div class="card rouge">
+          <div class="card-title">🛡️ Prévention</div>
+          <div class="card-body">
+            Recherche de toutes les <strong>mesures propres à empêcher qu'un feu ne se déclare</strong> et à en empêcher la propagation.<br><br>
+            <strong>Mesures passives :</strong><br>
+            — Compartimentage<br>
+            — Stabilité au feu du bâtiment<br>
+            — Choix des matériaux
+          </div>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">🚨 Prévision</div>
+          <div class="card-body">
+            Ensemble des <strong>mesures opérationnelles</strong> permettant de faire face à un incendie déclaré.<br><br>
+            <strong>Mesures actives :</strong><br>
+            — Détection incendie<br>
+            — Systèmes d'extinction<br>
+            — Désenfumage mécanique
+          </div>
+        </div>
+        <div class="card or">
+          <div class="card-title">📊 Potentiel calorifique</div>
+          <div class="card-body">
+            Quantité de chaleur que pourrait dégager l'ensemble des <strong>matériaux d'un même local</strong> lors de sa combustion complète.<br><br>
+            Également appelé <strong>charge calorifique</strong>. Exprimé en MJ/m².
+          </div>
+        </div>
+        <div class="card vert">
+          <div class="card-title">🔔 Alerte vs Alarme</div>
+          <div class="card-body">
+            <strong>Alerte :</strong> Action de demander l'intervention d'un service public de secours et de lutte contre l'incendie.<br><br>
+            <strong>Alarme :</strong> Signal avertissant les occupants de la nécessité d'évacuer.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== RÉACTION AU FEU ========== -->
+    <div class="section-page" id="reaction">
+      <div class="section-header">
+        <div class="section-tag">Module 02</div>
+        <div class="section-title">Réaction au feu</div>
+        <div class="section-intro">La réaction au feu caractérise le comportement d'un matériau en présence du feu : sa combustibilité, son inflammabilité et sa propagation.</div>
+      </div>
+
+      <div class="h3">🇪🇺 Euroclasses (classement européen)</div>
+
+      <div class="info-box cle">
+        <div class="info-box-title">🔑 Principe du classement</div>
+        Le classement européen s'effectue sur <strong>trois domaines</strong> (sauf pour les revêtements de sol) :<br>
+        <strong>(1)</strong> Pouvoir combustible — <strong>(2)</strong> Génération de fumées — <strong>(3)</strong> Production de gouttes/particules enflammées
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Critère</th><th>Symbole</th><th>Signification</th><th>Niveaux</th></tr></thead>
+          <tbody>
+            <tr><td>Pouvoir combustible</td><td><strong>A1, A2, B, C, D, E, F</strong></td><td>D'incombustible à non classé</td><td>A1 = incombustible / F = non classé</td></tr>
+            <tr><td>Fumées</td><td><strong>s</strong> (smoke)</td><td>Génération de fumées</td><td>s1 (faible) → s3 (forte)</td></tr>
+            <tr><td>Gouttes / Particules</td><td><strong>d</strong> (drop)</td><td>Production de gouttes enflammées</td><td>d0 (aucune) → d2 (forte)</td></tr>
+            <tr><td>Revêtements de sol</td><td><strong>FL</strong> (floor)</td><td>Classement spécifique sols</td><td>A1FL → FFL</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box note">
+        <div class="info-box-title">📌 Points clés euroclasses</div>
+        — Un matériau <strong>incombustible</strong> est classé en <strong>A1</strong><br>
+        — Un matériau <strong>combustible difficilement inflammable</strong> est classé en <strong>C</strong><br>
+        — Un matériau de classe A1 <strong>n'a pas de critères s et d</strong> (incombustible = pas de fumée ni de gouttes)<br>
+        — <strong>A1FL</strong> = revêtement de sol peu ou non combustible, contribution à l'embrasement généralisé très limitée
+      </div>
+
+      <div class="h3">🇫🇷 Classement M (ancien système français)</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Classe M</th><th>Équivalent euroclass</th><th>Définition</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill pill-g">M0</span></td><td>A2</td><td>Incombustible</td></tr>
+            <tr><td><span class="pill pill-b">M1</span></td><td>A1</td><td>Non inflammable</td></tr>
+            <tr><td><span class="pill pill-o">M2</span></td><td>C</td><td>Difficilement inflammable</td></tr>
+            <tr><td><span class="pill pill-o">M3</span></td><td>D</td><td>Moyennement inflammable</td></tr>
+            <tr><td><span class="pill pill-r">M4</span></td><td>E</td><td>Facilement inflammable</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">⚡ Norme NFC 32-070 (câbles électriques)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Classement</th><th>Caractéristique</th></tr></thead>
+          <tbody>
+            <tr><td><strong>C1</strong></td><td>Câbles ne propageant pas l'incendie</td></tr>
+            <tr><td><strong>CR 1</strong></td><td>Câbles résistants au feu</td></tr>
+            <tr><td><strong>C2</strong></td><td>Câbles à propagation réduite</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🧯 Extincteurs & classes de feux</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Classe</th><th>Type de feu</th><th>Extincteur préconisé</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td>Feux solides (bois, papier…)</td><td>Eau avec additif, poudre ABC</td></tr>
+            <tr><td>B</td><td>Feux liquides inflammables</td><td>Mousse, CO₂, poudre BC</td></tr>
+            <tr><td>C</td><td>Feux de gaz</td><td>Poudre BC ou ABC</td></tr>
+            <tr><td>D</td><td>Feux de métaux</td><td>Poudre spéciale</td></tr>
+            <tr><td>E</td><td>Feux sur installations électriques</td><td>CO₂, poudre</td></tr>
+            <tr><td><strong>F</strong></td><td><strong>Feux de cuisine (huile, graisses)</strong></td><td><strong>Dioxyde de carbone</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== RÉSISTANCE AU FEU ========== -->
+    <div class="section-page" id="resistance">
+      <div class="section-header">
+        <div class="section-tag">Module 03</div>
+        <div class="section-title">Résistance au feu</div>
+        <div class="section-intro">La résistance au feu est le temps durant lequel un élément de construction joue son rôle de limitation de la propagation et maintient ses caractéristiques mécaniques.</div>
+      </div>
+
+      <div class="h3">🔬 Critères européens REI</div>
+
+      <div class="cards-grid">
+        <div class="card rouge">
+          <div class="card-title">R — Résistance mécanique</div>
+          <div class="card-body">Capacité portante. L'élément supporte les <strong>charges mécaniques</strong> pendant le temps imparti sans s'effondrer.</div>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">E — Étanchéité</div>
+          <div class="card-body">L'élément empêche le passage des <strong>gaz chauds, des fumées et des flammes</strong> (étanchéité au feu).</div>
+        </div>
+        <div class="card or">
+          <div class="card-title">I — Isolation thermique</div>
+          <div class="card-body">L'élément limite l'<strong>élévation de température</strong> sur la face non exposée au-delà d'un seuil (140°C en moyenne).</div>
+        </div>
+      </div>
+
+      <div class="info-box cle">
+        <div class="info-box-title">📐 Exemple de lecture</div>
+        Un mur porteur avec : Capacité portante 124 min / Étanchéité 92 min / Isolation 47 min<br>
+        → <strong>R 120</strong> (on prend le palier inférieur) / <strong>RE 90</strong> / <strong>REI 45</strong>
+        <br><br>Le temps est toujours compté en <strong>minutes</strong> (paliers : 15, 30, 45, 60, 90, 120, 180, 240).
+      </div>
+
+      <div class="h3">🇫🇷 Anciens termes français</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Terme français</th><th>Critères</th><th>Définition</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Stable au feu (SF)</strong></td><td>R</td><td>L'élément conserve sa stabilité (résistance mécanique) pendant le temps requis</td></tr>
+            <tr><td><strong>Pare-flamme (PF)</strong></td><td>RE</td><td>L'élément évite le passage des flammes et des gaz chauds (stabilité + étanchéité). Répond aux critères d'étanchéité au gaz et aux flammes</td></tr>
+            <tr><td><strong>Coupe-feu (CF)</strong></td><td>REI</td><td>L'élément assure stabilité + étanchéité + isolation thermique — évite la propagation des gaz, fumées et chaleur pendant un temps donné</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Règle 421 — Circulations horizontales protégées</div>
+        Dans les <strong>circulations horizontales protégées</strong> :<br>
+        — Revêtement de <strong>mur</strong> classé <strong>M2</strong> minimum<br>
+        — Revêtement de <strong>plafond</strong> classé <strong>M1</strong> minimum<br>
+        — Revêtement de <strong>sol</strong> classé <strong>M4</strong> minimum
+      </div>
+
+      <div class="h3">🇫🇷 3 catégories de résistance au feu en France</div>
+      <div class="info-box ok">
+        <div class="info-box-title">✅ Les 3 catégories</div>
+        <strong>1. Stable au feu (SF)</strong> — résistance mécanique uniquement<br>
+        <strong>2. Pare-flamme (PF)</strong> — stabilité + étanchéité<br>
+        <strong>3. Coupe-feu (CF)</strong> — stabilité + étanchéité + isolation thermique<br><br>
+        Les durées réglementaires : <strong>¼ h / ½ h / 1 h / 1 h 30 / 2 h / 3 h / 4 h</strong>
+      </div>
+
+      <div class="h3">📦 Résistance au feu — Autres critères M et S</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Symbole</th><th>Signification</th></tr></thead>
+          <tbody>
+            <tr><td><strong>M</strong></td><td>Résistance aux chocs mécaniques</td></tr>
+            <tr><td><strong>S</strong></td><td>Étanchéité aux fumées</td></tr>
+            <tr><td><strong>C</strong></td><td>Dispositif de fermeture automatique (avec ferme-porte)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== ERP GÉNÉRALITÉS ========== -->
+    <div class="section-page" id="erp-gen">
+      <div class="section-header">
+        <div class="section-tag">Module 04</div>
+        <div class="section-title">ERP — Généralités</div>
+        <div class="section-intro">Un Établissement Recevant du Public (ERP) est tout bâtiment, local ou enceinte dans lesquels des personnes extérieures sont admises. Cela comprend les bâtiments où des réunions sur invitation payante ou gratuite ont lieu.</div>
+      </div>
+
+      <div class="h3">📊 Catégories d'ERP</div>
+
+      <div class="info-box note">
+        <div class="info-box-title">ℹ️ Principe de calcul</div>
+        La catégorie est calculée d'après <strong>l'effectif du public et du personnel</strong> pour les établissements du <strong>premier groupe</strong> (catégories 1 à 4).
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Catégorie</th><th>Effectif</th><th>Groupe</th><th>Commission compétente</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill pill-r">1ère</span></td><td><strong>Au-dessus de 1 500 personnes</strong> (passe en 1ère cat. à partir de 1 501)</td><td>1er groupe</td><td>CCDSA</td></tr>
+            <tr><td><span class="pill pill-r">2ème</span></td><td>De 701 à 1 500 personnes</td><td>1er groupe</td><td>CCDSA ou sous-commission</td></tr>
+            <tr><td><span class="pill pill-o">3ème</span></td><td>De 301 à 700 personnes</td><td>1er groupe</td><td>Sous-commission départementale</td></tr>
+            <tr><td><span class="pill pill-o">4ème</span></td><td>300 personnes et au-dessous (sauf 5ème cat.)</td><td>1er groupe</td><td>Sous-commission</td></tr>
+            <tr><td><span class="pill pill-g">5ème</span></td><td>En dessous du seuil d'assujettissement</td><td>2ème groupe</td><td>Maire</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box cle">
+        <div class="info-box-title">📌 Exemples concrets</div>
+        — Un magasin de 850 personnes (700 public + 150 personnel) → <strong>2ème catégorie</strong><br>
+        — Un établissement de 50 personnel + 260 visiteurs (310 total) → <strong>3ème catégorie</strong><br>
+        — ERP de <strong>3ème catégorie</strong> → possède <strong>une façade accessible</strong>
+      </div>
+
+      <div class="h3">🏷️ Types d'ERP (exemples)</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Désignation</th><th>Particularités</th></tr></thead>
+          <tbody>
+            <tr><td>J</td><td>Structures d'accueil pour personnes âgées et handicapées</td><td>SSI de catégorie A obligatoire</td></tr>
+            <tr><td>M</td><td>Magasins, centres commerciaux</td><td>Sprinkler obligatoire dès 3 000 m²</td></tr>
+            <tr><td>O</td><td>Hôtels et pensions de famille</td><td>SSI de catégorie A obligatoire</td></tr>
+            <tr><td>U</td><td>Établissements de soins</td><td>SSI de catégorie A obligatoire</td></tr>
+            <tr><td>R</td><td>Établissements d'enseignement</td><td>SSI de catégorie A obligatoire</td></tr>
+            <tr><td>J, O, U, R</td><td>Types à risques particuliers</td><td><strong>SSI de catégorie A obligatoire</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🚪 Sorties & dégagements</div>
+
+      <div class="cards-grid">
+        <div class="card rouge">
+          <div class="card-title">Sorties minimum</div>
+          <div class="card-body">Tout établissement doit disposer d'<strong>au moins 2 sorties</strong>.</div>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">Unités de passage (UP)</div>
+          <div class="card-body">
+            <strong>1 UP</strong> = 0,90 m minimum<br>
+            <strong>2 UP</strong> = 1,40 m minimum
+          </div>
+        </div>
+        <div class="card or">
+          <div class="card-title">Desserte des bâtiments</div>
+          <div class="card-body">
+            Par les <strong>espaces libres</strong><br>
+            Par les <strong>voies engins</strong><br>
+            Par les <strong>voies échelles</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="h3">📋 Dossier de permis de construire ERP</div>
+      <div class="info-box note">
+        <div class="info-box-title">📄 Contenu du dossier</div>
+        — <strong>Notice descriptive</strong> précisant les matériaux utilisés<br>
+        — <strong>Notice de sécurité</strong> (arrêté 25 juin 1980) : activité, surfaces accessibles au public, accessibilité<br>
+        — <strong>Plans</strong> indiquant notamment les largeurs des passages affectés à la circulation du public
+      </div>
+
+      <div class="h3">🧯 Moyens de secours dans les ERP</div>
+      <div class="info-box ok">
+        <div class="info-box-title">✅ Exemples de moyens de secours</div>
+        — <strong>RIA</strong> (Robinet d'Incendie Armé)<br>
+        — <strong>Service de sécurité incendie (SSIAP)</strong><br>
+        — Extincteurs, colonne sèche, sprinklers, etc.
+      </div>
+
+      <div class="h3">👷 SSIAP — Niveaux de qualification</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Arrêté du 2 mai 2005</div>
+        — <strong>SSIAP 1</strong> : Agent de service de sécurité incendie<br>
+        — <strong>SSIAP 2</strong> : Chef d'équipe de service de sécurité incendie<br>
+        — <strong>SSIAP 3</strong> : Chef de service de sécurité incendie
+      </div>
+
+      <div class="h3">🔧 Maisons d'Assistants Maternels (MAM)</div>
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Règle MAM</div>
+        Les MAM dont les locaux accessibles au public comportent un <strong>niveau de rez-de-chaussée</strong> sont assujettis aux dispositions applicables aux établissements de <strong>5ème catégorie</strong>.
+      </div>
+    </div>
+
+    <!-- ========== ERP CONSTRUCTION ========== -->
+    <div class="section-page" id="erp-const">
+      <div class="section-header">
+        <div class="section-tag">Module 05</div>
+        <div class="section-title">ERP — Construction</div>
+        <div class="section-intro">Règles de construction des ERP : compartimentage, dégagements, distribution intérieure et équipements.</div>
+      </div>
+
+      <div class="h3">🏗️ Distribution de type « Compartiment »</div>
+      <div class="info-box cle">
+        <div class="info-box-title">🔑 Règles article CO 25</div>
+        — Chaque niveau comporte <strong>au moins 2 compartiments</strong> dont chacun a une capacité d'accueil du même ordre de grandeur<br>
+        — Un compartiment peut s'étendre sur <strong>deux niveaux</strong> si la superficie totale ne dépasse pas la superficie moyenne d'un compartiment<br>
+        — Une issue du compartiment de <strong>2 UP minimum</strong> (dès que l'effectif &gt; 100 personnes) débouche sur l'extérieur ou un dégagement protégé (bloc-porte PF ½ h avec ferme-porte)
+      </div>
+
+      <div class="h3">📏 Unités de passage — Rappel</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nombre d'UP</th><th>Largeur minimum</th></tr></thead>
+          <tbody>
+            <tr><td>1 UP</td><td><strong>0,90 m</strong></td></tr>
+            <tr><td>2 UP</td><td><strong>1,40 m</strong></td></tr>
+            <tr><td>3 UP</td><td>1,80 m</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">💧 Installation d'extinction automatique</div>
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Sprinkler — ERP type M</div>
+        Un établissement de type M (magasins) doit être protégé par une installation d'extinction à eau de type <strong>sprinkler</strong> à partir de <strong>3 000 m²</strong>.
+      </div>
+
+      <div class="h3">🔌 DAAF — Détecteurs autonomes avertisseurs de fumées</div>
+      <div class="info-box ok">
+        <div class="info-box-title">✅ Obligation légale</div>
+        Les DAAF sont obligatoires dans tous les lieux d'habitations depuis le <strong>8 mars 2015</strong>.
+      </div>
+    </div>
+
+    <!-- ========== DÉSENFUMAGE ========== -->
+    <div class="section-page" id="desenfumage">
+      <div class="section-header">
+        <div class="section-tag">Module 06</div>
+        <div class="section-title">Désenfumage</div>
+        <div class="section-intro">Le désenfumage a pour but de maintenir praticables les voies d'évacuation et d'intervention. Il peut être naturel ou mécanique.</div>
+      </div>
+
+      <div class="h3">💨 Méthodes de désenfumage</div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          Méthode 1 — Balayage <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          Maintien praticable de l'espace par un <strong>rapport d'air neuf et évacuation des fumées</strong>. L'air neuf entre par le bas, les fumées sont évacuées par le haut.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          Méthode 2 — Différence de pression <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          Par <strong>différence de pression</strong> entre le volume à protéger et le volume sinistré mis en <strong>dépression relative</strong>. Le local sinistré est mis en dépression pour que les fumées n'entrent pas dans les circulations.
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          Méthode 3 — Combinaison <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Combinaison des deux premières méthodes</strong> pour une efficacité optimale.
+        </div>
+      </div>
+
+      <div class="h3">📏 Seuils réglementaires en ERP</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situation</th><th>Règle</th></tr></thead>
+          <tbody>
+            <tr><td>Circulation d'une longueur de <strong>40 m</strong></td><td>Désenfumage <strong>obligatoire</strong></td></tr>
+            <tr><td>Surface maximale d'un canton (ERP &gt; 2 000 m² ou &gt; 60 m de longueur)</td><td><strong>1 600 m²</strong> pour un désenfumage naturel efficace</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">⚙️ Code du travail — Désenfumage</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Règle Code du travail</div>
+        Un local de <strong>150 m² en sous-sol</strong> doit être désenfumé (établissements soumis au Code du travail).
+      </div>
+    </div>
+
+    <!-- ========== SSI ========== -->
+    <div class="section-page" id="ssi">
+      <div class="section-header">
+        <div class="section-tag">Module 07</div>
+        <div class="section-title">Systèmes d'alarme & SSI</div>
+        <div class="section-intro">Le Système de Sécurité Incendie (SSI) est l'ensemble des équipements contribuant à maintenir la sécurité des personnes en cas d'incendie dans un bâtiment.</div>
+      </div>
+
+      <div class="h3">🔧 Architecture générale du SSI</div>
+
+      <div class="ssi-schema">
+        <div class="ssi-top">
+          <!-- SDI -->
+          <div class="ssi-box">
+            <div class="ssi-box-title rouge">SDI — Système de Détection Incendie</div>
+            <ul class="ssi-sub">
+              <li><strong>DM</strong> — Déclencheurs Manuels</li>
+              <li><strong>DA</strong> — Détecteurs Automatiques</li>
+              <li><strong>ECS</strong> — Équipement de Contrôle et de Signalisation (gère les infos DM et DA)</li>
+            </ul>
+          </div>
+          <div class="ssi-arrow">⟶</div>
+          <!-- SMSI -->
+          <div class="ssi-box">
+            <div class="ssi-box-title bleu">SMSI — Système de Mise en Sécurité Incendie</div>
+            <div class="ssi-sub">
+              <div style="color:var(--or);font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:1px">CMSI — Centralisateur</div>
+              <li><strong>US</strong> — Unité de Signalisation</li>
+              <li><strong>UGA</strong> — Unité de Gestion d'Alarme</li>
+              <li><strong>UCMC</strong> — Unité de Commande Manuelle Centralisée</li>
+              <li><strong>UGIS</strong> — Unité de Gestion des Issues de Secours (optionnel)</li>
+            </div>
+          </div>
+          <div class="ssi-arrow">⟶</div>
+          <!-- DCT -->
+          <div class="ssi-box">
+            <div class="ssi-box-title or">DCT — Dispositifs Commandés Terminaux</div>
+            <ul class="ssi-sub">
+              <li><strong>DAS</strong> — Dispositifs Actionnés de Sécurité</li>
+              <li><strong>DS</strong> — Diffuseurs Sonores</li>
+              <li><strong>BAAS</strong> — Blocs Autonomes d'Alarme Sonore</li>
+              <li>Ventilateurs de désenfumage</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="h3">📡 Rôle de chaque composant CMSI</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Composant</th><th>Acronyme</th><th>Fonction principale</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Unité de Signalisation</strong></td><td>US</td><td>Assure la signalisation des informations nécessaires pour la conduite du SMSI</td></tr>
+            <tr><td><strong>Unité de Gestion d'Alarme</strong></td><td>UGA</td><td>Collecte les infos des DM/SDI, les gère et déclenche le processus d'alarme</td></tr>
+            <tr><td><strong>Unité de Commande Manuelle Centralisée</strong></td><td>UCMC</td><td>Émet des ordres de télécommande par fonction/zone à destination des DAS, sur décision humaine</td></tr>
+            <tr><td><strong>Centralisateur de Mise en Sécurité</strong></td><td>CMSI</td><td>Émet les ordres électriques de commande vers les matériels de mise en sécurité</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🔔 Types d'équipements d'alarme ERP</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Caractéristiques</th><th>Temporisation</th></tr></thead>
+          <tbody>
+            <tr><td>Type 1</td><td>SSI de catégorie A complet (détection + évacuation)</td><td>Oui ✅</td></tr>
+            <tr><td>Type 2a</td><td>Détection + alarme générale sélective</td><td>Oui ✅</td></tr>
+            <tr><td>Type 2b</td><td>Détection + alarme générale</td><td>Oui ✅</td></tr>
+            <tr><td>Type 3</td><td>Alarme générale seule (sans détection automatique)</td><td>Non ❌</td></tr>
+            <tr><td>Type 4</td><td>Tout dispositif sonore (cloche, sifflet…)</td><td>Non ❌</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box cle">
+        <div class="info-box-title">🔑 Points clés alarme ERP</div>
+        — L'alarme peut être <strong>restreinte</strong> et ne prévenir que certaines catégories de personnel<br>
+        — L'alarme générale doit être audible de tous points du bâtiment pendant <strong>minimum 5 minutes</strong><br>
+        — <strong>Alarme restreinte</strong> : signal sonore et visuel avertissant le personnel pendant la <strong>temporisation</strong> de l'alarme générale<br>
+        — Seuls les types <strong>1, 2a et 2b</strong> comportent une temporisation
+      </div>
+
+      <div class="h3">🔍 Détecteurs automatiques</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type de détecteur</th><th>Principe de fonctionnement</th></tr></thead>
+          <tbody>
+            <tr><td>Ionique</td><td>Détecte les produits de combustion par ionisation</td></tr>
+            <tr><td>Optique (fumées)</td><td>Détecte la diffusion lumineuse causée par les fumées</td></tr>
+            <tr><td><strong>Optique de flammes</strong></td><td>Cellule photosensible détectant les <strong>radiations des flammes</strong></td></tr>
+            <tr><td>Thermique</td><td>Détecte l'élévation de température ou le gradient thermique</td></tr>
+            <tr><td>Thermovélocimétrique</td><td>Détecte la vitesse d'élévation de température</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">⚡ Code du travail — Alarme</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Obligations Code du travail</div>
+        Doivent être équipés d'un système d'alarme sonore :<br>
+        — Les locaux dont <strong>l'effectif est supérieur à 50</strong><br>
+        — Les locaux où sont <strong>manipulées des matières inflammables</strong>
+      </div>
+    </div>
+
+    <!-- ========== COMMISSIONS ========== -->
+    <div class="section-page" id="commissions">
+      <div class="section-header">
+        <div class="section-tag">Module 08</div>
+        <div class="section-title">Commissions de sécurité</div>
+        <div class="section-intro">Les commissions de sécurité sont des organes consultatifs chargés de contrôler la conformité des ERP avec les règles de sécurité incendie.</div>
+      </div>
+
+      <div class="h3">🏛️ La CCDSA</div>
+      <div class="cards-grid">
+        <div class="card rouge">
+          <div class="card-title">Composition & présidence</div>
+          <div class="card-body">
+            Présidée par le <strong>préfet</strong> ou son représentant.<br>
+            Le <strong>DDSIS</strong> est membre permanent.
+          </div>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">Compétence exclusive</div>
+          <div class="card-body">
+            — Seule compétente pour les <strong>IGH</strong><br>
+            — Seule compétente pour les ERP de <strong>1ère catégorie</strong><br>
+            — Visites périodiques et inopinées
+          </div>
+        </div>
+        <div class="card or">
+          <div class="card-title">Compétences générales</div>
+          <div class="card-body">
+            — Accessibilité aux <strong>personnes handicapées (PMR)</strong> dans les ERP<br>
+            — Protection des <strong>forêts contre l'incendie</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="h3">🔍 Types de visites</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type de visite</th><th>Définition</th><th>Périodicité</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Visite initiale</strong></td><td>Lors de l'ouverture d'un établissement</td><td>Unique</td></tr>
+            <tr><td><strong>Visite de réception</strong></td><td>Travaux soumis à autorisation / réouverture après fermeture &gt; 11 mois</td><td>Selon travaux</td></tr>
+            <tr><td><strong>Visite périodique</strong></td><td>Vérification de la conformité en cours d'exploitation</td><td>Tous les <strong>3 ou 5 ans</strong></td></tr>
+            <tr><td><strong>Visite inopinée</strong></td><td>Contrôle à la demande du maire ou du préfet, manquements graves</td><td>À tout moment</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box cle">
+        <div class="info-box-title">📅 Périodicités des visites ERP</div>
+        — Établissements de type <strong>JOUR</strong> de <strong>4ème catégorie</strong> : tous les <strong>3 ans</strong><br>
+        — Établissements de type O (hôtels) 1er groupe : tous les <strong>3 ans</strong><br>
+        — ERP de <strong>5ème catégorie</strong> avec hébergement : tous les <strong>5 ans</strong>
+      </div>
+
+      <div class="h3">📝 Avis de la commission dans les IGH</div>
+      <div class="info-box ok">
+        <div class="info-box-title">✅ Les 4 types d'avis possibles</div>
+        <strong>C</strong> — Conforme &nbsp;|&nbsp; <strong>NC</strong> — Non conforme &nbsp;|&nbsp; <strong>SO</strong> — Sans objet &nbsp;|&nbsp; <strong>PM</strong> — Pour mémoire
+      </div>
+    </div>
+
+    <!-- ========== HABITATIONS ========== -->
+    <div class="section-page" id="habitations">
+      <div class="section-header">
+        <div class="section-tag">Module 09</div>
+        <div class="section-title">Habitations — Familles</div>
+        <div class="section-intro">Les bâtiments d'habitation sont classés en 4 familles selon la hauteur du plancher bas du logement le plus haut, mesurée par rapport au sol accessible aux engins des SIS. Texte de référence : arrêté du 31 janvier 1986.</div>
+      </div>
+
+      <div class="famille-grid">
+        <div class="famille-card" data-num="1">
+          <div class="famille-num">1ère famille</div>
+          <div class="famille-title">Habitations basses</div>
+          <div class="famille-body">
+            — Maisons individuelles isolées ou jumelées<br>
+            — Habitations individuelles groupées en bande (≤ 1 étage sur RDC)<br>
+            — Collectifs ≤ <strong>3 étages sur RDC</strong><br><br>
+            <strong>SF éléments porteurs verticaux :</strong> 1/4 h<br>
+            <strong>CF planchers :</strong> 1/4 h (plancher haut du sous-sol)
+          </div>
+        </div>
+        <div class="famille-card" data-num="2">
+          <div class="famille-num">2ème famille</div>
+          <div class="famille-title">Habitations basses</div>
+          <div class="famille-body">
+            — Maisons individuelles &gt; 1 étage sur RDC groupées en bande<br>
+            — Collectifs ≤ <strong>3 étages sur RDC</strong> (plancher bas ≤ 8 m)<br><br>
+            <strong>SF éléments porteurs verticaux :</strong> 1/2 h<br>
+            <strong>CF planchers :</strong> 1/2 h
+          </div>
+        </div>
+        <div class="famille-card" data-num="3">
+          <div class="famille-num">3ème famille</div>
+          <div class="famille-title">Plancher bas ≤ 28 m</div>
+          <div class="famille-body">
+            <strong>3A :</strong> ≤ 7 étages + distance porte palière/escalier ≤ 10 m + voie échelles<br>
+            <strong>3B :</strong> Ne satisfait pas aux conditions de 3A<br><br>
+            — 3B : accès escaliers à &lt; 50 m d'une voie ouverte<br>
+            — <strong>&gt; 7 étages sur RDC → colonne sèche obligatoire</strong><br><br>
+            <strong>SF éléments porteurs verticaux :</strong> 1 h<br>
+            <strong>CF planchers :</strong> 1 h
+          </div>
+        </div>
+        <div class="famille-card" data-num="4">
+          <div class="famille-num">4ème famille</div>
+          <div class="famille-title">Plancher bas 28 à 50 m</div>
+          <div class="famille-body">
+            — Plancher bas du logement le plus haut entre <strong>28 m et 50 m</strong> au-dessus du sol SIS<br>
+            — Si locaux autres qu'habitation non prévus par CCH → classé <strong>IGH</strong><br><br>
+            <strong>SF éléments porteurs verticaux :</strong> 1 h 30<br>
+            <strong>CF planchers :</strong> 1 h 30
+          </div>
+        </div>
+      </div>
+
+      <div class="h3">📊 Tableau récapitulatif — Résistance au feu des habitations</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Famille</th><th>SF éléments porteurs verticaux</th><th>CF planchers</th></tr></thead>
+          <tbody>
+            <tr><td>1ère famille</td><td>1/4 h</td><td>1/4 h (plancher haut sous-sol)</td></tr>
+            <tr><td>2ème famille</td><td>1/2 h</td><td>1/2 h</td></tr>
+            <tr><td>3ème famille</td><td><strong>1 h</strong></td><td><strong>1 h</strong></td></tr>
+            <tr><td>4ème famille</td><td><strong>1 h 30</strong></td><td><strong>1 h 30</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🔥 Colonnes sèches dans les habitations</div>
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Obligation colonne sèche</div>
+        Les bâtiments d'habitation doivent être équipés d'une <strong>colonne sèche de 65 mm par escalier</strong> dès lors qu'il y a <strong>plus de 7 étages</strong> (soit 3ème famille B et 4ème famille).<br>
+        Une <strong>colonne sèche de 65 mm par escalier</strong> est installée dans les habitations de la 3ème famille.
+      </div>
+
+      <div class="h3">🚗 Parcs de stationnement couverts contigus</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Parc de stationnement &gt; 100 m² contigu à une habitation</div>
+        — Murs <strong>CF 1 h</strong> si l'immeuble est classé en 2ème famille<br>
+        — Communications avec l'immeuble réalisées par un <strong>sas d'une surface de 3 m² minimum</strong>
+      </div>
+    </div>
+
+    <!-- ========== IGH ========== -->
+    <div class="section-page" id="igh">
+      <div class="section-header">
+        <div class="section-tag">Module 10</div>
+        <div class="section-title">Immeubles de Grande Hauteur (IGH)</div>
+        <div class="section-intro">Un IGH est un corps de bâtiment dont le plancher bas du dernier niveau habitable est situé à plus de 28 m (habitations) ou 28 m (autres usages) au-dessus du sol le plus haut utilisable pour les engins des SIS. Texte de référence : arrêté du 30 décembre 2011.</div>
+      </div>
+
+      <div class="h3">🏙️ Classification des IGH</div>
+      <div class="igh-grid">
+        <div class="igh-card"><div class="igh-code">GHA</div><div class="igh-name">Habitations</div><div class="igh-detail">Immeuble d'habitation de hauteur supérieure à 50 m</div></div>
+        <div class="igh-card"><div class="igh-code">GHO</div><div class="igh-name">Hôtels</div><div class="igh-detail">Distance porte appartement → escalier : <strong>20 m max</strong></div></div>
+        <div class="igh-card"><div class="igh-code">GHR</div><div class="igh-name">Enseignement</div><div class="igh-detail">Établissements d'enseignement et recherche</div></div>
+        <div class="igh-card"><div class="igh-code">GHS</div><div class="igh-name">Dépôts</div><div class="igh-detail">Archives, bibliothèques</div></div>
+        <div class="igh-card"><div class="igh-code">GHTC</div><div class="igh-name">Tour de contrôle</div><div class="igh-detail">Tours de contrôle aéroportuaires</div></div>
+        <div class="igh-card"><div class="igh-code">GHU</div><div class="igh-name">Santé</div><div class="igh-detail">Établissements de santé</div></div>
+        <div class="igh-card"><div class="igh-code">GHW1</div><div class="igh-name">Bureaux &lt; 50 m</div><div class="igh-detail">Immeubles de bureaux 28-50 m</div></div>
+        <div class="igh-card"><div class="igh-code">GHW2</div><div class="igh-name">Bureaux &gt; 50 m</div><div class="igh-detail">Immeuble de bureaux de hauteur supérieure à <strong>50 m</strong></div></div>
+        <div class="igh-card"><div class="igh-code">GHZ</div><div class="igh-name">Usage mixte</div><div class="igh-detail">Immeuble d'habitation 28-50 m avec présence d'autres locaux</div></div>
+        <div class="igh-card"><div class="igh-code">ITGH</div><div class="igh-name">Très grande hauteur</div><div class="igh-detail">Plancher bas dernier niveau <strong>&gt; 200 m</strong></div></div>
+      </div>
+
+      <div class="h3">📍 Implantation des IGH</div>
+      <div class="cards-grid">
+        <div class="card rouge">
+          <div class="card-title">Proximité des secours</div>
+          <div class="card-body">L'IGH doit être situé à <strong>moins de 3 km d'un centre de secours principal</strong>.</div>
+        </div>
+        <div class="card bleu">
+          <div class="card-title">Distances entre bâtiments</div>
+          <div class="card-body">Un minimum de <strong>8 mètres</strong> entre l'immeuble et les bâtiments aux alentours.</div>
+        </div>
+        <div class="card or">
+          <div class="card-title">Accès voies</div>
+          <div class="card-body">Sorties à <strong>moins de 30 m</strong> d'une voie ouverte à la circulation aux deux extrémités.</div>
+        </div>
+      </div>
+
+      <div class="h3">🎯 Objectifs de la réglementation IGH</div>
+      <div class="info-box cle">
+        <div class="info-box-title">🔑 Les 3 objectifs</div>
+        — <strong>Ne pas faire courir de risques</strong> aux zones contigues au compartiment sinistré<br>
+        — <strong>Permettre la continuité de la vie</strong> dans les compartiments contigus<br>
+        — Permettre une <strong>évacuation partielle</strong> des seuls occupants du ou des locaux sinistrés ou immédiatement menacés
+      </div>
+
+      <div class="h3">🚨 Évacuation dans les IGH</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phase</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>1ère phase</td><td>Occupants du compartiment concerné rejoignent un <strong>compartiment adjacent</strong> à l'abri des effets d'un incendie</td></tr>
+            <tr><td>2ème phase</td><td>Évacuation d'un ou plusieurs niveaux</td></tr>
+            <tr><td>3ème phase</td><td>Évacuation totale du bâtiment</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🔔 SSI dans un IGH</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Caractéristiques du SSI en IGH</div>
+        — SSI de <strong>catégorie A (option IGH)</strong><br>
+        — Détecteurs implantés dans les <strong>circulations horizontales communes et privatives</strong><br>
+        — Un détecteur déclenche <strong>sans temporisation</strong> le scénario de mise en sécurité pour le seul compartiment concerné<br>
+        — Le <strong>désenfumage est activé automatiquement</strong> dans le compartiment concerné uniquement<br>
+        — Si compartiment sur plusieurs niveaux : désenfumage activé <strong>uniquement au niveau de la détection</strong>
+      </div>
+
+      <div class="h3">🧯 Extincteurs en IGH</div>
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Dotation en extincteurs IGH</div>
+        — Au moins <strong>2 appareils par niveau</strong><br>
+        — Au moins <strong>1 appareil par 200 m²</strong>
+      </div>
+
+      <div class="h3">🦽 Espace d'attente sécurisé en IGH</div>
+      <div class="info-box ok">
+        <div class="info-box-title">✅ Caractéristiques</div>
+        — Repéré au moyen d'une <strong>signalisation adaptée</strong> avec consignes<br>
+        — Dispose d'un <strong>éclairage de sécurité</strong><br>
+        — Dispose d'une <strong>liaison phonique</strong> permettant à la personne en situation de handicap de signaler sa présence au service de sécurité
+      </div>
+
+      <div class="h3">🚶 Dégagements en IGH</div>
+      <div class="info-box note">
+        <div class="info-box-title">📌 Règles de disposition des escaliers</div>
+        — Accès aux escaliers reliés par une <strong>circulation horizontale commune</strong> à chaque niveau<br>
+        — Accès placés à <strong>10 m minimum et 30 m maximum</strong> l'un de l'autre
+      </div>
+
+      <div class="h3">📅 Fréquence des visites de sécurité IGH</div>
+      <div class="info-box cle">
+        <div class="info-box-title">📅 Périodicités</div>
+        — <strong>GH A (habitations)</strong> : tous les <strong>3 ans</strong><br>
+        — <strong>GH O (hôtels)</strong> : tous les <strong>3 ans</strong>
+      </div>
+    </div>
+
+    <!-- ========== CODE DU TRAVAIL ========== -->
+    <div class="section-page" id="travail">
+      <div class="section-header">
+        <div class="section-tag">Module 11</div>
+        <div class="section-title">Établissements — Code du travail</div>
+        <div class="section-intro">Les établissements soumis au Code du travail ont leurs propres règles de sécurité incendie, distinctes (mais parfois similaires) de celles des ERP.</div>
+      </div>
+
+      <div class="h3">🏗️ Principes fondamentaux</div>
+      <div class="info-box cle">
+        <div class="info-box-title">🔑 Règle de base — Stabilité structurelle</div>
+        L'effondrement d'un <strong>bâtiment tiers ne doit pas entraîner celui du bâtiment</strong> principal (indépendance structurelle).
+      </div>
+
+      <div class="h3">💨 Désenfumage — Code du travail</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situation</th><th>Obligation</th></tr></thead>
+          <tbody>
+            <tr><td>Local de <strong>150 m² en sous-sol</strong></td><td>Désenfumage <strong>obligatoire</strong></td></tr>
+            <tr><td>Locaux avec risques particuliers</td><td>Désenfumage obligatoire selon analyse de risque</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="h3">🔔 Alarme — Code du travail</div>
+      <div class="info-box alerte">
+        <div class="info-box-title">⚠️ Obligations d'alarme sonore</div>
+        Doivent être équipés d'un système d'alarme sonore :<br>
+        — Les locaux dont <strong>l'effectif est supérieur à 50 personnes</strong><br>
+        — Les locaux où sont manipulées des <strong>matières inflammables</strong> (quel que soit l'effectif)
+      </div>
+    </div>
+
+    <!-- ========== QCM ========== -->
+    <div class="section-page" id="qcm">
+      <div class="section-header">
+        <div class="section-tag">Module 12</div>
+        <div class="section-title">QCM interactif</div>
+        <div class="section-intro">Testez vos connaissances sur l'ensemble du cours. Cliquez sur la réponse que vous pensez correcte, puis consultez l'explication.</div>
+      </div>
+
+      <div class="qcm-progress-bar">
+        <div class="qcm-score"><span id="score-display">0</span> / <span id="total-display">0</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="qcm-stat" id="qcm-stat">0 répondu(s)</div>
+      </div>
+
+      <div class="qcm-container" id="qcm-container"></div>
+
+      <div class="qcm-controls">
+        <button class="btn btn-primary" onclick="resetQCM()">🔄 Recommencer</button>
+        <button class="btn btn-secondary" onclick="showAllAnswers()">👁️ Voir toutes les réponses</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showSection(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(el.dataset.target).classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ===== QCM DATA =====
+const qcmData = [
+  {
+    q: "Quel terme désigne le fait que le matériau évite la propagation des gaz de combustion, des fumées et de la chaleur pendant un temps donné ?",
+    options: ["Le pare-flamme", "Le coupe-feu", "Le stable au feu", "L'incombustible"],
+    correct: 1,
+    expl: "Le coupe-feu (CF) correspond aux critères REI : il assure la résistance mécanique (R), l'étanchéité aux gaz et flammes (E), et l'isolation thermique (I)."
+  },
+  {
+    q: "Quelle correspondance entre classement M et euroclasse est correcte ?",
+    options: ["M0 correspond à A1", "M0 correspond à A2 et M1 correspond à A1", "M1 correspond à C", "M2 correspond à A2"],
+    correct: 1,
+    expl: "M0 = A2, M1 = A1 (incombustible), M2 = C (difficilement inflammable), M3 = D, M4 = E."
+  },
+  {
+    q: "Dans une circulation d'une longueur de 40 mètres dans un ERP, le désenfumage est-il obligatoire ?",
+    options: ["Non, seulement à partir de 60 m", "Non, seulement en sous-sol", "Oui, le désenfumage est obligatoire", "Seulement si effectif > 300 personnes"],
+    correct: 2,
+    expl: "Dans une circulation d'une longueur de 40 mètres, le désenfumage est obligatoire dans les ERP."
+  },
+  {
+    q: "Quel type d'extincteur est préconisé pour les feux de classe F ?",
+    options: ["Poudre ABC", "Eau pulvérisée", "Dioxyde de carbone (CO₂)", "Mousse"],
+    correct: 2,
+    expl: "Les feux de classe F (huiles et graisses alimentaires) sont combattus avec du dioxyde de carbone (CO₂)."
+  },
+  {
+    q: "À partir de combien de personnes un ERP passe-t-il en première catégorie ?",
+    options: ["1 200", "1 500", "1 501", "2 000"],
+    correct: 2,
+    expl: "La 1ère catégorie correspond à un effectif au-dessus de 1 500 personnes. Le passage se fait à partir de 1 501 personnes."
+  },
+  {
+    q: "Quel arrêté porte approbation des dispositions générales du règlement de sécurité contre les risques d'incendie dans les ERP ?",
+    options: ["Arrêté du 31 janvier 1986", "Arrêté du 25 juin 1980", "Arrêté du 30 décembre 2011", "Arrêté du 2 mai 2005"],
+    correct: 1,
+    expl: "L'arrêté du 25 juin 1980 porte approbation des dispositions générales du règlement de sécurité contre les risques d'incendie et de panique dans les ERP."
+  },
+  {
+    q: "Qu'est-ce que le potentiel calorifique ?",
+    options: ["La température maximale atteinte lors d'un incendie", "La quantité de chaleur que pourrait dégager l'ensemble des matériaux d'un local lors de sa combustion complète", "Le temps nécessaire à l'embrasement généralisé", "La puissance du foyer en kilowatts"],
+    correct: 1,
+    expl: "Le potentiel calorifique (aussi appelé charge calorifique) est la quantité de chaleur que pourrait dégager l'ensemble des matériaux d'un même local lors de sa combustion complète. Exprimé en MJ/m²."
+  },
+  {
+    q: "Un matériau incombustible est classé en quelle euroclasse ?",
+    options: ["A2", "B", "F", "A1"],
+    correct: 3,
+    expl: "Un matériau incombustible est classé en A1. Attention : A1 n'a pas de critères s et d car un matériau incombustible ne génère pas de fumées ni de gouttes enflammées."
+  },
+  {
+    q: "Que signifie 'S' dans la classification euroclasse des revêtements ?",
+    options: ["Surface", "Stabilité", "Smoke (génération de fumées)", "Solidité"],
+    correct: 2,
+    expl: "S (smoke) désigne la génération de fumées. Les niveaux vont de s1 (faible) à s3 (fort). D (drop) désigne la production de gouttes ou particules enflammées."
+  },
+  {
+    q: "Quelle est la surface maximale d'un canton pour que le désenfumage naturel soit efficace dans un ERP de plus de 2 000 m² ?",
+    options: ["800 m²", "1 200 m²", "1 600 m²", "2 000 m²"],
+    correct: 2,
+    expl: "À l'intérieur des locaux d'ERP de plus de 2 000 m² de superficie ou de plus de 60 m de longueur, la surface maximale d'un canton pour un désenfumage naturel efficace est de 1 600 m²."
+  },
+  {
+    q: "Quel dispositif du SSI permet de commander les DAS sur décision humaine depuis un point central ?",
+    options: ["L'UGA", "L'ECS", "L'UCMC", "L'US"],
+    correct: 2,
+    expl: "L'Unité de Commande Manuelle Centralisée (UCMC) est un sous-ensemble du CMSI permettant d'émettre des ordres de télécommande par fonction et par zone à destination des DAS, sur décision humaine."
+  },
+  {
+    q: "Quel dispositif du SSI assure la signalisation des informations nécessaires pour la conduite du SMSI ?",
+    options: ["Le CMSI", "L'UCMC", "L'UGA", "L'US (Unité de Signalisation)"],
+    correct: 3,
+    expl: "L'Unité de Signalisation (US) est un dispositif qui assure la signalisation des informations nécessaires pour la conduite du SMSI. Elle fait partie du CMSI ou d'un DCS."
+  },
+  {
+    q: "Quel signal avertit le personnel pendant la temporisation de l'alarme générale ?",
+    options: ["L'alarme générale", "L'alarme restreinte", "L'évacuation immédiate", "Le signal d'alerte"],
+    correct: 1,
+    expl: "L'alarme restreinte est le signal sonore et visuel qui a pour but d'avertir le personnel (certaines catégories) pendant la temporisation précédant le déclenchement de l'alarme générale."
+  },
+  {
+    q: "À partir de quelle hauteur les bâtiments d'habitation doivent-ils être équipés d'une colonne sèche ?",
+    options: ["Plus de 4 étages", "Plus de 5 étages", "Plus de 7 étages", "Plus de 10 étages"],
+    correct: 2,
+    expl: "L'arrêté du 31 janvier 1986 prévoit que les bâtiments d'habitations doivent être équipés d'une colonne sèche dès lors qu'il y a plus de 7 étages (3ème famille B et 4ème famille)."
+  },
+  {
+    q: "Quelle est la largeur minimum d'un dégagement de 2 unités de passage (UP) ?",
+    options: ["0,90 m", "1,20 m", "1,40 m", "1,60 m"],
+    correct: 2,
+    expl: "Un dégagement de 2 UP mesurera 1,40 m de largeur au minimum. Un dégagement de 1 UP mesurera 0,90 m de largeur au minimum."
+  },
+  {
+    q: "À partir de quelle superficie un établissement de type M doit-il être protégé par une installation sprinkler ?",
+    options: ["1 000 m²", "2 000 m²", "3 000 m²", "5 000 m²"],
+    correct: 2,
+    expl: "Un établissement de type M (magasins, centres commerciaux) doit être protégé par une installation d'extinction à eau de type sprinkler à partir de 3 000 m²."
+  },
+  {
+    q: "Depuis quand les DAAF sont-ils obligatoires dans tous les lieux d'habitation ?",
+    options: ["1er mars 2012", "1er janvier 2014", "8 mars 2015", "31 décembre 2017"],
+    correct: 2,
+    expl: "Les Détecteurs Autonomes Avertisseurs de Fumées (DAAF) sont obligatoires dans tous les lieux d'habitations depuis le 8 mars 2015."
+  },
+  {
+    q: "Les câbles résistants au feu selon la norme NFC 32-070 sont notés :",
+    options: ["C1", "CR 1", "R1", "C2"],
+    correct: 1,
+    expl: "Selon la norme NFC 32-070 : les câbles ne propageant pas l'incendie sont classés C1, et les câbles résistants au feu sont notés CR 1."
+  },
+  {
+    q: "Quelle est la classification d'une habitation de 8 étages dont le plancher bas du logement le plus haut est situé à 25 m au-dessus du sol accessible aux engins SIS ?",
+    options: ["2ème famille", "3ème famille A", "3ème famille B", "4ème famille"],
+    correct: 2,
+    expl: "25 m < 28 m donc c'est la 3ème famille. Comme l'immeuble comporte 8 étages (> 7), il ne satisfait pas aux conditions de la 3ème famille A → c'est la 3ème famille B."
+  },
+  {
+    q: "Pour qu'un corps de bâtiment soit considéré comme un ITGH (Immeuble de Très Grande Hauteur), le plancher bas du dernier niveau doit être situé à plus de :",
+    options: ["50 mètres", "100 mètres", "150 mètres", "200 mètres"],
+    correct: 3,
+    expl: "Pour être classé ITGH (Immeuble de Très Grande Hauteur), le plancher bas du dernier niveau doit être situé à plus de 200 mètres au-dessus du sol le plus haut utilisable pour les engins des SIS."
+  },
+  {
+    q: "Dans un IGH, quel type de SSI est obligatoire ?",
+    options: ["SSI de catégorie B", "SSI de catégorie A (option IGH)", "SSI de catégorie C", "Simple alarme de type 1"],
+    correct: 1,
+    expl: "Dans un IGH, un SSI de catégorie A (option IGH) est obligatoire. Les détecteurs sont implantés notamment dans les circulations horizontales communes et privatives."
+  },
+  {
+    q: "La CCDSA est seule compétente pour :",
+    options: ["Les ERP de 1ère et 2ème catégorie uniquement", "Les IGH et les ERP de 1ère catégorie", "Tous les ERP quel que soit la catégorie", "Uniquement les IGH"],
+    correct: 1,
+    expl: "La Commission Consultative Départementale de Sécurité et d'Accessibilité (CCDSA) est seule compétente pour les IGH et pour les ERP de 1ère catégorie. Elle est présidée par le préfet ou son représentant."
+  },
+  {
+    q: "Quelles mesures de prévention sont dites « passives » ?",
+    options: ["Le sprinkler et la détection automatique", "Le compartimentage et la stabilité au feu du bâtiment", "Le désenfumage mécanique et l'alarme", "Le RIA et les extincteurs"],
+    correct: 1,
+    expl: "Les mesures passives de prévention incluent le compartimentage et la stabilité au feu du bâtiment. Les mesures actives sont les systèmes de détection, d'extinction et de désenfumage."
+  },
+  {
+    q: "Quelle réponse concernant la règle 421 pour les circulations horizontales protégées est correcte ?",
+    options: ["Sol M2, mur M4, plafond M1", "Sol M4, mur M2, plafond M1", "Sol M1, mur M2, plafond M4", "Sol M2, mur M1, plafond M2"],
+    correct: 1,
+    expl: "Règle 421 : revêtement de sol classé M4, mur classé M2, plafond classé M1 (de 4 à 2 à 1 en montant du sol vers le plafond)."
+  },
+  {
+    q: "Dans un IGH de type GHO (hôtel), quelle est la distance maximale entre une porte d'appartement et l'entrée du dispositif d'accès à l'escalier le plus proche ?",
+    options: ["10 mètres", "15 mètres", "20 mètres", "30 mètres"],
+    correct: 2,
+    expl: "Dans un GHO, la distance maximale entre une porte d'appartement et l'entrée du dispositif d'accès à l'escalier le plus proche est de 20 mètres."
+  }
+];
+
+// ===== QCM STATE =====
+let answered = {};
+let score = 0;
+
+function buildQCM() {
+  const container = document.getElementById('qcm-container');
+  container.innerHTML = '';
+  answered = {};
+  score = 0;
+  updateStats();
+  document.getElementById('total-display').textContent = qcmData.length;
+
+  qcmData.forEach((item, idx) => {
+    const letters = ['A', 'B', 'C', 'D'];
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'q-' + idx;
+
+    let optHtml = item.options.map((opt, oi) => `
+      <button class="option-btn" onclick="answer(${idx}, ${oi})" id="opt-${idx}-${oi}">
+        <span class="option-letter">${letters[oi]}</span>
+        <span>${opt}</span>
+      </button>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="question-num">Question ${idx + 1} / ${qcmData.length}</div>
+      <div class="question-text">${item.q}</div>
+      <div class="options">${optHtml}</div>
+      <div class="explanation" id="expl-${idx}">💡 <strong>Explication :</strong> ${item.expl}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qIdx, optIdx) {
+  if (answered[qIdx] !== undefined) return;
+  answered[qIdx] = optIdx;
+
+  const isCorrect = optIdx === qcmData[qIdx].correct;
+  if (isCorrect) score++;
+
+  // Disable all options for this question
+  qcmData[qIdx].options.forEach((_, oi) => {
+    const btn = document.getElementById(`opt-${qIdx}-${oi}`);
+    btn.disabled = true;
+    if (oi === qcmData[qIdx].correct) {
+      btn.classList.add('correct');
+    } else if (oi === optIdx && !isCorrect) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  document.getElementById(`expl-${qIdx}`).classList.add('show');
+  updateStats();
+}
+
+function updateStats() {
+  const totalAnswered = Object.keys(answered).length;
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('qcm-stat').textContent = totalAnswered + ' répondu(s)';
+  const pct = qcmData.length > 0 ? (score / qcmData.length) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function resetQCM() {
+  buildQCM();
+}
+
+function showAllAnswers() {
+  qcmData.forEach((item, idx) => {
+    if (answered[idx] === undefined) {
+      answer(idx, -1); // trigger reveal without selecting wrong
+      // Actually just show correct
+      document.getElementById(`opt-${idx}-${item.correct}`).classList.add('missed');
+      document.getElementById(`expl-${idx}`).classList.add('show');
+      item.options.forEach((_, oi) => {
+        document.getElementById(`opt-${idx}-${oi}`).disabled = true;
+      });
+      answered[idx] = item.correct;
+    }
+  });
+  updateStats();
+}
+
+// ===== INIT =====
+buildQCM();
+</script>
+</body>
+</html>

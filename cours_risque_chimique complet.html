@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risque Chimique — Formation SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f12;
+  --bg2: #141720;
+  --bg3: #1c2028;
+  --border: #2a2f3a;
+  --orange: #ff6b1a;
+  --orange2: #ff8c42;
+  --yellow: #ffd166;
+  --red: #e63946;
+  --green: #06d6a0;
+  --blue: #118ab2;
+  --text: #e8eaf0;
+  --text2: #9aa0b0;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  position: relative;
+  background: linear-gradient(135deg, #0d0f12 0%, #1a1000 50%, #0d0f12 100%);
+  border-bottom: 2px solid var(--orange);
+  padding: 0;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(255,107,26,0.03) 20px,
+    rgba(255,107,26,0.03) 21px
+  );
+}
+
+.header-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 40px;
+}
+
+.hazard-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(255,107,26,0.6));
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(255,107,26,0.6)); }
+  50% { filter: drop-shadow(0 0 40px rgba(255,107,26,1)); }
+}
+
+.header-text {}
+.header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.header-title {
+  font-family: var(--display);
+  font-size: 56px;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255,107,26,0.4);
+}
+.header-sub {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+/* NAV */
+nav {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+
+.nav-inner {
+  display: flex;
+  gap: 0;
+  min-width: max-content;
+  padding: 0 20px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+/* LAYOUT */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num {
+  font-family: var(--display);
+  font-size: 72px;
+  line-height: 0.85;
+  color: var(--orange);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 38px;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.section-intro {
+  color: var(--text2);
+  font-size: 14px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* CARDS GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 24px 0; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin: 24px 0; }
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .header-title { font-size: 38px; }
+  .section-num { font-size: 48px; }
+}
+
+/* CARD */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--orange); }
+
+.card-icon { font-size: 28px; margin-bottom: 12px; }
+.card-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.card p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+/* ALERT BOX */
+.alert {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 4px;
+  margin: 20px 0;
+  border-left: 3px solid;
+}
+.alert-danger { background: rgba(230,57,70,0.1); border-color: var(--red); }
+.alert-warn { background: rgba(255,209,102,0.08); border-color: var(--yellow); }
+.alert-info { background: rgba(17,138,178,0.1); border-color: var(--blue); }
+.alert-ok { background: rgba(6,214,160,0.08); border-color: var(--green); }
+
+.alert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.alert-body {}
+.alert-title { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+.alert-danger .alert-title { color: var(--red); }
+.alert-warn .alert-title { color: var(--yellow); }
+.alert-info .alert-title { color: var(--blue); }
+.alert-ok .alert-title { color: var(--green); }
+.alert p { font-size: 14px; color: var(--text2); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th {
+  background: var(--bg3);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--orange);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+tr:hover td { background: var(--bg2); color: var(--text); }
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.badge-r { background: rgba(230,57,70,0.2); color: var(--red); }
+.badge-o { background: rgba(255,107,26,0.2); color: var(--orange); }
+.badge-y { background: rgba(255,209,102,0.15); color: var(--yellow); }
+.badge-g { background: rgba(6,214,160,0.15); color: var(--green); }
+.badge-b { background: rgba(17,138,178,0.2); color: var(--blue); }
+
+/* ACCORDION */
+.accordion { margin: 16px 0; }
+.acc-item { border: 1px solid var(--border); border-radius: 4px; margin-bottom: 8px; overflow: hidden; }
+.acc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  cursor: pointer;
+  background: var(--bg2);
+  transition: background 0.2s;
+  user-select: none;
+}
+.acc-header:hover { background: var(--bg3); }
+.acc-header-left { display: flex; align-items: center; gap: 12px; }
+.acc-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--orange);
+  background: rgba(255,107,26,0.12);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.acc-label { font-weight: 600; font-size: 14px; }
+.acc-arrow { color: var(--orange); font-size: 18px; transition: transform 0.3s; }
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.acc-body.open { max-height: 1200px; }
+.acc-content { padding: 16px 18px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text2); line-height: 1.7; }
+.acc-content ul { padding-left: 20px; margin: 8px 0; }
+.acc-content li { margin-bottom: 4px; }
+.acc-content strong { color: var(--text); }
+
+/* PICTOGRAMMES */
+.picto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 12px; margin: 20px 0; }
+.picto-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: default;
+}
+.picto-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+.picto-sym { font-size: 36px; margin-bottom: 8px; }
+.picto-code { font-family: var(--mono); font-size: 10px; color: var(--orange); letter-spacing: 1px; }
+.picto-name { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+/* ZONES */
+.zones-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 24px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.zone {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.zone-chaud { background: rgba(230,57,70,0.15); border-bottom: 1px solid rgba(230,57,70,0.3); }
+.zone-tiede { background: rgba(255,209,102,0.08); border-bottom: 1px solid rgba(255,209,102,0.2); }
+.zone-froide { background: rgba(6,214,160,0.06); }
+.zone-label {
+  font-family: var(--display);
+  font-size: 26px;
+  letter-spacing: 2px;
+  min-width: 140px;
+}
+.zone-chaud .zone-label { color: var(--red); }
+.zone-tiede .zone-label { color: var(--yellow); }
+.zone-froide .zone-label { color: var(--green); }
+.zone-content { flex: 1; }
+.zone-content p { font-size: 13.5px; color: var(--text2); }
+.zone-content strong { color: var(--text); }
+.zone-icon { font-size: 32px; }
+
+/* EPI */
+.epi-levels { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.epi-level {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.epi-A { background: rgba(230,57,70,0.08); border-color: rgba(230,57,70,0.4); }
+.epi-B { background: rgba(255,107,26,0.08); border-color: rgba(255,107,26,0.4); }
+.epi-C { background: rgba(255,209,102,0.06); border-color: rgba(255,209,102,0.3); }
+.epi-D { background: rgba(6,214,160,0.06); border-color: rgba(6,214,160,0.3); }
+.epi-badge {
+  font-family: var(--display);
+  font-size: 32px;
+  min-width: 44px;
+  text-align: center;
+  line-height: 1;
+}
+.epi-A .epi-badge { color: var(--red); }
+.epi-B .epi-badge { color: var(--orange); }
+.epi-C .epi-badge { color: var(--yellow); }
+.epi-D .epi-badge { color: var(--green); }
+.epi-info {}
+.epi-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.epi-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.epi-use { font-family: var(--mono); font-size: 11px; margin-top: 6px; padding: 3px 10px; border-radius: 2px; display: inline-block; }
+.epi-A .epi-use { background: rgba(230,57,70,0.15); color: var(--red); }
+.epi-B .epi-use { background: rgba(255,107,26,0.15); color: var(--orange); }
+.epi-C .epi-use { background: rgba(255,209,102,0.12); color: var(--yellow); }
+.epi-D .epi-use { background: rgba(6,214,160,0.12); color: var(--green); }
+
+/* TIMELINE CAT */
+.timeline { position: relative; margin: 24px 0; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange), var(--bg));
+}
+.tl-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.tl-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 2px solid var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange);
+  flex-shrink: 0;
+  z-index: 1;
+}
+.tl-content {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  flex: 1;
+}
+.tl-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--text); }
+.tl-desc { font-size: 13px; color: var(--text2); }
+
+/* QCM */
+.qcm-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.qcm-q { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
+.qcm-q span { font-family: var(--mono); color: var(--orange); font-size: 12px; margin-right: 8px; }
+.qcm-options { display: flex; flex-direction: column; gap: 8px; }
+.qcm-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg3);
+}
+.qcm-opt:hover { border-color: var(--orange); background: var(--bg2); }
+.qcm-opt.correct { border-color: var(--green); background: rgba(6,214,160,0.08); }
+.qcm-opt.wrong { border-color: var(--red); background: rgba(230,57,70,0.08); }
+.qcm-opt.neutral { opacity: 0.5; }
+.qcm-letter {
+  width: 26px; height: 26px;
+  background: var(--bg);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--orange);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.qcm-opt.correct .qcm-letter { background: var(--green); color: #000; }
+.qcm-opt.wrong .qcm-letter { background: var(--red); color: #fff; }
+.qcm-text { font-size: 14px; }
+.qcm-expl {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(6,214,160,0.06);
+  border-left: 2px solid var(--green);
+  font-size: 13px;
+  color: var(--text2);
+  display: none;
+}
+.qcm-expl.show { display: block; }
+.qcm-answered .qcm-opt { cursor: default; }
+
+.qcm-score {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 24px;
+}
+.score-num { font-family: var(--display); font-size: 56px; color: var(--orange); line-height: 1; }
+.score-label { font-family: var(--mono); font-size: 12px; color: var(--text2); letter-spacing: 1px; margin-top: 4px; }
+.btn-reset {
+  margin-top: 16px;
+  background: var(--orange);
+  color: #000;
+  border: none;
+  padding: 10px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-reset:hover { background: var(--orange2); }
+
+/* KEYWORDS */
+.keyword-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.kw {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--bg2);
+  letter-spacing: 0.5px;
+}
+
+/* H2, H3 */
+h2 {
+  font-family: var(--display);
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+h2:first-child { margin-top: 0; }
+h3 {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin: 24px 0 12px;
+}
+p { margin-bottom: 12px; color: var(--text2); }
+strong { color: var(--text); }
+ul, ol { padding-left: 24px; margin: 8px 0 16px; }
+li { color: var(--text2); margin-bottom: 4px; font-size: 14px; }
+
+/* CODE / MONO */
+code {
+  font-family: var(--mono);
+  background: var(--bg3);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 12.5px;
+  color: var(--orange2);
+}
+
+/* DEFINITION BOX */
+.def-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.def-term {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--orange);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.def-text { font-size: 14px; color: var(--text2); }
+
+/* PROGRESS BAR */
+.progress-bar-wrap { height: 4px; background: var(--bg3); border-radius: 2px; margin: 8px 0 24px; }
+.progress-bar { height: 100%; background: linear-gradient(to right, var(--orange), var(--orange2)); border-radius: 2px; transition: width 0.4s; }
+
+/* FOOTER */
+footer {
+  margin-top: 60px;
+  padding: 24px 40px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.footer-left span { color: var(--orange); }
+.footer-right { font-family: var(--mono); font-size: 10px; color: var(--border); }
+
+/* PLAQUE ORANGE */
+.plaque-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ff8000;
+  border: 3px solid #222;
+  border-radius: 4px;
+  width: 120px;
+  padding: 8px;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 20px;
+  color: #111;
+  margin: 0 auto;
+  line-height: 1.2;
+  text-align: center;
+}
+.plaque-line { border-bottom: 2px solid #222; width: 100%; margin: 4px 0; }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  margin-bottom: 20px;
+  padding: 8px 12px;
+  background: var(--bg3);
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="hazard-icon">☣️</div>
+    <div class="header-text">
+      <div class="header-label">Formation Sapeurs-Pompiers · NRBC</div>
+      <div class="header-title">RISQUE CHIMIQUE</div>
+      <div class="header-sub">RÉFÉRENTIEL DOCTRINE · IDENTIFICATION · PROTECTION · INTERVENTION · DÉCONTAMINATION</div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('intro',this)">01 · Introduction</button>
+    <button class="nav-btn" onclick="showSection('identification',this)">02 · Identification</button>
+    <button class="nav-btn" onclick="showSection('toxicologie',this)">03 · Toxicologie</button>
+    <button class="nav-btn" onclick="showSection('epi',this)">04 · EPI</button>
+    <button class="nav-btn" onclick="showSection('zones',this)">05 · Zones</button>
+    <button class="nav-btn" onclick="showSection('decon',this)">06 · Décontamination</button>
+    <button class="nav-btn" onclick="showSection('cat',this)">07 · CAT</button>
+    <button class="nav-btn" onclick="showSection('plans',this)">08 · Plans & Textes</button>
+    <button class="nav-btn" onclick="showSection('qcm',this)">09 · QCM</button>
+    <button class="nav-btn" onclick="showSection('hbco',this)">10 · CO / HbCO</button>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ================================ SECTION 1 : INTRO ================================ -->
+<div class="section active" id="s-intro">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div>
+      <div class="section-title">INTRODUCTION AU RISQUE CHIMIQUE</div>
+      <div class="section-intro">Définition, contexte réglementaire, statistiques d'engagement</div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <div class="alert-title">Risque omniprésent</div>
+      <p>La France compte plus de <strong>300 000 établissements industriels</strong> utilisant ou stockant des matières dangereuses. Les sapeurs-pompiers sont engagés sur des incidents chimiques chaque jour en France.</p>
+    </div>
+  </div>
+
+  <h2>Définition</h2>
+  <div class="def-box">
+    <div class="def-term">Risque chimique</div>
+    <div class="def-text">Possibilité pour un individu de subir un dommage résultant de l'exposition à un ou plusieurs produits chimiques dangereux, en raison de leurs propriétés physico-chimiques, toxicologiques ou écotoxicologiques.</div>
+  </div>
+
+  <p>Le risque chimique regroupe deux grandes catégories :</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <div class="card-title">Risque technologique</div>
+      <p>Lié aux activités industrielles, transport de matières dangereuses (TMD), stockages. Couvert par la réglementation ICPE et les plans PPRT/POI/PPI.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💣</div>
+      <div class="card-title">Risque malveillant (NRBC)</div>
+      <p>Acte terroriste, attaque chimique délibérée. Entrant dans le cadre NRBC-E (Nucléaire, Radiologique, Biologique, Chimique, Explosif).</p>
+    </div>
+  </div>
+
+  <h2>Cadre réglementaire et doctrinal</h2>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">Loi</span><span class="acc-label">Code de l'Environnement — Installations Classées (ICPE)</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Les <strong>Installations Classées pour la Protection de l'Environnement (ICPE)</strong> sont soumises au Code de l'Environnement (art. L. 511-1 et suivants). Elles comprennent :</p>
+        <ul>
+          <li><strong>Déclaration</strong> : activités à risque faible</li>
+          <li><strong>Enregistrement</strong> : procédure simplifiée</li>
+          <li><strong>Autorisation</strong> : risques élevés, étude de dangers requise</li>
+          <li><strong>Autorisation Seveso</strong> : établissements à hauts risques (directive Seveso III – 2012/18/UE)</li>
+        </ul>
+        <p>En France : environ <strong>1 200 sites Seveso seuil haut</strong> et <strong>1 200 sites seuil bas</strong>.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">ADR</span><span class="acc-label">Accord européen relatif au transport des marchandises dangereuses par route</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>L'<strong>ADR (Accord européen relatif au transport des marchandises Dangereuses par Route)</strong> est le texte de référence pour le transport routier de matières dangereuses, révisé tous les deux ans. Il définit :</p>
+        <ul>
+          <li>Le classement des matières en 13 classes de danger</li>
+          <li>La signalisation des véhicules (plaques orange)</li>
+          <li>Les prescriptions d'emballage, étiquetage et documentation</li>
+          <li>Les équipements de bord obligatoires</li>
+          <li>La formation des conducteurs (certificat ADR)</li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">GHS</span><span class="acc-label">Règlement CLP — Système Général Harmonisé</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le règlement <strong>CLP (Classification, Labelling and Packaging) CE n° 1272/2008</strong> transpose en droit européen le Système Général Harmonisé (GHS) de l'ONU. Il impose :</p>
+        <ul>
+          <li>9 pictogrammes standardisés (losanges rouges)</li>
+          <li>Mentions de danger (H — phrases H) et conseils de prudence (P — phrases P)</li>
+          <li>Fiche de Données de Sécurité (FDS) — 16 rubriques</li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">Doc</span><span class="acc-label">Guide de première intervention (GPI) — Guide Visuel de Premiers Secours (GVPS)</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Les sapeurs-pompiers disposent de référentiels opérationnels :</p>
+        <ul>
+          <li><strong>Guide de Premier Intervention (GPI)</strong> : fiches produit consultables par N° ONU ou nom commercial</li>
+          <li><strong>GVPS (Guide Visuel de Premiers Secours)</strong> : données toxicologiques et mesures d'urgence</li>
+          <li><strong>INRS — Fiches Produits</strong> : données toxicologiques complètes</li>
+          <li><strong>GESIP</strong> : guide d'intervention pour les transports de matières dangereuses</li>
+          <li><strong>TRANSAID</strong> : assistance téléphonique 24h/24 (centre antipoison + industriels)</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+
+  <h2>Les acteurs de la gestion du risque chimique</h2>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-icon">🚒</div>
+      <div class="card-title">SDIS / SP</div>
+      <p>Reconnaissance, confinement, sauvetage, décontamination. Cellule NRBC départementale ou zonale.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏥</div>
+      <div class="card-title">SAMU / Centre antipoison</div>
+      <p>Prise en charge médicale des victimes, conseil toxicologique 24h/24 via les Centres Antipoison (CAP).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👮</div>
+      <div class="card-title">Police / Gendarmerie</div>
+      <p>Bouclage périmètre, ordre public, lutte anti-terroriste (RAID, GIGN pour NRBC malveillant).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">Préfet / DOS</div>
+      <p>Directeur des Opérations de Secours en cas de déclenchement d'un plan ORSEC. Coordination interservices.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <div class="card-title">Industriels / DREAL</div>
+      <p>Plans POI/PPI, inspection des installations classées, expertise technique sur leurs produits.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">Cellule NRBC zonale</div>
+      <p>Expertise spécialisée, détection avancée, décontamination de masse. Renfort interdépartemental.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ SECTION 2 : IDENTIFICATION ================================ -->
+<div class="section" id="s-identification">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <div class="section-title">IDENTIFICATION DES PRODUITS DANGEREUX</div>
+      <div class="section-intro">Pictogrammes GHS/CLP, classes ADR, plaques oranges, numéros ONU</div>
+    </div>
+  </div>
+
+  <h2>Classes de danger ADR — 13 classes</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Classe</th><th>Dénomination</th><th>Exemples</th><th>Risque principal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>1</code></td><td>Matières et objets explosibles</td><td>TNT, dynamite, munitions</td><td><span class="badge badge-r">EXPLOSION</span></td></tr>
+        <tr><td><code>2</code></td><td>Gaz (comprimés, liquéfiés, dissous)</td><td>Propane, chlore, oxygène</td><td><span class="badge badge-o">ASPHYXIE / FEU</span></td></tr>
+        <tr><td><code>3</code></td><td>Liquides inflammables</td><td>Essence, kérosène, éthanol</td><td><span class="badge badge-o">INCENDIE</span></td></tr>
+        <tr><td><code>4.1</code></td><td>Solides inflammables</td><td>Magnésium, soufre</td><td><span class="badge badge-o">INCENDIE</span></td></tr>
+        <tr><td><code>4.2</code></td><td>Matières sujettes à auto-inflammation</td><td>Phosphore blanc</td><td><span class="badge badge-r">AUTO-IGNITION</span></td></tr>
+        <tr><td><code>4.3</code></td><td>Matières dégageant des gaz inflammables au contact de l'eau</td><td>Sodium, carbure de calcium</td><td><span class="badge badge-r">RÉACTION EAU</span></td></tr>
+        <tr><td><code>5.1</code></td><td>Matières comburantes</td><td>Peroxyde d'hydrogène, nitrates</td><td><span class="badge badge-y">COMBURANT</span></td></tr>
+        <tr><td><code>5.2</code></td><td>Peroxydes organiques</td><td>Peroxyde d'acétyle</td><td><span class="badge badge-r">EXPLOSION/FEU</span></td></tr>
+        <tr><td><code>6.1</code></td><td>Matières toxiques</td><td>Pesticides, acide cyanhydrique</td><td><span class="badge badge-r">TOXIQUE</span></td></tr>
+        <tr><td><code>6.2</code></td><td>Matières infectieuses</td><td>Cultures bactériennes</td><td><span class="badge badge-r">BIOLOGIQUE</span></td></tr>
+        <tr><td><code>7</code></td><td>Matières radioactives</td><td>Uranium, cobalt-60</td><td><span class="badge badge-r">RAYONNEMENTS</span></td></tr>
+        <tr><td><code>8</code></td><td>Matières corrosives</td><td>Acide sulfurique, soude</td><td><span class="badge badge-o">BRÛLURE</span></td></tr>
+        <tr><td><code>9</code></td><td>Matières et objets dangereux divers</td><td>Piles lithium, amiante</td><td><span class="badge badge-y">DIVERS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Pictogrammes GHS / CLP</h2>
+  <div class="picto-grid">
+    <div class="picto-card">
+      <div class="picto-sym">💥</div>
+      <div class="picto-code">GHS01</div>
+      <div class="picto-name">Explosif / Instable</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">🔥</div>
+      <div class="picto-code">GHS02</div>
+      <div class="picto-name">Inflammable</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">🔴</div>
+      <div class="picto-code">GHS03</div>
+      <div class="picto-name">Comburant</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">🛢️</div>
+      <div class="picto-code">GHS04</div>
+      <div class="picto-name">Gaz sous pression</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">⚗️</div>
+      <div class="picto-code">GHS05</div>
+      <div class="picto-name">Corrosif</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">☠️</div>
+      <div class="picto-code">GHS06</div>
+      <div class="picto-name">Toxique aigu</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">❗</div>
+      <div class="picto-code">GHS07</div>
+      <div class="picto-name">Irritant / Nocif</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">🫁</div>
+      <div class="picto-code">GHS08</div>
+      <div class="picto-name">Danger santé longterme</div>
+    </div>
+    <div class="picto-card">
+      <div class="picto-sym">🐟</div>
+      <div class="picto-code">GHS09</div>
+      <div class="picto-name">Dangereux aquatique</div>
+    </div>
+  </div>
+
+  <h2>La plaque orange ADR</h2>
+  <div class="grid-2">
+    <div>
+      <p>Les véhicules transportant des matières dangereuses sont équipés de <strong>plaques orange réfléchissantes</strong> à l'avant et à l'arrière.</p>
+      <div class="def-box">
+        <div class="def-term">Lecture de la plaque</div>
+        <div class="def-text">
+          <strong>Ligne haute :</strong> Numéro d'identification du danger (NIR / "code Kemler")<br>
+          <strong>Ligne basse :</strong> Numéro ONU du produit (4 chiffres)
+        </div>
+      </div>
+      <div class="def-box">
+        <div class="def-term">Déchiffrage du code Kemler (NIR)</div>
+        <div class="def-text">
+          <strong>1er chiffre</strong> = danger primaire (classe ADR)<br>
+          <strong>2e chiffre</strong> = danger secondaire<br>
+          <strong>3e chiffre</strong> = danger tertiaire<br>
+          <strong>X devant</strong> = réaction violente avec l'eau<br>
+          <strong>Chiffre doublé</strong> = danger accentué (ex: 33 = très inflammable)
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px">
+      <div>
+        <p style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--orange);margin-bottom:12px">EXEMPLE : ESSENCE</p>
+        <div class="plaque-demo">
+          <span>33</span>
+          <div class="plaque-line"></div>
+          <span>1203</span>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--text2);margin-top:8px">NIR 33 = liquide très inflammable<br>N° ONU 1203 = Essence</p>
+      </div>
+      <div>
+        <p style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--orange);margin-bottom:12px">EXEMPLE : CHLORE</p>
+        <div class="plaque-demo">
+          <span>265</span>
+          <div class="plaque-line"></div>
+          <span>1017</span>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--text2);margin-top:8px">NIR 265 = gaz toxique, comburant<br>N° ONU 1017 = Chlore</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Codes Kemler courants à connaître</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Chiffre</th><th>Danger correspondant</th></tr></thead>
+      <tbody>
+        <tr><td><code>2</code></td><td>Dégagement de gaz sous pression ou par réaction chimique</td></tr>
+        <tr><td><code>3</code></td><td>Matière liquide inflammable (tension de vapeur ≤ 110 kPa à 50°C)</td></tr>
+        <tr><td><code>4</code></td><td>Matière solide inflammable / auto-réactive</td></tr>
+        <tr><td><code>5</code></td><td>Matière comburante (favorise l'incendie)</td></tr>
+        <tr><td><code>6</code></td><td>Toxicité</td></tr>
+        <tr><td><code>7</code></td><td>Radioactivité</td></tr>
+        <tr><td><code>8</code></td><td>Corrosivité</td></tr>
+        <tr><td><code>9</code></td><td>Danger de réaction violente spontanée</td></tr>
+        <tr><td><code>X</code> (préfixe)</td><td>Réaction dangereuse avec l'eau — <strong>INTERDIT D'UTILISER DE L'EAU</strong></td></tr>
+        <tr><td>Chiffre <strong>doublé</strong></td><td>Intensification du danger principal (ex : 88 = très corrosif)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <div class="alert-title">Ressource opérationnelle</div>
+      <p>Le <strong>Guide de Premier Intervention (GPI)</strong> est consultable par N° ONU. Il donne : distance d'isolement initiale, équipement de protection recommandé, risques d'incendie/explosion, effets sur la santé et consignes de premier secours. Disponible en version papier et applicatif mobile.</p>
+    </div>
+  </div>
+
+  <h2>La Fiche de Données de Sécurité (FDS)</h2>
+  <p>Toute substance ou mélange chimique dangereux doit être accompagné d'une <strong>FDS (règlement REACH 1907/2006 et CLP)</strong>. Elle comporte <strong>16 rubriques réglementaires</strong> :</p>
+  <div class="keyword-grid">
+    <span class="kw">1 · Identification produit</span>
+    <span class="kw">2 · Identification dangers</span>
+    <span class="kw">3 · Composition</span>
+    <span class="kw">4 · 1ers secours</span>
+    <span class="kw">5 · Lutte incendie</span>
+    <span class="kw">6 · Fuite accidentelle</span>
+    <span class="kw">7 · Manipulation/stockage</span>
+    <span class="kw">8 · Contrôle exposition / EPI</span>
+    <span class="kw">9 · Propriétés physico-chimiques</span>
+    <span class="kw">10 · Stabilité/réactivité</span>
+    <span class="kw">11 · Toxicologie</span>
+    <span class="kw">12 · Écotoxicologie</span>
+    <span class="kw">13 · Élimination</span>
+    <span class="kw">14 · Transport</span>
+    <span class="kw">15 · Réglementation</span>
+    <span class="kw">16 · Autres infos</span>
+  </div>
+</div>
+
+<!-- ================================ SECTION 3 : TOXICOLOGIE ================================ -->
+<div class="section" id="s-toxicologie">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <div class="section-title">TOXICOLOGIE OPÉRATIONNELLE</div>
+      <div class="section-intro">Voies de pénétration, effets physiologiques, produits de référence</div>
+    </div>
+  </div>
+
+  <h2>Voies de pénétration dans l'organisme</h2>
+  <div class="grid-4">
+    <div class="card">
+      <div class="card-icon">😮‍💨</div>
+      <div class="card-title">Inhalation</div>
+      <p>Voie principale. Gaz, vapeurs, aérosols, poussières. Absorption rapide via les alvéoles pulmonaires.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👁️</div>
+      <div class="card-title">Contact cutané</div>
+      <p>Absorption transcutanée (peau, muqueuses). Amplifiée par sudation, blessures cutanées.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤢</div>
+      <div class="card-title">Ingestion</div>
+      <p>Rare en contexte opérationnel. Possible via mains contaminées, contamination alimentaire.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💉</div>
+      <div class="card-title">Inoculation</div>
+      <p>Blessure par objet contaminé, piqûre, coupure. Rare mais à fort risque (passage direct sang).</p>
+    </div>
+  </div>
+
+  <h2>Notions de toxicologie fondamentale</h2>
+
+  <div class="grid-2">
+    <div class="def-box">
+      <div class="def-term">DL50 — Dose Létale 50</div>
+      <div class="def-text">Dose entraînant la mort de 50 % d'une population animale test. Exprimée en <strong>mg/kg de poids corporel</strong>. Plus elle est basse, plus le produit est toxique.</div>
+    </div>
+    <div class="def-box">
+      <div class="def-term">CL50 — Concentration Létale 50</div>
+      <div class="def-text">Concentration en mg/m³ ou ppm entraînant la mort de 50 % d'une population test lors d'une inhalation. Référence pour les gaz et vapeurs.</div>
+    </div>
+    <div class="def-box">
+      <div class="def-term">IDLH — Immediately Dangerous to Life and Health</div>
+      <div class="def-text">Concentration maximale au-delà de laquelle une exposition de <strong>30 minutes</strong> met la vie en danger ou entraîne des séquelles irréversibles. Référence de fuite immédiate.</div>
+    </div>
+    <div class="def-box">
+      <div class="def-term">VME / VLE</div>
+      <div class="def-text"><strong>VME</strong> (Valeur Moyenne d'Exposition) : concentration moyenne sur 8h. <strong>VLE</strong> (Valeur Limite d'Exposition) : concentration maximale sur 15 min. Normes de sécurité au travail (INRS).</div>
+    </div>
+  </div>
+
+  <h2>Mécanismes d'action toxique</h2>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">A</span><span class="acc-label">Asphyxiants simples — déplacement d'O₂</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>N'ont pas d'action toxique propre mais <strong>diluent l'oxygène ambiant</strong> et provoquent l'asphyxie par anoxie.</p>
+        <ul>
+          <li>CO₂, N₂, méthane, propane, argon, hélium</li>
+          <li>Seuil de danger : O₂ < 17% (air normal = 20,9%)</li>
+          <li>Perte de conscience : O₂ < 10-12%</li>
+          <li>Mort en minutes : O₂ < 6%</li>
+        </ul>
+        <p><strong>Protection :</strong> ARI obligatoire dès suspicion de confinement avec risque d'anoxie.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">B</span><span class="acc-label">Asphyxiants chimiques — blocage du transport ou utilisation de l'O₂</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Mécanisme plus grave que l'asphyxie simple :</p>
+        <ul>
+          <li><strong>Monoxyde de carbone (CO)</strong> : affinité pour l'hémoglobine 200 à 300 fois supérieure à O₂ → formation de carboxyhémoglobine (HbCO) → empêche transport O₂</li>
+          <li><strong>Acide cyanhydrique (HCN / AC)</strong> : bloque la cytochrome oxydase → les cellules ne peuvent plus utiliser l'O₂ (asphyxie tissulaire)</li>
+          <li><strong>Hydrogène sulfuré (H₂S)</strong> : double mécanisme — irritation + blocage respiration cellulaire</li>
+        </ul>
+        <p><strong>CO :</strong> incolore, inodore — indétectable sans capteur. Antidote : oxygène pur + caisson hyperbare (graves). <strong>HCN :</strong> odeur d'amandes amères — antidote hydroxocobalamine (Cyanokit®).</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">C</span><span class="acc-label">Irritants des voies respiratoires</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Agissent directement sur les muqueuses respiratoires. Classification selon la solubilité :</p>
+        <ul>
+          <li><strong>Très solubles (voies hautes)</strong> : ammoniac (NH₃), chlorure d'hydrogène (HCl), SO₂ — brûlures immédiates ORL, laryngospasme → alerte rapide</li>
+          <li><strong>Peu solubles (voies basses / alvéoles)</strong> : dioxyde d'azote (NO₂), phosgène (COCl₂) — OAP retardé 6-24h après exposition → trompeur, victime "asymptomatique"</li>
+          <li><strong>Chlore (Cl₂)</strong> : solubilité intermédiaire, touche toutes les voies</li>
+        </ul>
+        <div class="alert alert-danger" style="margin-top:12px">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-body">
+            <div class="alert-title">Piège opérationnel majeur</div>
+            <p>Les irritants peu solubles (phosgène, NO₂) provoquent un <strong>OAP retardé</strong>. Une victime apparemment bien après une courte exposition peut décéder 24h plus tard. → <strong>Toujours hospitaliser, mise en repos strict absolu.</strong></p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">D</span><span class="acc-label">Organophosphorés et carbamates — inhibiteurs de la cholinestérase</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Catégorie des plus dangereux : <strong>pesticides organophosphorés, agents de guerre (tabun, sarin, VX)</strong>.</p>
+        <p>Mécanisme : inhibition irréversible de l'acétylcholinestérase → accumulation d'acétylcholine → hyperstimulation des récepteurs muscariniques et nicotiniques.</p>
+        <p><strong>Syndrome SLUDGE (muscarinique) :</strong></p>
+        <ul>
+          <li>S = Salivation excessive</li>
+          <li>L = Larmoiement</li>
+          <li>U = Urination</li>
+          <li>D = Diarrhée</li>
+          <li>G = Gastroentérite</li>
+          <li>E = Emèse (vomissements)</li>
+        </ul>
+        <p>+ Myosis (contraction pupilles), bradycardie, bronchospasme, convulsions, paralysie, décès</p>
+        <p><strong>Antidotes :</strong> Atropine (muscarinique) + Pralidoxime (PAM, réactivateur cholinestérase si administré précocement).</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">E</span><span class="acc-label">Vésicants — agents lésants cutanés</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Provoquent des lésions cutanées, oculaires et respiratoires par contact ou inhalation :</p>
+        <ul>
+          <li><strong>Ypérite (gaz moutarde, HD)</strong> : lésions cutanées retardées 2-24h, cloques, irritations oculaires graves (cécité temporaire). Persistant dans l'environnement.</li>
+          <li><strong>Lewisite (L)</strong> : lésions immédiates, douleur instantanée. Antidote : BAL (British Anti-Lewisite).</li>
+          <li><strong>Chlorure de cyanogène (CK)</strong> : double effet asphyxiant + vésicant</li>
+        </ul>
+        <p><strong>Risque de contamination secondaire élevé</strong> pour les secouristes. EPI niveau A impératif.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <h2>Paramètres physico-chimiques essentiels</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Paramètre</th><th>Définition</th><th>Importance opérationnelle</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Point d'éclair</strong></td><td>Température minimale à laquelle un liquide émet suffisamment de vapeurs pour s'enflammer</td><td>Détermine le risque incendie/explosion</td></tr>
+        <tr><td><strong>LIE / LSE</strong></td><td>Limite Inférieure/Supérieure d'Explosivité dans l'air</td><td>Concentrations entre LIE et LSE = zone explosive</td></tr>
+        <tr><td><strong>Densité vapeur</strong></td><td>Rapport densité vapeur / air (air = 1)</td><td>>1 : gaz lourd → accumulation basse (caves, égouts) ; <1 : gaz léger → monte</td></tr>
+        <tr><td><strong>Pression vapeur</strong></td><td>Tension de vapeur du produit à température ambiante</td><td>Plus elle est haute, plus le produit s'évapore vite → risque inhalation élevé</td></tr>
+        <tr><td><strong>Solubilité eau</strong></td><td>Capacité à se dissoudre dans l'eau</td><td>Si soluble : l'eau peut être utilisée comme écran ; si non soluble : risque de pollution aquatique</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================ SECTION 4 : EPI ================================ -->
+<div class="section" id="s-epi">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div>
+      <div class="section-title">ÉQUIPEMENTS DE PROTECTION INDIVIDUELLE</div>
+      <div class="section-intro">Niveaux A, B, C, D — ARI — Tenues de protection chimique</div>
+    </div>
+  </div>
+
+  <h2>Niveaux de protection NFPA / EPA</h2>
+  <div class="epi-levels">
+    <div class="epi-level epi-A">
+      <div class="epi-badge">A</div>
+      <div class="epi-info">
+        <div class="epi-name">Niveau A — Protection maximale</div>
+        <div class="epi-desc">Combinaison totalement étanche gaz et vapeurs (combinaison SCBA encapsulée). Protection cutanée, respiratoire et oculaire maximale. Autonomie limitée (30-45 min). Mobilité très réduite.</div>
+        <div class="epi-use">Atmosphère IDLH · Agents inconnus · Vapeurs cutanéotoxiques · Concentration élevée</div>
+      </div>
+    </div>
+    <div class="epi-level epi-B">
+      <div class="epi-badge">B</div>
+      <div class="epi-info">
+        <div class="epi-name">Niveau B — Protection respiratoire maximale</div>
+        <div class="epi-desc">ARI (Appareil Respiratoire Isolant) + combinaison non étanche aux vapeurs mais imperméable aux liquides. Protection respiratoire = niveau A, protection cutanée moindre.</div>
+        <div class="epi-use">Atmosphère IDLH sans cutanéotoxiques · Après identification produit non vésicant</div>
+      </div>
+    </div>
+    <div class="epi-level epi-C">
+      <div class="epi-badge">C</div>
+      <div class="epi-info">
+        <div class="epi-name">Niveau C — Masque filtrant</div>
+        <div class="epi-desc">Masque de protection respiratoire filtrant (masque à cartouches ABEK-P3) + combinaison de protection chimique. Utilisation conditionnée à la connaissance du produit et de sa concentration.</div>
+        <div class="epi-use">Produit identifié · Concentration < IDLH · Oxygène ≥ 19,5% · Filtre adapté</div>
+      </div>
+    </div>
+    <div class="epi-level epi-D">
+      <div class="epi-badge">D</div>
+      <div class="epi-info">
+        <div class="epi-name">Niveau D — EPI standard</div>
+        <div class="epi-desc">Équipement de travail normal (tenue de feu ou de travail), aucune protection contre les produits chimiques. Uniquement si aucun risque chimique identifié ou en zone froide décontaminée.</div>
+        <div class="epi-use">Zone froide assainie · Pas de risque de contact</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <div class="alert-title">Règle fondamentale</div>
+      <p>En cas de doute sur la nature du produit ou de la concentration : <strong>niveau de protection maximum (A)</strong>. On ne réduit le niveau de protection qu'après identification et mesures.</p>
+    </div>
+  </div>
+
+  <h2>L'ARI — Appareil Respiratoire Isolant</h2>
+  <div class="grid-2">
+    <div>
+      <h3>Composition</h3>
+      <ul>
+        <li><strong>Bouteille d'air comprimé</strong> : 6 ou 9 litres, 200 bar → autonomie 20-40 min selon effort</li>
+        <li><strong>Détendeur</strong> : ramène la pression à ~6-8 bar</li>
+        <li><strong>Masque facial complet</strong> : étanchéité visage, vitre panoramique</li>
+        <li><strong>Sifflet d'alarme</strong> : déclenche à environ 55-60 bar restants (~5-10 min)</li>
+        <li><strong>Manomètre</strong> : contrôle visuel de la pression</li>
+        <li><strong>Harnais</strong> : port dorsal</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Règles d'engagement</h3>
+      <ul>
+        <li>Toujours travailler <strong>en binôme minimum</strong> sous ARI</li>
+        <li>Réserve de sécurité : revenir au point de sortie quand le sifflet retentit</li>
+        <li>Durée max d'engagement = <strong>autonomie calculée moins 25%</strong></li>
+        <li>Contrôle complet avant chaque mise en œuvre</li>
+        <li>Vérification étanchéité : test d'aspiration (obturation orifice + aspiration légère)</li>
+        <li>Ne jamais enlever le masque dans une atmosphère inconnue</li>
+      </ul>
+      <div class="alert alert-warn" style="margin-top:16px">
+        <div class="alert-icon">⏱️</div>
+        <div class="alert-body">
+          <div class="alert-title">Calcul d'autonomie</div>
+          <p>Pression initiale × volume cylindre / débit consommation ≈ <strong>(P × V) / 40</strong> minutes au repos. Diviser par 2 à 3 en situation d'effort intense.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Tenues de protection chimique SP</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tenue</th><th>Type</th><th>Protection</th><th>Usage SP</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tenue de feu (F1)</strong></td><td>Niveau D</td><td>Chaleur / flamme — aucune protection chimique réelle</td><td>Incendie hors risque chimique spécifique</td></tr>
+        <tr><td><strong>Tenue chimique type 3 (anti-projection)</strong></td><td>Niveau B/C</td><td>Projections liquides, splash, aérosols sous pression</td><td>Fuite liquide identifiée, non vaporeux</td></tr>
+        <tr><td><strong>Tenue chimique type 2 (étanche gaz)</strong></td><td>Niveau A/B</td><td>Gaz, vapeurs, aérosols — étanchéité totale avec ARI interne</td><td>Atmosphère gazeuse toxique, produit inconnu</td></tr>
+        <tr><td><strong>Combinaison NRBC (C2G)</strong></td><td>Niveau A</td><td>Agents chimiques de guerre — filtre charbon actif ou étanche</td><td>NRBC malveillant, agents de guerre</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================ SECTION 5 : ZONES ================================ -->
+<div class="section" id="s-zones">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div>
+      <div class="section-title">ZONAGE OPÉRATIONNEL</div>
+      <div class="section-intro">Organisation des zones chaud / tiède / froid — périmètres de sécurité</div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">📐</div>
+    <div class="alert-body">
+      <div class="alert-title">Principe fondamental</div>
+      <p>La mise en place des zones est une priorité absolue dès les premières secondes d'engagement. Elle conditionne la sécurité de toute l'opération. Le zonage est <strong>dynamique</strong> : il évolue avec les conditions météo, la dispersion du nuage et les informations sur le produit.</p>
+    </div>
+  </div>
+
+  <div class="zones-diagram">
+    <div class="zone zone-chaud">
+      <div class="zone-icon">🔴</div>
+      <div class="zone-label">CHAUD</div>
+      <div class="zone-content">
+        <p><strong>Zone de danger immédiat</strong> — Seuls les intervenants équipés du <strong>niveau de protection adapté</strong> (au minimum ARI + tenue chimique) peuvent y pénétrer.</p>
+        <p>Contient la source de contamination. Accès strictement contrôlé et limité. Aucune victime non évacuée, aucun matériel non dédié.</p>
+        <p><strong>Objectifs :</strong> Reconnaissance, confinement de la source, extraction des victimes.</p>
+      </div>
+    </div>
+    <div class="zone zone-tiede">
+      <div class="zone-icon">🟡</div>
+      <div class="zone-label">TIÈDE</div>
+      <div class="zone-content">
+        <p><strong>Zone de transition / décontamination</strong> — Zone tampon entre le chaud et le froid. Les intervenants portent une <strong>protection adaptée au risque résiduel</strong>.</p>
+        <p>Lieu de décontamination des victimes (couloir de décontamination), des intervenants sortant de la zone chaude, et du matériel contaminé.</p>
+        <p><strong>Objectifs :</strong> Décontamination, triage médical secondaire, habillage/déshabillage des intervenants.</p>
+      </div>
+    </div>
+    <div class="zone zone-froide">
+      <div class="zone-icon">🟢</div>
+      <div class="zone-label">FROIDE</div>
+      <div class="zone-content">
+        <p><strong>Zone de sécurité</strong> — Zone non contaminée. Point de commandement, regroupement des moyens, prise en charge médicale des victimes décontaminées.</p>
+        <p>Personnel non équipé en EPI chimique. Accès régulé (filtrage entrée). Positionnement <strong>dans le vent</strong> par rapport à la source.</p>
+        <p><strong>Objectifs :</strong> PC, staging logistique, PMA, triage médical des victimes décontaminées.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Paramètres influençant le zonage</h2>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">💨</div>
+      <div class="card-title">Vent (météo)</div>
+      <p>Le vent est le paramètre n°1. Zone froide toujours <strong>dans le sens du vent</strong> par rapport à la source (vent soufflant de la source vers la zone froide). En cas de vent nul : cercles concentriques. Surveiller les changements de direction.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📏</div>
+      <div class="card-title">Distances initiales</div>
+      <p>Référence GPI : distance d'isolement immédiate (quelques dizaines à plusieurs centaines de mètres selon le produit). Distances de protection selon direction du vent. À adapter si la source n'est pas confinée.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">Densité du gaz</div>
+      <p>Gaz lourd (densité > 1) : s'accumule en bas, dans les creux, les sous-sols. Extension horizontale prioritaire. Gaz léger (densité < 1) : monte, se dilue plus vite. Extension verticale.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <div class="card-title">Conditions atmosphériques</div>
+      <p>Instabilité thermique (temps chaud ensoleillé) → dispersion rapide. Inversion de température (nuit, brouillard) → accumulation des gaz en basse atmosphère. Pluie : peut solubiliser certains gaz, risque pollution eau.</p>
+    </div>
+  </div>
+
+  <h2>Le Poste de Commandement (PC)</h2>
+  <div class="def-box">
+    <div class="def-term">Implantation du PC</div>
+    <div class="def-text">
+      Le PC est installé en <strong>zone froide</strong>, dans le vent, à l'abri, hors vue directe des victimes contaminées. Il doit permettre la vue sur la zone d'opération et disposer d'un accès facile aux renforts. Il comprend : PC COS, point regroupement renforts, PMA, point transit victimes décontaminées.
+    </div>
+  </div>
+
+  <h2>Gestion des victimes — Triage NRBC</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Catégorie</th><th>Couleur</th><th>État</th><th>Priorité</th></tr></thead>
+      <tbody>
+        <tr><td><strong>T1 — Urgence absolue</strong></td><td><span class="badge badge-r">ROUGE</span></td><td>Détresse vitale traitée → survie probable avec traitement immédiat</td><td>Évacuation immédiate après décontamination</td></tr>
+        <tr><td><strong>T2 — Urgence relative</strong></td><td><span class="badge badge-y">JAUNE</span></td><td>Lésions graves mais état stable sur 2-4 heures</td><td>Traitement différé après T1</td></tr>
+        <tr><td><strong>T3 — Urgence différée</strong></td><td><span class="badge badge-g">VERT</span></td><td>Lésions légères, peut attendre</td><td>Victimes valides → participent à leur décontamination</td></tr>
+        <tr><td><strong>T4 — Décès ou pronostic fatal</strong></td><td><span class="badge">NOIR</span></td><td>Décès, lésions incompatibles avec la survie dans le contexte de l'accident</td><td>Extraction en dernier lieu — identification</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">🎯</div>
+    <div class="alert-body">
+      <div class="alert-title">Priorité décontamination avant médicalisation</div>
+      <p>En situation NRBC, la décontamination <strong>prime sur la médicalisation</strong>, sauf geste de survie immédiat. Une victime contaminée non décontaminée est une source de contamination secondaire pour l'équipe médicale. <strong>Décontaminer puis traiter.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ SECTION 6 : DÉCONTAMINATION ================================ -->
+<div class="section" id="s-decon">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div>
+      <div class="section-title">DÉCONTAMINATION</div>
+      <div class="section-intro">Principes, techniques, couloir de décontamination, décontamination de masse</div>
+    </div>
+  </div>
+
+  <h2>Objectifs de la décontamination</h2>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title">Protéger la victime</div>
+      <p>Limiter l'absorption cutanée du toxique, réduire la dose reçue, prévenir les lésions locales.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👥</div>
+      <div class="card-title">Protéger les intervenants</div>
+      <p>Éviter la contamination secondaire des équipes médicales, des secouristes et du matériel en zone froide.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <div class="card-title">Protéger l'environnement</div>
+      <p>Collecter les effluents de décontamination, éviter la propagation du toxique dans l'environnement.</p>
+    </div>
+  </div>
+
+  <h2>Types de décontamination</h2>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">1</span><span class="acc-label">Décontamination d'urgence (pré-hospitalière)</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Réalisée <strong>immédiatement, sur le terrain, en limite de zone chaude</strong>. Vise à éliminer le maximum du toxique avant toute médicalisation.</p>
+        <ul>
+          <li><strong>Étape 1 — Déshabillage :</strong> retrait des vêtements élimine <strong>60 à 80%</strong> de la contamination cutanée. Couper les vêtements pour éviter de passer le produit sur le visage. Sac hermétique.</li>
+          <li><strong>Étape 2 — Décontamination cutanée sèche :</strong> absorption du liquide visible par compresses sèches (en tamponnant, jamais en frottant). Pour agents huileux (ypérite, VX).</li>
+          <li><strong>Étape 3 — Rinçage eau :</strong> abondant, eau tiède, savon doux si disponible, de la tête aux pieds, 5-15 min. Yeux : rinçage séparé au sérum physiologique.</li>
+        </ul>
+        <p><strong>Attention :</strong> Eau chaude = risque de vasodilatation → augmente l'absorption cutanée.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">2</span><span class="acc-label">Couloir de décontamination NRBC SP</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Dispositif organisé mis en place par les SP pour traiter les victimes de manière structurée :</p>
+        <ul>
+          <li><strong>Zone d'entrée :</strong> réception des victimes depuis la zone chaude, contrôle contamination</li>
+          <li><strong>Déshabillage :</strong> sous surveillance, gestion des effets personnels</li>
+          <li><strong>Douche décontaminante :</strong> rampes à eau avec savon décontaminant (Helioderm® ou eau + savon doux)</li>
+          <li><strong>Rinçage final + séchage</strong></li>
+          <li><strong>Rhabillage :</strong> vêtements propres non contaminés</li>
+          <li><strong>Triage médical secondaire</strong> en zone froide</li>
+        </ul>
+        <p>Les effluents de décontamination sont collectés et confinés (bâche étanche, rétention). Ne jamais rejeter dans les réseaux ou milieu naturel sans traitement.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">3</span><span class="acc-label">Décontamination de masse</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Dispositif activé en cas de nombreuses victimes (attentat, accident industriel majeur). Peut traiter <strong>plusieurs centaines de personnes par heure</strong>.</p>
+        <ul>
+          <li>Tunnels de douche à grande capacité (matériels cellules NRBC zonales)</li>
+          <li>Gestion des flux victimes valides / invalides / décédés en parallèle</li>
+          <li>Communication aux victimes : voix, panneaux, mégaphones</li>
+          <li>Gestion de la dignité des personnes (déshabillage en public)</li>
+          <li>Prise en charge des enfants, personnes handicapées, mobilité réduite</li>
+          <li>Interprètes si population non francophone</li>
+        </ul>
+        <p><strong>Cellule NRBC zonale :</strong> équipe spécialisée pré-positionnée, renfort départemental sur demande COS.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">4</span><span class="acc-label">Décontamination des intervenants SP</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Tout intervenant sortant de la zone chaude passe <strong>obligatoirement</strong> par une procédure de décontamination :</p>
+        <ul>
+          <li>Rinçage de la tenue et de l'ARI avant retrait</li>
+          <li>Retrait de la tenue de protection en procédure inversée (extérieur vers l'intérieur)</li>
+          <li>Jamais de retrait du masque ARI avant validation de l'atmosphère</li>
+          <li>Contrôle contamination résiduelle si capteurs disponibles</li>
+          <li>Douche et changement de vêtements</li>
+          <li>Prise en charge médicale systématique si suspicion d'exposition</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+
+  <h2>Agents de décontamination courants</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Agent</th><th>Utilisation</th><th>Avantages</th><th>Limites</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Eau + savon doux</strong></td><td>Décon cutanée générale</td><td>Disponible partout, efficace pour la majorité des produits</td><td>Inefficace seul pour agents huileux très persistants</td></tr>
+        <tr><td><strong>Helioderm® (savon décontaminant SP)</strong></td><td>Couloirs de décon SP</td><td>Formulé pour décontamination NRBC, usage professionnel</td><td>Coût, nécessite approvisionnement</td></tr>
+        <tr><td><strong>RSDL (Reactive Skin Decontamination Lotion)</strong></td><td>Agents chimiques de guerre</td><td>Efficace sur VX, ypérite, sarin</td><td>Usage militaire principalement, coût</td></tr>
+        <tr><td><strong>Eau de Dakin / hypochlorite de sodium dilué</strong></td><td>Surfaces, environnement</td><td>Oxydant, détruit de nombreux agents</td><td>Irritant cutané, pH basique — jamais concentré sur peau</td></tr>
+        <tr><td><strong>Charbon actif (combinaison C2G)</strong></td><td>Protection intervenants</td><td>Adsorbe les vapeurs d'agents chimiques</td><td>Décon complexe, durée d'efficacité limitée</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================ SECTION 7 : CAT ================================ -->
+<div class="section" id="s-cat">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div>
+      <div class="section-title">CONDUITE À TENIR (CAT)</div>
+      <div class="section-intro">Réflexes SP, reconnaissance, engagement, gestion de l'alerte</div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <div class="alert-title">Réflexe n°1 — Ne pas se contaminer</div>
+      <p>Un secouriste contaminé devient une victime supplémentaire et une source de contamination secondaire. <strong>La protection prime sur l'action.</strong></p>
+    </div>
+  </div>
+
+  <h2>CAT à l'arrivée sur intervention chimique</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <div class="tl-title">Reconnaissance à distance — STOPPER à distance de sécurité</div>
+        <div class="tl-desc">S'arrêter à distance, dans le vent si possible (300 à 500m initial). Ne pas pénétrer sans EPI. Observer : nombre de victimes, comportement, fumées, odeurs. Identifier signalétique ADR. Alerter le Centre de Traitement de l'Alerte (CTA) si renforts NRBC nécessaires.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <div class="tl-title">Identification du produit</div>
+        <div class="tl-desc">Lire les plaques ADR, étiquettes, FDS si accessible. Contacter l'exploitant, le transporteur. Consulter le GPI (N° ONU). Contacter le Centre Antipoison si nécessaire (0 800 59 59 59 pour Orfila / numéro SAMU). Ne jamais se fier à l'odeur seule pour évaluer le risque.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <div class="tl-title">Mise en place du zonage et du périmètre de sécurité</div>
+        <div class="tl-desc">Définir zones chaude/tiède/froide selon le GPI et les conditions météo. Bouclage périmètre avec concours police/gendarmerie. Positionner le PC en zone froide dans le vent. Baliser et contrôler les accès.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <div class="tl-title">Engagement en zone chaude (si nécessaire)</div>
+        <div class="tl-desc">Uniquement avec EPI adapté (niveau A minimum si produit inconnu). Engagement en binôme. Objectifs limités : confinement source, extraction victimes. Durée limitée à l'autonomie ARI. Jamais seul, toujours avec une réserve de binôme prêt à intervenir.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">5</div>
+      <div class="tl-content">
+        <div class="tl-title">Extraction et décontamination des victimes</div>
+        <div class="tl-desc">Extraction en zone tiède. Application protocole décontamination d'urgence. Déshabillage prioritaire. Rinçage. Conditionnement médical par le SMUR/SAMU.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">6</div>
+      <div class="tl-content">
+        <div class="tl-title">Confinement / limitation de la source</div>
+        <div class="tl-desc">Arrêter les fuites si possible sans risque. Obturer les réseaux d'eau pluviale et d'égouts. Contenir les épandages liquides (rétentions, sables). Pas d'eau sur produit réactif à l'eau (code X). Ne jamais tenter une manœuvre sur une installation industrielle sans formation spécifique.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">7</div>
+      <div class="tl-content">
+        <div class="tl-title">Transmission et coordination</div>
+        <div class="tl-desc">Renseignements au CTA-CODIS : produit, quantité, victimes, évolution. Activation plan ORSEC si nécessaire. Liaison SAMU, police, DREAL, exploitant. Traçabilité des engagements (DO).</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Signes évocateurs d'un incident chimique non annoncé</h2>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">👁️</div>
+      <div class="card-title">Signes environnementaux</div>
+      <p>Nuage visible inhabituellement coloré (jaune, rougeâtre, blanc). Dépôt huileux ou liquide sur surfaces. Végétation fanée, animaux morts. Odeur inhabituelle (amandes amères, chlore, ail, poivre).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤒</div>
+      <div class="card-title">Signes sur les victimes</div>
+      <p>Nombreuses victimes présentant des symptômes identiques simultanés. Myosis (pupilles en tête d'épingle). Convulsions. Hypersalivation, hypersécrétion. Dyspnée sévère. Brûlures cutanées inhabituelles.</p>
+    </div>
+  </div>
+
+  <h2>Le "4S" — Réflexes NRBC malveillant</h2>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">4S</span><span class="acc-label">Shape — Spread — Symptoms — Signs</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <ul>
+          <li><strong>Shape (Forme) :</strong> Y a-t-il un objet suspect, un engin, un disperseur ?</li>
+          <li><strong>Spread (Dispersion) :</strong> Comment le produit se diffuse-t-il (nuage, liquide, poudre) ?</li>
+          <li><strong>Symptoms (Symptômes) :</strong> Quels sont les symptômes présentés par les victimes ?</li>
+          <li><strong>Signs (Signes) :</strong> Quels sont les signes objectifs observables sur les victimes et dans l'environnement ?</li>
+        </ul>
+        <p>Cette grille d'analyse rapide aide à qualifier le type d'agent et à adapter la réponse opérationnelle, notamment pour une alerte NRBC malveillante.</p>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ SECTION 8 : PLANS ================================ -->
+<div class="section" id="s-plans">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div>
+      <div class="section-title">PLANS D'URGENCE ET TEXTES RÉGLEMENTAIRES</div>
+      <div class="section-intro">ORSEC, POI, PPI, PPRT, NRBCe, Vigipirate</div>
+    </div>
+  </div>
+
+  <h2>Plans de secours liés au risque chimique</h2>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">ORSEC</span><span class="acc-label">Organisation de la Réponse de Sécurité Civile</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le plan <strong>ORSEC</strong> (loi n° 2004-811 du 13 août 2004 de modernisation de la sécurité civile) est le cadre général de gestion des crises. Il comprend :</p>
+        <ul>
+          <li><strong>Dispositions générales</strong> : inventaire des risques, répertoire des moyens, réseau de transmission</li>
+          <li><strong>Dispositions spécifiques</strong> pour chaque risque identifié (dont risque industriel, TMD, NRBC)</li>
+          <li>Déclenché par le <strong>Préfet (DOS)</strong></li>
+          <li>Niveaux : départemental (ORSEC DDT), zonal, national</li>
+        </ul>
+        <p><strong>Dispositions ORSEC risque chimique :</strong> activation cellule de crise préfectorale, mobilisation moyens spéciaux SP (NRBC), coordination avec SAMU, industriels, DREAL, information population.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">POI</span><span class="acc-label">Plan d'Opération Interne</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le <strong>Plan d'Opération Interne (POI)</strong> est établi par l'exploitant d'un site ICPE soumis à autorisation ou Seveso. Il définit :</p>
+        <ul>
+          <li>L'organisation interne de l'établissement en cas d'accident</li>
+          <li>Les moyens humains et matériels internes</li>
+          <li>Les premières mesures de sauvegarde</li>
+          <li>Les modalités d'alerte des autorités et des SP</li>
+        </ul>
+        <p>Le POI est activé par le directeur d'établissement. Son dépassement déclenche le PPI.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">PPI</span><span class="acc-label">Plan Particulier d'Intervention</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le <strong>Plan Particulier d'Intervention (PPI)</strong> est établi par le Préfet pour les sites les plus dangereux (Seveso seuil haut, barrages, installations nucléaires). Il :</p>
+        <ul>
+          <li>Définit les zones de danger et d'information</li>
+          <li>Organise les secours extérieurs (SP, SAMU, forces de l'ordre)</li>
+          <li>Planifie l'information et l'évacuation de la population</li>
+          <li>Prévoit l'organisation du commandement opérationnel</li>
+        </ul>
+        <p>Les SP doivent connaître les PPI des sites sur leur secteur. Exercices PPI annuels obligatoires pour les sites Seveso seuil haut.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">PPRT</span><span class="acc-label">Plan de Prévention des Risques Technologiques</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le <strong>PPRT</strong> (loi Bachelot 2003) encadre l'urbanisation autour des sites Seveso seuil haut. Il délimite des zones autour du site :</p>
+        <ul>
+          <li><strong>Zone rouge</strong> : interdiction de construire</li>
+          <li><strong>Zone bleue</strong> : construction réglementée</li>
+          <li><strong>Zone verte</strong> : prescriptions de travaux sur l'existant</li>
+        </ul>
+        <p>Les PPRT sont consultables en préfecture et sur les sites des DREAL. Ils permettent aux SP d'anticiper les enjeux lors de la reconnaissance préventive.</p>
+      </div></div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-num">NRBCe</span><span class="acc-label">Plan ORSEC NRBCe — risque malveillant</span></div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body"><div class="acc-content">
+        <p>Le plan <strong>ORSEC NRBCe</strong> (Nucléaire, Radiologique, Biologique, Chimique, Explosif) est la réponse aux actes malveillants. Il mobilise :</p>
+        <ul>
+          <li>SP avec moyens NRBC spécialisés (cellule NRBC zonale)</li>
+          <li>SAMU + équipes SMUR spécialisées NRBC</li>
+          <li>Gendarmerie/Police (GIGN, RAID, NRBC-G)</li>
+          <li>Armée (CBRN mil) si nécessaire</li>
+          <li>IRSN (nucléaire/radiologique)</li>
+          <li>Direction Générale de la Santé (biologique)</li>
+        </ul>
+        <p>Le plan NRBCe prévoit des procédures renforcées : identification de l'origine malveillante, conservation des preuves, chaîne pénale, levée de doute systématique.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <h2>Ressources documentaires opérationnelles</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Ressource</th><th>Contenu</th><th>Accès</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GPI (Guide Premier Intervention)</strong></td><td>Fiches par N° ONU : isolation, protection, urgences médicales</td><td>Papier + application (SDIS)</td></tr>
+        <tr><td><strong>Centre Antipoison Orfila</strong></td><td>Expertise toxicologique 24h/24, conseil médical</td><td>0 800 59 59 59 (gratuit)</td></tr>
+        <tr><td><strong>INRS — Fiches toxicologiques</strong></td><td>Données physico-chimiques, toxicologiques complètes</td><td>inrs.fr</td></tr>
+        <tr><td><strong>Base de données CAMEO</strong></td><td>Données chimiques, réactivité, équations de dispersion</td><td>EPA (international)</td></tr>
+        <tr><td><strong>FDS du fabricant</strong></td><td>Données spécifiques au produit comercialisé</td><td>Demande à l'exploitant</td></tr>
+        <tr><td><strong>GESIP</strong></td><td>Guide pour TMD hydrocarbures</td><td>Groupe industriels pétroliers</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================ SECTION 9 : QCM ================================ -->
+<div class="section" id="s-qcm">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div>
+      <div class="section-title">QCM — AUTO-ÉVALUATION</div>
+      <div class="section-intro">15 questions sur le risque chimique — cliquez sur votre réponse</div>
+    </div>
+  </div>
+
+  <div id="qcm-progress-wrap">
+    <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:4px">
+      <span>Progression</span><span id="progress-label">0 / 15</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  </div>
+
+  <div id="qcm-container"></div>
+  <div id="qcm-score" class="qcm-score" style="display:none">
+    <div class="score-num" id="score-num">0/15</div>
+    <div class="score-label">Score Final</div>
+    <div id="score-msg" style="color:var(--text2);font-size:14px;margin-top:8px"></div>
+    <button class="btn-reset" onclick="resetQCM()">↺ Recommencer</button>
+  </div>
+</div>
+
+<!-- ================================ SECTION 10 : HBCO CONVERTISSEUR ================================ -->
+<div class="section" id="s-hbco">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div>
+      <div class="section-title">CONVERTISSEUR CO / HbCO</div>
+      <div class="section-intro">Conversion ppm CO ↔ carboxyhémoglobine (HbCO%) — équilibre de Haldane — effets cliniques</div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">🧮</div>
+    <div class="alert-body">
+      <div class="alert-title">Modèle utilisé — Équilibre de Haldane</div>
+      <p>La conversion utilise l'équation d'équilibre de Haldane : <strong>HbCO% = (M × CO<sub>ppm</sub>) / (M × CO<sub>ppm</sub> + 209 000) × 100</strong>, avec M = 240 (constante de Haldane, affinité relative Hb pour CO vs O₂). Ce calcul représente le <em>taux à l'équilibre</em> lors d'une exposition prolongée. En opérationnel, le taux réel dépend aussi de la durée d'exposition, du volume ventilatoire et de l'effort physique.</p>
+    </div>
+  </div>
+
+  <!-- CONVERTISSEUR -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0">
+
+    <!-- PPM → HBCO -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px">CO (ppm) → HbCO (%)</div>
+      <label style="font-size:13px;color:var(--text2);display:block;margin-bottom:6px">Concentration CO dans l'air (ppm)</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="number" id="input-ppm" min="0" max="100000" step="1" placeholder="ex : 200"
+          style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:16px;padding:10px 14px;border-radius:3px;outline:none"
+          oninput="convertPpmToHbco()">
+        <span style="padding:10px;color:var(--text2);font-family:var(--mono);font-size:13px;align-self:center">ppm</span>
+      </div>
+      <div id="result-hbco" style="display:none">
+        <div style="background:var(--bg3);border-radius:4px;padding:16px 20px;text-align:center;margin-bottom:12px">
+          <div style="font-family:var(--display);font-size:52px;line-height:1" id="hbco-value">—</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:1px;margin-top:4px">HbCO % (à l'équilibre)</div>
+        </div>
+        <div id="hbco-badge-wrap"></div>
+        <div id="hbco-exposure-table" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <!-- HBCO → PPM -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px">HbCO (%) → CO (ppm)</div>
+      <label style="font-size:13px;color:var(--text2);display:block;margin-bottom:6px">Taux de carboxyhémoglobine (%)</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="number" id="input-hbco" min="0" max="99" step="0.1" placeholder="ex : 25"
+          style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:16px;padding:10px 14px;border-radius:3px;outline:none"
+          oninput="convertHbcoToPpm()">
+        <span style="padding:10px;color:var(--text2);font-family:var(--mono);font-size:13px;align-self:center">%</span>
+      </div>
+      <div id="result-ppm" style="display:none">
+        <div style="background:var(--bg3);border-radius:4px;padding:16px 20px;text-align:center;margin-bottom:12px">
+          <div style="font-family:var(--display);font-size:52px;line-height:1" id="ppm-value">—</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:1px;margin-top:4px">ppm CO (à l'équilibre)</div>
+        </div>
+        <div id="ppm-badge-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATEUR DURÉE D'EXPOSITION -->
+  <h2>Simulateur — Durée d'exposition</h2>
+  <p style="font-size:14px">Estimation du taux HbCO en fonction de la concentration CO et de la durée d'exposition (modèle simplifié, sujet sain au repos, ventilation 15 L/min) :</p>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:24px;margin:16px 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:20px">
+      <div>
+        <label style="font-family:var(--mono);font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">CO (ppm)</label>
+        <input type="number" id="sim-ppm" min="0" max="10000" step="1" placeholder="200"
+          style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:15px;padding:10px 14px;border-radius:3px;outline:none">
+      </div>
+      <div>
+        <label style="font-family:var(--mono);font-size:11px;color:var(--orange);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Durée (minutes)</label>
+        <input type="number" id="sim-dur" min="1" max="480" step="1" placeholder="30"
+          style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:15px;padding:10px 14px;border-radius:3px;outline:none">
+      </div>
+      <button onclick="runSimulation()"
+        style="background:var(--orange);color:#000;border:none;padding:10px 20px;font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer;font-weight:700;white-space:nowrap">
+        Calculer
+      </button>
+    </div>
+    <div id="sim-result" style="display:none">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">
+        <div style="background:var(--bg3);border-radius:4px;padding:14px;text-align:center">
+          <div style="font-family:var(--display);font-size:38px;line-height:1" id="sim-hbco-val">—</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:4px">HbCO estimé %</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:4px;padding:14px;text-align:center">
+          <div style="font-family:var(--display);font-size:38px;line-height:1;color:var(--blue)" id="sim-equil-val">—</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:4px">HbCO équilibre %</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:4px;padding:14px;text-align:center">
+          <div style="font-family:var(--display);font-size:38px;line-height:1;color:var(--yellow)" id="sim-pct-equil">—</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:4px">% de l'équilibre atteint</div>
+        </div>
+      </div>
+      <div id="sim-badge"></div>
+      <!-- Barre de progression vers équilibre -->
+      <div style="margin-top:14px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:1px;margin-bottom:4px">PROGRESSION VERS L'ÉQUILIBRE</div>
+        <div style="height:8px;background:var(--bg3);border-radius:4px;overflow:hidden">
+          <div id="sim-progress-bar" style="height:100%;background:linear-gradient(to right,var(--green),var(--yellow),var(--red));border-radius:4px;transition:width 0.5s"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE DE RÉFÉRENCE -->
+  <h2>Table de référence clinique HbCO</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>HbCO (%)</th>
+          <th>CO ppm (équilibre)</th>
+          <th>Symptômes cliniques</th>
+          <th>Gravité</th>
+          <th>CAT SP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>0 – 2%</strong></td>
+          <td><code>0 – 17 ppm</code></td>
+          <td>Taux physiologique (non-fumeur). Aucun symptôme.</td>
+          <td><span class="badge badge-g">NORMAL</span></td>
+          <td>Aucune action</td>
+        </tr>
+        <tr>
+          <td><strong>2 – 10%</strong></td>
+          <td><code>17 – 90 ppm</code></td>
+          <td>Légère tachycardie, céphalées discrètes à l'effort. Fumeurs courants ≈ 5-10%.</td>
+          <td><span class="badge badge-g">FAIBLE</span></td>
+          <td>Mettre à l'air frais, surveiller</td>
+        </tr>
+        <tr>
+          <td><strong>10 – 20%</strong></td>
+          <td><code>90 – 200 ppm</code></td>
+          <td>Céphalées pulsatiles frontales, vertiges, nausées, troubles de la concentration.</td>
+          <td><span class="badge badge-y">MODÉRÉ</span></td>
+          <td>Évacuation, O₂ normobare, bilan SAMU</td>
+        </tr>
+        <tr>
+          <td><strong>20 – 30%</strong></td>
+          <td><code>200 – 380 ppm</code></td>
+          <td>Céphalées intenses, vomissements, faiblesse musculaire, tachycardie, confusion.</td>
+          <td><span class="badge badge-o">SÉVÈRE</span></td>
+          <td>O₂ haute concentration (masque HC), SMUR</td>
+        </tr>
+        <tr>
+          <td><strong>30 – 40%</strong></td>
+          <td><code>380 – 630 ppm</code></td>
+          <td>Altération conscience, obnubilation, tachycardie, hypotension, convulsions possibles.</td>
+          <td><span class="badge badge-o">GRAVE</span></td>
+          <td>Réanimation O₂, SMUR, indication caisson hyperbare</td>
+        </tr>
+        <tr>
+          <td><strong>40 – 60%</strong></td>
+          <td><code>630 – 2 100 ppm</code></td>
+          <td>Coma, convulsions, défaillance cardio-respiratoire, lésions neurologiques sévères.</td>
+          <td><span class="badge badge-r">CRITIQUE</span></td>
+          <td>RCP si nécessaire, O₂ pur, caisson hyperbare urgent</td>
+        </tr>
+        <tr>
+          <td><strong>&gt; 60%</strong></td>
+          <td><code>&gt; 2 100 ppm</code></td>
+          <td>Décès. Quelques minutes d'exposition à très haute concentration.</td>
+          <td><span class="badge badge-r">LÉTAL</span></td>
+          <td>Extraction + RCP immédiate, pronostic très réservé</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- VALEURS SEUILS OPÉRATIONNELLES -->
+  <h2>Valeurs seuils opérationnelles CO</h2>
+  <div class="grid-4">
+    <div class="card" style="border-color:rgba(6,214,160,0.4)">
+      <div style="font-family:var(--display);font-size:32px;color:var(--green)">9 ppm</div>
+      <div class="card-title">Norme OMS</div>
+      <p>Valeur guide OMS air intérieur sur 8h. Au-delà : qualité de l'air dégradée.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,209,102,0.4)">
+      <div style="font-family:var(--display);font-size:32px;color:var(--yellow)">50 ppm</div>
+      <div class="card-title">VME travail (8h)</div>
+      <p>Valeur Moyenne d'Exposition sur 8h (INRS France). Seuil professionnel.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,26,0.4)">
+      <div style="font-family:var(--display);font-size:32px;color:var(--orange)">1 200 ppm</div>
+      <div class="card-title">IDLH (30 min)</div>
+      <p>Concentration immédiatement dangereuse pour la vie et la santé en 30 minutes.</p>
+    </div>
+    <div class="card" style="border-color:rgba(230,57,70,0.4)">
+      <div style="font-family:var(--display);font-size:32px;color:var(--red)">3 500 ppm</div>
+      <div class="card-title">LIE CO</div>
+      <p>Limite Inférieure d'Explosivité du CO dans l'air. Risque explosion associé.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">👨‍🚒</div>
+    <div class="alert-body">
+      <div class="alert-title">Particularité chez les sapeurs-pompiers</div>
+      <p>L'effort physique intense augmente le volume ventilatoire de 15 à 60+ L/min, ce qui <strong>multiplie la dose inhalée et accélère la montée de l'HbCO</strong>. Un SP en effort intense peut atteindre un taux dangereux 4 à 5 fois plus vite qu'une personne au repos. Par ailleurs, le CO est incolore et inodore : seul un <strong>mesureur CO (Multi-gaz ou CO-mètre)</strong> permet la détection. L'ARI reste la seule protection absolue.</p>
+    </div>
+  </div>
+
+  <!-- ANTIDOTES / TRAITEMENT -->
+  <h2>Rappel traitement — Intoxication au CO</h2>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">💨</div>
+      <div class="card-title">O₂ normobare — 1ère intention</div>
+      <p><strong>Oxygène pur à 100%</strong> au masque haute concentration (MHC) ou BAVU. Réduit la demi-vie de l'HbCO de <strong>5h (air ambiant) → 60-90 min (O₂ 100%)</strong>. À débuter immédiatement sur toute victime exposée, même asymptomatique.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🫧</div>
+      <div class="card-title">O₂ hyperbare — 2ème intention</div>
+      <p>Caisson hyperbare (2,5 à 3 ATA) : réduit la demi-vie HbCO à <strong>20-30 minutes</strong>. Indications : perte de conscience, convulsions, HbCO > 25%, femme enceinte (fœtus très sensible), signes neurologiques persistants. Décision SAMU / CAP.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="footer-left">SDIS 38 · <span>Formation NRBC</span> · Risque Chimique · Référentiel doctrine SP</div>
+  <div class="footer-right">Document pédagogique — Usage interne formation</div>
+</footer>
+
+<script>
+// Navigation
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Accordion
+function toggleAcc(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.acc-body');
+  const isOpen = item.classList.contains('open');
+  item.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// QCM
+const questions = [
+  {
+    q: "Quelle est la voie de pénétration principale des produits chimiques toxiques lors d'un incident ?",
+    opts: ["Ingestion", "Inoculation", "Inhalation", "Contact cutané"],
+    answer: 2,
+    expl: "L'inhalation est la voie principale en raison de la surface alvéolaire pulmonaire très importante (~70m²) et de la vitesse d'absorption."
+  },
+  {
+    q: "Un numéro Kemler commençant par 'X' signifie :",
+    opts: ["Produit explosif de classe 1", "Réaction dangereuse avec l'eau — interdit d'utiliser de l'eau", "Extrêmement toxique", "Produit radioactif"],
+    answer: 1,
+    expl: "La lettre X en préfixe du code Kemler indique que la matière réagit dangereusement avec l'eau. Toute utilisation d'eau est interdite (ex: X423 = solide inflammable réagissant avec l'eau)."
+  },
+  {
+    q: "Que représente la ligne du bas sur une plaque orange ADR ?",
+    opts: ["Le numéro d'identification du danger (NIR)", "Le code de l'entreprise transporteuse", "Le numéro ONU du produit transporté", "La classe de danger ADR"],
+    answer: 2,
+    expl: "La ligne basse de la plaque orange est le numéro ONU du produit (4 chiffres). La ligne haute est le Numéro d'Identification du Risque (NIR / code Kemler)."
+  },
+  {
+    q: "Quel est le niveau de protection EPI à utiliser face à un produit inconnu dans une atmosphère potentiellement toxique ?",
+    opts: ["Niveau D (tenue de travail)", "Niveau C (masque filtrant)", "Niveau B (ARI + tenue non étanche gaz)", "Niveau A (combinaison étanche + ARI encapsulé)"],
+    answer: 3,
+    expl: "Face à un produit inconnu, le niveau A est obligatoire. La protection maximale s'impose jusqu'à l'identification du produit et la mesure des concentrations. On ne réduit le niveau qu'après identification."
+  },
+  {
+    q: "Le phosgène (COCl₂) est particulièrement dangereux car :",
+    opts: ["Il explose au contact de l'air", "Il provoque un OAP retardé pouvant survenir 6 à 24h après l'exposition", "Son odeur est très forte, signalant immédiatement le danger", "Il est plus lourd que l'eau et coule"],
+    answer: 1,
+    expl: "Le phosgène est un irritant peu soluble qui atteint les alvéoles pulmonaires et provoque un OEdème Aigu du Poumon (OAP) avec un délai de 6 à 24h. La victime peut paraître bien initialement — piège opérationnel majeur."
+  },
+  {
+    q: "Quelle proportion de la contamination cutanée est éliminée par le simple déshabillage de la victime ?",
+    opts: ["20 à 30%", "40 à 50%", "60 à 80%", "95 à 99%"],
+    answer: 2,
+    expl: "Le déshabillage élimine 60 à 80% de la contamination cutanée et est la première et la plus efficace des mesures de décontamination. C'est pourquoi il doit être réalisé immédiatement."
+  },
+  {
+    q: "Dans quel sens doit être positionné le PC par rapport à une source de gaz toxique ?",
+    opts: ["Face au vent (vent du PC vers la source)", "Perpendiculaire au vent", "Dans le vent (vent de la source vers le PC)", "La direction du vent est sans importance"],
+    answer: 0,
+    expl: "Le PC doit être positionné face au vent : le vent souffle DU PC vers la source, non l'inverse. Ainsi, les émanations s'éloignent du PC. 'Dans le vent' (sens nautique) = dans la direction où va le vent = après la source, ce qui serait dangereux."
+  },
+  {
+    q: "Le syndrome SLUDGE est caractéristique de l'intoxication par :",
+    opts: ["Le monoxyde de carbone", "Les agents organophosphorés (pesticides, agents de guerre)", "L'acide sulfurique", "Le chlore"],
+    answer: 1,
+    expl: "SLUDGE (Salivation, Larmoiement, Urination, Diarrhée, Gastroentérite, Emèse) est le syndrome muscarinique caractéristique des organophosphorés et carbamates, par accumulation d'acétylcholine."
+  },
+  {
+    q: "Quel antidote doit être administré en cas d'intoxication à l'acide cyanhydrique (HCN) ?",
+    opts: ["Atropine", "Naloxone", "Hydroxocobalamine (Cyanokit®)", "Oxygène pur uniquement"],
+    answer: 2,
+    expl: "L'hydroxocobalamine (Cyanokit®) est l'antidote spécifique du cyanure. Elle se combine au cyanure pour former la cyanocobalamine (vitamine B12), non toxique, éliminée par voie rénale."
+  },
+  {
+    q: "Quel est le plan d'urgence établi par l'exploitant d'un site ICPE pour gérer un accident interne ?",
+    opts: ["Le PPI (Plan Particulier d'Intervention)", "Le POI (Plan d'Opération Interne)", "Le PPRT (Plan de Prévention des Risques Technologiques)", "Le plan ORSEC"],
+    answer: 1,
+    expl: "Le POI est établi et déclenché par l'exploitant pour les accidents gérables en interne. Quand les capacités de l'exploitant sont dépassées, le Préfet déclenche le PPI, qui organise les secours extérieurs."
+  },
+  {
+    q: "La classe ADR 4.3 désigne les matières :",
+    opts: ["Corrosives", "Comburantes", "Dégageant des gaz inflammables au contact de l'eau", "Liquides inflammables"],
+    answer: 2,
+    expl: "La classe 4.3 (aussi notée W) regroupe les matières qui, au contact de l'eau, dégagent des gaz inflammables (ex: sodium, calcium, carbure de calcium). D'où le code Kemler X pour 'interdit eau'."
+  },
+  {
+    q: "Quelle est la signification d'un chiffre doublé dans le numéro Kemler (ex: 33 ou 88) ?",
+    opts: ["Deux dangers d'égale importance", "Intensification du danger principal", "Produit de classe 3 ou 8", "Code d'urgence spéciale"],
+    answer: 1,
+    expl: "Le doublement d'un chiffre dans le NIR signifie l'intensification du danger. Ex: 3 = inflammable, 33 = très inflammable (ex: essence). 8 = corrosif, 88 = très corrosif."
+  },
+  {
+    q: "Quelle est la priorité en situation NRBC avec des victimes contaminées valides et invalides ?",
+    opts: ["Médicaliser d'abord, décontaminer ensuite", "Décontaminer d'abord, sauf pour les gestes de survie immédiats", "Évacuer vers l'hôpital sans décontamination", "Attendre les renforts NRBC spécialisés avant toute action"],
+    answer: 1,
+    expl: "La décontamination prime sur la médicalisation pour éviter la contamination secondaire des équipes médicales. Exception : les gestes de survie immédiate (libération des voies aériennes, arrêt d'hémorragie active). Après décontamination : médicalisation."
+  },
+  {
+    q: "Un gaz avec une densité de vapeur de 2,5 (par rapport à l'air = 1) aura tendance à :",
+    opts: ["Monter et se diluer rapidement en altitude", "Se disperser uniformément dans l'espace", "S'accumuler en parties basses, caves, sous-sols", "Réagir avec l'humidité de l'air"],
+    answer: 2,
+    expl: "Un gaz plus lourd que l'air (densité > 1) s'accumule dans les parties basses (tranchées, caves, égouts, sous-sols). Ce point est crucial pour la reconnaissance et le sauvetage des victimes."
+  },
+  {
+    q: "La Fiche de Données de Sécurité (FDS) comporte :",
+    opts: ["8 rubriques réglementaires", "12 rubriques réglementaires", "16 rubriques réglementaires", "24 rubriques réglementaires"],
+    answer: 2,
+    expl: "La FDS comporte 16 rubriques obligatoires selon le règlement REACH (1907/2006) et CLP. Elle doit être fournie par tout producteur ou importateur d'un produit chimique dangereux."
+  }
+];
+
+let answers = new Array(questions.length).fill(null);
+let score = 0;
+
+function renderQCM() {
+  const container = document.getElementById('qcm-container');
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'qcm-card';
+    card.id = 'q-' + qi;
+    let optsHtml = q.opts.map((o, oi) =>
+      `<div class="qcm-opt" id="opt-${qi}-${oi}" onclick="selectAnswer(${qi},${oi})">
+        <div class="qcm-letter">${'ABCD'[oi]}</div>
+        <div class="qcm-text">${o}</div>
+      </div>`
+    ).join('');
+    card.innerHTML = `
+      <div class="qcm-q"><span>Q${qi+1}</span>${q.q}</div>
+      <div class="qcm-options">${optsHtml}</div>
+      <div class="qcm-expl" id="expl-${qi}">✓ ${q.expl}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qi, selected) {
+  if (answers[qi] !== null) return;
+  answers[qi] = selected;
+  const card = document.getElementById('q-' + qi);
+  card.classList.add('qcm-answered');
+  const correct = questions[qi].answer;
+  questions[qi].opts.forEach((_, oi) => {
+    const opt = document.getElementById(`opt-${qi}-${oi}`);
+    if (oi === correct) opt.classList.add('correct');
+    else if (oi === selected && selected !== correct) opt.classList.add('wrong');
+    else opt.classList.add('neutral');
+  });
+  document.getElementById('expl-' + qi).classList.add('show');
+  if (selected === correct) score++;
+  updateProgress();
+  const answered = answers.filter(a => a !== null).length;
+  if (answered === questions.length) showFinalScore();
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a !== null).length;
+  const pct = Math.round(answered / questions.length * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = answered + ' / ' + questions.length;
+}
+
+function showFinalScore() {
+  const el = document.getElementById('qcm-score');
+  el.style.display = 'block';
+  document.getElementById('score-num').textContent = score + '/' + questions.length;
+  const pct = Math.round(score / questions.length * 100);
+  let msg = '';
+  if (pct >= 80) msg = '🟢 Excellente maîtrise du risque chimique.';
+  else if (pct >= 60) msg = '🟡 Bonne base — quelques points à consolider.';
+  else msg = '🔴 Révision recommandée — reprendre le cours.';
+  document.getElementById('score-msg').textContent = msg;
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQCM() {
+  answers = new Array(questions.length).fill(null);
+  score = 0;
+  document.getElementById('qcm-score').style.display = 'none';
+  updateProgress();
+  renderQCM();
+}
+
+renderQCM();
+
+// ============================================================
+// CONVERTISSEUR CO / HbCO
+// Modèle : équilibre de Haldane
+// HbCO% = (M * ppm) / (M * ppm + 209000) * 100
+// M = 240 (constante de Haldane)
+// ============================================================
+const M = 240;
+const O2_ppm = 209000; // ~20,9% O2 dans l'air
+
+function ppmToHbco(ppm) {
+  return (M * ppm) / (M * ppm + O2_ppm) * 100;
+}
+
+function hbcoToPpm(hbco) {
+  const h = hbco / 100;
+  if (h >= 1) return Infinity;
+  return (h * O2_ppm) / (M * (1 - h));
+}
+
+function getSeverity(hbco) {
+  if (hbco < 2)  return { label: 'NORMAL',   color: 'var(--green)',  bg: 'rgba(6,214,160,0.1)',   text: 'Taux physiologique normal.' };
+  if (hbco < 10) return { label: 'FAIBLE',    color: 'var(--green)',  bg: 'rgba(6,214,160,0.1)',   text: 'Céphalées discrètes à l\'effort. Mettre à l\'air frais.' };
+  if (hbco < 20) return { label: 'MODÉRÉ',    color: 'var(--yellow)', bg: 'rgba(255,209,102,0.1)', text: 'Céphalées pulsatiles, nausées, vertiges. Évacuation + O₂.' };
+  if (hbco < 30) return { label: 'SÉVÈRE',    color: 'var(--orange)', bg: 'rgba(255,107,26,0.1)',  text: 'Confusion, vomissements, tachycardie. SMUR + O₂ HC.' };
+  if (hbco < 40) return { label: 'GRAVE',     color: 'var(--orange)', bg: 'rgba(255,107,26,0.1)',  text: 'Obnubilation, convulsions. Réanimation O₂ — caisson hyperbare.' };
+  if (hbco < 60) return { label: 'CRITIQUE',  color: 'var(--red)',    bg: 'rgba(230,57,70,0.1)',   text: 'Coma, défaillance cardio-resp. RCP + caisson hyperbare urgent.' };
+  return           { label: 'LÉTAL',      color: 'var(--red)',    bg: 'rgba(230,57,70,0.15)',  text: 'Risque vital immédiat. Extraction + RCP immédiate.' };
+}
+
+function badgeHTML(sev, extra) {
+  return `<div style="background:${sev.bg};border:1px solid ${sev.color};border-radius:4px;padding:12px 16px;display:flex;align-items:center;gap:12px">
+    <span style="font-family:var(--display);font-size:20px;color:${sev.color};letter-spacing:1px">${sev.label}</span>
+    <span style="font-size:13px;color:var(--text2)">${sev.text}${extra ? ' ' + extra : ''}</span>
+  </div>`;
+}
+
+function convertPpmToHbco() {
+  const ppm = parseFloat(document.getElementById('input-ppm').value);
+  const resDiv = document.getElementById('result-hbco');
+  if (isNaN(ppm) || ppm < 0) { resDiv.style.display = 'none'; return; }
+  const hbco = ppmToHbco(ppm);
+  const sev = getSeverity(hbco);
+  document.getElementById('hbco-value').textContent = hbco.toFixed(1) + '%';
+  document.getElementById('hbco-value').style.color = sev.color;
+  document.getElementById('hbco-badge-wrap').innerHTML = badgeHTML(sev, '');
+  // Tableau durées estimées
+  const durations = [5, 15, 30, 60, 120];
+  let rows = durations.map(d => {
+    const est = estimateHbco(ppm, d);
+    const s = getSeverity(est);
+    return `<tr>
+      <td><strong>${d} min</strong></td>
+      <td style="font-family:var(--mono);font-size:13px">${est.toFixed(1)} %</td>
+      <td><span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:2px;background:${s.bg};color:${s.color}">${s.label}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('hbco-exposure-table').innerHTML = `
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--text2);margin-bottom:6px;text-transform:uppercase">Estimation HbCO selon durée d'exposition</div>
+    <table style="font-size:13px">
+      <thead><tr><th>Durée</th><th>HbCO estimé</th><th>Gravité</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  resDiv.style.display = 'block';
+}
+
+function convertHbcoToPpm() {
+  const hbco = parseFloat(document.getElementById('input-hbco').value);
+  const resDiv = document.getElementById('result-ppm');
+  if (isNaN(hbco) || hbco < 0 || hbco >= 100) { resDiv.style.display = 'none'; return; }
+  const ppm = hbcoToPpm(hbco);
+  const sev = getSeverity(hbco);
+  const ppmText = ppm > 99999 ? '> 100 000' : Math.round(ppm).toLocaleString('fr-FR');
+  document.getElementById('ppm-value').textContent = ppmText + ' ppm';
+  document.getElementById('ppm-value').style.color = sev.color;
+  document.getElementById('ppm-badge-wrap').innerHTML = badgeHTML(sev, '');
+  resDiv.style.display = 'block';
+}
+
+// Modèle simplifié d'accumulation CO (1er ordre, demi-vie ~5h ≈ 300 min)
+// HbCO(t) = HbCO_eq × (1 - e^(-t/τ))  — τ ≈ 300 min au repos
+function estimateHbco(ppm, minutes) {
+  const tau = 300; // demi-vie absorption ≈ 300 min (repos)
+  const eq = ppmToHbco(ppm);
+  return eq * (1 - Math.exp(-minutes / tau));
+}
+
+function runSimulation() {
+  const ppm = parseFloat(document.getElementById('sim-ppm').value);
+  const dur = parseFloat(document.getElementById('sim-dur').value);
+  const resDiv = document.getElementById('sim-result');
+  if (isNaN(ppm) || isNaN(dur) || ppm <= 0 || dur <= 0) { resDiv.style.display = 'none'; return; }
+  const eq = ppmToHbco(ppm);
+  const est = estimateHbco(ppm, dur);
+  const pctEq = Math.min(100, (est / eq) * 100);
+  const sev = getSeverity(est);
+  document.getElementById('sim-hbco-val').textContent = est.toFixed(1) + '%';
+  document.getElementById('sim-hbco-val').style.color = sev.color;
+  document.getElementById('sim-equil-val').textContent = eq.toFixed(1) + '%';
+  document.getElementById('sim-pct-equil').textContent = pctEq.toFixed(0) + '%';
+  document.getElementById('sim-badge').innerHTML = badgeHTML(sev, `(exposition ${dur} min à ${ppm} ppm)`);
+  document.getElementById('sim-progress-bar').style.width = pctEq + '%';
+  resDiv.style.display = 'block';
+}
+</script>
+</body>
+</html>

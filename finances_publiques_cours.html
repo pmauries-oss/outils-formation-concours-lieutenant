@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finances Publiques & Droits Publics – Concours Lieutenant SPP</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #c0392b;
+    --rouge-vif: #e74c3c;
+    --rouge-sombre: #7b241c;
+    --or: #f39c12;
+    --or-clair: #f8c471;
+    --anthracite: #0d0d0d;
+    --dark: #141414;
+    --dark2: #1c1c1c;
+    --dark3: #242424;
+    --dark4: #2e2e2e;
+    --gris: #555;
+    --gris-clair: #888;
+    --blanc: #f0f0f0;
+    --vert: #27ae60;
+    --vert-clair: #2ecc71;
+    --bleu: #2980b9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--anthracite);
+    color: var(--blanc);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
+    border-bottom: 3px solid var(--rouge);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(192,57,43,0.4);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 24px;
+  }
+
+  .header-badge {
+    background: var(--rouge);
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(20px, 3vw, 30px);
+    letter-spacing: 2px;
+    color: #fff;
+    flex: 1;
+  }
+
+  header h1 span { color: var(--rouge-vif); }
+
+  .header-meta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    color: var(--gris-clair);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(160deg, #1a0505 0%, #0d0d0d 60%);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '🔥';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.04;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .hero h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    letter-spacing: 4px;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .hero h2 span { color: var(--rouge-vif); }
+
+  .hero p {
+    margin-top: 10px;
+    color: var(--gris-clair);
+    font-size: 14px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--rouge-vif);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--gris-clair);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ===== TABS ===== */
+  .tabs-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .tabs-nav {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--dark4);
+    margin-top: 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gris);
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .tab-btn:hover { color: var(--blanc); }
+
+  .tab-btn.active {
+    color: var(--rouge-vif);
+    border-bottom-color: var(--rouge-vif);
+  }
+
+  .tab-panel { display: none; padding: 32px 0 60px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--rouge-vif);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--rouge-sombre), transparent);
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gris-clair);
+    margin-bottom: 24px;
+  }
+
+  /* ===== ACCORDION Q&A ===== */
+  .qa-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .qa-item {
+    background: var(--dark2);
+    border: 1px solid var(--dark4);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .qa-item:hover { border-color: var(--rouge-sombre); }
+  .qa-item.open { border-color: var(--rouge); }
+
+  .qa-question {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .qa-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--rouge);
+    min-width: 28px;
+    line-height: 1.3;
+  }
+
+  .qa-q-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #ddd;
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .qa-arrow {
+    color: var(--gris);
+    font-size: 16px;
+    transition: transform 0.25s;
+    margin-top: 2px;
+  }
+
+  .qa-item.open .qa-arrow { transform: rotate(180deg); color: var(--rouge-vif); }
+
+  .qa-answer {
+    display: none;
+    padding: 0 18px 16px 58px;
+  }
+
+  .qa-item.open .qa-answer { display: block; }
+
+  .qa-answer-inner {
+    background: var(--dark3);
+    border-left: 3px solid var(--rouge);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.7;
+  }
+
+  .qa-answer-inner ul {
+    list-style: none;
+    margin-top: 4px;
+  }
+
+  .qa-answer-inner ul li {
+    position: relative;
+    padding-left: 14px;
+    margin-bottom: 4px;
+  }
+
+  .qa-answer-inner ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--rouge-vif);
+    font-size: 10px;
+    top: 4px;
+  }
+
+  .qa-answer-inner strong { color: var(--or-clair); }
+  .qa-answer-inner .highlight { color: var(--rouge-vif); font-weight: 700; }
+
+  /* ===== KEY POINTS / CARDS ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .card {
+    background: var(--dark2);
+    border: 1px solid var(--dark4);
+    border-top: 3px solid var(--rouge);
+    border-radius: 4px;
+    padding: 18px;
+  }
+
+  .card-icon { font-size: 24px; margin-bottom: 8px; }
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 8px;
+  }
+
+  .card p { font-size: 13px; color: #bbb; line-height: 1.6; }
+  .card strong { color: var(--blanc); }
+
+  /* ===== FORMULA BOX ===== */
+  .formula-box {
+    background: linear-gradient(135deg, var(--dark3), #1a0505);
+    border: 1px solid var(--rouge-sombre);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+
+  .formula-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rouge-vif);
+    margin-bottom: 12px;
+  }
+
+  .formula {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--or);
+    line-height: 1.8;
+  }
+
+  .formula .fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 4px;
+  }
+
+  .formula .numerator { border-bottom: 2px solid var(--or); padding-bottom: 4px; }
+  .formula .denominator { padding-top: 4px; font-size: 14px; color: var(--or-clair); }
+
+  /* ===== ALERT BOX ===== */
+  .alert {
+    padding: 14px 18px;
+    border-radius: 4px;
+    margin: 16px 0;
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  .alert.danger { background: rgba(192,57,43,0.15); border-left: 4px solid var(--rouge); }
+  .alert.info { background: rgba(41,128,185,0.15); border-left: 4px solid var(--bleu); }
+  .alert.success { background: rgba(39,174,96,0.15); border-left: 4px solid var(--vert); }
+  .alert.warning { background: rgba(243,156,18,0.15); border-left: 4px solid var(--or); }
+
+  .alert strong { color: var(--blanc); }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr { background: var(--rouge-sombre); }
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--dark4); }
+  tbody tr:nth-child(even) { background: var(--dark2); }
+  tbody td { padding: 10px 14px; color: #ccc; vertical-align: top; }
+  tbody td strong { color: var(--or); }
+  tbody td em { color: var(--rouge-vif); font-style: normal; }
+
+  /* ===== QUIZ ===== */
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .quiz-score {
+    background: var(--dark3);
+    border: 1px solid var(--dark4);
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--or);
+  }
+
+  .quiz-score span { font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--gris-clair); display: block; }
+
+  .quiz-q {
+    background: var(--dark2);
+    border: 1px solid var(--dark4);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .quiz-q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--rouge);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .quiz-q-text {
+    font-weight: 600;
+    font-size: 15px;
+    color: #eee;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+  .quiz-opt {
+    background: var(--dark3);
+    border: 1px solid var(--dark4);
+    border-radius: 4px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #bbb;
+    transition: all 0.15s;
+    text-align: left;
+    width: 100%;
+  }
+
+  .quiz-opt:hover:not(:disabled) { border-color: var(--rouge); color: #fff; }
+  .quiz-opt.correct { background: rgba(39,174,96,0.2); border-color: var(--vert); color: #fff; }
+  .quiz-opt.wrong { background: rgba(192,57,43,0.2); border-color: var(--rouge); color: #fff; }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-feedback {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    display: none;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(39,174,96,0.15); color: var(--vert-clair); border-left: 3px solid var(--vert); }
+  .quiz-feedback.ko { background: rgba(192,57,43,0.15); color: #e88; border-left: 3px solid var(--rouge); }
+
+  .btn-primary {
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--rouge-vif); }
+
+  .btn-secondary {
+    background: var(--dark3);
+    color: var(--blanc);
+    border: 1px solid var(--dark4);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--rouge); color: var(--rouge-vif); }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap { margin: 20px 0; }
+  .progress-label { font-size: 12px; color: var(--gris-clair); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { background: var(--dark4); border-radius: 100px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(to right, var(--rouge), var(--or)); border-radius: 100px; transition: width 0.4s ease; }
+
+  /* ===== BADGE ===== */
+  .badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+
+  .badge-rouge { background: rgba(192,57,43,0.3); color: var(--rouge-vif); border: 1px solid var(--rouge-sombre); }
+  .badge-or { background: rgba(243,156,18,0.2); color: var(--or); border: 1px solid rgba(243,156,18,0.3); }
+  .badge-vert { background: rgba(39,174,96,0.2); color: var(--vert-clair); border: 1px solid rgba(39,174,96,0.3); }
+  .badge-bleu { background: rgba(41,128,185,0.2); color: #5dade2; border: 1px solid rgba(41,128,185,0.3); }
+
+  /* ===== ACCORDION GROUP ===== */
+  .accordion-group { margin: 16px 0; }
+
+  .accordion-section {
+    background: var(--dark2);
+    border: 1px solid var(--dark4);
+    border-radius: 4px;
+    margin-bottom: 4px;
+    overflow: hidden;
+  }
+
+  .accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--or);
+    user-select: none;
+  }
+
+  .accordion-toggle:hover { background: rgba(255,255,255,0.02); }
+  .accordion-toggle .arr { transition: transform 0.2s; font-size: 12px; }
+  .accordion-section.open .accordion-toggle .arr { transform: rotate(180deg); }
+
+  .accordion-content { display: none; padding: 8px 18px 18px; }
+  .accordion-section.open .accordion-content { display: block; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark2);
+    border-top: 1px solid var(--dark4);
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gris);
+    margin-top: 40px;
+  }
+
+  footer strong { color: var(--rouge-vif); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .header-meta { display: none; }
+    .qa-answer { padding-left: 18px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .tab-panel.active { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-badge">🔥 SPP</div>
+    <h1>Finances Publiques & <span>Droits Publics</span></h1>
+    <div class="header-meta">Concours Lieutenant<br>Sergent-chef Pierre MAURIÈS</div>
+  </div>
+</header>
+
+<div class="hero">
+  <h2>Cours <span>Complet</span> & Interactif</h2>
+  <p>Maîtrisez les finances publiques, le droit budgétaire et la réglementation retraite pour le concours de Lieutenant SPP.</p>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Thèmes</div></div>
+    <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Questions</div></div>
+    <div class="stat-item"><div class="stat-num">20</div><div class="stat-label">Quiz QCM</div></div>
+    <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Révisions</div></div>
+  </div>
+</div>
+
+<div class="tabs-wrapper">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('retraite', this)">🏛 Retraite CNRACL</button>
+    <button class="tab-btn" onclick="switchTab('finances', this)">💰 Finances Publiques</button>
+    <button class="tab-btn" onclick="switchTab('lois', this)">📜 Lois de Finances</button>
+    <button class="tab-btn" onclick="switchTab('principes', this)">⚖️ Principes Budgétaires</button>
+    <button class="tab-btn" onclick="switchTab('traitement', this)">📊 Traitement Indiciaire</button>
+    <button class="tab-btn" onclick="switchTab('quiz', this)">🎯 Quiz</button>
+  </div>
+
+  <!-- ========= ONGLET RETRAITE ========= -->
+  <div id="tab-retraite" class="tab-panel active">
+    <div class="section-title">🏛 Retraite CNRACL</div>
+    <p class="section-subtitle">Caisse Nationale des Retraites des Agents des Collectivités Locales</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <div class="card-title">Gestionnaire</div>
+        <p>La CNRACL est gérée par la <strong>Caisse des Dépôts et Consignations</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <div class="card-title">Loi du 14 avril 2023</div>
+        <p>Allongement de l'âge légal de départ : <strong>62 → 64 ans</strong> (réforme des retraites).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Taux plein</div>
+        <p>Durée de cotisation portée à <strong>43 ans (172 trimestres)</strong> en 2027.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔥</div>
+        <div class="card-title">SPP – Catégorie active</div>
+        <p>Emploi présentant un <strong>risque particulier</strong> ou causant des fatigues exceptionnelles → départ anticipé.</p>
+      </div>
+    </div>
+
+    <div class="alert danger">
+      <span class="alert-icon">🎯</span>
+      <div><strong>SPP – Conditions de départ (CNRACL) :</strong> Âge légal <strong>59 ans</strong> (bonification de 5 ans / 20 trimestres) + <strong>27 ans de services effectifs</strong> dont <strong>17 ans en qualité de SPP</strong>.</div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">⚗️ Formule de calcul de la pension</div>
+      <div class="formula">
+        Pension = <span class="fraction"><span class="numerator">Trimestres liquidables × 75% du TIM fictif</span><span class="denominator">172 trimestres (taux plein à terme)</span></span>
+      </div>
+      <p style="font-size:12px;color:var(--gris-clair);margin-top:8px;">TIM = Traitement Indiciaire Majoré</p>
+    </div>
+
+    <div class="qa-list" id="qa-retraite"></div>
+
+    <div style="margin-top:32px;">
+      <div class="section-title" style="font-size:20px;">📋 Tableau récapitulatif – Modificateurs de pension</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mécanisme</th><th>Taux / Valeur</th><th>Condition</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Décote</strong></td><td><em>−1,25% / trimestre manquant</em></td><td>Trimestres insuffisants</td></tr>
+            <tr><td><strong>Surcote</strong></td><td><em>+1,25% / trimestre supplémentaire</em></td><td>Au-delà du taux plein</td></tr>
+            <tr><td><strong>Majoration maternité</strong></td><td><em>4 trimestres / enfant</em></td><td>Accordés à la mère automatiquement (depuis 2010)</td></tr>
+            <tr><td><strong>Majoration adoption</strong></td><td><em>4 trimestres / enfant</em></td><td>2 auto mère, 2 au choix des parents</td></tr>
+            <tr><td><strong>Éducation enfant</strong></td><td><em>4 trimestres / enfant</em></td><td>4 années suivant naissance/adoption</td></tr>
+            <tr><td><strong>Plongeurs / héliportés</strong></td><td><em>+5% pension (Art. R20)</em></td><td>Personnels civils concernés</td></tr>
+            <tr><td><strong>RAFP – point d'achat</strong></td><td><em>1,41120 € (2024)</em></td><td>Taux cotisation 5% sur primes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">⏱️ Prolongement au-delà de la limite d'âge</div>
+      <div class="accordion-group">
+        <div class="accordion-section">
+          <div class="accordion-toggle" onclick="toggleAccordion(this)">Parent d'au moins 3 enfants vivants à 50 ans <span class="arr">▼</span></div>
+          <div class="accordion-content"><p style="color:#bbb;font-size:14px;">Possibilité de poursuivre son activité professionnelle pendant <strong style="color:var(--or)">1 année supplémentaire</strong>.</p></div>
+        </div>
+        <div class="accordion-section">
+          <div class="accordion-toggle" onclick="toggleAccordion(this)">Enfant(s) à charge à 67 ans <span class="arr">▼</span></div>
+          <div class="accordion-content"><p style="color:#bbb;font-size:14px;"><strong style="color:var(--or)">1 année par enfant à charge</strong>, dans la limite de <strong style="color:var(--rouge-vif)">3 ans maximum</strong>.</p></div>
+        </div>
+        <div class="accordion-section">
+          <div class="accordion-toggle" onclick="toggleAccordion(this)">Enfant mort pour la France <span class="arr">▼</span></div>
+          <div class="accordion-content"><p style="color:#bbb;font-size:14px;"><strong style="color:var(--or)">1 année supplémentaire par enfant</strong> décédé pour la France.</p></div>
+        </div>
+        <div class="accordion-section">
+          <div class="accordion-toggle" onclick="toggleAccordion(this)">Carrière incomplète <span class="arr">▼</span></div>
+          <div class="accordion-content"><p style="color:#bbb;font-size:14px;">Possibilité de poursuivre jusqu'à l'obtention des trimestres requis, ou <strong style="color:var(--or)">10 trimestres maximum</strong>.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= ONGLET FINANCES PUBLIQUES ========= -->
+  <div id="tab-finances" class="tab-panel">
+    <div class="section-title">💰 Finances Publiques</div>
+    <p class="section-subtitle">Contrôle, acteurs et mécanismes de la gestion publique</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <div class="card-title">Fondements juridiques</div>
+        <p>Le contrôle des finances publiques repose sur la <strong>Constitution</strong> et la <strong>Déclaration des Droits de l'Homme et du Citoyen</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏛️</div>
+        <div class="card-title">Cour des comptes</div>
+        <p>Certification des comptes de l'État. Contrôle l'<strong>efficacité</strong>, l'<strong>efficience</strong> et l'<strong>économie</strong> de la dépense.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📌</div>
+        <div class="card-title">CDBF supprimée</div>
+        <p>La Cour de discipline budgétaire et financière <strong>n'existe plus depuis le 1er janvier 2023</strong>. Remplacée par une chambre spécialisée de la Cour des comptes.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧾</div>
+        <div class="card-title">Gestion de fait</div>
+        <p><strong>Maniement non autorisé</strong> de deniers publics. Terme jurisprudentiel.</p>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <span class="alert-icon">ℹ️</span>
+      <div><strong>Présidente de la Cour des comptes :</strong> Amélie de Montchalin, depuis <strong>février 2026</strong>.</div>
+    </div>
+
+    <div class="alert warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Depuis le 1er janvier 2023 :</strong> Nouveau régime de responsabilité des comptables publics. La <strong>responsabilité personnelle et pécuniaire (RPP) est supprimée</strong>, ainsi que le cautionnement obligatoire. Objectif : limiter la sanction des fautes purement formelles.</div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">🧩 Les trois formes de contrôle</div>
+      <div class="cards-grid">
+        <div class="card"><div class="card-icon">🗳️</div><div class="card-title">Contrôle politique</div><p>Exercé par le <strong>Parlement</strong> dans le cadre du vote du budget.</p></div>
+        <div class="card"><div class="card-icon">🏢</div><div class="card-title">Contrôles administratifs</div><p>Inspections générales, contrôle de gestion interne à l'administration.</p></div>
+        <div class="card"><div class="card-icon">⚖️</div><div class="card-title">Contrôle juridictionnel</div><p><strong>Cour des comptes</strong> + Chambres régionales et territoriales des comptes.</p></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">💵 Les prélèvements obligatoires</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sigle</th><th>Désignation</th><th>Nature</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CSG</strong></td><td>Contribution Sociale Généralisée</td><td>Revenus d'activité, patrimoine, remplacement, placement</td></tr>
+            <tr><td><strong>CRDS</strong></td><td>Contribution pour le Remboursement de la Dette Sociale</td><td>Financement de la dette sociale</td></tr>
+            <tr><td><strong>FNAL</strong></td><td>Fonds National d'Aide au Logement</td><td>Aide au logement</td></tr>
+            <tr><td><strong>TVA</strong></td><td>Taxe sur la Valeur Ajoutée (créée en <em>1954</em>)</td><td>Impôt indirect – <em>principale recette fiscale</em></td></tr>
+            <tr><td><strong>TICPE</strong></td><td>Taxe Intérieure de Consommation sur les Produits Énergétiques</td><td>Proportionnelle au volume – partie transférée régions/depts</td></tr>
+            <tr><td><strong>IFI</strong></td><td>Impôt sur la Fortune Immobilière</td><td>Remplace l'ISF</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;" class="alert success">
+      <span class="alert-icon">💡</span>
+      <div><strong>Recettes fiscales en France :</strong> ~310 milliards d'euros. <strong>Recettes non fiscales :</strong> ~22,7 milliards (6% des recettes nettes). <strong>Principale recette fiscale :</strong> la TVA. Taux TVA presse : <strong>2,1%</strong>.</div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">👤 Ordonnateurs & Comptables</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Acteur</th><th>Rôle</th><th>Obligations</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ordonnateur</strong><br><em>(ex: maire, directeur EP)</em></td><td>Percevoir les recettes et décider des dépenses autorisées par la loi de finances</td><td>Assurer la perception des recettes, prêter serment</td></tr>
+            <tr><td><strong>Comptable public</strong><br><em>(tutelle : Ministère des Finances)</em></td><td>Encaisser les recettes et payer les dépenses</td><td>Conserver les pièces justificatives</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="qa-list" id="qa-finances"></div>
+  </div>
+
+  <!-- ========= ONGLET LOIS DE FINANCES ========= -->
+  <div id="tab-lois" class="tab-panel">
+    <div class="section-title">📜 Lois de Finances</div>
+    <p class="section-subtitle">LOLF, budgets annexes, comptes spéciaux et procédure budgétaire</p>
+
+    <div class="alert danger">
+      <span class="alert-icon">📌</span>
+      <div><strong>La LOLF</strong> (Loi Organique relative aux Lois de Finances) a été promulguée le <strong>1er août 2001</strong>. Elle est structurée en 3 niveaux : <strong>missions → programmes → actions</strong>. Elle a introduit la <strong>gestion par la performance</strong>.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Budget de l'État</div>
+        <p>Retrace l'<strong>intégralité des recettes et charges</strong>. Crédits spécialisés par <strong>programme</strong> selon les objectifs de politique publique.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗓️</div>
+        <div class="card-title">Dépôt PLF</div>
+        <p>Le projet de Loi de finances doit être déposé à l'Assemblée Nationale avant le <strong>1er mardi d'octobre</strong>. Délai de vote : <strong>70 jours</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Haut Conseil des Finances Publiques</div>
+        <p>Placé auprès de la <strong>Cour des comptes</strong>. Organisme <strong>indépendant</strong> du gouvernement et du Parlement.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">Loi de règlement</div>
+        <p>Arrête le montant <strong>définitif</strong> des recettes et dépenses. Document comptable soumis à l'approbation du Parlement. Décrit les opérations de trésorerie.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">🗂️ Les différents types de lois de finances</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Objet</th><th>Particularité</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Loi de finances initiale (LFI)</strong></td><td>Vote du budget annuel</td><td>Déposée avant le 1er mardi d'octobre</td></tr>
+            <tr><td><strong>Loi de finances rectificative (LFR)</strong></td><td>Modification en cours d'année</td><td>= "collectif budgétaire" – modifie le plafond des dépenses et l'équilibre</td></tr>
+            <tr><td><strong>Loi de règlement</strong></td><td>Bilan définitif de l'exercice</td><td>Arrête recettes et dépenses définitives</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">📂 Exceptions au principe d'universalité</div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">📎</div>
+          <div class="card-title">Budgets annexes</div>
+          <p>Maintenu par la LOLF. <strong>Exception</strong> au principe de non-affectation et aménagement du principe d'unité.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗃️</div>
+          <div class="card-title">Comptes spéciaux</div>
+          <p>Rationalisés par la LOLF à <strong>4 catégories</strong>. Ne peuvent comprendre de dépenses de personnel. Crédits présentés en programmes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💸</div>
+          <div class="card-title">Comptes de concours financiers</div>
+          <p>Regroupent les <strong>comptes de prêts</strong> et les <strong>comptes d'avances</strong>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-title">CAS Participations de l'État</div>
+          <p>Retrace les <strong>recettes de privatisation</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">📊 Budget local – Sections structurantes</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Section</th><th>Recettes</th><th>Dépenses</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Fonctionnement</strong></td><td>Impôts locaux, dotations, subventions</td><td>Charges de personnel, fournitures, entretien courant</td></tr>
+            <tr><td><strong>Investissement</strong></td><td><em>FCTVA, subventions, emprunts</em></td><td><em>Construction de nouveaux bâtiments</em>, acquisitions</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <span class="alert-icon">ℹ️</span>
+      <div><strong>Budget primitif :</strong> premier budget voté pour une année dans le cas d'un budget local. Le compte administratif doit être voté avant le <strong>30 juin</strong>. Entre le débat d'orientation budgétaire et le vote du BP : <strong>2 mois minimum</strong>.</div>
+    </div>
+
+    <div class="alert warning">
+      <span class="alert-icon">🔍</span>
+      <div><strong>PSC (Pacte de Stabilité et de Croissance) :</strong> instrument de gouvernance de la zone euro. Adopté en 1997, suspendu en 2020. Réforme adoptée le 20 décembre 2023, en application dès 2025 si validée par le PE. Deux dispositifs : <em>surveillance multilatérale</em> + <em>mécanisme de sanctions en cas de déficits excessifs</em>.</div>
+    </div>
+
+    <div class="qa-list" id="qa-lois"></div>
+  </div>
+
+  <!-- ========= ONGLET PRINCIPES BUDGÉTAIRES ========= -->
+  <div id="tab-principes" class="tab-panel">
+    <div class="section-title">⚖️ Principes Budgétaires</div>
+    <p class="section-subtitle">Les grands principes régissant la matière budgétaire et fiscale</p>
+
+    <div class="accordion-group" id="principes-accordion">
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">1 — Annualité budgétaire <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Les exercices budgétaires sont calés sur <strong>l'année civile</strong>.</li>
+              <li>L'autorisation budgétaire donnée à l'exécutif <strong>ne vaut que pour un an</strong>.</li>
+              <li>Les crédits ouverts au titre d'une année <strong>ne créent aucun droit</strong> au titre des années suivantes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">2 — Spécialité <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Concerne les <strong>dépenses autorisées</strong> par le budget.</li>
+              <li>Les dépenses sont spécialisées selon une <strong>nomenclature budgétaire</strong>.</li>
+              <li>L'exécutif doit utiliser les crédits selon leur <strong>destination telle que votée par le Parlement</strong>, de manière limitative.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">3 — Universalité budgétaire <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>L'<strong>ensemble des recettes</strong> finance l'ensemble des dépenses, sans relation établie entre certaines recettes et certaines dépenses.</li>
+              <li>Il en découle le principe de <strong>non-affectation</strong> : garantie d'une vision budgétaire globale.</li>
+              <li>Art. 6 LOLF : "toutes les recettes et toutes les dépenses sont retracées sur un <strong>compte unique</strong>, intitulé budget général."</li>
+            </ul>
+            <div class="alert warning" style="margin-top:10px;">
+              <span class="alert-icon">⚠️</span>
+              <div>Exceptions organisées par la LOLF : <strong>budgets annexes, comptes spéciaux et fonds de concours</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">4 — Unité <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Le budget d'une entité doit figurer dans un <strong>document unique</strong>.</li>
+              <li>Objectifs : <strong>lisibilité et transparence</strong> du budget.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">5 — Sincérité <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Principe formalisé dans la <strong>LOLF</strong>.</li>
+              <li>Ne s'applique qu'aux <strong>lois de finances</strong>.</li>
+              <li>Appréciée compte tenu des informations disponibles et des prévisions qui en découlent raisonnablement.</li>
+              <li>Peut prendre la forme d'une certification <strong>avec ou sans réserve</strong>, d'un avis défavorable ou d'une impossibilité de certifier.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">6 — Légalité de l'impôt <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Les impôts sont <strong>fixés par la loi</strong> (Parlement).</li>
+              <li>Inscrit dans la <strong>Constitution</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">7 — Annualité de l'impôt <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <p>Le Parlement doit donner <strong>chaque année</strong> au Gouvernement l'autorisation de percevoir l'impôt.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">8 — Nécessité de l'impôt <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <p>L'impôt n'est légitime que pour autant qu'il est <strong>indispensable pour couvrir les besoins publics</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">9 — Égalité devant l'impôt <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Contribution commune <strong>également répartie entre tous les citoyens</strong> en raison de leurs facultés.</li>
+              <li>Inscrit dans la <strong>DDHC de 1789</strong> (Art. 13).</li>
+              <li>Implique une égalité par l'impôt comme <strong>outil de redistribution</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <div class="accordion-toggle" onclick="toggleAccordion(this)">10 — Unité de caisse <span class="arr">▼</span></div>
+        <div class="accordion-content">
+          <div class="qa-answer-inner">
+            <ul>
+              <li>Les collectivités locales ont une <strong>obligation de compte unique au Trésor</strong>.</li>
+              <li>L'ensemble des ressources financières de l'État est déposé sur un <strong>seul compte courant</strong>.</li>
+              <li>Les fonds publics sont gérés par le <strong>Trésor public</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:32px;">
+      <div class="section-title" style="font-size:20px;">🗺️ Carte mémo – Principes fiscaux</div>
+      <div class="cards-grid">
+        <div class="card" style="border-top-color:var(--or)">
+          <div class="badge badge-or">DDHC 1789</div>
+          <div class="card-title" style="color:var(--or);margin-top:8px;">Nécessité · Égalité · Légalité</div>
+          <p>Art. 13 & 14 de la Déclaration des Droits de l'Homme et du Citoyen.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--bleu)">
+          <div class="badge badge-bleu">Constitution</div>
+          <div class="card-title" style="color:#5dade2;margin-top:8px;">Légalité de l'impôt</div>
+          <p>Le Parlement vote et décide des impôts via la <strong>loi de finances</strong>.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--vert)">
+          <div class="badge badge-vert">LOLF</div>
+          <div class="card-title" style="color:var(--vert-clair);margin-top:8px;">Sincérité · Performance</div>
+          <p>Formalise la sincérité budgétaire et introduit la gestion par la performance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-list" id="qa-principes"></div>
+  </div>
+
+  <!-- ========= ONGLET TRAITEMENT INDICIAIRE ========= -->
+  <div id="tab-traitement" class="tab-panel">
+    <div class="section-title">📊 Traitement Indiciaire & Rémunération</div>
+    <p class="section-subtitle">Composantes du traitement et indemnités spécifiques aux SPP</p>
+
+    <div class="alert danger">
+      <span class="alert-icon">🔥</span>
+      <div><strong>Indice brut 100</strong> fixé par décret. Au <strong>1er juillet 2023 : 5 907,34 €</strong>.</div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <div class="section-title" style="font-size:20px;">💰 Structure de la rémunération</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Composante</th><th>Nature</th><th>Détail clé</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Traitement indiciaire</strong></td><td>Base fixe</td><td>Déterminé par l'indice majoré (IM) atteint</td></tr>
+            <tr><td><strong>NBI</strong> – Nouvelle Bonification Indiciaire</td><td>Bonification points</td><td>DDSIS : 30-70 pts. Sous-officier garde SPP : <em>16 pts</em></td></tr>
+            <tr><td><strong>Indemnité de résidence</strong></td><td>Compensation coût vie</td><td>Zone 2 : 1% – Zone 3 : 0% du traitement brut (+NBI)</td></tr>
+            <tr><td><strong>SFT</strong> – Supplément Familial de Traitement</td><td>Familial</td><td>Fixe (nbre enfants) + proportionnel (IM 454 min, IM 722 max)</td></tr>
+            <tr><td><strong>GIPA</strong> – Garantie Individuelle du Pouvoir d'Achat</td><td>Protection</td><td>Compense la perte de pouvoir d'achat</td></tr>
+            <tr><td><strong>Prime de feu</strong></td><td>Risque SPP</td><td><em>25%</em> du traitement soumis à retenue pour pension (taux fixe)</td></tr>
+            <tr><td><strong>Prime de responsabilité</strong></td><td>Variable</td><td>Variable selon grade et emploi</td></tr>
+            <tr><td><strong>Prime de spécialité</strong></td><td>Qualification</td><td>Tous SPP sauf chefs de groupement/DDA/DDSIS – formation requise</td></tr>
+            <tr><td><strong>Prime de logement</strong></td><td>Agents non logés</td><td>10% maximum traitement + indemnité de résidence</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">⏰ Heures supplémentaires</div>
+      <div class="formula-box">
+        <div class="formula-title">💡 Calcul indemnité horaire – 14 premières heures/mois</div>
+        <div class="formula">
+          Indemnité = (Traitement brut annuel ÷ 1820) × <span style="color:var(--rouge-vif)">1,25</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">🎯 RIFSEEP</div>
+      <div class="alert info">
+        <span class="alert-icon">📋</span>
+        <div><strong>RIFSEEP</strong> = Régime Indemnitaire tenant compte des Fonctions, des Sujétions, de l'Expertise et de l'Engagement Professionnel</div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card" style="border-top-color:var(--bleu)">
+          <div class="card-icon">🏢</div>
+          <div class="card-title" style="color:#5dade2;">IFSE</div>
+          <p>Indemnité de Fonctions, de Sujétions et d'Expertise.<br><strong>Part fixe</strong> valorisant la nature des fonctions et l'expérience professionnelle. Basée sur le niveau de responsabilité et d'expertise.</p>
+        </div>
+        <div class="card" style="border-top-color:var(--vert)">
+          <div class="card-icon">📈</div>
+          <div class="card-title" style="color:var(--vert-clair);">CIA</div>
+          <p>Complément Indemnitaire Annuel.<br><strong>Part variable</strong>, liée à l'évaluation professionnelle et à l'engagement de l'agent.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid" style="margin-top:8px;">
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <div class="card-title">IFTS</div>
+          <p>Indemnité Forfaitaire pour Travaux Supplémentaires. Coefficient jusqu'à <strong>8 maximum</strong>. Incompatible avec statut logement NAS. Fonction du travail supplémentaire et des sujétions liées au poste.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <div class="card-title">IAT</div>
+          <p>Indemnité d'Administration et de Technicité. Montant fonction de la <strong>manière de servir</strong> de l'agent dans l'exercice de ses fonctions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:20px;">🏦 RAFP – Retraite Additionnelle</div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Régime par points</div>
+          <p>Taux de cotisation : <strong>5%</strong> sur la base des primes et indemnités, avantages en nature, etc.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧮</div>
+          <div class="card-title">Calcul des points</div>
+          <p>Nbre de points = <strong>Montant cotisation ÷ valeur d'achat du point</strong><br>Valeur 2024 : <em>1,41120 €</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-list" id="qa-traitement"></div>
+  </div>
+
+  <!-- ========= ONGLET QUIZ ========= -->
+  <div id="tab-quiz" class="tab-panel">
+    <div class="section-title">🎯 Quiz d'entraînement</div>
+    <p class="section-subtitle">Testez vos connaissances – Répondez puis voyez la correction</p>
+
+    <div class="quiz-header">
+      <div>
+        <button class="btn-primary" onclick="startQuiz()">🔄 Nouveau quiz aléatoire</button>
+        <button class="btn-secondary" style="margin-left:8px;" onclick="resetQuiz()">↺ Réinitialiser</button>
+      </div>
+      <div class="quiz-score">
+        <span>Score</span>
+        <span id="score-display">0 / 0</span>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progression</span>
+        <span id="progress-text">0 / 20 réponses</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+
+    <div id="quiz-container"></div>
+  </div>
+
+</div><!-- /tabs-wrapper -->
+
+<footer>
+  <p>📚 <strong>Finances Publiques & Droits Publics</strong> – Préparation Concours Lieutenant SPP</p>
+  <p style="margin-top:4px;">Réalisé par <strong>Sergent-chef Pierre MAURIÈS</strong> – SDIS 38 / ENSOSP</p>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const qaData = {
+  retraite: [
+    { q: "Que signifie CNRACL ?", a: "Caisse Nationale des Retraites des Agents des Collectivités Locales." },
+    { q: "Quel organisme gère la CNRACL ?", a: "La Caisse des Dépôts et Consignations." },
+    { q: "Quelles évolutions apporte la loi du 14 avril 2023 ?", a: "Allongement de l'âge légal de départ à la retraite de 62 à 64 ans." },
+    { q: "La durée de cotisation pour le taux plein est portée à... ?", a: "43 ans (172 trimestres) en 2027." },
+    { q: "Pour les SPP, quelles sont les conditions d'âge pour la pension CNRACL ?", a: "Âge légal de 59 ans, avec prise en compte de 5 années de bonification (20 trimestres)." },
+    { q: "Pour les SPP, quelles sont les conditions de durée de services ?", a: "27 ans de services effectifs dont 17 ans en qualité de SPP." },
+    { q: "Qu'est-ce qu'un emploi public de catégorie active ?", a: "Un emploi présentant un risque particulier, causant des fatigues exceptionnelles, justifiant un départ anticipé à la retraite." },
+    { q: "Comment calcule-t-on le montant de la pension CNRACL ?", a: "(Trimestres liquidables × 75% du TIM fictif) / nombre de trimestres nécessaires pour le taux plein (172 à terme)." },
+    { q: "Qu'est-ce que la décote ?", a: "-1,25% par trimestre manquant en cas de durée de cotisation insuffisante." },
+    { q: "Qu'est-ce que la surcote ?", a: "+1,25% par trimestre supplémentaire au-delà du taux plein (1 trimestre = 90 jours)." },
+    { q: "Que signifie RAFP ?", a: "Régime Additionnel de la Fonction Publique." },
+    { q: "Comment fonctionne le RAFP ?", a: "Régime par points. Taux de cotisation : 5% sur primes et indemnités. Points = Cotisation / valeur d'achat du point (1,41120 € en 2024)." },
+    { q: "Que mentionne l'article R20 du Code des pensions ?", a: "Bonifications pour plongeurs et personnels héliportés, avec une majoration possible de 5% de la pension." },
+  ],
+  finances: [
+    { q: "Quels sont les organes du contrôle juridictionnel des finances publiques ?", a: "La Cour des comptes + les Chambres régionales et chambres territoriales des comptes." },
+    { q: "Qui certifie les comptes de l'État ?", a: "La Cour des comptes." },
+    { q: "La CDBF existe-t-elle encore ?", a: "Non, elle n'existe plus depuis le 1er janvier 2023. Elle est remplacée par une chambre spécialisée de la Cour des comptes." },
+    { q: "Qu'est-ce qu'un audit en finances publiques ?", a: "Un examen des processus de gestion pour s'assurer qu'ils produisent une information sincère et transparente. Analogue au contrôle de gestion par un commissaire aux comptes dans le secteur privé." },
+    { q: "Qu'est-ce que la CSG ?", a: "Contribution Sociale Généralisée. Elle concerne les revenus d'activité, de patrimoine, de remplacement et de placement." },
+    { q: "Qu'est-ce que la CRDS ?", a: "Contribution pour le Remboursement de la Dette Sociale." },
+    { q: "Qu'est-ce que la TICPE ?", a: "Taxe Intérieure de Consommation sur les Produits Énergétiques. Proportionnelle au volume de produit pétrolier. Une partie est transférée aux régions et départements." },
+    { q: "Qu'est-ce que la gestion de fait ?", a: "Le maniement non autorisé de deniers publics ou assimilés. C'est un terme jurisprudentiel." },
+    { q: "Qu'est-ce qu'un ordonnateur ?", a: "Un agent (maire, directeur EP…) ayant pour rôle de percevoir les recettes et décider des dépenses autorisées par la loi de finances. Obligations : perception des recettes, prestation de serment." },
+    { q: "Quelles sont les obligations d'un comptable public ?", a: "Encaisser les recettes, payer les dépenses et conserver les pièces justificatives. Tutelle : Ministère des Finances." },
+    { q: "Quel est le principal impôt indirect en France ?", a: "La TVA (créée en 1954). C'est la principale source de recette fiscale (~310 milliards €). Taux presse : 2,1%." },
+  ],
+  lois: [
+    { q: "Quelle est la date de promulgation de la LOLF ?", a: "1er août 2001." },
+    { q: "Comment est structurée la LOLF ?", a: "En 3 niveaux : Missions → Programmes → Actions. Elle a introduit la gestion par la performance." },
+    { q: "Quelle loi arrête le montant définitif des recettes et dépenses de l'exercice ?", a: "La loi de règlement. Elle décrit aussi les opérations de trésorerie. Document comptable soumis à l'approbation du Parlement." },
+    { q: "Avant quelle date le PLF doit-il être déposé à l'Assemblée Nationale ?", a: "Avant le 1er mardi du mois d'octobre." },
+    { q: "Quel est le délai de vote du Parlement sur les PLF ?", a: "70 jours." },
+    { q: "Qu'est-ce qu'un collectif budgétaire ?", a: "Expression désignant les lois de finances rectificatives (LFR). Elles permettent de modifier le plafond des dépenses et les données générales de l'équilibre budgétaire." },
+    { q: "Quels comptes spéciaux regroupent les comptes de prêts et d'avances ?", a: "Les comptes de concours financiers." },
+    { q: "Quel CAS retrace les recettes de privatisation ?", a: "Le CAS 'Participations financières de l'État'." },
+    { q: "Qu'est-ce que le Haut Conseil des Finances Publiques ?", a: "Organisme indépendant du Gouvernement et du Parlement, placé auprès de la Cour des comptes." },
+  ],
+  principes: [
+    { q: "Quel principe budgétaire dit que les crédits ne valent que pour l'année en cours ?", a: "Le principe d'annualité budgétaire. Les crédits ouverts ne créent aucun droit au titre des années suivantes." },
+    { q: "Qu'est-ce que le principe d'universalité budgétaire ?", a: "L'ensemble des recettes finance l'ensemble des dépenses, sans relation établie. Il entraîne le principe de non-affectation (vision globale non morcelée)." },
+    { q: "Que signifie le principe de spécialité ?", a: "Les dépenses sont spécialisées selon une nomenclature budgétaire. L'exécutif doit utiliser les crédits selon leur destination votée par le Parlement." },
+    { q: "Qu'est-ce que le principe de sincérité ?", a: "Formalisé dans la LOLF, il ne s'applique qu'aux lois de finances. Apprécié compte tenu des informations disponibles et des prévisions raisonnables." },
+    { q: "Que signifie le principe de légalité de l'impôt ?", a: "Les impôts sont fixés par la loi (Parlement). Ce principe est inscrit dans la Constitution." },
+    { q: "Quel est le fondement de l'égalité devant l'impôt ?", a: "Art. 13 DDHC 1789 : contribution commune répartie entre tous les citoyens en raison de leurs facultés. C'est aussi un outil de redistribution." },
+    { q: "En quoi consiste le principe d'unité de caisse ?", a: "Obligation de compte unique au Trésor pour les collectivités. L'ensemble de la trésorerie de l'État est déposé sur un seul compte courant. Fonds gérés par le Trésor public." },
+    { q: "Qu'est-ce que l'annualité de l'impôt ?", a: "Le Parlement doit donner chaque année au Gouvernement l'autorisation de percevoir l'impôt." },
+  ],
+  traitement: [
+    { q: "Que représente l'indice brut 100 au 1er juillet 2023 ?", a: "5 907,34 € (valeur fixée par décret)." },
+    { q: "À quoi correspond l'indemnité de résidence ?", a: "Elle compense les disparités du coût de la vie. Zone 2 : 1% / Zone 3 : 0% du traitement brut (+NBI éventuelle)." },
+    { q: "Qu'est-ce que la NBI ?", a: "Nouvelle Bonification Indiciaire. Bonification liée à l'exercice de fonctions spécifiques, exprimée en points d'indice majoré. DDSIS : 30-70 pts, sous-officier de garde SPP : 16 pts." },
+    { q: "Quelle est la prime de feu des SPP ?", a: "25% du traitement soumis à retenue pour pension (taux fixe)." },
+    { q: "Que signifie RIFSEEP ?", a: "Régime Indemnitaire tenant compte des Fonctions, des Sujétions, de l'Expertise et de l'Engagement Professionnel." },
+    { q: "Quelles sont les deux composantes du RIFSEEP ?", a: "L'IFSE (Indemnité de Fonctions, Sujétions et Expertise – part fixe) et le CIA (Complément Indemnitaire Annuel – part variable liée à l'évaluation)." },
+    { q: "Comment est calculée l'indemnité horaire pour les 14 premières heures du mois ?", a: "(Traitement brut annuel / 1820) × 1,25." },
+    { q: "Qu'est-ce que la prime de spécialité SPP ?", a: "Peut concerner tous les SPP sauf chefs de groupement/DDA/DDSIS. L'agent doit détenir le niveau de formation correspondant." },
+    { q: "Quelles sont les conditions d'attribution de la prime de logement ?", a: "Attribuée uniquement aux agents non logés. Maximum : 10% du traitement + indemnité de résidence." },
+    { q: "Que signifie GIPA ?", a: "Garantie Individuelle du Pouvoir d'Achat." },
+  ]
+};
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ============================================================
+// Q&A ACCORDION RENDERING
+// ============================================================
+function renderQA(theme, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container || container.children.length > 0) return;
+  const items = qaData[theme];
+  if (!items) return;
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'qa-item';
+    div.innerHTML = `
+      <div class="qa-question" onclick="toggleQA(this.parentElement)">
+        <span class="qa-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="qa-q-text">${item.q}</span>
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">
+        <div class="qa-answer-inner">${item.a}</div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleQA(el) {
+  el.classList.toggle('open');
+}
+
+// Render all QA on load
+window.addEventListener('DOMContentLoaded', () => {
+  renderQA('retraite', 'qa-retraite');
+  renderQA('finances', 'qa-finances');
+  renderQA('lois', 'qa-lois');
+  renderQA('principes', 'qa-principes');
+  renderQA('traitement', 'qa-traitement');
+  buildQuiz();
+});
+
+// ============================================================
+// ACCORDION GENERAL
+// ============================================================
+function toggleAccordion(toggleEl) {
+  const section = toggleEl.parentElement;
+  section.classList.toggle('open');
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+const allQuizQs = [
+  { q: "Que signifie CNRACL ?", opts: ["Caisse Nationale de Retraite et Congés pour les Agents Locaux", "Caisse Nationale des Retraites des Agents des Collectivités Locales", "Cotisation Nationale de Retraite pour les Agents des Collectivités Locales", "Commission Nationale de Retraite des Agents de la Collectivité Locale"], correct: 1 },
+  { q: "Depuis la réforme de 2023, l'âge légal de départ à la retraite est fixé à :", opts: ["60 ans", "62 ans", "64 ans", "67 ans"], correct: 2 },
+  { q: "Pour un SPP, l'âge légal de départ à la retraite (CNRACL) avec bonification est de :", opts: ["55 ans", "57 ans", "59 ans", "62 ans"], correct: 2 },
+  { q: "La durée de cotisation pour obtenir une retraite à taux plein (à terme) est de :", opts: ["160 trimestres", "164 trimestres", "168 trimestres", "172 trimestres"], correct: 3 },
+  { q: "La formule du montant de la pension CNRACL est :", opts: ["Trimestres × 75% TIM / 160", "Trimestres × 100% TIM / 172", "Trimestres × 75% TIM / 172", "Trimestres × 80% TIM / 164"], correct: 2 },
+  { q: "Le taux de décote par trimestre manquant est de :", opts: ["-0,5%", "-1%", "-1,25%", "-1,5%"], correct: 2 },
+  { q: "Le taux de surcote par trimestre supplémentaire est de :", opts: ["+0,75%", "+1%", "+1,25%", "+1,5%"], correct: 2 },
+  { q: "Qui gère la CNRACL ?", opts: ["L'IRCANTEC", "La Caisse des Dépôts et Consignations", "Le Trésor public", "La Sécurité sociale"], correct: 1 },
+  { q: "La LOLF a été promulguée le :", opts: ["1er août 1999", "1er août 2001", "1er janvier 2003", "1er mars 2001"], correct: 1 },
+  { q: "La LOLF est structurée en :", opts: ["Missions → Programmes → Chapitres", "Missions → Programmes → Actions", "Titres → Chapitres → Articles", "Dotations → Programmes → Missions"], correct: 1 },
+  { q: "La Cour de discipline budgétaire et financière (CDBF) :", opts: ["Existe toujours", "A été supprimée le 1er janvier 2023", "A été supprimée le 1er janvier 2021", "A fusionné avec la Cour des comptes en 2020"], correct: 1 },
+  { q: "Le budget primitif dans un budget local est :", opts: ["Le dernier budget de l'année", "Le budget définitif", "Le premier budget voté pour une année", "Le budget rectificatif"], correct: 2 },
+  { q: "La prime de feu des SPP représente :", opts: ["20% du traitement brut", "25% du traitement soumis à retenue pour pension", "30% du traitement indiciaire", "15% du traitement majoré"], correct: 1 },
+  { q: "Le RIFSEEP est composé de :", opts: ["L'IFSE et le CIA", "L'IFTS et l'IAT", "L'IFSE et l'IFTS", "Le CIA et la NBI"], correct: 0 },
+  { q: "La valeur du point d'achat RAFP en 2024 est de :", opts: ["1,23120 €", "1,31020 €", "1,41120 €", "1,51210 €"], correct: 2 },
+  { q: "Quel principe budgétaire est formalisé dans la LOLF et s'applique uniquement aux lois de finances ?", opts: ["Le principe d'annualité", "Le principe de sincérité", "Le principe de nécessité", "Le principe d'unité"], correct: 1 },
+  { q: "L'universalité budgétaire signifie :", opts: ["Chaque recette est affectée à une dépense", "L'ensemble des recettes finance l'ensemble des dépenses sans lien", "Le budget est valable pour plusieurs exercices", "Les dépenses sont réparties par programme"], correct: 1 },
+  { q: "La CSG est prélevée sur :", opts: ["Uniquement les salaires", "Les revenus d'activité uniquement", "Les revenus d'activité, de patrimoine, de remplacement et de placement", "Les revenus d'activité et les pensions uniquement"], correct: 2 },
+  { q: "Le PLF doit être déposé à l'Assemblée nationale avant le :", opts: ["15 septembre", "1er mardi d'octobre", "15 octobre", "1er novembre"], correct: 1 },
+  { q: "Quel principe figure à l'article 13 de la DDHC de 1789 ?", opts: ["Le principe de nécessité de l'impôt", "Le principe d'annualité", "Le principe d'égalité devant l'impôt", "Le principe de légalité"], correct: 2 },
+];
+
+let quizState = { questions: [], answers: {}, score: 0, answered: 0 };
+
+function buildQuiz() { startQuiz(); }
+
+function startQuiz() {
+  // Shuffle and pick 20
+  const shuffled = [...allQuizQs].sort(() => Math.random() - 0.5);
+  quizState = { questions: shuffled.slice(0, Math.min(20, shuffled.length)), answers: {}, score: 0, answered: 0 };
+  renderQuiz();
+}
+
+function resetQuiz() {
+  quizState.answers = {};
+  quizState.score = 0;
+  quizState.answered = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  updateScoreDisplay();
+
+  quizState.questions.forEach((qObj, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'quiz-q-' + qi;
+
+    const optsBtns = qObj.opts.map((o, oi) => {
+      const answered = quizState.answers[qi] !== undefined;
+      const isSelected = quizState.answers[qi] === oi;
+      const isCorrect = oi === qObj.correct;
+      let cls = 'quiz-opt';
+      if (answered) {
+        if (isCorrect) cls += ' correct';
+        else if (isSelected) cls += ' wrong';
+      }
+      return `<button class="${cls}" ${answered ? 'disabled' : ''} onclick="answerQ(${qi}, ${oi})">${String.fromCharCode(65+oi)}. ${o}</button>`;
+    }).join('');
+
+    const feedback = quizState.answers[qi] !== undefined ? buildFeedback(qObj, qi) : '';
+
+    div.innerHTML = `
+      <div class="quiz-q-num">Question ${qi+1} / ${quizState.questions.length}</div>
+      <div class="quiz-q-text">${qObj.q}</div>
+      <div class="quiz-options">${optsBtns}</div>
+      ${feedback}`;
+    container.appendChild(div);
+  });
+}
+
+function buildFeedback(qObj, qi) {
+  const correct = quizState.answers[qi] === qObj.correct;
+  const cls = correct ? 'ok' : 'ko';
+  const msg = correct
+    ? `✅ Correct ! <strong>${qObj.opts[qObj.correct]}</strong>`
+    : `❌ Incorrect. La bonne réponse était : <strong>${qObj.opts[qObj.correct]}</strong>`;
+  return `<div class="quiz-feedback show ${cls}">${msg}</div>`;
+}
+
+function answerQ(qi, oi) {
+  if (quizState.answers[qi] !== undefined) return;
+  quizState.answers[qi] = oi;
+  quizState.answered++;
+  if (oi === quizState.questions[qi].correct) quizState.score++;
+  updateScoreDisplay();
+  // Re-render this question
+  const qObj = quizState.questions[qi];
+  const container = document.getElementById('quiz-q-' + qi);
+  const optButtons = container.querySelectorAll('.quiz-opt');
+  optButtons.forEach((btn, oidx) => {
+    btn.disabled = true;
+    if (oidx === qObj.correct) btn.classList.add('correct');
+    else if (oidx === oi) btn.classList.add('wrong');
+  });
+  const fb = document.createElement('div');
+  fb.className = 'quiz-feedback show ' + (oi === qObj.correct ? 'ok' : 'ko');
+  fb.innerHTML = oi === qObj.correct
+    ? `✅ Correct ! <strong>${qObj.opts[qObj.correct]}</strong>`
+    : `❌ Incorrect. La bonne réponse était : <strong>${qObj.opts[qObj.correct]}</strong>`;
+  container.appendChild(fb);
+}
+
+function updateScoreDisplay() {
+  const total = quizState.questions.length;
+  const ans = quizState.answered;
+  document.getElementById('score-display').textContent = quizState.score + ' / ' + ans;
+  document.getElementById('progress-text').textContent = ans + ' / ' + total + ' réponses';
+  const pct = total > 0 ? (ans / total) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+</script>
+</body>
+</html>
